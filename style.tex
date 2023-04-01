@@ -1,0 +1,380 @@
+% Texroot: skript.tex
+\usepackage{xpatch}
+
+% Colors
+\definecolor{dunkelgrau}{cmyk}{0,0,0, 0.75} %{0.25, 0.25, 0.30, 0.75}
+\definecolor{goetheblau}{cmyk}{1.00, 0.20, 0.00, 0.40}
+\definecolor{hellgrau}  {cmyk}{0.04, 0.04, 0.05, 0.02}
+\definecolor{sandgrau}  {cmyk}{0.12, 0.09, 0.13, 0.00}
+\definecolor{purple}    {cmyk}{0.08, 1.00, 0.30, 0.36}
+\definecolor{emorot}    {cmyk}{0.04, 1.00, 0.80, 0.07}
+\definecolor{senfgelb}  {cmyk}{0.01, 0.25, 1.00, 0.05}
+\definecolor{gruen}     {cmyk}{0.62, 0.40, 0.87, 0.09}
+\definecolor{magenta}   {cmyk}{0.08, 0.86, 0.12, 0.12}
+\definecolor{orange}    {cmyk}{0.00, 0.70, 1.00, 0.04}
+\definecolor{sonnengelb}{cmyk}{0.00, 0.12, 0.95, 0.00}
+\definecolor{hellgruen} {cmyk}{0.04, 0.17, 0.81, 0.07}
+\definecolor{lichtblau} {cmyk}{0.80, 0.00, 0.06, 0.04}
+\colorlet{tablegrey}{sandgrau!50}
+\colorlet{sidecolor}{dunkelgrau}
+\colorlet{labelcolor}{goetheblau}
+
+\colorlet{fillColor}{goetheblau!30}
+\colorlet{fillColorAlt}{sandgrau}
+\colorlet{fillColorStrong}{emorot!40}
+\colorlet{frontColor}{black}
+\colorlet{frontColorAlt}{goetheblau}
+\colorlet{frontColorStrong}{emorot}
+
+\colorlet{color1}{goetheblau}
+\colorlet{color2}{emorot}
+\colorlet{color3}{orange}
+\colorlet{color4}{senfgelb}
+\colorlet{color5}{lichtblau}
+
+
+% Header/Footer	
+\usepackage{fancyhdr}
+\fancyhf{}
+\def\headerFormat{\sffamily\color{dunkelgrau}}
+\def\defaultPageStyle{
+	\pagestyle{fancy}
+	\fancyhead[RO]{\headerFormat\nouppercase{\rightmark}}
+	\fancyfoot[LE,RO]{\headerFormat\thepage}
+}
+\defaultPageStyle
+\xpretocmd\headrule{\color{dunkelgrau}}{}{\PatchFailed}
+
+\renewcommand{\sectionmark}[1]{\markright{#1}}
+\renewcommand{\subsectionmark}[1]{}
+\setcounter{secnumdepth}{3}
+
+% Side nodes
+\usepackage{marginnote}
+\usepackage{sidenotes}
+\usepackage[font={small}, labelfont={sf,color=labelcolor},textfont={sf}]{caption}
+\renewcommand*{\marginfont}{\small\color{sidecolor}\sffamily\slshape}
+\newcommand{\aside}[2][0pt]{\marginnote{#2}[#1]}
+\sidecaptionvpos{figure}{t}
+\sidecaptionvpos{table}{t}
+\renewcommand*\sidecaptionrelwidth{0.75}
+\captionsetup[table]{format=plain, font={color=sidecolor,small}}
+\DeclareCaptionStyle{marginfigure}{format=plain, labelfont={sf,color=labelcolor,small}, textfont={sl,sf,small}}
+\DeclareCaptionStyle{sidecaption}{format=plain, font={color=sidecolor, small}, labelfont={sf,color=labelcolor}, textfont={sl,sf}}
+\DeclareCaptionStyle{sidecapfmt}{format=plain, font={color=sidecolor, small}, labelfont={sf,color=labelcolor}, textfont={sl,sf}}
+
+\usepackage{refcount}% http://ctan.org/pkg/refcount
+\newcounter{oddpagecheck}
+\makeatletter
+\newcommand{\ifoddpageelse}{% \ifoddpage{<odd>}{<even>}
+	\stepcounter{oddpagecheck}% For unique labels
+	\label{opc-\theoddpagecheck}% Place label
+	\ifodd\getpagerefnumber{opc-\theoddpagecheck}
+		\expandafter\@firstoftwo% Page is odd
+	\else
+		\expandafter\@secondoftwo% Page is not odd (even)
+	\fi}
+\makeatother
+
+\newenvironment{widefigure}[1][t]{%
+	\begin{figure}[#1]
+		\ifoddpageelse{}{\hspace{-\margintotalwidth}}
+		\begin{minipage}{\textwidth+\margintotalwidth}
+			}{
+		\end{minipage}
+	\end{figure}
+}
+
+
+\newenvironment{widetable}[1][t]{%
+	\begin{table}[#1]
+		\ifoddpageelse{}{\hspace{-\margintotalwidth}}
+		\begin{minipage}{\textwidth+\margintotalwidth}
+			}{
+		\end{minipage}
+	\end{table}
+}
+
+\newenvironment{widebox}[1][\margintotalwidth]{%
+	\ifoddpageelse{}{\hspace{\dimexpr-#1\relax}}%
+	\begin{minipage}{\textwidth+#1}%
+		}{%
+	\end{minipage}%
+}
+
+\newenvironment{widemath}[1][\margintotalwidth]{%
+	\ifoddpageelse{}{\hspace{\dimexpr-#1\relax}}%
+	\begin{minipage}{\textwidth+#1}%
+		}{%
+	\end{minipage}%
+}
+
+\newcommand{\raggedinner}{\ifoddpageelse{\raggedright}{\raggedleft}}
+\newcommand{\raggedouter}{\ifoddpageelse{\raggedleft}{\raggedright}}
+
+
+% Pseudo code
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+\DontPrintSemicolon
+\SetAlFnt{\small}
+
+\newcommand{\mycommentsty}[1]{\textcolor{goetheblau}{\sffamily #1}}
+\SetCommentSty{mycommentsty}
+
+\newcommand{\mydatasty}[1]{{\sffamily \textsc{\textcolor{gruen}{#1}}}}
+\SetDataSty{mydatasty}
+
+\newcommand{\mykwfunctiondatasty}[1]{\textsc{#1}}
+\SetFuncSty{mykwfunctiondatasty}
+
+
+\usepackage{newfloat}
+
+\DeclareFloatingEnvironment[fileext=algflt,placement={!ht},name=Algorithm]{algoflt}
+\urlstyle{sf}
+
+% Theorems et al.
+\RequirePackage{amsthm}
+\usepackage{thmtools}
+\usepackage{thm-restate}
+\usepackage{mdframed}
+
+
+\declaretheoremstyle[
+	headfont={\sffamily\color{labelcolor}},
+	headpunct=\textcolor{labelcolor}{.},
+	postheadspace=1em,
+	qed=\textcolor{labelcolor}{$\blacktriangleleft$}
+]{endmarker}
+
+\declaretheorem[style=endmarker, parent=chapter]{theorem}
+\declaretheorem[style=endmarker, numbered=no, name=Theorem]{theorem*}
+
+\declaretheorem[style=endmarker, numberlike=theorem]{definition}
+\declaretheorem[style=endmarker, numbered=no, name=Definition]{definition*}
+\declaretheorem[style=endmarker, numberlike=theorem]{corollary}
+\declaretheorem[style=endmarker, numbered=no, name=Korollar]{corollary*}
+\declaretheorem[style=endmarker, numberlike=theorem]{lemma}
+\declaretheorem[style=endmarker, numbered=no, name=Lemma]{lemma*}
+\declaretheorem[style=endmarker, numberlike=theorem]{proposition}
+\declaretheorem[style=endmarker, numbered=no, name=Proposition]{proposition*}
+\declaretheorem[style=endmarker, numberlike=theorem]{conjecture}
+\declaretheorem[style=endmarker, numbered=no, name=Conjecture]{conjecture*}
+\declaretheorem[style=endmarker, numberlike=theorem]{example}
+\declaretheorem[style=endmarker, numbered=no, name=Example]{example*}
+\declaretheorem[style=endmarker, numbered=no, name=Note]{note*}
+\declaretheorem[style=endmarker, numberlike=theorem, name=Beobachtung]{observation}
+\declaretheorem[style=endmarker, numbered=no, name=Beobachtung]{observation*}
+\declaretheorem[style=endmarker, numberlike=theorem]{remark}
+\declaretheorem[style=endmarker, numbered=no, name=Remark]{remark*}
+\declaretheorem[style=endmarker, numberlike=theorem, name=Aufgabe]{exercise}
+\declaretheorem[style=endmarker, numbered=no, name=Aufgabe]{exercise*}
+
+\declaretheorem[style=endmarker, numberlike=theorem,
+	%	mdframed={backgroundcolor=black!10, linecolor=labelcolor, topline=false,rightline=false},
+	qed={},
+	name={Case Study}]{casestudy}
+
+\declaretheorem[style=endmarker, numberlike=theorem, mdframed={
+			backgroundcolor=black!10,
+			linecolor=labelcolor,
+			topline=false,rightline=false},
+	qed={},
+	name={Example}]{introexample}
+
+\expandafter\let\expandafter\oldproof\csname\string\proof\endcsname
+\let\oldendproof\endproof
+\renewenvironment{proof}[1][\proofname]{%
+	\renewcommand\qedsymbol{\textcolor{goetheblau}{$\square$}}
+	\oldproof[\normalfont\textcolor{goetheblau}{\sffamily #1}]%
+}{\oldendproof}
+
+
+
+\RequirePackage{aliascnt}
+\usepackage{titlesec}
+\usepackage{mathrsfs}
+\usepackage{multirow}
+
+
+\newcommand{\fmtLabel}[1]{\textcolor{darkgray}{\sffamily\bfseries #1}}
+
+\makeatletter
+\renewcommand\section{\@startsection {section}{1}{\z@}%
+  {-3.5ex \@plus -1ex \@minus -.2ex}%
+  {2.3ex \@plus.2ex}%
+  {\sffamily\large\bfseries\raggedright}}
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+	{-3.25ex\@plus -1ex \@minus -.2ex}%
+	{1.5ex \@plus .2ex}%
+	{\sffamily\large\bfseries\raggedright}}
+\renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
+	{-3.25ex\@plus -1ex \@minus -.2ex}%
+	{1.5ex \@plus .2ex}%
+	{\sffamily\large\bfseries\raggedright}}
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+	{-3.25ex \@plus-1ex \@minus-.2ex}%
+	{1.5ex \@plus .2ex}%
+	{\sffamily\large\bfseries\raggedright}}
+\renewcommand\subparagraph{\@startsection{subparagraph}{5}{\z@}%
+	{3.25ex \@plus1ex \@minus .2ex}%
+	{-1em}%
+	{\sffamily\normalsize\bfseries}}
+\makeatother
+
+
+
+\usepackage{listings}% http://ctan.org/pkg/listings
+\lstset{
+	basicstyle=\ttfamily,
+	mathescape
+}
+
+
+\makeatletter
+\newenvironment{relatedbib}{%
+	\begingroup%
+	\makeatletter%
+	\let\@bibitem\saved@bibitem%
+	\nobibliography*%
+	\begin{itemize}%
+		\def\sc{} % PREVENT AUTHORS IN SC
+		\def\bibentryitem##1{\item[\cite{##1}] \bibentry{##1} .}%
+		      \def\bibentryitemaside##1##2{\item[\cite{##1}]\aside{##2}\bibentry{##1} .}%
+		      }{%
+	\end{itemize}%
+	\endgroup%
+}
+
+\colorlet{chapterDigitColor}{dunkelgrau!50}
+
+\newcommand{\chapterTitlePage}[3]{%
+	\titleformat{\chapter}[display]
+	{}
+	{} % label \thechapter
+	{0pt} % sep
+	{} % before
+	[] % after		
+
+	\clearpage{\thispagestyle{empty}\cleardoublepage}
+	\chapter[#2]{
+	  \vspace{-3cm}
+	  \begin{tikzpicture}
+		  \node[anchor=south east, chapterDigitColor, inner sep=0] (cpt-mark) {\begin{minipage}{1.25\textwidth}\raggedleft\scalebox{5}{\Huge \thechapter}\end{minipage}};
+		  \node[font={\huge}, anchor=south west, at=(cpt-mark.south west), inner sep=0] (cpt-title) {\begin{minipage}{\textwidth}\sffamily#3\end{minipage}};
+	  \end{tikzpicture}
+	 }
+	\label{cpt:#1}
+	\thispagestyle{empty}
+}
+
+
+\newenvironment{paperfrontmatter}[1]{%
+	\def\@chapter@title{}
+	\def\@chapter@runninTitle{}
+	\def\@chapter@abstract{}
+	\def\@chapter@remarks{}
+	\let\@chapter@authors\relax
+	\def\@chapter@basedon{}
+	\let\@chapter@contribution\relax
+
+	\newcommand{\cTitle}[1]{\gdef\@chapter@title{##1}}
+	\newcommand{\cAuthors}[1]{\gdef\@chapter@authors{##1}}
+	\newcommand{\cRunningTitle}[1]{\gdef\@chapter@runningTitle{##1}}
+	\newcommand{\cAbstract}[1]{\long\gdef\@chapter@abstract{##1}}
+	\newcommand{\cRemarks}[1]{\long\gdef\@chapter@remarks{##1}}
+	\newcommand{\cBasedOn}[1]{\gdef\@chapter@basedon{##1}}
+	\newcommand{\cContribution}[1]{\gdef\@chapter@contribution{##1}}
+
+	\newcommand{\paperChapterTitlePage}{%
+		\chapterTitlePage{#1}{\@chapter@runningTitle}{\@chapter@title}
+		\ifthenelse{\equal{\@chapter@authors}{}}{%
+			\vspace{-5em}%
+		}{%
+			\vspace{-5em}%
+			{
+				\linespread{1.3}
+				\sffamily joint work with \@chapter@authors\par
+			}
+			\vspace{1em}%
+		}%
+		\vfill
+		\hfill
+		\begin{minipage}{0.96\textwidth}%
+			\sffamily%
+			\@chapter@abstract
+		\end{minipage}%
+		%		
+		\vfill\vfill
+		\noindent%		
+		\@chapter@remarks
+		\begin{relatedbib}
+			\foreach \x in \@chapter@basedon {\bibentryitem{\x}}
+		\end{relatedbib}
+		\ifx\@chapter@contribution\relax\else
+			\vfill
+			\subsubsection*{My contribution}
+			\@chapter@contribution
+		\fi
+		%	
+		\vfill\vfill
+		\vfill\vfill
+		%	
+		\clearpage%
+	}
+}{%
+	\paperChapterTitlePage%
+}
+
+\newcommand{\startpaper}[1]{%
+	\fancyhead[LE]{\headerFormat\@chapter@runningTitle}%
+}
+
+\makeatother
+
+\colorlet{DarkGreen}{green}
+\colorlet{DarkBlue}{blue}
+\colorlet{DarkRed}{red}
+
+\tikzset{snake it/.style={decorate, decoration=snake}}
+\tikzset{onif/.code args={<#1>#2}{\ifthenelse{#1}{\pgfkeysalso{#2}}{}}}
+\tikzset{
+conflict/.style={DarkRed, fill=red!10},
+state1/.style={DarkGreen, fill=green!10},
+state2/.style={DarkBlue, fill=blue!5},
+state3/.style={Maroon, fill=Yellow!10},
+state4/.style={Red, fill=Thistle!30},
+state5/.style={Black, fill=black!5},
+state?/.style={conflict}
+}
+\def\arrowHead{Latex[length=0.5em, width=0.5em]}
+
+\newcommand{\labelfmt}[1]{\textcolor{labelcolor}{\textsl{#1}}}
+
+\newcommand{\seeref}[1]{\leftpointright~\cref{#1}}
+\newcommand{\qremark}[1]{\labelfmt{[#1]}\xspace}
+\newcommand{\qmremark}[1]{\text{\textcolor{labelcolor}{\ensuremath{#1}}}}
+\renewcommand{\path}[1]{\IfSubStr{#1}{_}{\StrSubstitute{#1}{_}{\_}}{#1}}
+
+
+\newcommand{\reffmt}[1]{\textcolor{labelcolor}{#1}}
+\newcommand{\labrefint}[4]{\reffmt{#1:} #2 \reffmt{\seeref{#3} #4}\\}
+\newcommand{\labref}[3][]{\labrefint{#2}{\\}{#3}{#1}}
+\newcommand{\labrefff}[2]{\labrefint{#1}{\\}{#2}{ff.}}
+\newcommand{\sidelabref}[2]{\aside{\labref{#1}{#2}}}
+
+\newenvironment{subapx}{
+	\addcontentsline{toc}{section}{Appendix}
+	\begin{subappendices}
+		\settocdepth{chapter}
+		}{
+		\resettocdepth
+	\end{subappendices}
+}
+
+\newcommand{\floatmarginfigure}[1]{
+	\begin{figure}[t]%
+		\aside{\ \par \vspace{-0.5em} #1}%
+		\vspace{-1.5em}
+	\end{figure}
+}

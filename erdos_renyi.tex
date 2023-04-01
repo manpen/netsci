@@ -1,0 +1,115 @@
+% !TeX root = skript.tex
+Das Forschungsfeld der Zufallsgraphen nahm mit den Arbeiten von Gilbert~\cite{gilbert_1959}, sowie Erd\H{o}s und R\'enyi~\cite{erdos_renyi_1960} Anfang der 1960er Jahre an Fahrt auf.
+Ein Zufallsgraph ist dabei eine Wahrscheinlichkeitsverteilung $P\colon \mathbb G \to [0, 1]$ über einer Menge von Graphen $\mathbb G$.
+Oftmals wird der Grundraum $\mathbb G$ durch eine Parameterisierung eingeschränkt.
+
+So \aside{Erd\H{o}s-R\'enyi $G(n, m)$} beschreibt beispielsweise das $G(n, m)$-Modell von P.~Erd\H{o}s und A.~R\'enyi die Gleichverteilung über alle Graphen mit $n$ Knoten und $m$ Kanten, d.h. wir betrachten die Grundmenge
+\begin{equation}
+    \mathbb G(n, m) = \left\{ G \  \middle| \  \text{ Graph } G=(V, E) \text{ mit } |V| = n \text{ und } |E| =m \right\}.
+\end{equation}
+Da gleichverteilt gewählt wird, gilt für die Verteilungsfunktion~{$P\colon \mathbb G \to [0,1]$} einfach
+\begin{equation}
+    P(G) = \frac{1}{| \mathbb G(n,m) |} \quad \text{ für alle } G \in \mathbb G(n, m).
+\end{equation}
+
+In der Regel werden Zufallsgraphen aber nicht explizit über ihre Verteilungsfunktion beschrieben, sondern über eine randomisierte Konstruktionsvorschrift.
+So werden beispielsweise die \aside{Gilbert-Graphen $G(n, p)$} Erd\H{o}s-R\'enyi-Graphen $G(n, p)$ wie folgt erstellt:
+\begin{enumerate}
+    \item Erzeuge $n$ Knoten $V = \{v_1, \ldots, v_n\}$.
+    \item Setze $E = \emptyset$.
+    \item Für jedes Paar von Knoten $(v_i, v_j)$ führe ein Bernoulli Experiment durch.
+          Mit Wahrscheinlichkeit $p$ füge $(v_i, v_j)$ unabhängig als Kante zur $E$ hinzu.
+    \item Gebe den Graphen $G=(V, E)$ zurück.
+\end{enumerate}
+
+\noindent
+Graphisch kann man sich also $G(n, p)$ als Adjazenzmatrix vorstellen, in der die Einträge unabhängig voneinander mit Wahrscheinlichkeit $p$ auf $1$ gesetzt werden:
+
+\begin{center}
+    \begin{tikzpicture}
+        \node (mat) at (0,0) {
+            $\begin{pmatrix}
+                    1 & 0 & 1 & 0 & 0 \\
+                    0 & 1 & 1 & 0 & 1 \\
+                    0 & 1 & 0 & 1 & 0 \\
+                    1 & 0 & 1 & 0 & 0 \\
+                    1 & 0 & 0 & 0 & 1 \\
+                \end{pmatrix}$
+        };
+
+        \node[anchor=west, align=left, xshift=4em] (label) at (mat.east) {
+            $\begin{cases}1 & \text{mit Wahrscheinlichkeit } $p$ \\
+                    0 & \text{mit Wahrscheinlichkeit } 1-p
+                \end{cases}$
+        };
+
+        \path[draw, thick, bend right, ->] (label.west) to (mat.center);
+    \end{tikzpicture}
+
+\end{center}
+
+\begin{exercise}
+    Die genannte Konstruktion erzeugt gerichtete Graphen.
+    Zeige, wie die Konstruktion so angepasst werden kann, dass gerichtete Graphen ohne Eigenschleifen erzeugt werden.
+    Wie verändert sich dann die Adjazenzmatrix?
+    Wie verhält es sich mit ungerichteten Graphen?
+\end{exercise}
+
+Durch ihre einfache Konstruktion sind beide Zufallsgraphen bis heute sehr verbreitete Modelle in der Netzwerkforschung.
+Wir werden jedoch sehen, dass viele Eigenschaften von echten Netzwerken nicht von $G(n,p)$ oder $G(n,m)$-Graphen beschrieben werden können.
+Daher werden wir uns im Laufe der Vorlesung mit weiteren Zufallsgraphenmodellen beschäftigen.
+Dennoch ist es sinnvoll einige Grundkonzepte anhand dieser Modelle zu analysieren.
+
+\section{Anzahl von Kanten}
+Während bei $G(n,m)$ Graphen die Anzahl der Kanten durch den Parameter~$m$ fixiert ist, ist diese bei $G(n,p)$ Graphen eine Zufallsvariable.
+
+\begin{lemma}\label{lemma:erwartete_kanten_in_gnp}
+    Die \aside{Erwartete Kantenanzahl $\expv{|V|}$ in $G(n, p)$} erwartete Anzahl an Kanten in einem gerichteten $G(n,p)$ Graphen ist \begin{equation*} \expv{m} = p n^2. \qedhere \end{equation*}
+\end{lemma}
+
+\begin{proof}
+    Fixiere einen Graphen~$G=(V,E)$ aus $G(n,p)$.
+    Für jede Kante $(u,v)$ definiere die Indikatorvariable $I_{u,v}$, die anzeigt ob die Kante $(u,v) \in E$ enthalten ist:
+    \begin{equation}
+        I_{u,v} = \begin{cases}
+            1 & \text{ falls } (u,v) \in E \\
+            0 & \text{ sonst }
+        \end{cases}
+    \end{equation}
+
+    \noindent Somit folgt Anzahl der Kanten~$m$ in $G$ als Summe über die Indikatorvariablen
+    \begin{equation}
+        m = \sum_{u,v \in V} I_{u,v} = \left(\sum_{(u,v) \not\in E} 0 \right) +  \left(\sum_{(u,v) \in E} 1\right) = |E|.
+    \end{equation}
+
+    \noindent Per Definition gilt $\prob{I_{u,v} {=} 1} = p$ und $\prob{I_{u,v} {=} 0} = 1-p$.
+    Somit folgt für den Erwartungswert jeder Indikatorvariable
+    \begin{equation}
+        \expv{I_{u,v}} = 1 \cdot p + 0 \cdot (1-p) = p \quad \text{unabhängig für alle } u, v \in V.
+    \end{equation}
+
+    \noindent Durch die Linearität des Erwartungswertes folgt schließlich
+    \begin{equation}
+        \expv{|E|} = \sum_{u,v \in V} \expv{I_{u,v}} = \sum_{u,v \in V} p = p n^2. \qedhere
+    \end{equation}
+\end{proof}
+
+\begin{exercise}
+    Zeige, dass die erwartete Anzahl an Kanten in einem ungerichteten $G(n,p)$ Graphen $\expv{m} = \binom{n}{2} p = p n(n-1)/2$ beträgt.
+\end{exercise}
+
+\bigskip
+
+Wie wir am Beweis von \cref{lemma:erwartete_kanten_in_gnp} sehen, ergibt sich die Kantenanzahl~$m$ als Summe von unabhängigen Bernoulli Zufallsvariablen;
+sie ist also selbst eine Zufallsvariable und binomial verteilt.
+\begin{definition}
+    Die \aside{Binomialverteilung} Binomialverteilung $B_{n, p}(k)$ beschreibt die Wahrscheinlichkeit, dass bei $n$ unabhängigen Bernoulli Experimenten mit Wahrscheinlichkeit $p$ genau $k$ Experimente erfolgreich sind.
+    Es gilt \aside{Binomialkoeffizient $\binom{n}{k} = \frac{n!}{(n-k)!k!}$}
+    \begin{eqnarray*}
+        \prob{B_{n,p} {=} k} &=& \binom{n}{k} p^k (1-p)^{n-k} \\
+        \expv{B_{n,p}} &=& np \\
+        \varv{B_{n,p}} &=& np(1-p),
+    \end{eqnarray*}
+    wobei $\expv{B_{n,p}}$ und $\varv{B_{n,p}}$ die Erwartungswert und Varianz der Binomialverteilung beschreiben.
+\end{definition}
+

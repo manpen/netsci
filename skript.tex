@@ -1,0 +1,122 @@
+\documentclass[%
+	11pt,%
+	german,%
+]{book}
+
+\usepackage[german]{babel}
+\usepackage[utf8]{inputenc}
+
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{libertine}
+\usepackage{dingbat}
+
+\usepackage[title]{appendix}
+
+\usepackage{printlen}
+\usepackage[margincaption,outercaption]{sidecap}
+\usepackage[a4paper, %showframe,
+ inner=23mm, bottom=4cm, top=3cm,
+ outer=52mm, marginparwidth=37mm, marginparsep=5mm
+]{geometry}
+\linespread{1.1}
+\newlength{\margintotalwidth}
+\setlength{\margintotalwidth}{\dimexpr\marginparwidth+\marginparsep\relax}
+
+\usepackage[table,dvipsnames]{xcolor}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{nicefrac}
+\usepackage{mathtools}
+\usepackage{etextools}
+\usepackage{tocvsec2}
+%\usepackage{keyfloat}
+
+
+\usepackage[group-separator={,},binary-units=true,exponent-product = \cdot, output-product = \cdot]{siunitx}
+
+%\usepackage{polyglossia}
+%\setdefaultlanguage{english}
+%\setotherlanguage{german}
+
+% Do not change the order of usepackages in the following block; YOU HAVE BEEN WARNED!
+\makeatletter  
+	\let\saved@bibitem\@bibitem  
+\makeatother  
+\usepackage{bibentry}  
+\usepackage[hidelinks]{hyperref}  
+\usepackage[capitalise]{cleveref}
+\Crefname{algocf}{Algorithm}{Algorithms}
+\crefname{observation}{observation}{observations}
+\Crefname{observation}{Observation}{Observations}
+\crefname{figure}{Figure}{figures}
+
+\usepackage{environ}
+
+
+\usepackage{tikz}
+\usetikzlibrary{arrows, backgrounds}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{shapes.multipart}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{shapes.arrows}
+\usetikzlibrary{decorations.pathmorphing}
+\usetikzlibrary{calc}
+\usetikzlibrary{shapes}
+\usetikzlibrary{patterns}
+\usetikzlibrary{decorations.pathreplacing}
+
+\tikzset{snake it/.style={decorate, decoration=snake}}
+\tikzstyle{vertex}=[fill=white,draw,circle,minimum size=18pt,inner sep=0pt]
+\tikzstyle{inode}=[fill=white,draw,circle,minimum size=18pt,inner sep=0pt]
+\tikzstyle{leaf}=[fill=white,draw,inner sep=1mm]
+\tikzstyle{bigleaf}=[fill=white,draw,inner sep=1mm,minimum size=16pt]
+\usepackage{tikzscale}
+
+\makeatletter
+\newcommand{\removelatexerror}{\let\@latex@error\@gobble}
+\makeatother
+
+\usepackage{adjustbox}
+\usepackage{booktabs}
+
+\usepackage{wrapfig}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{ifthen}
+\usepackage{etoolbox}
+\usepackage{xspace}
+
+\usepackage{enumitem}
+
+\usepackage{makeidx}
+\makeindex
+
+
+\usepackage{url}
+
+\usepackage{tabularx}
+
+\input{style}
+\input{defs}
+
+\title{Network Science und Algorithm Engineering}
+\author{Manuel Penschuck}
+
+
+
+\begin{document}
+\maketitle
+
+\clearpage
+
+\tableofcontents
+
+\chapter{Einleitung}
+
+\chapter{Zufallsgraphen}
+\input{erdos_renyi}
+
+\end{document}

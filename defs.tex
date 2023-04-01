@@ -1,0 +1,295 @@
+\makeatother
+
+\newcommand{\varn}[1]{\textsl{#1}}
+
+\newcommand{\crefApx}[1]{\cref{#1} (Appendix)}
+\newcommand{\CrefApx}[1]{\Cref{#1} (Appendix)}
+
+\newcommand{\hc}[1]{#1}
+\newcommand{\hcm}[1]{\hc{\ensuremath{#1}}\xspace}
+\newcommand{\hcs}[1]{\hc{#1}\xspace}
+\newcommand{\formatIdentifier}[1]{\hcm{\mathsf{#1}}}
+
+\renewcommand{\epsilon}{\varepsilon}
+\newcommand{\remove}[1]{}
+
+\newcommand{\lbbfs}{{\cal D}_{\mathrm{BFS}(v)}}
+\newcommand{\size}{\mathrm{size}}
+\newcommand{\dpth}{\mathrm{depth}}
+\newcommand{\maxdpth}{\overline{\dpth}}
+
+
+\DeclareMathOperator{\polylog}{poly\,log}
+\DeclareMathOperator{\sort}{sort}
+\DeclareMathOperator{\scan}{scan}
+\DeclareMathOperator{\cdm}{cdm}
+\DeclareMathOperator{\acosh}{acosh}
+\DeclareMathOperator{\asinh}{asinh}
+\let\arccos\relax
+\DeclareMathOperator{\arccos}{acos}
+\DeclareMathOperator{\odeg}{outDeg}
+\DeclareMathOperator{\avg}{avg}
+
+\newcommand{\symOt}{\ensuremath{\tilde{\mathcal{O}}}}
+\newcommand{\symOh}{\ensuremath{\mathcal{O}}}
+\newcommand{\symoh}{\ensuremath{{o}}}
+\newcommand{\symTh}{\ensuremath{\Theta}}
+\newcommand{\symOm}{\ensuremath{\Omega}}
+\newcommand{\symom}{\ensuremath{\omega}}
+
+\newcommand{\Ot}[1]{\ensuremath{\symOt\!\left(#1\right)}}
+\newcommand{\Oh}[1]{\ensuremath{\symOh\!\left(#1\right)}}
+\newcommand{\oh}[1]{\ensuremath{\symoh\!\left(#1\right)}}
+\newcommand{\Th}[1]{\ensuremath{\symTh\!\left(#1\right)}}
+\newcommand{\Om}[1]{\ensuremath{\symOm\!\left(#1\right)}}
+\newcommand{\om}[1]{\ensuremath{\symom\!\left(#1\right)}}
+
+\newcommand{\OhSq}[1]{\ensuremath{\symOh\!\left[#1\right]}}
+
+\newcommand{\I}{i}
+\newcommand{\setd}[2]{\ensuremath{\left\{#1 \, \middle|\, #2\right\}}}
+\newcommand{\acos}{\arccos}
+
+
+\newcommand{\intd}{\text d}
+
+\newcommand{\e}{\ensuremath{e}}
+\newcommand{\errorterm}[1]{#1}%{\textcolor{blue}{ #1 }}
+\newcommand{\req}[2]{\ensuremath{\texttt{req}_{#1}(#2)}}
+
+% abbr
+% machine models
+\newcommand{\nproc}{\ensuremath{P}}
+
+% graph
+%\newcommand{\opstyle}[1]{\mathrm{\textcolor{blue}{#1}}}
+\newcommand{\opstyle}[1]{\mathrm{#1}}
+\newcommand{\degree}{\ensuremath{\opstyle{deg}}}
+\newcommand{\degin} {\ensuremath{\opstyle{deg^{in}}}}
+\newcommand{\degout}{\ensuremath{\opstyle{deg^{out}}}}
+\newcommand{\maxdeg}{\ensuremath{\opstyle{maxdeg}}}
+\newcommand{\diam}{\ensuremath{\opstyle{diam}}}
+\newcommand{\maxdiam}{\overline{\diam}}
+\newcommand{\dist}{\ensuremath{\opstyle{dist}}}
+\newcommand{\adj}{\ensuremath{\opstyle{N}}}
+\newcommand{\adjin}{\ensuremath{\opstyle{N^{in}}}}
+\newcommand{\adjout}{\ensuremath{\opstyle{N^{out}}}}
+\newcommand{\degseq}{\ensuremath{\mathcal{D}}}
+\newcommand{\cc}{\ensuremath{\opstyle{cc}}}
+\newcommand{\density}{\ensuremath{\opstyle{dens}}}
+
+% graph classes
+\newcommand{\gGn}{\ensuremath{\mathbb G(n)}\index{$\mathbb G(n)$!set}\xspace} % graphs on n vertices
+\newcommand{\gGnm}{\ensuremath{\mathbb G(n,m)}\index{$\mathbb G(n,m)$!set}\xspace} % graphs on n vertices with m edges
+\newcommand{\gGnr}{\ensuremath{\mathbb G^{(r)}(n)}\xspace} % r-regular graphs on n vertices
+\newcommand{\Gn}{\ensuremath{\mathcal{G}(n)}\index{$G(n)$!uniform distr.}\xspace} % uniform distribution on \gGn
+\newcommand{\Gnm}{\ensuremath{\mathcal{G}(n,m)}\index{$G(n,m)$!uniform distr.}\xspace} % uniform distribution on \gGnm
+\newcommand{\Gnp}{\ensuremath{\mathcal{G}(n,p)}\index{$\mathcal G(n, p)$}\xspace}
+\newcommand{\Gnr}{\ensuremath{\mathcal{G}^{(r)}(n)}\xspace} % uniform distribution on \gGnr
+
+% common sets
+\newcommand{\sN}{\ensuremath{\mathbb{N}}}
+\newcommand{\sNpos}{\ensuremath{\mathbb{N}_{>0}}}
+\newcommand{\sZ}{\ensuremath{\mathbb{Z}}}
+\newcommand{\sR}{\ensuremath{\mathbb{R}}}
+\newcommand{\NP}{\ensuremath{\mathcal{NP}}}
+
+% prop
+\newcommand{\symprob}{\ensuremath{\mathbb{P}}}
+\newcommand{\symexpv}{\ensuremath{\mathbb{E}}}
+\newcommand{\prob}[1]{\ensuremath{\symprob\!\left[#1\right]}}
+\newcommand{\expv}[1]{\ensuremath{\symexpv\!\left[#1\right]}}
+\newcommand{\varv}[1]{\ensuremath{\operatorname{Var}\!\left[#1\right]}}
+\newcommand{\pld}[3]{\ensuremath{\textsc{Pld}\,([#1, #2), #3)}}
+\newcommand{\binomd}[2]{\ensuremath{\text{\textsc{BinD}}\left[#1, #2\right]}}
+\newcommand{\geom}[1]{\ensuremath{\opstyle{Geom}(#1)}}
+\newcommand{\whp}{whp.\xspace}
+\newcommand{\follows}{\sim}
+
+
+\newcommand{\Def}{\ensuremath{:=}}
+\newcommand{\seq}[3]{\ensuremath{[\,#1\,]_{#2}^{#3}}}
+\newcommand{\rank}{\ensuremath{\operatorname{rank}}}
+\newcommand{\var}{\ensuremath{\operatorname{Var}}}
+
+\newcommand{\mean}[1]{\ensuremath{\left\langle #1 \right\rangle}}
+\newcommand{\avgdeg}{\ensuremath{\avg{\degree}}}
+\newcommand{\avgdist}{\ensuremath{\avg{\dist}}}
+
+\newcommand{\set}[1]{\ensuremath{\left\{ #1\right\}}}
+\newcommand{\floor}[1]{\ensuremath{\left\lfloor #1\right\rfloor}}
+\newcommand{\card}[1]{\ensuremath{\lvert #1\rvert}}
+
+\newcommand{\showcomment}[1]{#1}
+\renewcommand{\showcomment}[1]{} % Comment in to disable comments
+\newcommand{\citeneed}{\showcomment{\ensuremath{^\text{\color{red}{[citation needed]}}}}\xspace}
+
+
+
+
+
+
+\usepackage{todonotes}
+\newcommand{\TODO}[1]{\todo[inline]{{\footnotesize #1}}}
+
+\newcommand*{\diff}{\mathop{}\!\mathrm{d}}
+
+
+\newcommand{\invar}[1]{(\texttt{I#1})}
+
+\newcommand{\degs}{\ensuremath{\mathcal D}}
+\newcommand{\defrel}{:=}
+
+\newenvironment{lemmarep}[1]{\noindent\textbf{Lemma~\ref{#1}. (repeated)}\itshape}{}
+\newcommand{\mult}[1]{\#(#1)}
+\newcommand{\moment}[1]{\langle #1 \rangle}
+
+\newcommand{\sequence}[3]{\ensuremath{[\,#1\,]_{#2}^{#3}}}
+
+\DeclareMathOperator{\swap}{\mathtt{swap}}
+\DeclareMathOperator{\fst}{fst}
+\DeclareMathOperator{\snd}{snd}
+
+\newcommand{\formatImpl}[1]{\textsc{#1}}
+
+\newcommand{\dhrg}{\ensuremath{d_{\mathrm{HRG}}}}
+\newcommand{\dgirg}{\ensuremath{d_{\mathrm{GIRG}}}}
+\newcommand{\Dgirg}{\ensuremath{D_{\mathrm{GIRG}}}}
+\DeclareMathOperator{\level}{level}
+
+\newcommand{\BigO}{\mathcal{O}}
+\newcommand{\erdos}{Erd{\H o}s-R{\'e}nyi}
+
+\newcommand{\punkt}{\enspace .}
+\newcommand{\komma}{\enspace ,}
+\newcommand{\expect}{{\mathbf{E}}}
+% asymptotische Notation
+\newcommand{\whpO}[1]{\tilde{\mathrm{O}}\left( #1\right)}
+\newcommand{\Oschlange}{$\tilde{\mathrm{O}}$}
+
+\newcommand{\Ohh}[1]{\mathcal{O}\!\left( #1\right)}
+\newcommand{\Ohsmall}[1]{\mathcal{O}(#1)}
+\newcommand{\Thsmall}[1]{\Theta( #1)}
+\newcommand{\Omsmall}[1]{\Omega( #1)}
+\newcommand{\Oleq}{\preceq}
+
+\newcommand{\CC}{C\raisebox{.08ex}{\hbox{\tt ++}}}
+\newcommand{\Cminus}{C\raisebox{.08ex}{\hbox{\tt ++}}\raisebox{.25ex}{-}}
+\newcommand{\GG}{g\raisebox{.08ex}{\hbox{\tt ++}}}
+\newcommand{\Gminus} {g\raisebox{.08ex}{\hbox{\tt ++}}\raisebox{.25ex}{-}}
+
+
+
+
+\newcommand{\A}{\mathcal A}
+\newcommand{\Nei}[1]{\ensuremath{\A_{#1}}}
+\newcommand{\AG}{\mathscr{A}_G}
+\newcommand{\Suc}{\ensuremath{\mathscr{S}}}
+\renewcommand{\O}{\mathcal O} % big O
+
+\newcommand{\hide}[1]{}
+
+\newcommand\myalgorithmCommSty[1]{\footnotesize\ttfamily\textcolor{olive}{#1}}
+
+
+\let\epsilon\varepsilon
+
+
+\def\Wlog      {\hcs{W.l.o.g.}\ }
+\def\wrt       {\hcs{w.\,r.\,t.}}
+\def\etal      {\hcs{et~al.}}
+\def\eg        {\hcs{e.g.,}}
+\def\cf        {\hcs{cf.}\ }
+\def\ie        {\hcs{i.e.,}}
+\def\citeneeded{\textsuperscript{\textcolor{red}{[cite needed]}}}
+
+\newcommand{\Ex}[1]{\hcm{\mathbb E\left[#1\right]}}
+\newcommand{\Prob}[1]{\hcm{\mathbb P\left[#1\right]}}
+
+
+\renewcommand{\set}[1]{\hcm{\left\{#1\right\}}}
+\newcommand{\problem}[1]{\textsc{#1}}
+
+\DeclareMathOperator{\poly}{poly}
+
+
+\newcommand*{\LDAUOmicron}[1]{\ensuremath{\operatorname{O}\left(#1\right)}}
+\newcommand*{\LDAUomicron}[1]{\ensuremath{\operatorname{o}\left(#1\right)}}
+\newcommand*{\LDAUOmega}[1]{\ensuremath{\operatorname{\Omega}\left(#1\right)}}
+\newcommand*{\LDAUomega}[1]{\ensuremath{\operatorname{\omega}\left(#1\right)}}
+\newcommand*{\LDAUTheta}[1]{\ensuremath{\operatorname{\Theta}\left(#1\right)}}
+
+\newcommand*{\LdauOmicron}[1]{\ensuremath{\operatorname{O}\bigl(#1\bigr)}}
+\newcommand*{\Ldauomicron}[1]{\ensuremath{\operatorname{o}\bigl(#1\bigr)}}
+\newcommand*{\LdauOmega}[1]{\ensuremath{\operatorname{\Omega}\bigl(#1\bigr)}}
+\newcommand*{\Ldauomega}[1]{\ensuremath{\operatorname{\omega}\bigl(#1\bigr)}}
+\newcommand*{\LdauTheta}[1]{\ensuremath{\operatorname{\Theta}\bigl(#1\bigr)}}
+
+\newcommand*{\ldauOmicron}[1]{\ensuremath{\operatorname{O}(#1)}}
+\newcommand*{\ldauomicron}[1]{\ensuremath{\operatorname{o}(#1)}}
+\newcommand*{\ldauOmega}[1]{\ensuremath{\operatorname{\Omega}(#1)}}
+\newcommand*{\ldauomega}[1]{\ensuremath{\operatorname{\omega}(#1)}}
+\newcommand*{\ldauTheta}[1]{\ensuremath{\operatorname{\Theta}(#1)}}
+
+\newcommand*{\SOFTOmicron}[1]{\ensuremath{\operatorname{\tilde{O}}\left(#1\right)}}
+\newcommand*{\SOFTomicron}[1]{\ensuremath{\operatorname{\tilde{o}}\left(#1\right)}}
+\newcommand*{\SOFTOmega}[1]{\ensuremath{\operatorname{\tilde{\Omega}}\left(#1\right)}}
+\newcommand*{\SOFTomega}[1]{\ensuremath{\operatorname{\tilde{\omega}}\left(#1\right)}}
+\newcommand*{\SOFTTheta}[1]{\ensuremath{\operatorname{\tilde{\Theta}}\left(#1\right)}}
+
+\newcommand*{\SoftOmicron}[1]{\ensuremath{\operatorname{\tilde{O}}\bigl(#1\bigr)}}
+\newcommand*{\Softomicron}[1]{\ensuremath{\operatorname{\tilde{o}}\bigl(#1\bigr)}}
+\newcommand*{\SoftOmega}[1]{\ensuremath{\operatorname{\tilde{\Omega}}\bigl(#1\bigr)}}
+\newcommand*{\Softomega}[1]{\ensuremath{\operatorname{\tilde{\omega}}\bigl(#1\bigr)}}
+\newcommand*{\SoftTheta}[1]{\ensuremath{\operatorname{\tilde{\Theta}}\bigl(#1\bigr)}}
+
+\newcommand*{\softOmicron}[1]{\ensuremath{\operatorname{\tilde{O}}(#1)}}
+\newcommand*{\softomicron}[1]{\ensuremath{\operatorname{\tilde{o}}(#1)}}
+\newcommand*{\softOmega}[1]{\ensuremath{\operatorname{\tilde{\Omega}}(#1)}}
+\newcommand*{\softomega}[1]{\ensuremath{\operatorname{\tilde{\omega}}(#1)}}
+\newcommand*{\softTheta}[1]{\ensuremath{\operatorname{\tilde{\Theta}}(#1)}}
+
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+\def\?#1{}
+
+%\usepackage{enumitem}
+\newenvironment{itemize*}%
+{\begin{itemize}%[leftmargin=1.5em]%
+		%		\setlength{\itemsep}{0pt}%
+		%		\setlength{\parskip}{0pt}%
+		%		\setlength{\topsep}{1pt}%
+		%		\setlength{\partopsep}{1pt}%
+		}{\end{itemize}}
+
+\newenvironment{enumerate*}%
+{\begin{enumerate}%[leftmargin=2.5em]%
+		%		\setlength{\itemsep}{0pt}%
+		%		\setlength{\parskip}{0pt}%
+		%		\setlength{\topsep}{1pt}%
+		%		\setlength{\partopsep}{1pt}%
+		}{\end{enumerate}}
+
+
+\newenvironment{myalgorithm}[1][htb]
+{
+	\let\oldnl\nl% Store \nl in \oldnl
+	\newcommand{\nonl}{\renewcommand{\nl}{\let\nl\oldnl}}% Remove line number for one line
+
+	\SetCommentSty{myalgorithmCommSty}
+
+	\DontPrintSemicolon
+	\SetAlgoLined\SetAlgoNoEnd
+	\SetArgSty{normalfont}
+	\SetKwInOut{Input}{Input}
+	\SetKwInOut{Output}{Output}
+	\SetKw{Continue}{continue}
+	\SetKwFor{ParForEach}{par foreach}{}{}
+	\SetKw{Sequentially}{sequentially}
+	\renewcommand{\algorithmcfname}{Algorithm}% Update algorithm name
+	\begin{algorithm}[#1]\small%
+		}{\end{algorithm}}
+
+\def\mainchapters{\Cref{cpt:pa,cpt:emlfr,cpt:curveball,cpt:hypergen,cpt:commfree,cpt:girgs}}
+
+
