@@ -1,7 +1,7 @@
 image: gitlab.ae.cs.uni-frankfurt.de:5001/ae-ci/aeffm-tex
 
-compile-thesis:
+compile:
     script: latexmk -recorder -pdf skript.tex
     artifacts:
         paths:
-        - build/skript.pdf
+        - skript.pdf
