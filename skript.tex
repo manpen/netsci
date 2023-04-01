@@ -105,8 +105,6 @@
 \title{Network Science und Algorithm Engineering}
 \author{Manuel Penschuck}
 
-
-
 \begin{document}
 \maketitle
 
@@ -119,4 +117,13 @@
 \chapter{Zufallsgraphen}
 \input{erdos_renyi}
 
+\cleardoublepage
+\fancyhead[LE]{Bibliographie}
+\fancyhead[RO]{}
+\thispagestyle{fancy}
+\pagestyle{fancy}
+\bibliographystyle{plainurl}
+\small
+\patchcmd{\thebibliography}{\chapter*}{\section*}{}{}
+\bibliography{referenzen}
 \end{document}
