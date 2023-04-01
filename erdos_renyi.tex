@@ -1,5 +1,9 @@
 % !TeX root = skript.tex
 Das Forschungsfeld der Zufallsgraphen nahm mit den Arbeiten von Gilbert~\cite{gilbert_1959}, sowie Erd\H{o}s und R\'enyi~\cite{erdos_renyi_1960} Anfang der 1960er Jahre an Fahrt auf.
+Die beiden Arbeiten definieren Zufallsgraphmodelle, die zunächst für abstrakte Untersuchungen (z.B. die Probabilistische Methode) verwendet wurden.
+Bis heute spielen die Modelle in der Netzwerkforschung eine wichtige Rolle.
+
+\section{Die Zufallsgraphen $G(n, m)$ und $G(n, p)$}
 Ein Zufallsgraph ist dabei eine Wahrscheinlichkeitsverteilung $P\colon \mathbb G \to [0, 1]$ über einer Menge von Graphen $\mathbb G$.
 Oftmals wird der Grundraum $\mathbb G$ durch eine Parameterisierung eingeschränkt.
 
@@ -58,7 +62,7 @@ Graphisch kann man sich also $G(n, p)$ als Adjazenzmatrix vorstellen, in der die
 Durch ihre einfache Konstruktion sind beide Zufallsgraphen bis heute sehr verbreitete Modelle in der Netzwerkforschung.
 Wir werden jedoch sehen, dass viele Eigenschaften von echten Netzwerken nicht von $G(n,p)$ oder $G(n,m)$-Graphen beschrieben werden können.
 Daher werden wir uns im Laufe der Vorlesung mit weiteren Zufallsgraphenmodellen beschäftigen.
-Dennoch ist es sinnvoll einige Grundkonzepte anhand dieser Modelle zu analysieren.
+Dennoch ist es sinnvoll zunächst einige Grundkonzepte anhand dieser Modelle zu analysieren.
 
 \section{Anzahl von Kanten}
 Während bei $G(n,m)$ Graphen die Anzahl der Kanten durch den Parameter~$m$ fixiert ist, ist diese bei $G(n,p)$ Graphen eine Zufallsvariable.
@@ -82,7 +86,7 @@ Während bei $G(n,m)$ Graphen die Anzahl der Kanten durch den Parameter~$m$ fixi
         m = \sum_{u,v \in V} I_{u,v} = \left(\sum_{(u,v) \not\in E} 0 \right) +  \left(\sum_{(u,v) \in E} 1\right) = |E|.
     \end{equation}
 
-    \noindent Per Definition gilt $\prob{I_{u,v} {=} 1} = p$ und $\prob{I_{u,v} {=} 0} = 1-p$.
+    \noindent Per Definition von $G(n, p)$ gilt $\prob{I_{u,v} {=} 1} = p$ und $\prob{I_{u,v} {=} 0} = 1-p$.
     Somit folgt für den Erwartungswert jeder Indikatorvariable
     \begin{equation}
         \expv{I_{u,v}} = 1 \cdot p + 0 \cdot (1-p) = p \quad \text{unabhängig für alle } u, v \in V.
@@ -102,9 +106,10 @@ Während bei $G(n,m)$ Graphen die Anzahl der Kanten durch den Parameter~$m$ fixi
 
 Wie wir am Beweis von \cref{lemma:erwartete_kanten_in_gnp} sehen, ergibt sich die Kantenanzahl~$m$ als Summe von unabhängigen Bernoulli Zufallsvariablen;
 sie ist also selbst eine Zufallsvariable und binomial verteilt.
+Da uns die Binomialverteilung regelmäßig begegnen wird, wollen wir uns diese kurz anschauen.
 \begin{definition}
-    Die \aside{Binomialverteilung} Binomialverteilung $B_{n, p}(k)$ beschreibt die Wahrscheinlichkeit, dass bei $n$ unabhängigen Bernoulli Experimenten mit Wahrscheinlichkeit $p$ genau $k$ Experimente erfolgreich sind.
-    Es gilt \aside{Binomialkoeffizient $\binom{n}{k} = \frac{n!}{(n-k)!k!}$}
+    Die \aside{Binomialverteilung. \textcolor{red}{Vorsicht: } $n$ ist die Versuchsanzahl; nicht Kantenanzahl.} Binomialverteilung $B_{n, p}(k)$ beschreibt die Wahrscheinlichkeit, dass bei $n$ unabhängigen Bernoulli Experimenten mit Wahrscheinlichkeit $p$ genau $k$ Experimente erfolgreich sind.
+    Es gilt \aside{\ \\ \ \\ \ \\ Binomialkoeffizient $\binom{n}{k} = \frac{n!}{(n-k)!k!}$}
     \begin{eqnarray*}
         \prob{B_{n,p} {=} k} &=& \binom{n}{k} p^k (1-p)^{n-k} \\
         \expv{B_{n,p}} &=& np \\
@@ -112,4 +117,12 @@ sie ist also selbst eine Zufallsvariable und binomial verteilt.
     \end{eqnarray*}
     wobei $\expv{B_{n,p}}$ und $\varv{B_{n,p}}$ die Erwartungswert und Varianz der Binomialverteilung beschreiben.
 \end{definition}
+
+Die Standardabweichung $\sigma = \sqrt{\varv{B_{n,p}}} = \Oh{\sqrt n}$ ist also relativ klein.
+Wir können daher davon ausgehen, dass für hinreichend großes $n$ die Binomialverteilung recht stark um ihren Erwartungswert $np$ konzentriert ist.
+Daher sagen wir, dass $G(n, m)$ und $G(n, p)$ mit $p=m/n^2$ asymptotische äquivalent sind.
+Häufig ist es jedoch einfach $G(n,p)$ Graphen zu analysieren, da ---im Gegensatz zu $G(n,m)$ Graphen--- alle Kanten unabhängig gezogen werden.
+
+\section{Gradverteilung}
+
 
