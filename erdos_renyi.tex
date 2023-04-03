@@ -1,12 +1,12 @@
 % !TeX root = skript.tex
 Das Forschungsfeld der Zufallsgraphen nahm mit den Arbeiten von Gilbert~\cite{gilbert_1959}, sowie Erd\H{o}s und R\'enyi~\cite{erdos_renyi_1960} Anfang der 1960er Jahre an Fahrt auf.
 Die beiden Arbeiten definieren Zufallsgraphmodelle, die zunächst für abstrakte Untersuchungen (z.B. die Probabilistische Methode) verwendet wurden.
-Bis heute spielen die Modelle in der Netzwerkforschung jeodch eine wichtige Rolle.
+Bis heute spielen die Modelle in der Netzwerkforschung jedoch eine wichtige Rolle.
 Wir werden sie daher bald genauer betrachten, fangen jedoch mit einem einfacheren Modell an.
 
 \section{Der Zufallsgraph $G(n)$}
 Ein Zufallsgraph $(\mathbb G, P)$ ist eine Wahrscheinlichkeitsverteilung $P\colon \mathbb G \to [0, 1]$ über einer Menge von Graphen $\mathbb G$.
-Oftmals wird der Grundraum $\mathbb G$ durch eine Parameterisierung eingeschränkt; auch $P$ kann parametrisiert sein.
+Oftmals wird der Grundraum $\mathbb G$ durch eine Parametrisierung eingeschränkt; auch $P$ kann parametrisiert sein.
 
 Das \aside{$G(n)$ Graphen} einfachste Modell ist $G(n)$, welches die Gleichverteilung über alle Graphen mit $n$ Knoten beschreibt.
 Hierbei ist zu beachten, dass wir mit \emph{alle Graphen} in der Regel entweder alle \emph{gerichteten} oder alle \emph{ungerichteten} Graphen meinen.
@@ -42,7 +42,7 @@ Ist das $G(n)$ Modell realistisch?
 Das hängt davon ab, was wir mit ihm bezwecken und was wir mit \emph{realistisch} meinen.
 Es ist aber sicherlich nicht geeignet, um gängige Netzwerke zu beschreiben.
 Dies liegt unter anderem daran, dass $G(n)$ oft Graphen mit vielen Kanten erzeugt;
-intutitiv hat \glqq jeder zweite Graph\grqq{} mindestens die Hälfte aller möglichen Kanten.
+intuitiv hat \glqq jeder zweite Graph\grqq{} mindestens die Hälfte aller möglichen Kanten.
 
 \begin{observation}
     Sei $G(V,E)$ ein Graph, der zufällig aus $G(n)$ mit $n > 1$ gezogen wurde.
@@ -50,7 +50,7 @@ intutitiv hat \glqq jeder zweite Graph\grqq{} mindestens die Hälfte aller mögl
 \end{observation}
 
 \begin{proof}
-    Im Folgenden betrachen wir nur gerichtete Graphen; der Beweis läuft analog für ungerichtete Graphen.
+    Im Folgenden betrachten wir nur gerichtete Graphen; der Beweis läuft analog für ungerichtete Graphen.
     Stellen wir uns einen beliebigen Graphen~$G(V, E)$ vor.
     Dann sei $\bar G(V, \bar E)$ sein Komplement, d.h. für alle möglichen Kanten~$e$ gilt: $e \in \bar E \Leftrightarrow e \notin E$.
     Beobachte, dass es eine Bijektion zwischen allen Graphen in $\mathbb G$ und ihren Komplementen gibt: jeder Graph hat ein eineindeutiges Komplement.
@@ -85,19 +85,19 @@ Nach dem Eulerischen Polyedersatz, erfüllen einfache, \aside{planare Graphen} p
 \begin{equation}
     |E| \le 3 |V| - 6
 \end{equation}
-Knoten in einem Staßennetz sollten also im Schnitt höchstens 6 Nachbarn haben.
+Knoten in einem Straßennetz sollten also im Schnitt höchstens 6 Nachbarn haben.
 
 In \aside{Freundschaftsnetze} sozialen Netzwerken ist die Situation anders ---
 stellen wir uns etwa einen Freundschaftsgraphen vor, in dem Knoten Nutzer von einem sozialen Netzwerk sind und Kanten eine Freundschaft anzeigen.
 Im Jahr 2014, hatten Facebook-Nutzer im Schnitt mehr als 300 Freunde (mehr dazu später).
-Dies ist offensichtlch deutlich mehr als in planaren Graphen möglich wäre.
+Dies ist offensichtlich deutlich mehr als in planaren Graphen möglich wäre.
 Ganz ähnlich sieht es mit anderen sozialen Netzen aus: ein durchschnittlicher Erwachsener kennt deutlich mehr als 6 andere Menschen persönlich (often werden Zahlen zwischen 100 und 300 genannt).
 
 \subsection{Die meisten Netzwerke sind dünn}
 In \cref{fig:kantenanzahl} hat nur eine verschwindet geringer Anteil der Netzwerke mindestens die Hälfte aller Kanten (d.h. ist oberhalb der roten Linie).
 Wie erklärt sich das?
-In der Regel verursucht eine Kanten Kosten:
-eine Straße muss gebaut werden, eine Freundschaft muss aufrecht erhalten werden, ein Nachricht muss geschrieben werden, etc.
+In der Regel verursacht eine Kanten Kosten:
+eine Straße muss gebaut werden, eine Freundschaft muss aufrecht erhalten werden (Zeitinvestment), ein Nachricht muss geschrieben werden, etc.
 Daher gibt es in den meisten Netzwerken einen gewissen Selektionsdruck, der dazu führt, dass jeder Knoten nur ausgewählte Nachbarn besitzt.
 
 \begin{definition}
@@ -239,7 +239,7 @@ Wir können daher davon ausgehen, dass für hinreichend großes $n$ die Binomial
 Daher sagen wir, dass $G(n, m)$ und $G(n, p)$ mit $p=m/n^2$ asymptotische (d.h. für $n \to \infty$) äquivalent sind.
 Häufig ist es jedoch einfacher $G(n,p)$ Graphen zu analysieren, da ---im Gegensatz zu $G(n,m)$ Graphen--- alle Kanten unabhängig gezogen werden.
 
-\subsection{Effizientes Ziehen von $G(n, p)$ Graphen}
+\section{Effizientes Ziehen von $G(n, p)$ Graphen}
 Zufallsgraphen sind nicht nur in der theoretischen Analysen von Prozessen und Algorithmen nützlich, sondern auch für empirische Untersuchungen.
 Nehmen wir etwa an, wir haben eine Algorithmus implementiert und möchten seine Geschwindigkeit oder Qualität vermessen.
 Dann können Zufallsgraphen unter anderem aus folgenden Gründen nützlich sein:
@@ -248,7 +248,7 @@ Dann können Zufallsgraphen unter anderem aus folgenden Gründen nützlich sein:
     \item Parametrisierte Generatoren erlauben den Einfluss gewisser Eigenschaften detailliert zu analysieren; z.B. Skalierungsexperimente.
     \item Beobachtete Graphen haben oft \glqq Rauschen\grqq, d.h. nicht verstandene/signifikante Strukturen, die Messungen verfälschen können.
           Zufallsgraphen, hingegen, haben i.d.R. eine gut verstandene Struktur, die es uns oft ermöglicht vor dem Testen Hypothesen aufzustellen.
-    \item Einige Generator können anhand eines fixierten Startzustands (Random-Seed) diesselben Graphen wiederholt erzeugen.
+    \item Einige Generator können anhand eines fixierten Startzustands (Random-Seed) dieselben Graphen wiederholt erzeugen.
           Wir müssen also die Eingaben nicht speichern/transferieren und können dennoch reproduzierbare Experimente durchführen.
 \end{itemize}
 
@@ -283,7 +283,7 @@ Wir können unter anderem aus folgende Zufallsverteilungen in konstanter Zeit zi
     \item Ganzzahlig uniform aus $[a, b]$ für $a, b \in \mathbb{Z}$.
     \item Gleitkommazahl uniform aus $[a, b]$ für $a, b \in \mathbb{R}$.
     \item Bernoulli (folgt aus vorherigem Punkt)
-    \item Binomial, Geometrisch, Hypergeometrisch, Poisson
+    \item Binomial, Geometrisch (siehe \cref{{sec:inversionsmethode}}), Hypergeometrisch, Poisson
 \end{itemize}
 
 Tatsächlich können die meisten dieser Verteilungen nur in \emph{erwartete} konstanter Zeit gezogen werden, praktisch sind die Fluktuationen jedoch so klein, dass wir sie vernachlässigen können.
@@ -368,11 +368,111 @@ Es ergibt sich also der folgende einfache Algorithmus:
     Beweise das Lemma.
 \end{exercise}
 \begin{exercise}
-    Zeige wie wir eine uniforme Verteilung $[0, 1]$ in eine geometrische Verteilung umformen können.
-\end{exercise}
-\begin{exercise}
     Passe \cref{alg:linear-gnp} für ungerichtete Graphen an.
 \end{exercise}
+
+\subsection{Inversionsmethode: Ziehen aus der geometrischen Verteilung}
+\label{sec:inversionsmethode}
+
+\begin{figure}[t]
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]{data/geometric-distr.pdf}%
+        \includegraphics[width=0.5\textwidth]{data/geometric-distr-inv.pdf}
+    \end{center}
+
+    \caption{
+        Wahrscheinlichsverteilung und kumulative Verteilungsfunktion einer geometrischen Verteilung mit Parameter $p = 0.2$ (links).
+        Die rechte Abbildung zeigt die \glqq Umkehrfunktion\grqq{} $F^{-1}(p)$ der kumulativen Verteilungsfunktion $F(x)$.
+    }
+    \label{fig:geometric-distr}
+\end{figure}
+
+Die Inversionsmethode (inversion transform method) ist ein allgemeines Verfahren, um eine (meist) uniforme Zufallsvariable in eine Zufallsvariable einer anderen Verteilung zu übersetzen.
+In \cref{fig:geometric-distr} ist die Wahrscheinlichkeitsverteilung $f(x)$ und die kumulative Verteilungsfunktion $F(x)$ einer geometrischen Verteilung mit Parameter $p = 0.2$ gezeigt.
+
+Da $f(x)$ ist eine Wahrscheinlichkeitsverteilung ist, muss $\sum_{i=0}^{\infty} f(x) = 1$ gelten.
+Betrachten wir die konkreten ersten drei Werte der Funktionen:
+\begin{equation*}
+    \small
+    \begin{array}{rcl c rcl c rcl}
+        f(0) = & p          & =0.2   & \hfill &
+        f(1) = & (1 - p)p   & =0.16  & \hfill &
+        f(2) = & (1 - p)^2p & =0.128            \\
+
+        F(0) = & f(0)       & =0.2   & \hfill &
+        F(1) = & F(0)+f(1)  & =0.36  & \hfill &
+        F(2) = & F(1)+f(2)  & =0.488
+    \end{array}
+\end{equation*}
+
+\noindent Ein Generator sollte also z.B. den Wert $0$ mit Wahrscheinlichkeit 20\,\% ausgeben.
+
+Da wir einen determistischen Algorithmus konstruieren möchten, brauchen wir eine Quelle für den Zufall:
+wir erwarten eine uniforme Zufallsvariable $U \in [0, 1]$ als Eingabe.
+Wir können also z.B. prüfen, ob $U < 0.2$ ist und dann den Wert $0$ zurückgeben; da $U$ uniform verteilt ist, ist die Wahrscheinlichkeit für $U < 0.2$ genau $0.2$.
+Falls nicht prüfen wir, ob $U < 0.36 = f(0) + f(1)$ ist und geben dann den Wert $1$ zurück: da $U$ uniform verteilt ist, wir aber wissen, dass $U$ nicht kleiner als $0.2$ ist,
+ist die Wahrscheinlichkeit $\prob{U < 0.36 | U > 0.2} = 0.16 = f(1)$.
+Diesen Prozess setzen wir fort, bis wir das passende Intervall gefunden haben.
+
+Die graphische Interpretation ist also die folgende:
+In \cref{fig:geometric-distr} (rechts) ist die Umkehrfunktion~$F^{-1}(p)$ der kumulativen Verteilungsfunktion $F(x)$ gezeigt.
+Wir werfen nun mittels der zufälligen Eingabe $U$ einen Punkt auf der $x$-Achse und schauen, welchen Wert $F^{-1}(U)$ hat --- dies ist unsere Ausgabe.
+
+Im folgenden Theorem wird die Inversionsmethode formalisiert, wobei wir vereinfachend einige Annahmen treffen.
+Die Methode lässt sich aber auch auf andere $\Omega$ (inklusive kontinuierliche) und nicht streng monotone $F(x)$ verallgemeinern.
+
+\begin{theorem}
+    Sei $X \in \Omega$ eine diskrete Zufallsvariable und $f(x)$ und $F(x)$ ihre Wahrscheinlichkeitsverteilung sowie die kumulative Verteilungsfunktion.
+    Vereinfachend $\Omega$ total geordnet und $F(x)$ streng monoton steigend.
+    Dann existiert die Umkehrfunktion $F^{-1}(x)$ mit $F^{-1}(F(x)) = x$.
+    Sei $U$ eine uniforme Zufallsvariable aus $[0, 1]$.
+    Dann ist $X' = F^{-1}(U)$ eine Zufallsvariable mit der Wahrscheinlichkeitsverteilung $f(x)$.
+\end{theorem}
+
+\begin{proof}
+    \noindent Da $F$ streng monoton ist, gilt:
+    \begin{equation}\label{eq:inverse-apply-inverse}
+        F(x) = p
+        \quad\Leftrightarrow\quad F^{-1}(F(x)) = F^{-1}(p)
+        \quad\Leftrightarrow\quad x = F^{-1}(p)
+    \end{equation}
+
+    \noindent Daraus folgt dann direkt:
+    \begin{eqnarray}
+        \prob{X' \le x} &\stackrel{\text{Inv. Method}} = & \prob{F^{-1}(U) \le x} \\
+        &\stackrel{(\ref{eq:inverse-apply-inverse})}{=}& \prob{U \le F(x)} \\
+        &\stackrel{\prob{U < z} = z \forall z \in [0, 1]}=& F(x) \\
+        &\stackrel{\text{Def.} F(X)}=& \prob{X \le x}
+    \end{eqnarray}
+
+    \noindent Die Behauptung folgt.
+\end{proof}
+
+Zurück zur geometrischen Verteilung mit $f(\ell) = (1-p)^\ell p$.
+ObdA sei $0 < p < 1$ (da $X$ sonst eine Konstante ist).
+Die kumulative Verteilungsfunktion lautet
+\begin{equation}
+    F(\ell) = p \sum_{i=0}^\ell (1-p)^\ell \stackrel{(*)}{=} p \frac{1 - (1-p)^{\ell+1}}{\underbrace{1 - (1-p)}_{=p}} = 1 - (1-p)^{\ell+1},
+\end{equation}
+wobei wir in $(*)$ die geschlossene Form der $\ell$-ten Partialsumme der geometrischen Reihe nutzen $\sum_{i=0}^\ell x^\ell = (1 - x^{\ell+1})/(1 - x)$.
+Nun berechnen die Umkehrfunktion $F^{-1}(U) = \ell$ indem wir $F(\ell) = U$ setzen und nach $U$ umformen:
+\begin{eqnarray}
+    U &=& F(\ell) = 1 - (1-p)^{\ell+1} \\
+    \Leftrightarrow (1-p)^{\ell+1} &=& 1 - U \\
+    \Leftrightarrow  (\ell+1) \log(1-p)  &=& \log(1 - U) \\
+    \Leftrightarrow  F^{-1}(U) := \log_{1-p}(1 - U) - 1 &=& \ell
+\end{eqnarray}
+
+\noindent
+Zusammenfassen erzeugt \cref{alg:sample-geometric} eine geometrische Zufallsvariable $X$ mit Parameter $p$ in Zeit $\Oh{1}$:
+\begin{algorithm}
+    \If{p=0}{Gebe $\infty$ zurück}
+    \ElseIf{p=1}{Gebe $0$ zurück}
+    \Else{$U \gets \text{ziehen uniform aus $[0, 1)$}$\;
+    Gebe $\log_{1-p}(1 - U) - 1$ zurück.}
+    \caption{Ziehen einer geometrischen Zufallsvariable}
+    \label{alg:sample-geometric}
+\end{algorithm}
 
 \section{Kritische Punkte}
 
