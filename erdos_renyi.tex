@@ -65,7 +65,7 @@ intutitiv hat \glqq jeder zweite Graph\grqq{} mindestens die Hälfte aller mögl
     Da wir $G$ und $\bar G$ ja mit gleicher Wahrscheinlichkeit ziehen, gilt $\prob{|E| \ge n^2 / 2} \ge 1/2$.
 \end{proof}
 
-\section{Kantenanzahl in beobachteten Netzwerken}
+\section{Kantenanzahl in beobachteten Netzwerken}\label{sec:kanten-in-beobachteten-netzen}
 Wie viele Kanten haben echte Netzwerke? Hierzu führen wir ein Experiment durch:
 wir nutzen die Datenbank \url{https://networkrepository.com/}, die über 5000 Netzwerke aus unterschiedlichen Bereichen enthält~\cite{networkrepository}.
 In \cref{fig:kantenanzahl} zeichnen wir die Kantenanzahl als Funktion der Knotenanzahl.
@@ -214,6 +214,10 @@ Während bei $G(n,m)$ Graphen die Anzahl der Kanten durch den Parameter~$m$ fixi
     Zeige, dass die erwartete Anzahl an Kanten in einem ungerichteten $G(n,p)$ Graphen $\expv{m} = \binom{n}{2} p = p n(n-1)/2$ beträgt.
 \end{exercise}
 
+\begin{exercise}
+    Zeige, dass $G(n) = G(n, 1/2)$.
+\end{exercise}
+
 \bigskip
 
 Wie wir am Beweis von \cref{lemma:erwartete_kanten_in_gnp} sehen, ergibt sich die Kantenanzahl~$m$ als Summe von unabhängigen Bernoulli Zufallsvariablen;
@@ -235,6 +239,142 @@ Wir können daher davon ausgehen, dass für hinreichend großes $n$ die Binomial
 Daher sagen wir, dass $G(n, m)$ und $G(n, p)$ mit $p=m/n^2$ asymptotische (d.h. für $n \to \infty$) äquivalent sind.
 Häufig ist es jedoch einfacher $G(n,p)$ Graphen zu analysieren, da ---im Gegensatz zu $G(n,m)$ Graphen--- alle Kanten unabhängig gezogen werden.
 
-\section{Gradverteilung}
+\subsection{Effizientes Ziehen von $G(n, p)$ Graphen}
+Zufallsgraphen sind nicht nur in der theoretischen Analysen von Prozessen und Algorithmen nützlich, sondern auch für empirische Untersuchungen.
+Nehmen wir etwa an, wir haben eine Algorithmus implementiert und möchten seine Geschwindigkeit oder Qualität vermessen.
+Dann können Zufallsgraphen unter anderem aus folgenden Gründen nützlich sein:
+\begin{itemize}
+    \item Wenn die Generatorsoftware vorhanden ist, können wir synthetische Instanzen in quasi unbeschränkter Menge generieren.
+    \item Parametrisierte Generatoren erlauben den Einfluss gewisser Eigenschaften detailliert zu analysieren; z.B. Skalierungsexperimente.
+    \item Beobachtete Graphen haben oft \glqq Rauschen\grqq, d.h. nicht verstandene/signifikante Strukturen, die Messungen verfälschen können.
+          Zufallsgraphen, hingegen, haben i.d.R. eine gut verstandene Struktur, die es uns oft ermöglicht vor dem Testen Hypothesen aufzustellen.
+    \item Einige Generator können anhand eines fixierten Startzustands (Random-Seed) diesselben Graphen wiederholt erzeugen.
+          Wir müssen also die Eingaben nicht speichern/transferieren und können dennoch reproduzierbare Experimente durchführen.
+\end{itemize}
+
+\noindent Da in verschiedenen wissenschaftlichen Communities der Begriff \glqq Generator\grqq{} unterschiedlich benutzt wird, hier noch eine Definition:
+\begin{definition}
+    Ein \aside{Graphgenerator} Graphgenerator ist ein Algorithmus, der einen Graphen aus einem Netzwerkmodell erzeugt.
+    Dieser respektiert die Verteilung des zugrunde liegenden Modells.
+\end{definition}
+
+\subsection{Ein naiver Ansatz}
+Betrachten wir folgenden Graphgenerator für $G(n,p)$ Graphen, der im wesentlichen eine 1:1 Implementierung der Definition von $G(n, p)$ ist:
+\begin{algorithm}[h]
+    \KwIn{Anzahl der Knoten~$n$ und Verbindungswahrscheinlichkeit~$p$}
+    \KwOut{Adjazenzmatrix eines zufälligen Graphs $G \follows G(n, p)$}
+    Allokiere eine Matrix $A[1..n, 1..n]$\;
+    \For{$1 \le i \le n$}{
+        \For{$1 \le j \le n$}{
+            Setze $A[i,j] \gets \begin{cases}
+                    0 & \text{mit Wahrscheinlichkeit } 1-p \\
+                    1 & \text{mit Wahrscheinlichkeit } p
+                \end{cases}$\;
+        }
+    }
+    Gebe $A$ zurück
+    \caption{Naiver Graphgenerator für $G(n, p)$ Graphen}
+    \label{alg:naive-gnp}
+\end{algorithm}
+
+Um \aside{Annahme: aus einfachen Verteilungen kann in kostanter Zeit gezogen werden.} die Laufzeit dieses Algorithmus (wie auf diverser weiteren) bestimmen zu können, treffen wir folgende Annahme.
+Wir können unter anderem aus folgende Zufallsverteilungen in konstanter Zeit ziehen:
+\begin{itemize}
+    \item Ganzzahlig uniform aus $[a, b]$ für $a, b \in \mathbb{Z}$.
+    \item Gleitkommazahl uniform aus $[a, b]$ für $a, b \in \mathbb{R}$.
+    \item Bernoulli (folgt aus vorherigem Punkt)
+    \item Binomial, Geometrisch, Hypergeometrisch, Poisson
+\end{itemize}
+
+Tatsächlich können die meisten dieser Verteilungen nur in \emph{erwartete} konstanter Zeit gezogen werden, praktisch sind die Fluktuationen jedoch so klein, dass wir sie vernachlässigen können.
+Das erlaubt es uns auf die Eigenschaften der Graphgeneratoren zu konzentrieren.
+
+\begin{lemma}
+    \label{lem:naive-gnp}
+    Der Algorithmus \ref{alg:naive-gnp} erzeugt einen $G(n, p)$ Graphen in $\Theta(n^2)$ Zeit.
+\end{lemma}
+
+\begin{exercise}
+    Beweise das Lemma.
+\end{exercise}
+
+Nun könnte man argumentieren, dass dieser naive Algorithmus bereits optimal ist:
+Die Ausgabe hat Größe $\Theta(n^2)$ und somit wir benötigen $\Omega(n^2)$ Zeit, um die Ausgabe zu erzeugen.
+Außerdem hat ein Graph mit $p=0.5$ erwartete $\Theta(n^2)$ Kanten, was wiederum die Laufzeit von unten beschränkt.
+
+Diese Worst-Case Schranken passen jedoch nicht zu unserer Beobachtung in \cref{sec:kanten-in-beobachteten-netzen}, dass Graphen in der freien Wildbahn meist dünn sind.
+Es wäre schön, wenn wir diese Graphen schneller erzeugen könnten, jedoch ist \cref{alg:naive-gnp} für alle $p$ gleich \glqq schnell\grqq.
+Hier \aside{ausgabensensitive Algorthmen} helfen \emph{ausgabensensitive Algorithmen} (output-sensitive algorithm), deren Laufzeit maßgeblich durch die Größe der Ausgabe bestimmt wird;
+die meisten Generatoren, die wir betrachten werden, fallen genau in diese Kategorie.
+
+\subsection{Zufällige Sprünge}
+Ausgabensensitive \aside{Kantenlisten} Algorithmen müssen jedoch eine Ausgabedatenstruktur nutzen, die sich an die Größe anpasst.
+Eine Matrix hat immer dieselbe Größe unabhängig davon, wie viele Einsen (Kanten) vorhanden sind.
+Wir werden im Folgenden fast immer eine Kantenliste annehmen, die nur $\Oh(1)$ Worte Speicher pro Kante benötigt.
+
+Wie können wir nun \cref{alg:naive-gnp} verändern, so dass er ---analog zu Kantenlisten--- keine Arbeit für Nichtkanten verrichtet?
+Idee: Wir müssen diese einfach überspringen!
+Aber woher wissen wir wo \glqq Nullen\grqq{} gezogen werden, bzw. wie viele Nullen müssen wir überspringen?
+Ganz einfach: wir betrachten die Anzahl der Nullen als Zufallsvariable und ziehen diese aus einer geeigneten Verteilung.
+Zwischen diese zufälligen Sprünge setzen wir dann die Einsen ein.
+
+Zur Vereinfachung, stellen wir uns die Adjazenzmatrix~$A = (a_{ij})_{ij}$ als einen Vektor~$B = (b_k)_k$ vor, der dadurch entsteht, dass wir die Zeilen hinter einander anfügen.
+Eintrag $a_{ij}$ wird also mit $b_{(i-1)n + j}$ identifiziert.
+Dann besteht unsere Aufgabe darin genau alle $b_k$ zu finden, die den Wert $1$ haben.
+
+\begin{equation}
+    \Big(\quad \cdots \overbrace{1}^{b_k} \ \underbrace{0 \ \ 0\ \ 0 \ \cdots\ \ 0\ \ 0\ \ 0}_{\text{$\ell$ zusammenhängende Nullen}}\  \overbrace{1}^{b_{k + 1+ \ell}} \cdots \quad \Big)
+\end{equation}
+
+\noindent
+Sei $X$ die Zufallsvariable, welche die Anzahl der nach einer Eins folgenden Nullen modelliert.
+\begin{eqnarray}
+    \prob{X = 0} &=& \prob{\text{Nächster Versuch: 1}} = p \\
+    \prob{X = 1} &=& \prob{\text{Nächster Versuch: 0, dann 1}} = (1 - p)p \\
+    \prob{X = 2} &=& \prob{\text{Nächster Versuch: 0, dann 0, dann 1}} = (1 - p)^2 p \\
+    &\vdots& \\
+    \prob{X = \ell} &=& (1 - p)^\ell p
+\end{eqnarray}
+
+\noindent Die Zufallsvariable ist also \emph{geometrisch verteilt} mit Parameter $p$.
+Es ergibt sich also der folgende einfache Algorithmus:
+
+\begin{algorithm}
+    \KwIn{Anzahl der Knoten~$n$ und Verbindungswahrscheinlichkeit~$p$}
+    \KwOut{Kantenliste $E$ eines zufälligen Graphs $G \follows G(n, p)$}
+    Initialisiere eine leere Kantenliste $E$\;
+    $k \gets 0$\;
+    \For{$k \le n^2$}{
+        $\ell \gets \text{ziehe die Sprungweite aus einer geometrischen Verteilung mit Parameter $p$}$\;
+        $k \gets k + \ell + 1$\;
+
+        \If{$k \le n^2$}{
+            $i \gets \lfloor k / n \rfloor + 1$\;
+            $j \gets k \mod n$\;
+            $E \gets E \cup \{(i, j)\}$\;
+        }
+    }
+    Gebe $E$ zurück
+    \caption{Generator für $G(n,p)$ Graphen mit zufällige Sprüngen}
+    \label{alg:linear-gnp}
+\end{algorithm}
+
+\begin{lemma}
+    \label{lem:linear-gnp}
+    Algorithmus \ref{alg:linear-gnp} erzeugt Graph $G(V, E) \follows G(n, p)$ in $\Theta(|E|)$ Zeit.
+\end{lemma}
+
+\begin{exercise}
+    Beweise das Lemma.
+\end{exercise}
+\begin{exercise}
+    Zeige wie wir eine uniforme Verteilung $[0, 1]$ in eine geometrische Verteilung umformen können.
+\end{exercise}
+\begin{exercise}
+    Passe \cref{alg:linear-gnp} für ungerichtete Graphen an.
+\end{exercise}
 
 \section{Kritische Punkte}
+
+
+\section{Gradverteilung}
