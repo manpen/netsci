@@ -16,5 +16,5 @@ Schon vorab: VIELEN DANK!
 
 ## Lizenz
 
-Dieses Dokument und alle Skript stehen unter Creative Commons (Namensnennung-Nicht kommerziell-Share Alike 4.0 International).
+Dieses Dokument und alle Abbildungen/Skripte/Tools stehen unter Creative Commons (Namensnennung-Nicht kommerziell-Share Alike 4.0 International).
 Bitte stellt nur Pull-Requests, wenn ihr eure Änderungen ebenfalls unter diese Lizenz stellen möchtet.
