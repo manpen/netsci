@@ -1,8 +1,13 @@
 % !TeX root = skript.tex
+Zufallsgraphen sind ein Modell einer Graphfamilie.
+Sie beschreiben ein Ensemble von Graphen, das so entworfen sein kann, dass bestimmte Eigenschaften in den betrachteten Graphen verstärkt auftreten.
+So maßgeschneiderte Zufallsgraphen werden oft als \emph{Netzwerkmodell} bezeichnet.
+
 Das Forschungsfeld der Zufallsgraphen nahm mit den Arbeiten von Gilbert~\cite{gilbert_1959}, sowie Erd\H{o}s und R\'enyi~\cite{erdos_renyi_1960} Anfang der 1960er Jahre an Fahrt auf.
 Die beiden Arbeiten definieren Zufallsgraphmodelle, die zunächst für abstrakte Untersuchungen (z.B. die Probabilistische Methode) verwendet wurden.
-Bis heute spielen die Modelle in der Netzwerkforschung jedoch eine wichtige Rolle.
-Wir werden sie daher bald genauer betrachten, fangen jedoch mit einem einfacheren Modell an.
+Der Fokus auf die Modellierung von beobachteten Netzwerk kam erst später hinzu.
+Dennoch spielen die Modelle in der Netzwerkforschung bis heute eine wichtige Rolle.
+Wir werden sie daher bald genauer betrachten, fangen jedoch mit einem noch einfacheren Modell an.
 
 \section{Der Zufallsgraph $G(n)$}
 Ein Zufallsgraph $(\mathbb G, P)$ ist eine Wahrscheinlichkeitsverteilung $P\colon \mathbb G \to [0, 1]$ über einer Menge von Graphen $\mathbb G$.
@@ -307,16 +312,17 @@ Es wäre schön, wenn wir diese Graphen schneller erzeugen könnten, jedoch ist 
 Hier \aside{ausgabensensitive Algorthmen} helfen \emph{ausgabensensitive Algorithmen} (output-sensitive algorithm), deren Laufzeit maßgeblich durch die Größe der Ausgabe bestimmt wird;
 die meisten Generatoren, die wir betrachten werden, fallen genau in diese Kategorie.
 
-\subsection{Zufällige Sprünge}
 Ausgabensensitive \aside{Kantenlisten} Algorithmen müssen jedoch eine Ausgabedatenstruktur nutzen, die sich an die Größe anpasst.
 Eine Matrix hat immer dieselbe Größe unabhängig davon, wie viele Einsen (Kanten) vorhanden sind.
-Wir werden im Folgenden fast immer eine Kantenliste annehmen, die nur $\Oh(1)$ Worte Speicher pro Kante benötigt.
+Wir werden im Folgenden fast immer eine Kantenliste annehmen, die nur $\Oh{1}$ Worte Speicher pro Kante benötigt.
 
+\subsection{Ziehen mit zufällige Sprünge}
 Wie können wir nun \cref{alg:naive-gnp} verändern, so dass er ---analog zu Kantenlisten--- keine Arbeit für Nichtkanten verrichtet?
 Idee: Wir müssen diese einfach überspringen!
 Aber woher wissen wir wo \glqq Nullen\grqq{} gezogen werden, bzw. wie viele Nullen müssen wir überspringen?
 Ganz einfach: wir betrachten die Anzahl der Nullen als Zufallsvariable und ziehen diese aus einer geeigneten Verteilung.
 Zwischen diese zufälligen Sprünge setzen wir dann die Einsen ein.
+Generalisierungen dieser Methode werden uns noch häufiger begegnen.
 
 Zur Vereinfachung, stellen wir uns die Adjazenzmatrix~$A = (a_{ij})_{ij}$ als einen Vektor~$B = (b_k)_k$ vor, der dadurch entsteht, dass wir die Zeilen hinter einander anfügen.
 Eintrag $a_{ij}$ wird also mit $b_{(i-1)n + j}$ identifiziert.
@@ -371,6 +377,8 @@ Es ergibt sich also der folgende einfache Algorithmus:
     Passe \cref{alg:linear-gnp} für ungerichtete Graphen an.
 \end{exercise}
 
+\clearpage
+
 \subsection{Inversionsmethode: Ziehen aus der geometrischen Verteilung}
 \label{sec:inversionsmethode}
 
@@ -387,32 +395,36 @@ Es ergibt sich also der folgende einfache Algorithmus:
     \label{fig:geometric-distr}
 \end{figure}
 
-Die Inversionsmethode (inversion transform method) ist ein allgemeines Verfahren, um eine (meist) uniforme Zufallsvariable in eine Zufallsvariable einer anderen Verteilung zu übersetzen.
-In \cref{fig:geometric-distr} ist die Wahrscheinlichkeitsverteilung $f(x)$ und die kumulative Verteilungsfunktion $F(x)$ einer geometrischen Verteilung mit Parameter $p = 0.2$ gezeigt.
-
-Da $f(x)$ ist eine Wahrscheinlichkeitsverteilung ist, muss $\sum_{i=0}^{\infty} f(x) = 1$ gelten.
+Die Inversionsmethode (inversion transform method) ist ein allgemeines Verfahren, um eine uniforme Zufallsvariable in eine andere Verteilung zu übersetzen.
+Wir betrachten die Methode hier am Beispiel der geometrischen Verteilung.
+In \cref{fig:geometric-distr} ist die Wahrscheinlichkeitsverteilung $f(\ell)$ und die kumulative Verteilungsfunktion $F(\ell)$ einer geometrischen Verteilung mit Parameter $p = 0.2$ gezeigt.
+%
+%Da $f(\ell)$ ist eine Wahrscheinlichkeitsverteilung ist, muss $\sum_{\ell=0}^{\infty} f(\ell) = 1$ gelten.
 Betrachten wir die konkreten ersten drei Werte der Funktionen:
-\begin{equation*}
-    \small
-    \begin{array}{rcl c rcl c rcl}
-        f(0) = & p          & =0.2   & \hfill &
-        f(1) = & (1 - p)p   & =0.16  & \hfill &
-        f(2) = & (1 - p)^2p & =0.128            \\
 
-        F(0) = & f(0)       & =0.2   & \hfill &
-        F(1) = & F(0)+f(1)  & =0.36  & \hfill &
-        F(2) = & F(1)+f(2)  & =0.488
-    \end{array}
-\end{equation*}
+\begin{center}
+    \begin{tabular}{l|p{0.2\textwidth}p{0.25\textwidth}p{0.35\textwidth}}
+                  & $\ell = 1$ & $\ell = 2$              & $\ell = 3$                              \\\hline\hline
+        $f(\ell)$ & $p =0.2$   & $(1 {-} p)p = 0.16$     & $(1 {-} p)^2p = 0.128$                  \\
+        $F(\ell)$ & $p =0.2$   & $p{+}(1 {-} p)p = 0.36$ & $p{+}(1 {-} p)p{+}(1 {-} p)^2p = 0.488$
+    \end{tabular}
+\end{center}
+\vspace{1em}
 
-\noindent Ein Generator sollte also z.B. den Wert $0$ mit Wahrscheinlichkeit 20\,\% ausgeben.
 
+Ein Generator sollte also z.B. den Wert $0$ mit Wahrscheinlichkeit 20\,\% ausgeben.
 Da wir einen determistischen Algorithmus konstruieren möchten, brauchen wir eine Quelle für den Zufall:
 wir erwarten eine uniforme Zufallsvariable $U \in [0, 1]$ als Eingabe.
-Wir können also z.B. prüfen, ob $U < 0.2$ ist und dann den Wert $0$ zurückgeben; da $U$ uniform verteilt ist, ist die Wahrscheinlichkeit für $U < 0.2$ genau $0.2$.
-Falls nicht prüfen wir, ob $U < 0.36 = f(0) + f(1)$ ist und geben dann den Wert $1$ zurück: da $U$ uniform verteilt ist, wir aber wissen, dass $U$ nicht kleiner als $0.2$ ist,
-ist die Wahrscheinlichkeit $\prob{U < 0.36 | U > 0.2} = 0.16 = f(1)$.
-Diesen Prozess setzen wir fort, bis wir das passende Intervall gefunden haben.
+Wir können also z.B. prüfen:
+\begin{itemize}
+    \item Wenn $U < 0.2$ ist und dann den Wert $0$ zurückgeben.
+          Da $U$ uniform verteilt ist, ist die Wahrscheinlichkeit für $U < 0.2$ genau $0.2$.
+
+    \item Falls nicht prüfen wir, ob $U < 0.36 = f(0) + f(1) = F(1)$ ist und geben dann den Wert $1$ zurück.
+          Da $U$ uniform verteilt ist, wir aber wissen, dass $U$ nicht kleiner als $0.2$ ist, ist die Wahrscheinlichkeit $\prob{U < 0.36 | U > 0.2} = 0.16 = f(1)$.
+
+    \item Diesen Prozess setzen wir fort, bis wir das passende Intervall gefunden haben.
+\end{itemize}
 
 Die graphische Interpretation ist also die folgende:
 In \cref{fig:geometric-distr} (rechts) ist die Umkehrfunktion~$F^{-1}(p)$ der kumulativen Verteilungsfunktion $F(x)$ gezeigt.
@@ -423,14 +435,14 @@ Die Methode lässt sich aber auch auf andere $\Omega$ (inklusive kontinuierliche
 
 \begin{theorem}
     Sei $X \in \Omega$ eine diskrete Zufallsvariable und $f(x)$ und $F(x)$ ihre Wahrscheinlichkeitsverteilung sowie die kumulative Verteilungsfunktion.
-    Vereinfachend $\Omega$ total geordnet und $F(x)$ streng monoton steigend.
+    Vereinfachend sei $\Omega$ total geordnet und $F(x)$ streng monoton steigend.
     Dann existiert die Umkehrfunktion $F^{-1}(x)$ mit $F^{-1}(F(x)) = x$.
     Sei $U$ eine uniforme Zufallsvariable aus $[0, 1]$.
     Dann ist $X' = F^{-1}(U)$ eine Zufallsvariable mit der Wahrscheinlichkeitsverteilung $f(x)$.
 \end{theorem}
 
 \begin{proof}
-    \noindent Da $F$ streng monoton ist, gilt:
+    \noindent Da $F$ streng monoton ist, existiert die Umkehrfunktion $F^{-1}$ und es gilt:
     \begin{equation}\label{eq:inverse-apply-inverse}
         F(x) = p
         \quad\Leftrightarrow\quad F^{-1}(F(x)) = F^{-1}(p)
@@ -442,13 +454,14 @@ Die Methode lässt sich aber auch auf andere $\Omega$ (inklusive kontinuierliche
         \prob{X' \le x} &\stackrel{\text{Inv. Method}} = & \prob{F^{-1}(U) \le x} \\
         &\stackrel{(\ref{eq:inverse-apply-inverse})}{=}& \prob{U \le F(x)} \\
         &\stackrel{\prob{U < z} = z \forall z \in [0, 1]}=& F(x) \\
-        &\stackrel{\text{Def.} F(X)}=& \prob{X \le x}
+        &\stackrel{\text{Def.} F(X)}=& \prob{X \le x} \hspace{5em}\hfill \qedhere
     \end{eqnarray}
-
-    \noindent Die Behauptung folgt.
 \end{proof}
 
-Zurück zur geometrischen Verteilung mit $f(\ell) = (1-p)^\ell p$.
+\bigskip
+\bigskip
+
+Zurück \aside{Inversionsmethode für geometrische Verteilung} zur geometrischen Verteilung mit $f(\ell) = (1-p)^\ell p$.
 ObdA sei $0 < p < 1$ (da $X$ sonst eine Konstante ist).
 Die kumulative Verteilungsfunktion lautet
 \begin{equation}
@@ -465,7 +478,8 @@ Nun berechnen die Umkehrfunktion $F^{-1}(U) = \ell$ indem wir $F(\ell) = U$ setz
 
 \noindent
 Zusammenfassen erzeugt \cref{alg:sample-geometric} eine geometrische Zufallsvariable $X$ mit Parameter $p$ in Zeit $\Oh{1}$:
-\begin{algorithm}
+
+\begin{algorithm}[H]
     \If{p=0}{Gebe $\infty$ zurück}
     \ElseIf{p=1}{Gebe $0$ zurück}
     \Else{$U \gets \text{ziehen uniform aus $[0, 1)$}$\;
