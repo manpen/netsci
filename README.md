@@ -10,7 +10,7 @@ Details zur Veranstaltung können auf der [Veranstaltungswebseite](https://aeffm
 ## Pull-Requests
 
 Das Dokument wird sich über das Semester weiter entwickeln.
-Fehler und Fehlendes sind dabei zu erwartet.
+Fehler und Fehlendes sind dabei zu erwarten.
 Wenn Ihr eine Korrektur oder Ergänzung einfügen möchtet, stellt bitte einen Pull-Request.
 Schon vorab: VIELEN DANK!
 
