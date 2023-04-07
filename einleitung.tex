@@ -32,8 +32,8 @@ Hierzu vereinigt es Methoden aus Mathematik, Informatik, und Physik.
         \end{tikzpicture}}
     \caption{Algorithm Engineering Zyklus}
     \label{fig:intro/algorithm-engineering}}
-Ziele des \emph{Algorithm Engineering} ist es die Spaltung zwischen Theorie und Praxis im Algorithmenentwurf zu überbrücken.
-Es geht also darum, theoretisch effiziente und praktisch schnelle und implementierbare Algorithmen zu entwickeln.
+Ziel des \emph{Algorithm Engineering} ist es die Spaltung zwischen Theorie und Praxis im Algorithmenentwurf zu überbrücken.
+Es geht also darum, theoretisch effiziente als auch praktisch schnelle und implementierbare Algorithmen zu entwickeln.
 Hierbei kommt oft die in \cref{fig:intro/algorithm-engineering} dargestellte zyklische Entwurfsmethode zum Einsatz.
 Wir entwerfen meist zuerst einen Algorithmus und versuchen dessen Performance theoretisch vorherzusagen;
 diese Hypthesen werden dann experimentell überprüft und ---je nach Ergebnis--- der Algorithmus oder die Analyse angepasst.
@@ -63,19 +63,19 @@ Diese Abbildung geht oft mit dem Verlust von Informationen einher (wir wollen f�
 \begin{example}
     Die akademische Arbeit ist von Kollaboration geprägt --- Wissenschaftler arbeiten zusammen und publizieren schließlich gemeinsam ihre Ergebnisse.
     Es handelt sich also ganz klar um ein Netzwerk.
-    Wie modellieren wir aber den Zugrunde liegenden Graphen?
+    Wie modellieren wir aber den zugrunde liegenden Graphen?
     Hier ein paar Ansätze:
 
     \begin{itemize}
         \item
-              Wir können Autoren als Knoten auffassen und eine Kante zwischen zwei Autoren ziehen wenn sie zusammen publiziert haben.
-              Hierbei geht die Information darüber verloren, wie oft zwei Wissenschaftler gemeinsam kollaborierten.
+              Wir können Autoren als Knoten auffassen und eine Kante zwischen zwei Autoren ziehen, wenn sie zusammen publiziert haben.
+              Hierbei geht die Information darüber verloren, wie oft zwei Wissenschaftler kollaborierten.
               Dies könnte man etwa durch Kantengewichte ergänzen, die die Anzahl der gemeinsamen Publikationen kodieren.
 
         \item Wir können die Autoren als Knoten und die Publikationen als Kanten auffassen.
               Da im allgemeinen die Anzahl der Autoren pro Publikation unbeschränkt ist, ergibt sich ein Hypergraph (ein Graph mit Kanten zwischen mehr als zwei Knoten).
 
-        \item Wir könnten die Autoren \emph{und} Publikationen als Knoten auffassen und je eine Publikation mit allen Urhebern verbinden.
+        \item Wir können die Autoren \emph{und} Publikationen als Knoten auffassen und je eine Publikation mit allen Urhebern verbinden.
               Dieser Graph ist bipartit\footnote{Wir können jeden Hypergraph analog in einen bipartiten Graphen übersetzen.}, da weder Autoren noch Publikationen untereinander verbunden sind.
               Kanten könnten jetzt sogar noch weitere Informationen tragen, z.B. um den Hauptautor anzuzeigen.\hfill \qedhere
     \end{itemize}
