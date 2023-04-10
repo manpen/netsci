@@ -1,11 +1,11 @@
 % !TeX root = skript.tex
-Ein Zufallsgraphen ist ein Modell einer Graphfamilie --- etwa wie eine Zufallsvariable ein Modell einer Zufallsgröße ist.
+Ein Zufallsgraph ist ein Modell einer Graphfamilie --- etwa wie eine Zufallsvariable ein Modell einer Zufallsgröße ist.
 Der Zufallsgraph beschreibt also ein Ensemble von Graphen, das so entworfen sein kann, dass bestimmte Eigenschaften in den betrachteten Graphen verstärkt auftreten.
 So maßgeschneiderte Zufallsgraphen werden oft als \emph{Netzwerkmodell} bezeichnet.
 
 Das Forschungsfeld der Zufallsgraphen nahm mit den Arbeiten von Gilbert~\cite{gilbert_1959}, sowie Erd\H{o}s und R\'enyi~\cite{erdos_renyi_1960} Anfang der 1960er Jahre an Fahrt auf.
 Die beiden Arbeiten definieren Zufallsgraphen, die zunächst für abstrakte Untersuchungen (z.B. die Probabilistische Methode) verwendet wurden.
-Der Fokus auf die Modellierung von beobachteten Netzwerk kam erst später hinzu.
+Der Fokus auf die Modellierung von beobachteten Netzwerken kam erst später hinzu.
 Dennoch spielen die Modelle in der Netzwerkforschung bis heute eine wichtige Rolle.
 Wir werden sie daher bald genauer betrachten, fangen jedoch mit einem noch einfacheren Modell an.
 
@@ -96,16 +96,16 @@ Nach dem Eulerischen Polyedersatz erfüllen einfache, \aside{planare Graphen} pl
 Knoten in einem Straßennetz sollten also im Schnitt höchstens 6 Nachbarn haben.
 
 In \aside{Freundschaftsnetze} sozialen Netzwerken ist die Situation anders ---
-stellen wir uns etwa einen Freundschaftsgraphen vor, in dem Knoten die Nutzer eines einem sozialen Netzwerk sind und Kanten eine Freundschaft anzeigen.
+stellen wir uns etwa einen Freundschaftsgraphen vor, in dem Knoten die Nutzer eines sozialen Netzwerks sind und Kanten eine Freundschaft anzeigen.
 Im Jahr 2014, hatten Facebook-Nutzer im Schnitt mehr als 300 Freunde (mehr dazu später).
 Dies ist offensichtlich deutlich mehr als in planaren Graphen möglich wäre.
-Ganz ähnlich sieht es mit anderen sozialen Netzen aus: ein durchschnittlicher Erwachsener kennt deutlich mehr als 6 andere Menschen persönlich (often werden Zahlen zwischen 100 und 300 genannt).
+Ganz ähnlich sieht es mit anderen sozialen Netzen aus: ein durchschnittlicher Erwachsener kennt deutlich mehr als 6 andere Menschen persönlich (oft werden Zahlen zwischen 100 und 300 genannt).
 
 \subsection{Die meisten Netzwerke sind dünn}
 In \cref{fig:kantenanzahl} hat nur ein verschwindend geringer Anteil der Netzwerke mindestens die Hälfte aller Kanten (d.h. ist oberhalb der roten Linie).
 Wie erklärt sich das?
-In der Regel verursacht eine Kanten Kosten:
-eine Straße muss gebaut werden, eine Freundschaft muss aufrecht erhalten werden (Zeitinvestment), ein Nachricht muss geschrieben werden, etc.
+In der Regel verursacht eine Kante Kosten:
+eine Straße muss gebaut werden, eine Freundschaft muss aufrecht erhalten werden (Zeitinvestment), eine Nachricht muss geschrieben werden, etc.
 Daher gibt es in den meisten Netzwerken einen gewissen Selektionsdruck, der dazu führt, dass jeder Knoten nur ausgewählte Nachbarn besitzt.
 
 \begin{definition}
@@ -144,7 +144,7 @@ Stattdessen, spezifizieren wir eine randomisierte Konstruktionsvorschrift:
     \item Erzeuge $n$ Knoten $V = \{v_1, \ldots, v_n\}$.
     \item Setze $E = \emptyset$.
     \item Für jedes Paar von Knoten $(v_i, v_j)$ führe ein Bernoulli Experiment durch.
-          Mit Wahrscheinlichkeit $p$ füge $(v_i, v_j)$ unabhängig als Kante zur $E$ hinzu.
+          Mit Wahrscheinlichkeit $p$ füge $(v_i, v_j)$ unabhängig als Kante zu $E$ hinzu.
     \item Gebe den Graphen $G=(V, E)$ zurück.
 \end{enumerate}
 
@@ -188,7 +188,7 @@ Wir werden jedoch sehen, dass viele Eigenschaften von echten Netzwerken auch von
 Während bei \Gnm Graphen die Anzahl der Kanten durch den Parameter~$m$ fixiert ist, ist $|E|$ bei \Gnp Graphen eine Zufallsvariable.
 
 \begin{lemma}\label{lemma:erwartete_kanten_in_gnp}
-    Die \aside{Erwartete Kantenanzahl $\expv{|V|}$ in \Gnp} erwartete Anzahl an Kanten in einem gerichteten \Gnp Graphen ist \begin{equation*} \expv{m} = p n^2. \qedhere \end{equation*}
+    Die \aside{Erwartete Kantenanzahl $\expv{|E|}$ in \Gnp} erwartete Anzahl an Kanten in einem gerichteten \Gnp Graphen ist \begin{equation*} \expv{m} = p n^2. \qedhere \end{equation*}
 \end{lemma}
 
 \begin{proof}
@@ -223,7 +223,7 @@ Während bei \Gnm Graphen die Anzahl der Kanten durch den Parameter~$m$ fixiert 
 \end{exercise}
 
 \begin{exercise}
-    Zeige, dass $\Gn = G(n, 1/2)$.
+    Zeige, dass $\Gn = \mathcal G(n, 1/2)$.
 \end{exercise}
 
 \bigskip
@@ -239,12 +239,12 @@ Da uns die Binomialverteilung regelmäßig begegnen wird, wollen wir uns diese k
         \expv{B_{N,p}} &=& Np \\
         \varv{B_{N,p}} &=& Np(1-p),
     \end{eqnarray*}
-    wobei $\expv{B_{N,p}}$ und $\varv{B_{N,p}}$ die Erwartungswert und Varianz der Binomialverteilung beschreiben.
+    wobei $\expv{B_{N,p}}$ und $\varv{B_{N,p}}$ den Erwartungswert und die Varianz der Binomialverteilung beschreiben.
 \end{definition}
 
 Die Standardabweichung $\sigma = \sqrt{\varv{B_{N,p}}} \le \sqrt{\expv{B_{N,p}}}$ ist also relativ klein.
 Wir können daher davon ausgehen, dass für hinreichend großes $N$ die Binomialverteilung recht stark um ihren Erwartungswert $Np$ konzentriert ist.
-Daher sagen wir, dass \Gnm und \Gnp mit $p=m/n^2$ asymptotische (d.h. für $n \to \infty$) äquivalent sind.
+Daher sagen wir, dass \Gnm und \Gnp mit $p=m/n^2$ asymptotisch (d.h. für $n \to \infty$) äquivalent sind.
 Häufig ist es jedoch einfacher \Gnp Graphen zu analysieren, da ---im Gegensatz zu \Gnm Graphen--- alle Kanten unabhängig gezogen werden.
 
 \section{Effizientes Ziehen von \Gnp Graphen}
@@ -256,14 +256,14 @@ Dann können Zufallsgraphen unter anderem aus folgenden Gründen nützlich sein:
     \item Parametrisierte Generatoren erlauben den Einfluss gewisser Eigenschaften detailliert zu analysieren; z.B. Skalierungsexperimente.
     \item Beobachtete Graphen haben oft \glqq Rauschen\grqq, d.h. nicht verstandene oder insignifikante Strukturen, die Messungen verfälschen können.
           Zufallsgraphen, hingegen, haben i.d.R. eine gut verstandene Struktur, die es uns oft ermöglicht vor dem Testen Hypothesen aufzustellen.
-    \item Einige Generator können anhand eines fixierten Startzustands (Random-Seed) dieselben Graphen wiederholt erzeugen.
+    \item Einige Generatoren können anhand eines fixierten Startzustands (Random-Seed) dieselben Graphen wiederholt erzeugen.
           Wir müssen also die Eingaben nicht speichern/transferieren und können dennoch reproduzierbare Experimente durchführen.
 \end{itemize}
 
 \noindent Da in verschiedenen wissenschaftlichen Communities der Begriff \glqq Generator\grqq{} unterschiedlich benutzt wird, hier noch eine Definition:
 \begin{definition}
     Ein \aside{Graphgenerator} Graphgenerator ist ein Algorithmus, der einen Graphen aus einem Netzwerkmodell erzeugt.
-    Dieser respektiert die Verteilung des zugrunde liegenden Modells.
+    Dieser respektiert die Verteilung des zugrundeliegenden Modells.
 \end{definition}
 
 \subsection{Ein naiver Ansatz}
@@ -287,7 +287,7 @@ Betrachten wir folgenden Graphgenerator für \Gnp Graphen, der im wesentlichen e
 \end{algorithm}
 
 Um \aside{Annahme: aus einfachen Verteilungen kann in kostanter Zeit gezogen werden.} die Laufzeit dieses Algorithmus bestimmen zu können, treffen wir in dieser Veranstaltung folgende Annahme.
-Wir können unter anderem aus folgende Zufallsverteilungen in konstanter Zeit ziehen:
+Wir können unter anderem aus folgenden Zufallsverteilungen in konstanter Zeit ziehen:
 \begin{itemize}
     \item Ganzzahlig uniform aus $[a, b]$ für $a, b \in \mathbb{Z}$.
     \item Gleitkommazahl uniform aus $[a, b]$ für $a, b \in \mathbb{R}$.
@@ -313,10 +313,10 @@ Außerdem hat ein Graph mit $p=\Omega(1)$ erwartete $\Theta(n^2)$ Kanten, was wi
 
 Diese Worst-Case Schranken passen jedoch nicht zu unserer Beobachtung in \cref{sec:kanten-in-beobachteten-netzen}, dass Graphen in der freien Wildbahn meist dünn sind.
 Es wäre schön, wenn wir diese Graphen schneller erzeugen könnten, jedoch ist \cref{alg:naive-gnp} für alle $p$ gleich \glqq schnell\grqq.
-Hier \aside{ausgabensensitive Algorthmen} helfen \emph{ausgabensensitive Algorithmen} (output-sensitive algorithm), deren Laufzeit maßgeblich durch die Größe der Ausgabe bestimmt wird;
+Hier \aside{ausgabesensitive Algorthmen} helfen \emph{ausgabesensitive Algorithmen} (output-sensitive algorithm), deren Laufzeit maßgeblich durch die Größe der Ausgabe bestimmt wird;
 die meisten Generatoren, die wir betrachten werden, fallen genau in diese Kategorie.
 
-Ausgabensensitive \aside{Kantenlisten} Algorithmen müssen jedoch eine Ausgabedatenstruktur nutzen, die sich an die Größe anpasst.
+Ausgabesensitive \aside{Kantenlisten} Algorithmen müssen jedoch eine Ausgabedatenstruktur nutzen, die sich an die Größe anpasst.
 Eine Matrix hat immer dieselbe Größe unabhängig davon, wie viele Einsen (Kanten) vorhanden sind.
 Wir werden im Folgenden fast immer eine Kantenliste annehmen, die nur $\Oh{1}$ Speicherworte pro Kante benötigt.
 
@@ -508,7 +508,7 @@ Ziehe uniform ohne Zurücklegen $k$ Elemente aus einer Menge $S = \set{s_1, \ldo
 \clearpage
 
 \subsection{Reservoir Sampling}
-Reservoir Sampling ist eine allgemeine Technik, die es uns erlaubt $k$ Element aus einem Datenstrom zu ziehen.
+Reservoir Sampling ist eine allgemeine Technik, die es uns erlaubt $k$ Elemente aus einem Datenstrom zu ziehen.
 Hierbei müssen wir anfangs \emph{nicht} wissen, wie viele Elemente insgesamt im Strom sind.\footnote{
     Ein praktischer Anwendungsfall sind z.B. Iteratoren oder Generatoren, die in vielen Programmiersprachen genutzt werden.
     In Rust ist z.B. \texttt{rand::IteratorRandom::choose\_multiple} mittels Reservoir Sampling implementiert.
