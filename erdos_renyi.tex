@@ -10,8 +10,8 @@ Dennoch spielen die Modelle in der Netzwerkforschung bis heute eine wichtige Rol
 Wir werden sie daher bald genauer betrachten, fangen jedoch mit einem noch einfacheren Modell an.
 
 \section{Der Zufallsgraph $\Gn$}
-Ein Zufallsgraph $(\mathbb G, P)$ ist eine Wahrscheinlichkeitsverteilung $P\colon \mathbb G \to [0, 1]$ über einer Menge von Graphen $\mathbb G$.
-Oftmals wird der Grundraum $\mathbb G$ durch eine Parametrisierung eingeschränkt; auch $P$ kann parametrisiert sein.
+Ein Zufallsgraph $(\mathbb G, f)$ ist eine Wahrscheinlichkeitsverteilung $f\colon \mathbb G \to [0, 1]$ über einer Menge von Graphen $\mathbb G$.
+Oftmals wird der Grundraum $\mathbb G$ durch eine Parametrisierung eingeschränkt; auch $f$ kann parametrisiert sein.
 
 Das \aside{$\Gn$ Graphen} einfachste Modell ist $\Gn$, welches die Gleichverteilung über alle Graphen mit $n$ Knoten beschreibt.
 Hierbei ist zu beachten, dass wir mit \emph{alle Graphen} in der Regel entweder alle \emph{gerichteten} oder alle \emph{ungerichteten} Graphen meinen.
@@ -25,10 +25,10 @@ Je nach Wahl, ist der Grundraum von $\Gn$
     \twoset{G(V,E)}{|V| = n \land  E \subseteq \twoset{\set{u,v}}{u,v \in V \text{ mit } u \ne v}}.
 \end{eqnarray}
 
-\noindent Die Wahrscheinlichkeitsverteilung $P$ folgt dann als $P_{\gGn}(G) = 1 / | \gGn |$, oder konkret:
+\noindent Die Wahrscheinlichkeitsverteilung $f$ folgt dann als $f_{\gGn}(G) = 1 / | \gGn |$, oder konkret:
 \begin{eqnarray}
-    P_{\mathbb G_\text{ger}(n)}(G) &=& \frac{1}{| \mathbb G_\text{ger}(n) |} = \frac{1}{n^2}\\
-    P_{\mathbb G_\text{unge}(n)}(G) &=& \frac{1}{| \mathbb G_\text{unge}(n) |} = \frac{1}{\binom n 2} = \frac{2}{n(n-1)}.
+    f_{\mathbb G_\text{ger}(n)}(G) &=& \frac{1}{| \mathbb G_\text{ger}(n) |} = 2^{-n^2}\\
+    f_{\mathbb G_\text{unge}(n)}(G) &=& \frac{1}{| \mathbb G_\text{unge}(n) |} = 2^{-\binom n 2} = 2^{-\frac{2}{n(n-1)}}.
 \end{eqnarray}
 
 \begin{figure}[t]
@@ -124,13 +124,13 @@ Wir benötigen also Prozesse, die weniger dichte Graphen erzeugen können ---
 am besten parametrisiert, damit wir unterschiedlichen Netzwerktypen Rechnung tragen können.
 Im Folgenden betrachten wir zwei solcher Modelle.
 
-Das \Gnm-Modell \aside{Erd\H{o}s-R\'enyi Graphen \Gnm} von P.~Erd\H{o}s und A.~R\'enyi beschreibt die Gleichverteilung über alle Graphen mit $n$ Knoten und $m$ Kanten, d.h. wir betrachten die Grundmenge
+Das \Gnm-Modell \aside{Erd\H{o}s-R\'enyi Graphen \Gnm} von P.~Erd\H{o}s und A.~R\'enyi beschreibt die Gleichverteilung über allgemeinen Graphen mit $n$ Knoten und $m$ Kanten, d.h. wir betrachten die Grundmenge
 \begin{equation}
-    \gGnm = \twoset{G(V,E)}{G(V,E) \in \Gn \text{ und } |E| = m}.
+    \gGnm = \twoset{G(V,E)}{G(V,E) \in \mathbb G(n) \text{ und } |E| = m}.
 \end{equation}
-Da gleichverteilt gewählt wird, gilt für die Verteilungsfunktion~{$P\colon \mathbb G \to [0,1]$} einfach
+Da gleichverteilt gewählt wird, gilt für die Wahrscheinlichkeitsverteilung~{$f\colon \mathbb G \to [0,1]$}
 \begin{equation}
-    P(G) = \frac{1}{| \gGnm |} \quad \text{ für alle } G \in \gGnm.
+    f(G) = \frac{1}{| \gGnm |} \quad \text{ für alle } G \in \gGnm.
 \end{equation}
 
 \begin{exercise}
@@ -143,8 +143,8 @@ Stattdessen, spezifizieren wir eine randomisierte Konstruktionsvorschrift:
 \begin{enumerate}
     \item Erzeuge $n$ Knoten $V = \{v_1, \ldots, v_n\}$.
     \item Setze $E = \emptyset$.
-    \item Für jedes Paar von Knoten $(v_i, v_j)$ führe ein Bernoulli Experiment durch.
-          Mit Wahrscheinlichkeit $p$ füge $(v_i, v_j)$ unabhängig als Kante zu $E$ hinzu.
+    \item Für jedes Paar von Knoten $(v_i, v_j)$ führe ein unabhängiges Bernoulli Experiment durch.
+          Mit Wahrscheinlichkeit $p$ füge $(v_i, v_j)$ als Kante zu $E$ hinzu.
     \item Gebe den Graphen $G=(V, E)$ zurück.
 \end{enumerate}
 
@@ -271,7 +271,7 @@ Betrachten wir folgenden Graphgenerator für \Gnp Graphen, der im wesentlichen e
 
 \begin{algorithm}[H]
     \KwIn{Anzahl der Knoten~$n$ und Verbindungswahrscheinlichkeit~$p$}
-    \KwOut{Adjazenzmatrix eines zufälligen Graphs $G \follows G(n, p)$}
+    \KwOut{Adjazenzmatrix eines zufälligen Graphs $G \follows \Gnp$}
     Allokiere eine Matrix $A[1..n, 1..n]$\;
     \For{$1 \le i \le n$}{
         \For{$1 \le j \le n$}{
