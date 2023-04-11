@@ -188,7 +188,7 @@ Wir werden jedoch sehen, dass viele Eigenschaften von echten Netzwerken auch von
 Während bei \Gnm Graphen die Anzahl der Kanten durch den Parameter~$m$ fixiert ist, ist $|E|$ bei \Gnp Graphen eine Zufallsvariable.
 
 \begin{lemma}\label{lemma:erwartete_kanten_in_gnp}
-    Die \aside{Erwartete Kantenanzahl $\expv{|E|}$ in \Gnp} erwartete Anzahl an Kanten in einem gerichteten \Gnp Graphen ist \begin{equation*} \expv{m} = p n^2. \qedhere \end{equation*}
+    Die \aside{Erwartete Kantenanzahl $\expv{|E|}$ in \Gnp} erwartete Anzahl an Kanten in einem gerichteten \Gnp Graphen ist \begin{equation*} \expv{|E|} = p n^2. \qedhere \end{equation*}
 \end{lemma}
 
 \begin{proof}
@@ -203,7 +203,7 @@ Während bei \Gnm Graphen die Anzahl der Kanten durch den Parameter~$m$ fixiert 
 
     \noindent Somit folgt Anzahl der Kanten~$m$ in $G$ als Summe über die Indikatorvariablen
     \begin{equation}
-        m = \sum_{u,v \in V} I_{u,v} = \left(\sum_{(u,v) \not\in E} 0 \right) +  \left(\sum_{(u,v) \in E} 1\right) = |E|.
+        |E| = \sum_{u,v \in V} I_{u,v} = \left(\sum_{(u,v) \not\in E} 0 \right) +  \left(\sum_{(u,v) \in E} 1\right).
     \end{equation}
 
     \noindent Per Definition von \Gnp gilt $\prob{I_{u,v} {=} 1} = p$ und $\prob{I_{u,v} {=} 0} = 1-p$.
@@ -219,7 +219,7 @@ Während bei \Gnm Graphen die Anzahl der Kanten durch den Parameter~$m$ fixiert 
 \end{proof}
 
 \begin{exercise}
-    Zeige, dass die erwartete Anzahl an Kanten in einem ungerichteten \Gnp Graphen $\expv{m} = \binom{n}{2} p = p n(n-1)/2$ beträgt.
+    Zeige, dass die erwartete Anzahl an Kanten in einem ungerichteten \Gnp Graphen $\expv{|E|} = \binom{n}{2} p = p n(n-1)/2$ beträgt.
 \end{exercise}
 
 \begin{exercise}
