@@ -18,18 +18,36 @@ Hierbei ist zu beachten, dass wir mit \emph{alle Graphen} in der Regel entweder 
 Die Details der Analysen in den folgenden Kapiteln hängen von dieser Entscheidung ab --- allerdings ergeben sich meist keine qualitativen Unterschiede.
 Daher werden wir oft den für uns einfacheren Fall wählen.
 Je nach Wahl, ist der Grundraum von $\Gn$
-\begin{eqnarray}
-    \mathbb G_\text{ger}(n) &=&
-    \twoset{G(V,E)}{|V| = n \land E \subseteq V \times V}\\
-    \mathbb G_\text{unge}(n) &=&
+\begin{align}
+    \mathbb G_\text{ger}(n)  & =
+    \twoset{G(V,E)}{|V| = n \land E \subseteq V \times V} \\\label{eq:gerichtet_gn}
+    \mathbb G_\text{unge}(n) & =
     \twoset{G(V,E)}{|V| = n \land  E \subseteq \twoset{\set{u,v}}{u,v \in V \text{ mit } u \ne v}}.
-\end{eqnarray}
+\end{align}
 
 \noindent Die Wahrscheinlichkeitsverteilung $f$ folgt dann als $f_{\gGn}(G) = 1 / | \gGn |$, oder konkret:
-\begin{eqnarray}
-    f_{\mathbb G_\text{ger}(n)}(G) &=& \frac{1}{| \mathbb G_\text{ger}(n) |} = 2^{-n^2}\\
-    f_{\mathbb G_\text{unge}(n)}(G) &=& \frac{1}{| \mathbb G_\text{unge}(n) |} = 2^{-\binom n 2} = 2^{-\frac{2}{n(n-1)}}.
-\end{eqnarray}
+\begin{align}
+    f_{\mathbb G_\text{ger}(n)}(G)  & =  \frac{1}{| \mathbb G_\text{ger}(n) |} = 2^{-n^2}\label{eq:gleichverteilt_gerichtet_gn} \\
+    f_{\mathbb G_\text{unge}(n)}(G) & =  \frac{1}{| \mathbb G_\text{unge}(n) |} = 2^{-\binom n 2} = 2^{-\frac{2}{n(n-1)}}.
+\end{align}
+
+Die geschlossene Form $| \mathbb G_\text{ger}(n) | = 2^{n^2}$ in \cref{eq:gleichverteilt_gerichtet_gn} ergibt sich daraus, dass ein gerichteter Graph $n^2$ potentielle Kanten hat (die Adjazenzmatrix hat $n \times n$ Einträge).
+Für jede dieser Kanten haben wir unabhängig genau zwei Möglichkeiten: sie existiert oder eben nicht.
+Analog sieht es für die $\binom n 2$ möglichen Kanten in einem ungerichteten Graphen aus.
+
+Beachte aber auch, dass formal \cref{eq:gerichtet_gn} und \cref{eq:gleichverteilt_gerichtet_gn} widersprüchlich scheinen.
+In \cref{eq:gerichtet_gn} fordern wir nur, dass die Knotenmenge~$V$ die Kardinalität $|V| = n$ hat.
+Offensichtlich gibt es unbeschränkt viele dieser Wahlen; für $n=3$ z.B. $\set{1,2,3}$, $\set{2,3,4}$, \ldots, $\set{k, k+1, k+2}$ für alle $k \in \mathbb N$.
+Die Wahl der Knotenbezeichner hat jedoch keinen Einfluss auf die Netzwerkeigenschaften.
+Daher werden wir in dieser Veranstaltung grundsätzlich annehmen, dass die Kantenmengen in irgendeiner Form fixiert sind, z.B. als $V = \set{1, \ldots, n} = [n]$ oder $V = \set{v_1, \ldots, v_n}$.
+
+\bigskip
+
+Ist das $\Gn$ Modell aber nun realistisch?
+Das hängt davon ab, was wir mit ihm bezwecken und was wir mit \emph{realistisch} meinen.
+Es ist aber sicherlich nicht geeignet, um gängige Netzwerke zu beschreiben.
+Dies liegt unter anderem daran, dass $\Gn$ oft Graphen mit vielen Kanten erzeugt;
+intuitiv hat \glqq jeder zweite Graph\grqq{} mindestens die Hälfte aller möglichen Kanten.
 
 \begin{figure}[t]
     \begin{center}
@@ -43,11 +61,6 @@ Je nach Wahl, ist der Grundraum von $\Gn$
     \label{fig:kantenanzahl}
 \end{figure}
 
-Ist das $\Gn$ Modell realistisch?
-Das hängt davon ab, was wir mit ihm bezwecken und was wir mit \emph{realistisch} meinen.
-Es ist aber sicherlich nicht geeignet, um gängige Netzwerke zu beschreiben.
-Dies liegt unter anderem daran, dass $\Gn$ oft Graphen mit vielen Kanten erzeugt;
-intuitiv hat \glqq jeder zweite Graph\grqq{} mindestens die Hälfte aller möglichen Kanten.
 
 \begin{observation}
     Sei $G(V,E)$ ein Graph, der zufällig aus $\Gn$ mit $n > 1$ gezogen wurde.
@@ -107,6 +120,7 @@ Wie erklärt sich das?
 In der Regel verursacht eine Kante Kosten:
 eine Straße muss gebaut werden, eine Freundschaft muss aufrecht erhalten werden (Zeitinvestment), eine Nachricht muss geschrieben werden, etc.
 Daher gibt es in den meisten Netzwerken einen gewissen Selektionsdruck, der dazu führt, dass jeder Knoten nur ausgewählte Nachbarn besitzt.
+Wir klassifizieren Netzwerktypen, die auffallend viele oder wenig Kanten haben:
 
 \begin{definition}
     Graphen \aside{dünne und dichte Graphen} mit $n$ Knoten und $m$ Kanten heißen \emph{dünn} (engl. sparse), wenn $m = \Oh{n \log n}$ gilt, und \emph{dicht} wenn $m = \Omega(n^2)$.
@@ -331,7 +345,7 @@ Zwischen diese zufälligen Sprünge setzen wir dann die Einsen ein.
 Wenn wir nun $\ell$ aus einer geeigneten Verteilung ziehen, haben wir zwei unterschiedliche Zufallsprozesse, deren Ausgabe aber nicht unterscheidbar ist.
 Generalisierungen dieser Methode werden uns noch häufiger begegnen.
 
-Zur Vereinfachung, stellen wir uns die Adjazenzmatrix~$A = (a_{ij})_{ij}$ als einen Vektor~$B = (b_k)_k$ vor, der dadurch entsteht, dass wir die Zeilen hinter einander anfügen.
+Zur Vereinfachung stellen wir uns die Adjazenzmatrix~$A = (a_{ij})_{ij}$ als einen Vektor~$B = (b_k)_k$ vor, der dadurch entsteht, dass wir die Zeilen hinter einander anfügen.
 Eintrag $a_{ij}$ wird also mit $b_{(i-1)n + j}$ identifiziert.
 Dann besteht unsere Aufgabe darin genau alle $b_k$ zu finden, die den Wert $1$ haben.
 
