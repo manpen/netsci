@@ -140,7 +140,7 @@ Im Folgenden betrachten wir zwei solcher Modelle.
 
 Das \Gnm-Modell \aside{Erd\H{o}s-R\'enyi Graphen \Gnm} von P.~Erd\H{o}s und A.~R\'enyi beschreibt die Gleichverteilung über allgemeinen Graphen mit $n$ Knoten und $m$ Kanten, d.h. wir betrachten die Grundmenge
 \begin{equation}
-    \gGnm = \twoset{G(V,E)}{G(V,E) \in \mathbb G(n) \text{ und } |E| = m}.
+    \gGnm = \twoset{G}{G=(V,E) \in \mathbb G(n) \text{ und } |E| = m}.
 \end{equation}
 Da gleichverteilt gewählt wird, gilt für die Wahrscheinlichkeitsverteilung~{$f\colon \mathbb G \to [0,1]$}
 \begin{equation}
@@ -151,7 +151,7 @@ Da gleichverteilt gewählt wird, gilt für die Wahrscheinlichkeitsverteilung~{$f
     Berechne $|\gGnm|$ für gerichtete und ungerichtete Graphen.
 \end{exercise}
 
-E.~Gilbert \aside{Gilbert-Graphen \Gnp} beschrieb ein ähnliches Modell, das \Gnp-Modell --- das oft fälschlicherweise \glqq Erd\H{o}s-R\'enyi-Modell \grqq{} genannt wird.
+E.~Gilbert \aside{Gilbert-Graphen \Gnp} beschreibt ein ähnliches Modell, das \Gnp-Modell --- das oft fälschlicherweise \glqq Erd\H{o}s-R\'enyi-Modell \grqq{} genannt wird.
 Um das Modell zu beschreiben, weichen wir von der bisherigen expliziten Definition der Grundmenge und Verteilung ab.
 Stattdessen, spezifizieren wir eine randomisierte Konstruktionsvorschrift:
 \begin{enumerate}
@@ -202,7 +202,7 @@ Wir werden jedoch sehen, dass viele Eigenschaften von echten Netzwerken auch von
 Während bei \Gnm Graphen die Anzahl der Kanten durch den Parameter~$m$ fixiert ist, ist $|E|$ bei \Gnp Graphen eine Zufallsvariable.
 
 \begin{lemma}\label{lemma:erwartete_kanten_in_gnp}
-    Die \aside{Erwartete Kantenanzahl $\expv{|E|}$ in \Gnp} erwartete Anzahl an Kanten in einem gerichteten \Gnp Graphen ist \begin{equation*} \expv{|E|} = p n^2. \qedhere \end{equation*}
+    Die \aside{Erwartete Kantenanzahl $\expv{|E|}$ in \Gnp} erwartete Kantenanzahl~$m$ in einem gerichteten \Gnp Graphen ist \begin{equation*} \expv{m} = p n^2. \qedhere \end{equation*}
 \end{lemma}
 
 \begin{proof}
@@ -520,7 +520,7 @@ Grund hierfür ist, dass während \Gnp \emph{in Erwartung} $n^2p$ Kanten erzeuge
 
 Ähnlich wie zuvor, reduzieren wir das Ziehen der richtigen Position von \emph{Einsen} in der Adjazenzmatrix auf den eindimensionalen Fall.
 Im Folgenden werden wir also folgendes äquivalentes Problem lösen:
-Ziehe uniform ohne Zurücklegen $k$ Elemente aus einer Menge $S = \set{s_1, \ldots, s_n}$ mit $|S| = n > k$.
+Ziehe uniform ohne Zurücklegen $k$ Elemente aus einer Menge $S = \set{s_1, \ldots, s_N}$ mit $|S| = N > k$.
 
 \clearpage
 
@@ -566,19 +566,22 @@ Vereinfachend können wir also annehmen, dass der Strom mindestens $k$ Elemente 
 \noindent
 In \cref{thm:reservoir-sampling} zeigen wir die Korrektheit von \cref{algo:reservoir-sampling} für nur $k = 1$:
 \begin{theorem}\label{thm:reservoir-sampling}
-    \Cref{algo:reservoir-sampling} liefert für $k=1$ ein uniform gewähltes Element aus $S$.
+    Für $k=1$ liefert \cref{algo:reservoir-sampling} liefert ein uniform gewähltes Element $x\in S$.
 \end{theorem}
 \begin{proof}
-    Sei $n$ die Länge des Stroms und seien $s_1, \ldots, s_n$ die Elemente in der Reihenfolge wie sie aus dem Strom gelesen werden; oBdA gelte $s_i = s_j \ \Leftrightarrow\ i = j$.
-    Sei $R$ die Zufallsvariable, die die Ausgabe des Algorithmus modelliert.
-    Dann ist zu zeigen, dass $\prob{R = s_i} = 1 / n$ für alle $1 \le i \le n$.
+    Sei $N$ die Länge des Stroms (ist dem Algorithmus nicht bekannt).
+    Seien zudem $s_1, \ldots, s_N$ die Elemente in der Reihenfolge, in der sie aus dem Strom gelesen werden;
+    oBdA gelte $s_i = s_j \ \Leftrightarrow\ i = j$ (d.h. alle Elemente sind unterschiedlich; falls nicht, können wir die Tuple $(s_i, i)$ betrachten).
+
+    Sei $R$ die Zufallsvariable, welche die Ausgabe des Algorithmus modelliert.
+    Dann ist zu zeigen, dass $\prob{R = s_i} = 1 / N$ für alle $1 \le i \le N$.
     \begin{eqnarray}
         \prob{R = s_i} &=& \prob{\text{$s_i$ wird in Runde~$i$ gewält}} \cdot \prob{\text{$s_i$ wird nicht ersetzt}} \\
-        &=& \frac{1}{i} \cdot \underbrace{\prod_{j=i+1}^n \frac{j-1}{j}}_{\text{Teleskopprodukt}}
-        = \frac{1}{i} \cdot \frac{i}{n} = \frac{1}{n}
+        &=& \frac{1}{i} \cdot \underbrace{\prod_{j=i+1}^N \frac{j-1}{j}}_{\text{Teleskop-Produkt}}
+        = \frac{1}{i} \cdot \frac{i}{N} = \frac{1}{N}
     \end{eqnarray}
 
-    \noindent Insbesondere gilt also, dass $\prob{R = s_i} = 1/n$ unabhängig von $i$ oder $s_i$ ist.
+    \noindent Insbesondere gilt also, dass $\prob{R = s_i} = 1/N$ unabhängig von $i$ oder $s_i$ ist.
 \end{proof}
 
 \begin{exercise}
@@ -586,12 +589,76 @@ In \cref{thm:reservoir-sampling} zeigen wir die Korrektheit von \cref{algo:reser
 \end{exercise}
 
 Wir können also \Gnm Graphen mittels Reservoir Sampling erzeugen.
-Allerdings müssen wir pro potentieller Kante konstant viel Arbeit verrichten.
-Somit folgt eine Laufzeit von $\Theta(n^2)$.
+Allerdings entspricht jede potentielle Kante einem Element in $S = V \times V$ für das wir je $\Oh{1}$ Arbeit verrichten müssen;
+somit folgt eine Gesamtlaufzeit von $\Theta(n^2)$.
 
-\subsection{Ziehen mit Sprüngen}
+\subsection{Ziehen mit Lookups}
+Im Folgenden skizzieren wir einen alternativen Ansatz um $k$~Elemente ohne Zurücklegen aus dem Universum~$S$ zu ziehen.
+Dieser nutzt das Grundgerüst in~\cref{algo:basis-ziehen-ohne-zuruecklegen}, das wir um einige Details erweitern müssen, um eine praktisch schnelle Implementierung zu erreichen:
 
-\subsection{Ziehen mit Hashsets}
+\begin{algorithm}[H]
+    \KwIn{Eingabe: Universum~$S$, Stichprobengröße: $k$}
+    \KwOut{Menge $R$ mit $k$ zufällig ausgewählten Elementen}
+
+    Initialisiere $R = \emptyset$\;
+
+    \While{$|R| < k$}{
+        $x \gets $ zufälliges Element aus $U$\;
+        \If{$x \not\in R$}{
+            $R \gets R \cup \set{x}$
+        }
+    }
+
+    Gebe $R$ zurück
+
+    \caption{Basisalgorithmus für Ziehen ohne Zurücklegen}
+    \label{algo:basis-ziehen-ohne-zuruecklegen}
+\end{algorithm}
+
+\begin{lemma}
+    \Cref{algo:basis-ziehen-ohne-zuruecklegen} benötigt in Erwartung $\Oh{N \log(N/(N-k+1))}$ Versuche (Iterationen der \texttt{while}-Schleife) um aus $S$ mit $|S| = N$ exakt $1 \le k \le N$ Elemente zu ziehen.
+\end{lemma}
+
+\begin{proof}
+    Der Algorithmus baut $R$ inkrementell auf: wir beginnen mit $|R| = 0$ und fügen dann schrittweise je ein Element hinzu.
+    Sei $X$ eine Zufallsvariable, die beschriebt, wie viele Iterationen der Algorithmus benötigt, um $R$ zu erzeugen.
+    Ferner seien $X_1, \ldots, X_k$ Zufallsvariablen, wobei $X_i$ beschriebt, wie viele Versuche benötigt werden um das $i$-te Elemente zu finden (d.h. um $|R| = i$ zu erreichen).
+    Per Konstruktion gilt $X = \sum_{i=1}^k X_i$ und aufgrund der Linearität des Erwartungswertes folgt
+
+    \begin{equation}
+        \expv{X} = \expv{\sum_{i=1}^k X_i} = \sum_{i=1}^k \expv{X_i}. \label{eq:basis-ziehen-ohne-zuruecklegen_expvX}
+    \end{equation}
+
+    Wir können also zunächst die Erwartungswerte $\expv{X_i}$ isoliert betrachten.
+    Unmittelbar bevor wir das $i$-te Element ziehen, haben wir $i-1$ Elemente bereits bestimmt, d.h. $|R| = i - 1$.
+    Mit Wahrscheinlichkeit $p_i = (N - (i - 1)) / N$ ziehen wir nun ein Element, dass noch nicht Teil von $R$ ist; anderenfalls versuchen wir es erneut.
+    Es gilt also
+
+    \begin{align*}
+        \prob{X_i = 1}            & = p_i                  \\
+        \prob{X_i = 2}            & = (1 -p_i) p_i         \\
+        \vdots         \quad\quad & = \quad\quad \vdots    \\
+        \prob{X_i = 1 + \ell}     & = (1- p_i)^{\ell} p_i.
+    \end{align*}
+
+    Die Zufallsvariable $X_i - 1$ ist also geometrisch verteilt mit Erfolgswahrscheinlichkeit $p_i$.
+    Es gilt daher $\expv{X_i} = 1 / p_i = N / (N - i + 1)$. Durch Einsetzen in \cref{eq:basis-ziehen-ohne-zuruecklegen_expvX} erhalten wir:
+    \begin{align}
+        \expv{X} & = \sum_{i=1}^k \frac{N}{N-(i-1)} = \sum_{i=0}^{k-1} \frac{N}{N - i}                                    \\
+                 & = N \sum_{i=N-k+1}^N \frac{1}{i}                                                                       \\
+                 & = N \left[ \left( \sum_{i=1}^N \frac{1}{i} \right) - \left( \sum_{i=1}^N \frac{1}{N-k} \right) \right] \\
+                 & = N \left[ H_N - H_{N-k} \right]
+    \end{align}
+
+    Im letzten Schritt nutzen wir die Definition $H_t = \sum_{i=1}^t 1/i$, also die $t$-te Partialsumme der Harmonischen Reihe.
+    Es gilt, dass $H_t = \ln t + \gamma + 1/(2t) + \varepsilon_t$, wobei $\gamma \approx 0.5772$ die Euler–Mascheroni Konstante ist und $0 \le \varepsilon_t \le N^{-2}/8$ ein verschwindender Fehlerterm ist.
+    Es folgt also:
+    \begin{align}
+        \expv{X} & = N \left[ H_N - H_{N-k} \right]                      \\
+                 & \ge N \left[ \ln N - \ln (N - k + 1) \right] + \Oh{1} \\
+                 & = \Oh{N \ln \frac{N}{N - k + 1}}
+    \end{align}
+\end{proof}
 
 
 \section{Kritische Punkte}
