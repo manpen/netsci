@@ -340,12 +340,12 @@ Idee: Wir müssen diese einfach überspringen!
 Aber woher wissen wir wo \glqq Nullen\grqq{} gezogen werden, bzw. wie viele Nullen müssen wir überspringen?
 Zählen können wir sie nicht ohne wieder direkt quadratische Arbeit zu verrichten.
 
-Ganz einfach: wir fragen uns wie viele Nullen~$\ell$ \cref{alg:naive-gnp} gesetzt hätte und überspringen diese.
+Ganz \aside{Effizientes Ziehen durch Überspringen von Nullen} einfach: wir fragen uns wie viele Nullen~$\ell$ \cref{alg:naive-gnp} gesetzt hätte und überspringen diese.
 Zwischen diese zufälligen Sprünge setzen wir dann die Einsen ein.
 Wenn wir nun $\ell$ aus einer geeigneten Verteilung ziehen, haben wir zwei unterschiedliche Zufallsprozesse, deren Ausgabe aber nicht unterscheidbar ist.
 Generalisierungen dieser Methode werden uns noch häufiger begegnen.
 
-Zur Vereinfachung stellen wir uns die Adjazenzmatrix~$A = (a_{ij})_{ij}$ als einen Vektor~$B = (b_k)_k$ vor, der dadurch entsteht, dass wir die Zeilen hinter einander anfügen.
+Zur \aside{Statt $n \times n$ Matrix, nehmen wir einen $n^2$ Vektor an} Vereinfachung stellen wir uns die Adjazenzmatrix~$A = (a_{ij})_{ij}$ als einen Vektor~$B = (b_k)_k$ vor, der dadurch entsteht, dass wir die Zeilen hinter einander anfügen.
 Eintrag $a_{ij}$ wird also mit $b_{(i-1)n + j}$ identifiziert.
 Dann besteht unsere Aufgabe darin genau alle $b_k$ zu finden, die den Wert $1$ haben.
 
@@ -354,7 +354,7 @@ Dann besteht unsere Aufgabe darin genau alle $b_k$ zu finden, die den Wert $1$ h
 \end{equation}
 
 \noindent
-Sei $X$ die Zufallsvariable, welche die Anzahl der Nullen nach einer Eins modelliert.
+Sei $X$ die \aside{Anzahl Nullen $X$ ist geometrisch verteilt} Zufallsvariable, welche die Anzahl der Nullen nach einer Eins modelliert.
 \begin{eqnarray}
     \prob{X = 0} &=& \prob{\text{Nächster Versuch: 1}} = p \\
     \prob{X = 1} &=& \prob{\text{Nächster Versuch: 0, dann 1}} = (1 - p)p \\
@@ -398,6 +398,9 @@ Es ergibt sich also der folgende einfache Algorithmus:
     Passe \cref{alg:linear-gnp} für ungerichtete Graphen an.
 \end{exercise}
 
+Jetzt müssen wir nur noch herausfinden, wie wir geometrische Sprünge effizient ziehen können.
+Hierzu kommt meist die Inversionsmethode zum Einsatz.
+
 \subsection{Inversionsmethode: Ziehen aus der geometrischen Verteilung}
 \label{sec:inversionsmethode}
 
@@ -414,7 +417,7 @@ Es ergibt sich also der folgende einfache Algorithmus:
     \label{fig:geometric-distr}
 \end{figure}
 
-Die Inversionsmethode (inversion transform method) ist ein allgemeines Verfahren, um eine uniforme Zufallsvariable in eine andere Verteilung zu übersetzen.
+Die \aside{Inversionsmethode: effizientes Ziehen falls Umkehrfunktion bekannt} Inversionsmethode (inversion transform method) ist ein allgemeines Verfahren, um eine uniforme Zufallsvariable in eine andere Verteilung zu übersetzen.
 Wir betrachten die Methode hier am Beispiel der geometrischen Verteilung.
 In \cref{fig:geometric-distr} ist die Wahrscheinlichkeitsverteilung $f(\ell)$ und die kumulative Verteilungsfunktion $F(\ell)$ einer geometrischen Verteilung mit Parameter $p = 0.2$ gezeigt.
 %
@@ -432,11 +435,11 @@ Betrachten wir die konkreten ersten drei Werte der Funktionen:
 
 
 Ein Generator sollte also z.B. den Wert $0$ mit Wahrscheinlichkeit 20\,\% ausgeben.
-Da wir einen determistischen Algorithmus konstruieren möchten, brauchen wir eine Quelle für den Zufall:
-wir erwarten eine uniforme Zufallsvariable $U \in [0, 1]$ als Eingabe.
+Da wir einen deterministischen Algorithmus konstruieren möchten, brauchen wir eine Quelle für den Zufall:
+wir erwarten eine uniforme Zufallsvariable $U \in [0, 1)$ als Eingabe.
 Wir können also z.B. prüfen:
 \begin{itemize}
-    \item Wenn $U < 0.2$ ist und dann den Wert $0$ zurückgeben.
+    \item Wenn $U < 0.2$ ist, dann gebe den Wert $0$ zurück.
           Da $U$ uniform verteilt ist, ist die Wahrscheinlichkeit für $U < 0.2$ genau $0.2$.
 
     \item Falls nicht prüfen wir, ob $U < 0.36 = f(0) + f(1) = F(1)$ ist. Falls ja, geben wir den Wert $1$ zurück.
@@ -456,7 +459,7 @@ Die Methode lässt sich aber auch auf andere $\Omega$ (inklusive kontinuierliche
     Sei $X \in \Omega$ eine diskrete Zufallsvariable und $f(x)$ und $F(x)$ ihre Wahrscheinlichkeitsverteilung sowie die kumulative Verteilungsfunktion.
     Vereinfachend sei $\Omega$ total geordnet und $F(x)$ streng monoton steigend.
     Dann existiert die Umkehrfunktion $F^{-1}(x)$ mit $F^{-1}(F(x)) = x$.
-    Sei $U$ eine uniforme Zufallsvariable aus $[0, 1]$.
+    Sei $U$ eine uniforme Zufallsvariable aus $[0, 1)$.
     Dann ist $X' = F^{-1}(U)$ eine Zufallsvariable mit der Wahrscheinlichkeitsverteilung $f(x)$.
 \end{theorem}
 
@@ -480,6 +483,14 @@ Die Methode lässt sich aber auch auf andere $\Omega$ (inklusive kontinuierliche
 \bigskip
 \bigskip
 
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]{data/geometric-distr-inv_hat.pdf}
+    \end{center}
+    \caption{Die in \cref{eq:inverse-hat} berechnet Umkehrfunktion $\hat F^{-1}(U)$}
+
+\end{figure}
+
 Zurück \aside{Inversionsmethode für geometrische Verteilung} zur geometrischen Verteilung mit $f(\ell) = (1-p)^\ell p$.
 ObdA sei $0 < p < 1$ (da $X$ sonst eine Konstante ist).
 Die kumulative Verteilungsfunktion lautet
@@ -490,23 +501,23 @@ Die kumulative Verteilungsfunktion lautet
     \ = \ 1 - (1-p)^{\ell+1},
 \end{equation}
 wobei wir in $(*)$ die geschlossene Form der $\ell$-ten Partialsumme der geometrischen Reihe nutzen $\sum_{i=0}^\ell x^\ell = (1 - x^{\ell+1})/(1 - x)$.
-Nun berechnen die Umkehrfunktion $F^{-1}(U) = \ell$ indem wir $F(\ell) = U$ setzen und nach $U$ umformen:
+Nun berechnen die Umkehrfunktion $\hat F^{-1}(U) = \ell$ indem wir $F(\ell) = U$ setzen und nach $U$ umformen.
+Hierbei nehmen wir zunächst an, dass die Funktion stetig wäre (daher schreiben wir $\hat F ^{-1}$ statt $F^{-1}$):
 \begin{eqnarray}
     U &=& F(\ell) = 1 - (1-p)^{\ell+1} \\
     \Leftrightarrow (1-p)^{\ell+1} &=& 1 - U \\
     \Leftrightarrow  (\ell+1) \log(1-p)  &=& \log(1 - U) \\
-    \Leftrightarrow  F^{-1}(U) := \log_{1-p}(1 - U) - 1 &=& \ell
+    \Leftrightarrow  \hat F^{-1}(U) := \log_{1-p}(1 - U) - 1 &=& \ell \label{eq:inverse-hat}
 \end{eqnarray}
 
-\noindent
-\textcolor{red}{TODO: Hier fehlt Runden!}
+Schließlich erhalten wir $F^{-1}(U) = \lceil \hat F^{-1} (U) \rceil$ durch Aufrunden der gerade berechneten Funktion.
 Zusammenfassen erzeugt \cref{alg:sample-geometric} eine geometrische Zufallsvariable $X$ mit Parameter $p$ in Zeit $\Oh{1}$:
 
 \begin{algorithm}[H]
     \If{p=0}{Gebe $\infty$ zurück}
     \ElseIf{p=1}{Gebe $0$ zurück}
     \Else{$U \gets \text{ziehen uniform aus $[0, 1)$}$\;
-    Gebe $\log_{1-p}(1 - U) - 1$ zurück.}
+    Gebe $\lceil \log_{1-p}(1 - U) - 1\rceil$ zurück.}
     \caption{Ziehen einer geometrischen Zufallsvariable}
     \label{alg:sample-geometric}
 \end{algorithm}
@@ -589,7 +600,7 @@ In \cref{thm:reservoir-sampling} zeigen wir die Korrektheit von \cref{algo:reser
 \end{exercise}
 
 Wir können also \Gnm Graphen mittels Reservoir Sampling erzeugen.
-Allerdings entspricht jede potentielle Kante einem Element in $S = V \times V$ für das wir je $\Oh{1}$ Arbeit verrichten müssen;
+Allerdings entspricht jede potentielle Kante einem Element in $S = V \times V$, für das wir je $\Theta(1)$ Arbeit verrichten müssen;
 somit folgt eine Gesamtlaufzeit von $\Theta(n^2)$.
 
 \subsection{Ziehen mit Lookups}
@@ -603,7 +614,7 @@ Dieser nutzt das Grundgerüst in~\cref{algo:basis-ziehen-ohne-zuruecklegen}, das
     Initialisiere $R = \emptyset$\;
 
     \While{$|R| < k$}{
-        $x \gets $ zufälliges Element aus $U$\;
+        $x \gets $ zufälliges Element aus $S$\;
         \If{$x \not\in R$}{
             $R \gets R \cup \set{x}$
         }
@@ -615,13 +626,13 @@ Dieser nutzt das Grundgerüst in~\cref{algo:basis-ziehen-ohne-zuruecklegen}, das
     \label{algo:basis-ziehen-ohne-zuruecklegen}
 \end{algorithm}
 
-\begin{lemma}
+\begin{lemma}\label{lemma:basis-ziehen-ohne-zuruecklegen-versuche}
     \Cref{algo:basis-ziehen-ohne-zuruecklegen} benötigt in Erwartung $\Oh{N \log(N/(N-k+1))}$ Versuche (Iterationen der \texttt{while}-Schleife) um aus $S$ mit $|S| = N$ exakt $1 \le k \le N$ Elemente zu ziehen.
 \end{lemma}
 
 \begin{proof}
     Der Algorithmus baut $R$ inkrementell auf: wir beginnen mit $|R| = 0$ und fügen dann schrittweise je ein Element hinzu.
-    Sei $X$ eine Zufallsvariable, die beschriebt, wie viele Iterationen der Algorithmus benötigt, um $R$ zu erzeugen.
+    Sei $X$ eine Zufallsvariable, die beschriebt, wie viele Iterationen der Algorithmus benötigt um $R$ zu erzeugen.
     Ferner seien $X_1, \ldots, X_k$ Zufallsvariablen, wobei $X_i$ beschriebt, wie viele Versuche benötigt werden um das $i$-te Elemente zu finden (d.h. um $|R| = i$ zu erreichen).
     Per Konstruktion gilt $X = \sum_{i=1}^k X_i$ und aufgrund der Linearität des Erwartungswertes folgt
 
@@ -631,7 +642,8 @@ Dieser nutzt das Grundgerüst in~\cref{algo:basis-ziehen-ohne-zuruecklegen}, das
 
     Wir können also zunächst die Erwartungswerte $\expv{X_i}$ isoliert betrachten.
     Unmittelbar bevor wir das $i$-te Element ziehen, haben wir $i-1$ Elemente bereits bestimmt, d.h. $|R| = i - 1$.
-    Mit Wahrscheinlichkeit $p_i = (N - (i - 1)) / N$ ziehen wir nun ein Element, dass noch nicht Teil von $R$ ist; anderenfalls versuchen wir es erneut.
+    Mit Wahrscheinlichkeit $q_i = (i-1) / N$ erwischen wir also ein bereits gezogenes Element und versuchen es erneut.
+    Mit Wahrscheinlichkeit $p_i = 1 - q_i = (N - (i - 1)) / N$ ziehen wir nun ein Element, dass noch nicht Teil von $R$ ist.
     Es gilt also
 
     \begin{align*}
@@ -641,7 +653,7 @@ Dieser nutzt das Grundgerüst in~\cref{algo:basis-ziehen-ohne-zuruecklegen}, das
         \prob{X_i = 1 + \ell}     & = (1- p_i)^{\ell} p_i.
     \end{align*}
 
-    Die Zufallsvariable $X_i - 1$ ist also geometrisch verteilt mit Erfolgswahrscheinlichkeit $p_i$.
+    Die Zufallsvariable $X_i - 1$ ist also geometrisch verteilt mit Erfolgswahrscheinlichkeit~$p_i$.
     Es gilt daher $\expv{X_i} = 1 / p_i = N / (N - i + 1)$. Durch Einsetzen in \cref{eq:basis-ziehen-ohne-zuruecklegen_expvX} erhalten wir:
     \begin{align}
         \expv{X} & = \sum_{i=1}^k \frac{N}{N-(i-1)} = \sum_{i=0}^{k-1} \frac{N}{N - i}                                    \\
@@ -659,6 +671,20 @@ Dieser nutzt das Grundgerüst in~\cref{algo:basis-ziehen-ohne-zuruecklegen}, das
                  & = \Oh{N \ln \frac{N}{N - k + 1}}
     \end{align}
 \end{proof}
+
+\Cref{lemma:basis-ziehen-ohne-zuruecklegen-versuche} besagt, dass \cref{algo:basis-ziehen-ohne-zuruecklegen} für $k \le N / 2$ erwartet $\Oh{k}$ Iterationen benötigt und somit optimal ist.
+Nur für $k \gets N$ der $\log$-Faktor asymptotisch relevant wird, und wir bekommen eine suboptimale Laufzeit von $\Omega(N \log N)$.
+
+Auf der einen Seite sollte das für \emph{übliche} Graphen kein Problem sein (sie sind dünn und daher $k \ll N$); dennoch lässt sich das Problem einfach vermeiden.
+Für $k > N / 2$ können wir zunächst das Komplement~$\bar R$ mit  $| \bar R | = N - k < N/2$ ziehen und dann alle Elemente außer solche in $\bar R$ ausgeben.
+Zwar benötigt die Komplementbildung während der Ausgabe $\Theta(N)$ Zeit, allerdings hat die Ausgabe ebenfalls Größe $\Omega(N)$, wodurch das asymptotisch optimal bleibt.
+
+Welche Datenstruktur benötigen wir für $R$? Sie sollte Existenzanfragen ($x \in R$?) und Einfügen ($R \gets R \cup \set{x}$) effizient durchführen können.
+Ein Hashset unterstützt beide Operationen in erwartet konstanter Zeit, wodurch sich eine erwartete Laufzeit von $\Oh{k}$ ergibt; dies ist optimal.
+
+
+
+
 
 
 \section{Kritische Punkte}
