@@ -327,14 +327,14 @@ Außerdem hat ein Graph mit $p=\Omega(1)$ erwartete $\Theta(n^2)$ Kanten, was wi
 
 Diese Worst-Case Schranken passen jedoch nicht zu unserer Beobachtung in \cref{sec:kanten-in-beobachteten-netzen}, dass Graphen in der freien Wildbahn meist dünn sind.
 Es wäre schön, wenn wir diese Graphen schneller erzeugen könnten, jedoch ist \cref{alg:naive-gnp} für alle $p$ gleich \glqq schnell\grqq.
-Hier \aside{ausgabesensitive Algorthmen} helfen \emph{ausgabesensitive Algorithmen} (output-sensitive algorithm), deren Laufzeit maßgeblich durch die Größe der Ausgabe bestimmt wird;
+Hier \aside{ausgabesensitive Algorithmen} helfen \emph{ausgabesensitive Algorithmen} (output-sensitive algorithm), deren Laufzeit maßgeblich durch die Größe der Ausgabe bestimmt wird;
 die meisten Generatoren, die wir betrachten werden, fallen genau in diese Kategorie.
 
 Ausgabesensitive \aside{Kantenlisten} Algorithmen müssen jedoch eine Ausgabedatenstruktur nutzen, die sich an die Größe anpasst.
 Eine Matrix hat immer dieselbe Größe unabhängig davon, wie viele Einsen (Kanten) vorhanden sind.
 Wir werden im Folgenden fast immer eine Kantenliste annehmen, die nur $\Oh{1}$ Speicherworte pro Kante benötigt.
 
-\subsection{Ziehen mit zufälligen Sprüngen}
+\subsection{Ziehen mit zufälligen Sprüngen}\label{subsec:gnp_zufaellige_spruenge}
 Wie können wir nun \cref{alg:naive-gnp} verändern, so dass er ---analog zu Kantenlisten--- keine Arbeit für Nichtkanten verrichtet?
 Idee: Wir müssen diese einfach überspringen!
 Aber woher wissen wir wo \glqq Nullen\grqq{} gezogen werden, bzw. wie viele Nullen müssen wir überspringen?
@@ -345,7 +345,7 @@ Zwischen diese zufälligen Sprünge setzen wir dann die Einsen ein.
 Wenn wir nun $\ell$ aus einer geeigneten Verteilung ziehen, haben wir zwei unterschiedliche Zufallsprozesse, deren Ausgabe aber nicht unterscheidbar ist.
 Generalisierungen dieser Methode werden uns noch häufiger begegnen.
 
-Zur \aside{Statt $n \times n$ Matrix, nehmen wir einen $n^2$ Vektor an} Vereinfachung stellen wir uns die Adjazenzmatrix~$A = (a_{ij})_{ij}$ als einen Vektor~$B = (b_k)_k$ vor, der dadurch entsteht, dass wir die Zeilen hinter einander anfügen.
+Zur \aside{Statt $n \times n$ Matrix, nehmen wir einen $n^2$ Vektor an} Vereinfachung stellen wir uns die Adjazenzmatrix~$A = (a_{ij})_{ij}$ als einen Vektor~$B = (b_k)_k$ vor, der dadurch entsteht, dass wir die Zeilen hinter einander anfügen (row-major layout).
 Eintrag $a_{ij}$ wird also mit $b_{(i-1)n + j}$ identifiziert.
 Dann besteht unsere Aufgabe darin genau alle $b_k$ zu finden, die den Wert $1$ haben.
 
@@ -368,7 +368,7 @@ Es ergibt sich also der folgende einfache Algorithmus:
 
 \begin{algorithm}[H]
     \KwIn{Anzahl der Knoten~$n$ und Verbindungswahrscheinlichkeit~$p$}
-    \KwOut{Kantenliste $E$ eines zufälligen Graphs $G \follows G(n, p)$}
+    \KwOut{Kantenliste $E$ eines zufälligen Graphs $G \follows \Gnp$}
     Initialisiere eine leere Kantenliste $E$\;
     $k \gets -1$\;
     \While{true}{
@@ -388,7 +388,7 @@ Es ergibt sich also der folgende einfache Algorithmus:
 
 \begin{lemma}
     \label{lem:linear-gnp}
-    Algorithmus \ref{alg:linear-gnp} erzeugt Graph $G(V, E) \follows G(n, p)$ in $\Theta(|E|)$ Zeit.
+    Algorithmus \ref{alg:linear-gnp} erzeugt Graph $G(V, E) \follows \Gnp$ in $\Theta(|E|)$ Zeit.
 \end{lemma}
 
 \begin{exercise}
@@ -426,13 +426,12 @@ Betrachten wir die konkreten ersten drei Werte der Funktionen:
 
 \begin{center}
     \begin{tabular}{l|p{0.2\textwidth}p{0.25\textwidth}p{0.35\textwidth}}
-                  & $\ell = 1$ & $\ell = 2$              & $\ell = 3$                              \\\hline\hline
+                  & $\ell = 0$ & $\ell = 1$              & $\ell = 2$                              \\\hline\hline
         $f(\ell)$ & $p =0.2$   & $(1 {-} p)p = 0.16$     & $(1 {-} p)^2p = 0.128$                  \\
         $F(\ell)$ & $p =0.2$   & $p{+}(1 {-} p)p = 0.36$ & $p{+}(1 {-} p)p{+}(1 {-} p)^2p = 0.488$
     \end{tabular}
 \end{center}
 \vspace{1em}
-
 
 Ein Generator sollte also z.B. den Wert $0$ mit Wahrscheinlichkeit 20\,\% ausgeben.
 Da wir einen deterministischen Algorithmus konstruieren möchten, brauchen wir eine Quelle für den Zufall:
@@ -533,8 +532,6 @@ Grund hierfür ist, dass während \Gnp \emph{in Erwartung} $n^2p$ Kanten erzeuge
 Im Folgenden werden wir also folgendes äquivalentes Problem lösen:
 Ziehe uniform ohne Zurücklegen $k$ Elemente aus einer Menge $S = \set{s_1, \ldots, s_N}$ mit $|S| = N > k$.
 
-\clearpage
-
 \subsection{Reservoir Sampling}
 Reservoir Sampling ist eine allgemeine Technik, die es uns erlaubt $k$ Elemente aus einem Datenstrom zu ziehen.
 Hierbei müssen wir anfangs \emph{nicht} wissen, wie viele Elemente insgesamt im Strom sind.\footnote{
@@ -579,6 +576,7 @@ In \cref{thm:reservoir-sampling} zeigen wir die Korrektheit von \cref{algo:reser
 \begin{theorem}\label{thm:reservoir-sampling}
     Für $k=1$ liefert \cref{algo:reservoir-sampling} liefert ein uniform gewähltes Element $x\in S$.
 \end{theorem}
+
 \begin{proof}
     Sei $N$ die Länge des Stroms (ist dem Algorithmus nicht bekannt).
     Seien zudem $s_1, \ldots, s_N$ die Elemente in der Reihenfolge, in der sie aus dem Strom gelesen werden;
@@ -597,6 +595,7 @@ In \cref{thm:reservoir-sampling} zeigen wir die Korrektheit von \cref{algo:reser
 
 \begin{exercise}
     Zeige die Korrektheit von \cref{algo:reservoir-sampling} indem du den Beweis von \cref{thm:reservoir-sampling} auf $k \ge 1$ verallgemeinerst.
+    Die lässt sich etwa über Induktion über die Datenstromlänge $|S|$ erreichen.
 \end{exercise}
 
 Wir können also \Gnm Graphen mittels Reservoir Sampling erzeugen.
@@ -604,7 +603,7 @@ Allerdings entspricht jede potentielle Kante einem Element in $S = V \times V$, 
 somit folgt eine Gesamtlaufzeit von $\Theta(n^2)$.
 
 \subsection{Ziehen mit Lookups}
-Im Folgenden skizzieren wir einen alternativen Ansatz um $k$~Elemente ohne Zurücklegen aus dem Universum~$S$ zu ziehen.
+Im Folgenden skizzieren wir einen alternativen Ansatz um $k$~Elemente ohne Zurücklegen aus dem Universum~$S$ zu ziehen; dieser basiert auf \cite{batagelj2005efficient}.
 Dieser nutzt das Grundgerüst in~\cref{algo:basis-ziehen-ohne-zuruecklegen}, das wir um einige Details erweitern müssen, um eine praktisch schnelle Implementierung zu erreichen:
 
 \begin{algorithm}[H]
@@ -626,14 +625,18 @@ Dieser nutzt das Grundgerüst in~\cref{algo:basis-ziehen-ohne-zuruecklegen}, das
     \label{algo:basis-ziehen-ohne-zuruecklegen}
 \end{algorithm}
 
+\bigskip
+
+Wir messen die Geschwindigkeit des Algorithmus zunächst nur indirekt, indem wir die Anzahl der Iterationen der \texttt{while}-Schleife zählen:
+
 \begin{lemma}\label{lemma:basis-ziehen-ohne-zuruecklegen-versuche}
-    \Cref{algo:basis-ziehen-ohne-zuruecklegen} benötigt in Erwartung $\Oh{N \log(N/(N-k+1))}$ Versuche (Iterationen der \texttt{while}-Schleife) um aus $S$ mit $|S| = N$ exakt $1 \le k \le N$ Elemente zu ziehen.
+    \Cref{algo:basis-ziehen-ohne-zuruecklegen} verwendet in Erwartung $\Oh{N \log(N/(N-k+1))}$ Versuche (Iterationen der \texttt{while}-Schleife) um aus $S$ mit $|S| = N$ exakt $1 \le k < N$ Elemente zu ziehen.
 \end{lemma}
 
 \begin{proof}
     Der Algorithmus baut $R$ inkrementell auf: wir beginnen mit $|R| = 0$ und fügen dann schrittweise je ein Element hinzu.
     Sei $X$ eine Zufallsvariable, die beschriebt, wie viele Iterationen der Algorithmus benötigt um $R$ zu erzeugen.
-    Ferner seien $X_1, \ldots, X_k$ Zufallsvariablen, wobei $X_i$ beschriebt, wie viele Versuche benötigt werden um das $i$-te Elemente zu finden (d.h. um $|R| = i$ zu erreichen).
+    Ferner seien $X_1, \ldots, X_k$ Zufallsvariablen, wobei $X_i$ beschriebt, wie viele Versuche benötigt werden um das $i$-te Elemente zu finden (d.h. um $R$ von $|R| = i - 1$ auf  $|R| = i$ zu heben).
     Per Konstruktion gilt $X = \sum_{i=1}^k X_i$ und aufgrund der Linearität des Erwartungswertes folgt
 
     \begin{equation}
@@ -643,7 +646,7 @@ Dieser nutzt das Grundgerüst in~\cref{algo:basis-ziehen-ohne-zuruecklegen}, das
     Wir können also zunächst die Erwartungswerte $\expv{X_i}$ isoliert betrachten.
     Unmittelbar bevor wir das $i$-te Element ziehen, haben wir $i-1$ Elemente bereits bestimmt, d.h. $|R| = i - 1$.
     Mit Wahrscheinlichkeit $q_i = (i-1) / N$ erwischen wir also ein bereits gezogenes Element und versuchen es erneut.
-    Mit Wahrscheinlichkeit $p_i = 1 - q_i = (N - (i - 1)) / N$ ziehen wir nun ein Element, dass noch nicht Teil von $R$ ist.
+    Mit Wahrscheinlichkeit $p_i = 1 - q_i = (N - (i - 1)) / N$ ziehen wir aber ein Element, dass noch nicht Teil von $R$ ist.
     Es gilt also
 
     \begin{align*}
@@ -656,9 +659,9 @@ Dieser nutzt das Grundgerüst in~\cref{algo:basis-ziehen-ohne-zuruecklegen}, das
     Die Zufallsvariable $X_i - 1$ ist also geometrisch verteilt mit Erfolgswahrscheinlichkeit~$p_i$.
     Es gilt daher $\expv{X_i} = 1 / p_i = N / (N - i + 1)$. Durch Einsetzen in \cref{eq:basis-ziehen-ohne-zuruecklegen_expvX} erhalten wir:
     \begin{align}
-        \expv{X} & = \sum_{i=1}^k \frac{N}{N-(i-1)} = \sum_{i=0}^{k-1} \frac{N}{N - i}                                    \\
-                 & = N \sum_{i=N-k+1}^N \frac{1}{i}                                                                       \\
-                 & = N \left[ \left( \sum_{i=1}^N \frac{1}{i} \right) - \left( \sum_{i=1}^N \frac{1}{N-k} \right) \right] \\
+        \expv{X} & = \sum_{i=1}^k \frac{N}{N-(i-1)} = \sum_{i=0}^{k-1} \frac{N}{N - i}                                      \\
+                 & = N \sum_{i=N-k+1}^N \frac{1}{i}                                                                         \\
+                 & = N \left[ \left( \sum_{i=1}^N \frac{1}{i} \right) - \left( \sum_{i=1}^{N-k} \frac{1}{i} \right) \right] \\
                  & = N \left[ H_N - H_{N-k} \right]
     \end{align}
 
@@ -666,25 +669,347 @@ Dieser nutzt das Grundgerüst in~\cref{algo:basis-ziehen-ohne-zuruecklegen}, das
     Es gilt, dass $H_t = \ln t + \gamma + 1/(2t) + \varepsilon_t$, wobei $\gamma \approx 0.5772$ die Euler–Mascheroni Konstante ist und $0 \le \varepsilon_t \le N^{-2}/8$ ein verschwindender Fehlerterm ist.
     Es folgt also:
     \begin{align}
-        \expv{X} & = N \left[ H_N - H_{N-k} \right]                      \\
-                 & \ge N \left[ \ln N - \ln (N - k + 1) \right] + \Oh{1} \\
+        \expv{X} & = N \left[ H_N - H_{N-k} \right]                  \\
+                 & \le N \left[ \ln N - \ln (N - k) \right] + \Oh{1} \\
                  & = \Oh{N \ln \frac{N}{N - k + 1}}
     \end{align}
 \end{proof}
 
-\Cref{lemma:basis-ziehen-ohne-zuruecklegen-versuche} besagt, dass \cref{algo:basis-ziehen-ohne-zuruecklegen} für $k \le N / 2$ erwartet $\Oh{k}$ Iterationen benötigt und somit optimal ist.
-Nur für $k \gets N$ der $\log$-Faktor asymptotisch relevant wird, und wir bekommen eine suboptimale Laufzeit von $\Omega(N \log N)$.
+\noindent
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]{data/gnm_iterationen.pdf}%
+        \includegraphics[width=0.5\textwidth]{data/gnm_iterationen_hist.pdf}
+    \end{center}
+    \caption{Simulation von \cref{algo:basis-ziehen-ohne-zuruecklegen} (ohne Komplementbildung).
+        \textbf{Links}: $N=10\,000$ und $2 \le k \le 3N/4$; für jeden Parameter wurden 1\,000 unabhängige Simulationen ausgeführt.
+        \textbf{Rechts}: $N=1\,000$, $k = N/2$. Es wurden 10\,000 unabhängige Simulationen ausgeführt.
+    }
+    \label{fig:ziehen-ohne-zuruecklegen-iterationen}
+\end{figure}
 
-Auf der einen Seite sollte das für \emph{übliche} Graphen kein Problem sein (sie sind dünn und daher $k \ll N$); dennoch lässt sich das Problem einfach vermeiden.
+\begin{exercise}
+    Zeige, dass $N \ln \frac{N}{N - k + 1} = \Oh{k}$ für $k \le N / 2$.
+\end{exercise}
+
+Beobachte, dass wir im letzten Schritt erstmals eine asymptotische Abschätzung verwendeten, die auch noch sehr eng ist.
+Wie wir in \cref{fig:ziehen-ohne-zuruecklegen-iterationen} sehen, gilt für relativ kleine $N$ schon $\expv{X} \approx N \ln \frac{N}{N - k + 1}$.
+
+\Cref{lemma:basis-ziehen-ohne-zuruecklegen-versuche} besagt, dass \cref{algo:basis-ziehen-ohne-zuruecklegen} für $k \le N / 2$ erwartet $\Oh{k}$ Iterationen benötigt und somit optimal ist.
+Nur für $k \to N$ der $\log$-Faktor asymptotisch relevant wird, und wir bekommen eine suboptimale Laufzeit von $\Omega(N \log N)$.
+
+Auf \aside{Komplementbildung stellt sicher: $k \ge N /2$} der einen Seite sollte das für \emph{übliche} Graphen kein Problem sein (sie sind dünn und daher $k \ll N$); dennoch lässt sich das Problem einfach vermeiden.
 Für $k > N / 2$ können wir zunächst das Komplement~$\bar R$ mit  $| \bar R | = N - k < N/2$ ziehen und dann alle Elemente außer solche in $\bar R$ ausgeben.
-Zwar benötigt die Komplementbildung während der Ausgabe $\Theta(N)$ Zeit, allerdings hat die Ausgabe ebenfalls Größe $\Omega(N)$, wodurch das asymptotisch optimal bleibt.
+Zwar benötigt die Komplementbildung $R = \bar{\bar R}$ während der Ausgabe $\Theta(N)$ Zeit, allerdings hat die Ausgabe ebenfalls Größe $\Omega(N)$, wodurch das asymptotisch optimal bleibt.
+
+\subsection{Konzentration um den Erwartungswert}
+Bisher haben wir uns darauf konzentriert Performance \emph{in Erwartung} zu analysieren.
+In der Praxis kann das aber nicht ausreichen: wir stellen uns eine Implementierung vor, die in 99~\% der Fälle in 1\,s durchläuft aber in 1~\% der Ausführungen 101\,s benötigt.
+Die durchschnittliche (\qq{erwartete}) Laufzeit wären also 2\,s.
+Wenn wir unsere Pipelines darauf auslegen, kann das zu (im schlimmsten Fall kaskadierenden) Timeouts führen.
+
+\Cref{fig:ziehen-ohne-zuruecklegen-iterationen} (rechts) scheint zu zeigen, dass \cref{algo:basis-ziehen-ohne-zuruecklegen} nicht in diese Kategorie fällt.
+Unter 10\,000 Ausführung ist die größte Abweichungen vom Mittelwert nur rund 12\,\%.
+Um Beobachtungen wie diese zu formalisieren, nutzt man häufig folgende Definition:
+
+\begin{definition}
+    Eine \aside{mit hoher Wahrscheinlichkeit} Eigenschaft~$X$ gilt \emph{mit hoher Wahrscheinlichkeit} (with high probability, whp),
+    wenn für einen hinreichend großen Parameter $n$ die Gegenwahrscheinlichkeit $\prob{\lnot X} \le 1/n$ nicht übersteigt.
+\end{definition}
+
+In anderen Worten: je \qq{größer} unser Problem wird, desto unwahrscheinlicher sind extreme Ausreißer.
+In der Literatur ist der Parameter in der Regel aus dem Kontext klar und wird daher oft nicht erwähnt (im folgenden Lemma wäre es $k$):
+
+\begin{lemma}
+    \Cref{algo:basis-ziehen-ohne-zuruecklegen} verwendet mit hoher Wahrscheinlichkeit \Oh{k} Iteration für $k \le N/2$.
+\end{lemma}
+
+\begin{proof}
+    Wir verwenden dieselbe Modellierung wie im Beweis von \cref{lemma:basis-ziehen-ohne-zuruecklegen-versuche}:
+    Sei $X = \sum_{i=1}^k X_i$ die Gesamtanzahl an Iterationen und $X_i - 1$ geometrisch verteilt mit Erfolgswahrscheinlichkeit~$p_i$.
+
+    Da $k \le N/2$, ziehen wir zu jedem Zeitpunkt mindestens mit Wahrscheinlichkeit $1/2$ ein neues Element, d.h. $p_i \ge 1/2$ für alle $i \ge 1$.
+    Um die harmonische Reihe zu vermeiden, nutzen wir eine schlechtere Abschätzung, bei der wir alle $p_i = 1/2$ auf den minimalen Erfolgswert setzen.
+    Sei $X' = \sum_{i=1}^k X'_i$ diese Verteilung und $X'_i - 1$ geometrisch mit Erfolgswahrscheinlichkeit $1/2$.
+
+    \noindent
+    Für einen beliebigen Grenzwert~$t$ gilt also
+    \begin{equation}
+        \prob{X \ge t} \le \prob{X' \ge t}.
+    \end{equation}
+
+    Wir können nun unsere Worst-Case Abschätzung $X'$ auch alternative interpretieren:
+    Wir werfen solange Münzen bis wir $k$ mal \qq{Kopf} gesehen haben.
+    Die Anzahl der Versuche entspricht dann $X'$.
+
+    Wir formalisieren diese alternative Idee:
+    Sei $Y^{(t)} = \sum_{i=1}^t Y_i$ wobei $Y_i$ unabhängige Zufallsvariablen sind, wobei $\prob{Y_i = 1} = 1/2$.
+    Beobachte dass $\expv{Y^{(t)}} = t/2$.
+    Per Definition gilt
+    \begin{equation}
+        \prob{X' \ge t} = \prob{Y^{(t)} < k}.
+    \end{equation}
+
+    \noindent
+    Da $Y_i$ unabhängige Bernoullizufallsvariablen sind, hält die Chernoff-Ungleichung:
+    \begin{align}
+         &                                     & \prob{Y^{(t)} \le (1-\delta) \expv{Y_t}} & \le \exp\left(-\delta^2 \expv{Y^{(t)}} / 2\right)                  \\
+         & \stackrel{\delta:=1/2}{\Rightarrow} & \prob{Y^{(t)} \le t / 4}                 & \le \exp\left(-(1/2)^2 (t/2) / 2\right) = \exp\left( -t/16 \right)
+    \end{align}
+
+    \noindent Im letzten Schritt wählten wir $\delta = 1/2$; nun setzen wir $t = 4k$:
+    \begin{align}
+         &             & \prob{Y^{(4k)} \le k} & \le \exp(-k/4) \le 1/k \quad \text{für } k \ge 9 \\
+         & \Rightarrow & \prob{X \ge 4k}       & \le 1/k
+    \end{align}
+
+    \noindent
+    Die Behauptung $\prob{X < 4k} = \Oh{k}$ gilt also mit hoher Wahrscheinlichkeit.
+\end{proof}
 
 Welche Datenstruktur benötigen wir für $R$? Sie sollte Existenzanfragen ($x \in R$?) und Einfügen ($R \gets R \cup \set{x}$) effizient durchführen können.
-Ein Hashset unterstützt beide Operationen in erwartet konstanter Zeit, wodurch sich eine erwartete Laufzeit von $\Oh{k}$ ergibt; dies ist optimal.
+Ein Hashset unterstützt beide Operationen in erwartet konstanter Zeit, wodurch sich eine erwartete Laufzeit von $\Oh{k}$ ergibt; dies ist optimal in Erwartung.
+
+Für praktische Implementierungen kann es sich jedoch auch lohnen, das Hashset durch ein Bitset (d.h. ein Array in dem jeder Eintrag genau ein Bit groß ist) zu ersetzen.
+Auf dem Papier benötigt ein Bitset $\Theta(N)$ viele Bits und ist somit in der Initialisierung teuer.
+In der Praxis benötigt aber jeder Eintrag in einem Hashset mindestens 64 Bit, sodass ein Bitset bereits für $N / k > 64$ weniger Platz benötigt (das trifft etwa auf 30\,\% der Netzwerke in \cref{fig:kantenanzahl} zu).
+Zusätzlich sind Existenzanfragen und Einfügeoperationen extrem schnell, wodurch ein Bitset oft einen lohnenswerten Kompromiss zwischen mehr Speicher für schnellere Ausführung darstellen kann.
+
+\begin{widefigure}
+    \includegraphics[width=0.32\textwidth]{data/gnm_scale0.pdf}\hfill
+    \includegraphics[width=0.32\textwidth]{data/gnm_scale1.pdf}\hfill
+    \includegraphics[width=0.32\textwidth]{data/gnm_scale2.pdf}
+
+    \caption{
+        Laufzeit~$T$ pro Sample~$k$ für das Ziehen von $k$ Elementen aus $S = \set{1, \ldots, N}$ als Funktion von $|S|$.\\
+        \textbf{Links:} $k=10$, \textbf{Mitte: } $k = \sqrt{N}$, \textbf{Rechts: } $k = N / 4$.
+    }
+    \label{fig:benchmark_gnm_scale}
+\end{widefigure}
+
+In \cref{fig:benchmark_gnm_scale} stellen wir Laufzeitmessungen für folgendes Experiment dar.
+Wir variieren die Größe unseres Universums $|S| = N$ von $2^8$ bis $2^{32}$ und betrachten drei Szenarien:
+\begin{itemize}
+    \item $k=10$: Trotz steigender Universumsgröße ziehen wir immer nur 10 Samples.
+    \item $k=\sqrt{N}$: Die Stichprobengröße steigt langsam in der Universumsgröße (dieser Fall entspricht einem $\Gnm$ Graphen mit $m = \Theta(n)$).
+    \item $k=N/4$: Jedes vierte Element des Universums wird ausgewählt.
+\end{itemize}
+
+\begin{exercise}
+    Welche Effekte kannst du in \cref{fig:benchmark_gnm_scale} beobachten? Wie erklären sich diese?
+\end{exercise}
+
+Wir möchten uns aber nur auf einen zentralen Effekt in den Abbildungen konzentrieren, da dieser bei großen zufälligen Daten oft auftritt.\footnote{foreshadowing\ldots}
+In \cref{fig:benchmark_gnm_scale} (rechts) beobachteten wir einen sprunghaften Anstieg der Zeit pro Element --- teils um fast einen Faktor 10.
+Unsere Analysen sagen jedoch eine konstante Laufzeit pro gezogenem Element für $k = N/4$ voraus; einen sprunghaften Anstieg können sie nicht erklären.
+
+Wir sind also im Algorithm-Engineering-Zyklus auf eine Diskrepanz zwischen Theorie und Praxis gestoßen!
+Ist unsere Analyse falsch? Jaein.
+In der Bestimmung der Laufzeit nutzen wir eine Unit-Cost Random-Access-Machine (d.h. wir gingen davon aus, dass jede Operation gleich viel Zeit benötigt).
+Moderne Compute verfügen jedoch über ausgeklügelte Techniken, die gewisse Aspekte besonders beschleunigen.
+
+Hierzu gehören die sog. Speicherhierarchien: Ein Prozessor kann nur auf Daten operieren, die sich auf dem physischen Chip befinden, genauer in den Registern.
+Aus physikalischen und ökonomischen Gründen, gibt es aber nur sehr wenig \qq{Register-Speicher}.
+Die meisten aktiven Daten werden daher im Arbeitsspeicher vorgehalten; dieser ist aber recht langsam.
+Eine typische CPU kann in der Zeit, die es dauert ein Datum aus dem Arbeitsspeicher zu beziehen, etwa 100 bis 1000 Operationen ausführen.
+Um dies aufzufangen, werden mehrere Caches eingefügt: die CPU \qq{rät} welche Daten in naher Zukunft benötigt werden und hält diese im schnelleren Cache vor.
+Die klappt aber mit Zufallsdaten oft nicht (sie sollen ja gerade \emph{nicht} vorhersehbar sein).
+
+In \cref{fig:benchmark_gnm_scale} (rechts) sehen wir also genau den Punkt ab dem die Datenstrukturen nicht mehr in den Cache passen.
+Für Hashset und Reservoir-Sampling nutzen diese Datenstrukturen etwa $64 k = 16 N$ Bits (das Hashset aufgrund des Load-Factors < 1 auch ein bisschen mehr).
+Das Bitset benötigt $N$ Bits --- daher kommt hier der Performanceeinbruch auch später.
+
+Um über diese qualitative Erklärung hinaus, das Verhalten analytisch zu erklären, benötigen wir also ein Maschinenmodell, das auch Speicherzugriffe berücksichtigt.
+Dem widmen wir uns aber erst später.
+Im Folgenden betrachten wir stattdessen eine Parallelisierung des Algorithmus --- dieselbe Strategie führt jedoch auch zu einem Generator, der zufällige Speicherzugriffe auf den Cache beschränken kann.
+Wir brauchen zunächst ein Maschinenmodell für parallele Berechnungen.
+
+\subsection{Fork-Join Parallelismus}
+Das Fork-Join-Modell ist eine Erweiterung der Random-Access-Machine, welche die RAM um die zwei namesgebenenden Instruktionen erweitert.
+Eine Berechnung startet als gewöhnliches sequentielles Programm, einem sog. Task.
+Angenommen wir führen gerade $t_0$ aus, dann können wir die Berechnung in zwei \glqq Kindertasks\grqq{} $t_1$ und $t_2$ teilen (\emph{forken}).
+Beide Tasks werden unabhängig von einander ausgeführt, während $t_0$ ruht.
+Sobald $t_1$ und $t_2$ fertig sind, kommt es zur Wiedervereinigung (\emph{join}):
+$t_1$ und $t_2$ werden \glqq gelöscht \grqq, $t_0$ wieder geweckt und setzt seine Berechnung fort.
+Betrachten wir das parallele Summieren $\sum_{i=1}^n x_n$ von Zahlen $X = (x_1, \ldots, x_n)$ als einfaches Beispiel:
+
+\begin{algorithm}
+    \SetKwProg{Fn}{Function}{}{end}
+    \SetKwFunction{ParSum}{ParSum}
+    \SetKwFunction{Fork}{Fork}
+    \SetKwFunction{Join}{Join}
+    \Fn{\ParSum{$X=(x_1, \ldots, x_n)$}}{
+        \If{$n = 1$}{
+            gebe $x_1$ zurück und beende Task\;
+        }
+        Berechne Mitte~$m \gets \lfloor n/2\rfloor$\;
+        \Fork{$
+                \underbrace{\ParSum{$X_L = (x_1, \ldots, x_m$}}_{\text{Task $t_1$}}, \ \
+                \underbrace{\ParSum{$X_R = (x_{m + 1}, \ldots, x_n)$}}_{\text{Task $t_2$}}
+            $}\;
+        $(s_1, s_2) \gets \Join{$t_1, t_2$}$\;
+        gebe $s_1 + s_2$ zurück und beende Task
+    }
+    \caption{Parallele Summe im Fork-Join Modell}
+    \label{algo:parallel_sum}
+\end{algorithm}
+
+In \cref{algo:parallel_sum} teilen wir die Eingabe rekursiv in zwei gleich große Teile (modulo Rundung) und berechnen die Teilsummen für beide rekursiv.
+Sobald die Teilergebnisse vorliegen, summieren wir diese in $\Oh{1}$ Zeit und geben es als Gesamtergebnis zurück.
+Dieses Schema funktioniert analog für alle assoziativen Operationen (z.B. Produkt, Min, Max).
+
+In der Praxis findet man einige Software-Bibliotheken, die Fork-Join-Parallelismus zur Verfügung stellen;
+für C++ etwa \texttt{Cilk} oder Intels \texttt{oneTBB}, für Rust \texttt{rayon}.
+Diese praktischen Lösungen nutzen einen sog. Work-Stealing-Scheduler.
+
+Grob kann man annehmen, dass der Prozessor~$P_0$, der $t_0$ ausführte den Task $t_2$ als verfügbar bekannt gibt und dann selbst $t_1$ ausführt.
+Wenn während der Ausführung von $t_1$ ein anderer Prozessor verfügbar ist, übernimmt dieser $t_2$.
+In diesem Fall sind $t_1$ und $t_2$ also nebenläufig.
+Wenn sich kein anderer Prozessor findet, wird $P_0$ den Task $t_2$ übernehmen, sobald $t_1$ beendet wurde.
+Wir erhalten also dynamisches System, das (i) nicht wissen muss, wie viele Prozessoren es gibt, und (ii) auch relativ gut damit umgehen kann, dass $t_1$ und $t_2$ evtl. sehr unterschiedliche Laufzeiten haben.
+Praktisch ist es kein Problem viel mehr Tasks zu erzeugen als es Prozessoren gibt.
+
+Wir messen die Güte eines Fork-Join-Algorithmus mit zwei Eigenschaften:
+\begin{enumerate}
+    \item
+          Die \emph{Arbeit} (engl. work) ist die Summe aller Instruktionen, die das Programm ausführt.
+          Dies entspricht also der Laufzeit, wenn nur ein Prozessor zur Verfügung steht.
+          Für \cref{algo:parallel_sum} ergibt sich die Arbeit als
+          \begin{equation}
+              W(n) = \begin{cases}
+                  \Oh{1}                  & \text{falls } n = 1 \\
+                  2 \cdot W(n/2) + \Oh{1} & \text{falls } n > 1
+              \end{cases}
+              = \Oh{n}.
+          \end{equation}
+
+          Der Algorithmus leistet also asymptotisch nicht mehr Arbeit als die Laufzeit der besten sequentiellen Lösung; wir sagen er ist \emph{arbeits-optimal}.
+
+    \item
+          Der Span (engl. span oder parallel depth) misst die Anzahl der Instruktionen auf einem kritischen Pfad (d.h. eine längste Folge abhängiger Schritte).
+          Dies entspricht der Laufzeit, wenn wir unbeschränkt viele Prozessoren zur Verfügung haben.
+          In \cref{algo:parallel_sum} müssen wir also analysieren, wie viele Instruktionen vor und nach dem Fork/Join Paar erforderlich sind und wie tief die Rekursion läuft:
+          \begin{equation}
+              S(n) = \underbrace{\Oh{1}}_\text{Arbeit vor/nach Fork/Join} + \underbrace{S(n/2)}_\text{Rekursion} = \Oh{\log n}.
+          \end{equation}
+\end{enumerate}
+
+Wenn wir ausreichend Prozessoren zur Verfügung haben, können wir also $n$ Zahlen in Zeit $\Oh{\log n}$ summieren.
+Zu ähnlichen Ergebnissen kommt man auch in anderen parallelen Maschinenmodellen (z.B. P-Rams).
+
+\subsection{Rekursives Ziehen}
+In \cref{algo:parallel_sum} haben wir bereits ein gutes Grundgerüst für parallele Algorithmen gesehen:
+wenn wir es schaffen das Problem \emph{schnell} in unabhängige Hälften zu teilen und dann rekursiv zu bearbeiten, sind wir auf einem guten Weg.
+Bezogen auf unser Problem, $k$~Stichproben aus $N$~Elementen zu ziehen, haben wir zwei Dimensionen:
+\begin{enumerate}
+    \item Teile $S$ deterministisch in $S_1$ und $S_2$: Wir können das Universum~$S$ mit $|S| = N$ in zwei Hälften $S_1$ und $S_2$ partitionieren mit $|S_1| = \lfloor N / 2 \rfloor$.
+          Dann stellt sich die Frage: was ist die Anzahl~$k_1$ der Samples aus $S_1$, bzw. $k_2$ aus $S_2$. Klar ist nur $k_1 + k_2 = k$.
+
+    \item Teile $k$ deterministisch in $k_1$ und $k_2$: Wir können die Stichproben teilen, d.h. $k_1 = \lfloor k/n \rfloor$ wählen; dann müssen wir jedoch eine unbekannte Partitionierung von $S$ finden.
+\end{enumerate}
+
+Auf den ersten Blick wirkt die zweite Variante zielführender.
+Es ist vorteilhaft, wenn beide Teilprobleme etwa die gleiche Stichprobenanzahl haben, da die Arbeit in dieser Anzahl skalieren soll.
+Tatsächlich liefert aber die erste Variante einfachere Algorithmen, die auch keine signifikanten Probleme mit unbalancierten Teilproblemen haben.
+
+\begin{figure}[t]
+    \begin{center}
+        \begin{tikzpicture}
+            \foreach \x in {-8, -4, -2, 3, 5, 7, 9} {
+                    \node[inner sep=0, minimum size=1em, fill=black!20, anchor=west] at (\x em, 0) {};
+                }
+
+            \node[draw, minimum height=1em, minimum width=20em] at (0,0) {};
+            \node[anchor=north] at (-9.5em, -0.5em) {1};
+            \node[anchor=north] at ( 9.5em, -0.5em) {$N$};
+
+            \foreach \x in {-9,...,9} {
+                    \path[draw, black!50] (\x em, 0.5em) to ++(0, -1em);
+                }
+
+            \path[draw, thick, dashed] (0, 2em) to (0, -3.5em);
+
+            \draw[decorate, decoration = {brace}] (-9.75em,3em) to node[above] {$k$} ++(19.5em,0);
+            \draw[red,  decorate, decoration = {brace}] (-9.5em,1em) to node[above] {$k_1$} ++(9em,0);
+            \draw[blue, decorate, decoration = {brace}] ( 0.5em,1em) to node[above] {$k_2$} ++(9em,0);
+
+            \node[anchor=east] at (-12em, 1.8em) {zufällig:};
+
+            \draw[decorate, decoration = {brace, mirror}] (-9.75em,-4em) to node[below] {$N$} ++(19.5em,0);
+            \draw[red,  decorate, decoration = {brace, mirror}] (-9.5em,-2em) to node[below] {$N / 2$} ++(9em,0);
+            \draw[blue, decorate, decoration = {brace, mirror}] ( 0.5em,-2em) to node[below] {$N / 2$} ++(9em,0);
+
+            \node[anchor=east] at (-12em, -2.8em) {deterministisch:};
+
+        \end{tikzpicture}
+    \end{center}
+    \caption{
+        Ziehen von $k=7$ Stichproben aus $N=20$ Elementen ohne Zurücklegen; die grauen Elemente seien ausgewählt.
+        Die linke Hälfte des Universums liefert $k_1$ Stichproben, die rechte $k_2$.
+        Im gezeigten Beispiel gilt $k_1 = 3$ und $k_2 = 4$.
+    }
+    \label{fig:rekursive_k_aus_N}
+\end{figure}
 
 
+Wie in \cref{fig:rekursive_k_aus_N}, teilen wir also das Universum~$S$ in zwei gleich große Hälften $S_1$ und $S_2$.
+Angenommen, wir täten dies nicht, wie viele Stichproben $k_1$ würde ein anderer Algorithmus aus $S_1$ ziehen?
+Wir wissen es nicht genau, da $k_1$ eine Zufallsvariable ist --- sie ist Hypergeometrisch verteilt:
+aus einer Gesamtpopulation von $N$ mit $k$~Treffern (d.h. die Elemente, die ein anderer Algorithmus gezogen hätte), ziehen wir $N_1$ Stichproben und erhalten $k_1$~Treffer.
+In Erwartung sind es also $\expv{k_1} = k |S_1| / |S|$.
 
+Analog zu den zufälligen Sprüngen in \cref{subsec:gnp_zufaellige_spruenge}, ziehen wir $k_1$ aus einer Hypergeometrisch Verteilung.
+Dann setzen wir den Prozess bedingt auf $k_1$ fort:
 
+\begin{algorithm}
+    \SetKwProg{Fn}{Function}{}{end}
+    \SetKwFunction{ParSelect}{ParSample}
+    \SetKwFunction{Fork}{Fork}
+    \SetKwFunction{Join}{Join}
+    \Fn{\ParSelect{$S=(s_1, \ldots, s_N), k$}}{
+        \If{$k = 1$}{
+            $x \gets$ zufällig uniform aus $S$\;
+            gebe $\set{x}$ zurück und beende Task\;
+        }
+        \BlankLine
+        $N_L \gets \lfloor N / 2 \rfloor$\;
+        $k_L \gets$ zufällig hypergeometrisch: ziehe $N_L$ Element aus $N$ mit $k$ Treffern\;
+        \BlankLine
+        \Fork{$
+                \underbrace{\ParSelect{$S_L = (s_1, \ldots, s_{N_L}), k_L$}}_{\text{Task $t_1$}}, \ \
+                \underbrace{\ParSelect{$S_R = (s_{N_L + 1}, \ldots, s_N), k - k_L$}}_{\text{Task $t_2$}}
+            $}\;
+        $(R_1, R_2) \gets \Join{$t_1, t_2$}$\;
+        gebe $R_1 \cup R_2$ zurück und beende Task
+    }
+    \caption{Paralleles Ziehen von $k$ Stichproben aus $S$ ohne Zurücklegen}
+    \label{algo:parallel_k_aus_N}
+\end{algorithm}
+
+\goodbreak
+
+\noindent
+Um die Performance von \cref{algo:parallel_k_aus_N} zu analysieren, treffen wir zwei Annahmen:
+\begin{enumerate}
+    \item Wir können $S$ in $\Oh{1}$ Zeit in zwei (fast) gleichgroße Hälften teilen.
+          Das ist in vielen Fällen möglich:
+          \begin{itemize}
+              \item Für $\Gnm$ Graphen gehen wir davon aus, dass $S$ nur implizit existiert und das Interval $[1, n^2]$ repräsentiert.
+                    Dies können wir durch Verschieben der Intervallgrenzen trivial in $[1, n^2 / 2]$ und $[n^2/2 + 1, n^2]$ teilen.
+              \item Wenn $S$ ein Array ist, können in die Rekursion Pointer auf den Anfang und das Ende des Teilproblems gegeben.
+          \end{itemize}
+
+    \item Die Operationen $R_1 \cup R_2$ läuft in konstanter Zeit.
+          Das ist realistisch: da die Elemente in der Menge $S$ paarweise verschieden sind, wissen wir, dass $|R_1 \cup R_2| = |R_1| + |R_2| = k$.
+          Es ist also kein Test auf Duplikate o.Ä. notwendig und es reicht aus $R_1$ und $R_2$ zu konkatenieren.
+          Das ist mit verketten Listen (inkl. Endpointer) in $\Oh{1}$ Zeit möglich.
+\end{enumerate}
+
+\begin{exercise}
+    Angenommen wir möchten $R$ als Array bekommen.
+    Zeige, dass es möglich ist $R$ eingangs mit einer Kapazität von $k$ zu initialisieren, und dann in der Rekursion direkt in $R$ zu schreiben.
+    Die Samples sollen dann in derselben relativen Reihenfolge wie in $S$ erscheinen.
+\end{exercise}
 
 
 \section{Kritische Punkte}
