@@ -3,6 +3,10 @@ skript.pdf
 # Created by https://www.toptal.com/developers/gitignore/api/windows,linux,osx,visualstudiocode,latex,git
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows,linux,osx,visualstudiocode,latex,git
 
+target/
+Cargo.lock
+.vscode
+
 ### Git ###
 # Created by git for backups. To disable backups in Git:
 # $ git config --global mergetool.keepBackup false
