@@ -630,7 +630,7 @@ Dieser nutzt das Grundgerüst in~\cref{algo:basis-ziehen-ohne-zuruecklegen}, das
 Wir messen die Geschwindigkeit des Algorithmus zunächst nur indirekt, indem wir die Anzahl der Iterationen der \texttt{while}-Schleife zählen:
 
 \begin{lemma}\label{lemma:basis-ziehen-ohne-zuruecklegen-versuche}
-    \Cref{algo:basis-ziehen-ohne-zuruecklegen} verwendet in Erwartung $\Oh{N \log(N/(N-k+1))}$ Versuche (Iterationen der \texttt{while}-Schleife) um aus $S$ mit $|S| = N$ exakt $1 \le k < N$ Elemente zu ziehen.
+    \Cref{algo:basis-ziehen-ohne-zuruecklegen} verwendet in Erwartung $N \log(N/(N-k+1)) + \Oh{1}$ Versuche (Iterationen der \texttt{while}-Schleife) um aus $S$ mit $|S| = N$ exakt $1 \le k < N$ Elemente zu ziehen.
 \end{lemma}
 
 \begin{proof}
@@ -669,9 +669,9 @@ Wir messen die Geschwindigkeit des Algorithmus zunächst nur indirekt, indem wir
     Es gilt, dass $H_t = \ln t + \gamma + 1/(2t) + \varepsilon_t$, wobei $\gamma \approx 0.5772$ die Euler–Mascheroni Konstante ist und $0 \le \varepsilon_t \le N^{-2}/8$ ein verschwindender Fehlerterm ist.
     Es folgt also:
     \begin{align}
-        \expv{X} & = N \left[ H_N - H_{N-k} \right]                  \\
-                 & \le N \left[ \ln N - \ln (N - k) \right] + \Oh{1} \\
-                 & = \Oh{N \ln \frac{N}{N - k + 1}}
+        \expv{X} & = N \left[ H_N - H_{N-k} \right]                      \\
+                 & \le N \left[ \ln N - \ln (N - k + 1) \right] + \Oh{1} \\
+                 & = N \ln \frac{N}{N - k + 1} + \Oh{1}
     \end{align}
 \end{proof}
 
@@ -688,14 +688,16 @@ Wir messen die Geschwindigkeit des Algorithmus zunächst nur indirekt, indem wir
     \label{fig:ziehen-ohne-zuruecklegen-iterationen}
 \end{figure}
 
+Beobachte, dass die Analyse im Beweis von \cref{lemma:basis-ziehen-ohne-zuruecklegen-versuche} sehr eng ist.
+Wie wir in \cref{fig:ziehen-ohne-zuruecklegen-iterationen} sehen, gilt für relativ kleine $N$ schon $\expv{X} \approx N \ln \frac{N}{N - k + 1}$.
+
 \begin{exercise}
     Zeige, dass $N \ln \frac{N}{N - k + 1} = \Oh{k}$ für $k \le N / 2$.
 \end{exercise}
 
-Beobachte, dass wir im letzten Schritt erstmals eine asymptotische Abschätzung verwendeten, die auch noch sehr eng ist.
-Wie wir in \cref{fig:ziehen-ohne-zuruecklegen-iterationen} sehen, gilt für relativ kleine $N$ schon $\expv{X} \approx N \ln \frac{N}{N - k + 1}$.
+\bigskip
 
-\Cref{lemma:basis-ziehen-ohne-zuruecklegen-versuche} besagt, dass \cref{algo:basis-ziehen-ohne-zuruecklegen} für $k \le N / 2$ erwartet $\Oh{k}$ Iterationen benötigt und somit optimal ist.
+\Cref{lemma:basis-ziehen-ohne-zuruecklegen-versuche} besagt, dass \cref{algo:basis-ziehen-ohne-zuruecklegen} für $k \le N / 2$ erwartet $\Oh{k}$ Iterationen ausführt und somit (in Erwartung) optimal ist.
 Nur für $k \to N$ der $\log$-Faktor asymptotisch relevant wird, und wir bekommen eine suboptimale Laufzeit von $\Omega(N \log N)$.
 
 Auf \aside{Komplementbildung stellt sicher: $k \ge N /2$} der einen Seite sollte das für \emph{übliche} Graphen kein Problem sein (sie sind dünn und daher $k \ll N$); dennoch lässt sich das Problem einfach vermeiden.
@@ -704,7 +706,8 @@ Zwar benötigt die Komplementbildung $R = \bar{\bar R}$ während der Ausgabe $\T
 
 \subsection{Konzentration um den Erwartungswert}
 Bisher haben wir uns darauf konzentriert Performance \emph{in Erwartung} zu analysieren.
-In der Praxis kann das aber nicht ausreichen: wir stellen uns eine Implementierung vor, die in 99~\% der Fälle in 1\,s durchläuft aber in 1~\% der Ausführungen 101\,s benötigt.
+In der Praxis kann das aber manchmal zu wenig sein:
+wir stellen uns eine Implementierung vor, die in 99~\% der Fälle in 1\,s durchläuft aber in 1~\% der Ausführungen 101\,s benötigt.
 Die durchschnittliche (\qq{erwartete}) Laufzeit wären also 2\,s.
 Wenn wir unsere Pipelines darauf auslegen, kann das zu (im schlimmsten Fall kaskadierenden) Timeouts führen.
 
@@ -718,7 +721,7 @@ Um Beobachtungen wie diese zu formalisieren, nutzt man häufig folgende Definiti
 \end{definition}
 
 In anderen Worten: je \qq{größer} unser Problem wird, desto unwahrscheinlicher sind extreme Ausreißer.
-In der Literatur ist der Parameter in der Regel aus dem Kontext klar und wird daher oft nicht erwähnt (im folgenden Lemma wäre es $k$):
+On der Regel ist der Parameter aus dem Kontext klar und wird daher in der Literatur oft nicht erwähnt (im folgenden Lemma wäre es $k$):
 
 \begin{lemma}
     \Cref{algo:basis-ziehen-ohne-zuruecklegen} verwendet mit hoher Wahrscheinlichkeit \Oh{k} Iteration für $k \le N/2$.
@@ -734,8 +737,8 @@ In der Literatur ist der Parameter in der Regel aus dem Kontext klar und wird da
 
     \noindent
     Für einen beliebigen Grenzwert~$t$ gilt also
-    \begin{equation}
-        \prob{X \ge t} \le \prob{X' \ge t}.
+    \begin{equation}\label{eq:xprimet_groesser_xt}
+        \prob{X > t} \le \prob{X' > t}.
     \end{equation}
 
     Wir können nun unsere Worst-Case Abschätzung $X'$ auch alternative interpretieren:
@@ -743,14 +746,20 @@ In der Literatur ist der Parameter in der Regel aus dem Kontext klar und wird da
     Die Anzahl der Versuche entspricht dann $X'$.
 
     Wir formalisieren diese alternative Idee:
-    Sei $Y^{(t)} = \sum_{i=1}^t Y_i$ wobei $Y_i$ unabhängige Zufallsvariablen sind, wobei $\prob{Y_i = 1} = 1/2$.
-    Beobachte dass $\expv{Y^{(t)}} = t/2$.
+    Sei $Y^{(t)} = \sum_{i=1}^t Y_i$ wobei $Y_i$ unabhängige Zufallsvariablen mit $\prob{Y_i = 1} = 1/2$ sind.
     Per Definition gilt
     \begin{equation}
-        \prob{X' \ge t} = \prob{Y^{(t)} < k}.
+        \prob{X > t}
+        \quad \stackrel{\text{Eq. \ref{eq:xprimet_groesser_xt}}}{\le} \quad
+        \prob{X' > t}
+        \quad = \quad
+        \prob{Y^{(t)} < k}
+        \quad \le \quad
+        \prob{Y^{(t)} \le k}
     \end{equation}
 
     \noindent
+    Außerdem gilt $\expv{Y^{(t)}} = t/2$.
     Da $Y_i$ unabhängige Bernoullizufallsvariablen sind, hält die Chernoff-Ungleichung:
     \begin{align}
          &                                     & \prob{Y^{(t)} \le (1-\delta) \expv{Y_t}} & \le \exp\left(-\delta^2 \expv{Y^{(t)}} / 2\right)                  \\
@@ -760,11 +769,11 @@ In der Literatur ist der Parameter in der Regel aus dem Kontext klar und wird da
     \noindent Im letzten Schritt wählten wir $\delta = 1/2$; nun setzen wir $t = 4k$:
     \begin{align}
          &             & \prob{Y^{(4k)} \le k} & \le \exp(-k/4) \le 1/k \quad \text{für } k \ge 9 \\
-         & \Rightarrow & \prob{X \ge 4k}       & \le 1/k
+         & \Rightarrow & \prob{X > 4k}         & \le 1/k
     \end{align}
 
     \noindent
-    Die Behauptung $\prob{X < 4k} = \Oh{k}$ gilt also mit hoher Wahrscheinlichkeit.
+    Es folgt $\prob{X \le 4k} \ge 1 - 1/k$. Somit gilt $X < 4k$ mit hoher Wahrscheinlichkeit.
 \end{proof}
 
 Welche Datenstruktur benötigen wir für $R$? Sie sollte Existenzanfragen ($x \in R$?) und Einfügen ($R \gets R \cup \set{x}$) effizient durchführen können.
@@ -827,9 +836,9 @@ Wir brauchen zunächst ein Maschinenmodell für parallele Berechnungen.
 \subsection{Fork-Join Parallelismus}
 Das Fork-Join-Modell ist eine Erweiterung der Random-Access-Machine, welche die RAM um die zwei namesgebenenden Instruktionen erweitert.
 Eine Berechnung startet als gewöhnliches sequentielles Programm, einem sog. Task.
-Angenommen wir führen gerade $t_0$ aus, dann können wir die Berechnung in zwei \glqq Kindertasks\grqq{} $t_1$ und $t_2$ teilen (\emph{forken}).
+Angenommen wir führen gerade $t_0$ aus, dann können wir die Berechnung in zwei \glqq Kindertasks\grqq{} $t_1$ und $t_2$ teilen \aside{fork} (\emph{forken}).
 Beide Tasks werden unabhängig von einander ausgeführt, während $t_0$ ruht.
-Sobald $t_1$ und $t_2$ fertig sind, kommt es zur Wiedervereinigung (\emph{join}):
+Sobald $t_1$ und $t_2$ fertig sind, kommt es zur Wiedervereinigung \aside{join} (\emph{join}):
 $t_1$ und $t_2$ werden \glqq gelöscht \grqq, $t_0$ wieder geweckt und setzt seine Berechnung fort.
 Betrachten wir das parallele Summieren $\sum_{i=1}^n x_n$ von Zahlen $X = (x_1, \ldots, x_n)$ als einfaches Beispiel:
 
@@ -844,7 +853,7 @@ Betrachten wir das parallele Summieren $\sum_{i=1}^n x_n$ von Zahlen $X = (x_1, 
         }
         Berechne Mitte~$m \gets \lfloor n/2\rfloor$\;
         \Fork{$
-                \underbrace{\ParSum{$X_L = (x_1, \ldots, x_m$}}_{\text{Task $t_1$}}, \ \
+                \underbrace{\ParSum{$X_L = (x_1, \ldots, x_m)$}}_{\text{Task $t_1$}}, \ \
                 \underbrace{\ParSum{$X_R = (x_{m + 1}, \ldots, x_n)$}}_{\text{Task $t_2$}}
             $}\;
         $(s_1, s_2) \gets \Join{$t_1, t_2$}$\;
@@ -862,7 +871,7 @@ In der Praxis findet man einige Software-Bibliotheken, die Fork-Join-Parallelism
 für C++ etwa \texttt{Cilk} oder Intels \texttt{oneTBB}, für Rust \texttt{rayon}.
 Diese praktischen Lösungen nutzen einen sog. Work-Stealing-Scheduler.
 
-Grob kann man annehmen, dass der Prozessor~$P_0$, der $t_0$ ausführte den Task $t_2$ als verfügbar bekannt gibt und dann selbst $t_1$ ausführt.
+Grob \aside{Work Stealing} kann man annehmen, dass der Prozessor~$P_0$, der $t_0$ ausführte den Task $t_2$ als verfügbar bekannt gibt und dann selbst $t_1$ ausführt.
 Wenn während der Ausführung von $t_1$ ein anderer Prozessor verfügbar ist, übernimmt dieser $t_2$.
 In diesem Fall sind $t_1$ und $t_2$ also nebenläufig.
 Wenn sich kein anderer Prozessor findet, wird $P_0$ den Task $t_2$ übernehmen, sobald $t_1$ beendet wurde.
@@ -872,7 +881,7 @@ Praktisch ist es kein Problem viel mehr Tasks zu erzeugen als es Prozessoren gib
 Wir messen die Güte eines Fork-Join-Algorithmus mit zwei Eigenschaften:
 \begin{enumerate}
     \item
-          Die \emph{Arbeit} (engl. work) ist die Summe aller Instruktionen, die das Programm ausführt.
+          Die \aside{Arbeit / work} \emph{Arbeit} (engl. work) ist die Summe aller Instruktionen, die das Programm ausführt.
           Dies entspricht also der Laufzeit, wenn nur ein Prozessor zur Verfügung steht.
           Für \cref{algo:parallel_sum} ergibt sich die Arbeit als
           \begin{equation}
@@ -883,10 +892,10 @@ Wir messen die Güte eines Fork-Join-Algorithmus mit zwei Eigenschaften:
               = \Oh{n}.
           \end{equation}
 
-          Der Algorithmus leistet also asymptotisch nicht mehr Arbeit als die Laufzeit der besten sequentiellen Lösung; wir sagen er ist \emph{arbeits-optimal}.
+          Der \aside{arbeits-optimal} Algorithmus leistet also asymptotisch nicht mehr Arbeit als die Laufzeit der besten sequentiellen Lösung; wir sagen er ist \emph{arbeits-optimal}.
 
     \item
-          Der Span (engl. span oder parallel depth) misst die Anzahl der Instruktionen auf einem kritischen Pfad (d.h. eine längste Folge abhängiger Schritte).
+          Der \aside{Span / Parallel Depth} Span (engl. span oder parallel depth) misst die Anzahl der Instruktionen auf einem kritischen Pfad (d.h. eine längste Folge abhängiger Schritte).
           Dies entspricht der Laufzeit, wenn wir unbeschränkt viele Prozessoren zur Verfügung haben.
           In \cref{algo:parallel_sum} müssen wir also analysieren, wie viele Instruktionen vor und nach dem Fork/Join Paar erforderlich sind und wie tief die Rekursion läuft:
           \begin{equation}
@@ -1011,8 +1020,173 @@ Um die Performance von \cref{algo:parallel_k_aus_N} zu analysieren, treffen wir 
     Die Samples sollen dann in derselben relativen Reihenfolge wie in $S$ erscheinen.
 \end{exercise}
 
+\begin{lemma}
+    \Cref{algo:parallel_k_aus_N} hat mit hoher Wahrscheinlichkeit einen Span von $\Oh{\log k}$ und benötigt in Erwartung $\Oh{k}$ Arbeit.
+\end{lemma}
 
-\section{Kritische Punkte}
+\begin{widefigure}
+    \includegraphics[width=0.32\textwidth]{data/gnm_recursive_scale0.pdf}\hfill
+    \includegraphics[width=0.32\textwidth]{data/gnm_recursive_scale1.pdf}\hfill
+    \includegraphics[width=0.32\textwidth]{data/gnm_recursive_scale2.pdf}
 
+    \caption{
+        Laufzeit~$T$ pro Sample~$k$ für das Ziehen von $k$ Elementen aus $S = \set{1, \ldots, N}$ als Funktion von $|S|$.\\
+        \textbf{Links:} $k=10$, \textbf{Mitte: } $k = \sqrt{N}$, \textbf{Rechts: } $k = N / 4$.
+    }
+    \label{fig:benchmark_gnm_recursive_scale}
+\end{widefigure}
+
+Wir überspringen den Beweis; dieser lässt sich aber analog zu \cite{DBLP:journals/toms/Hubschle-Schneider22} führen.
+Die Hauptideen sind: ein Span von $\Oh{\log N}$ folgt trivial wie in unserem Beispiel zum parallelen Summieren, dadurch dass wir in jedem Schritt die Größe von $|S|$ halbieren.
+Um den Span jedoch auf $\Oh{\log k}$ zu reduzieren, müssen wir zeigen, dass sich auch die Stichprobengröße ungefähr gleich auf beide Teilprobleme verteilt.
+Dies folgt aus der relativ kleinen Varianz der Hypergeometrischen Verteilung für hinreichend großes $k$.
+Nur für sehr kleines $k$ laufen wir Gefahr, dass eines der beiden Teilprobleme alle Samples enthält;
+das ist aber zum Einen unkritisch (weil $|S|$ trotzdem halbiert wird und so die Dicht $k/N$ steigt) und zum Anderen, wie wir gleich sehen werden, für praktische Implementierungen unerheblich.
+
+Wie in \cref{fig:benchmark_gnm_recursive_scale} gezeigt, zeigt eine (sequentielle) Implementierung von \cref{algo:parallel_k_aus_N} ein gutes Skalierungsverhalten.
+Die Laufzeit hängt nur von $\Oh{k}$ ab und steigt nicht für großes $N$ --- sie ist jedoch allgemein recht hoch (das Ziehen einer Hypergeometrischen Zufallsvariable ist recht langsam).
+Dies \aside{Rekursionsstopper} ist ein sehr gängiges Problem in komplexen Algorithmen mit einer einfachen Lösung.
+Wir verwenden den aufwendigeren Algorithmus nur so lange, wie es von Vorteil ist.
+Wenn die Teilprobleme hinreichend klein sind und wir alle Prozessoren auslasten, schalten wir als \qq{Rekursionsstopper} auf spezielle Basisalgorithmen um, die sich besonders gut für kleine Teilprobleme eignen.
+Der Hybridalgorithmus in \cref{fig:benchmark_gnm_recursive_scale} nutzt, für große $N$ den rekursiven Ansatz.
+Für kleine Teilprobleme mit $N < 10\,000$ kommt  ---je nach Dichte $k/N$--- entweder BitSet oder HashSet zum Einsatz.
+
+\section{Phasenübergänge in \Gnp und \Gnm}
+Die ersten analytischen Ergebnisse von Zufallsgraphen betrafen das Verhalten von kombinatorischen Eigenschaften für verschiedene Dichten (d.h. $m/n$ bei $\Gnm$, bzw $p$ bei $\Gnp$) im Grenzwert für $n \to \infty$.
+In \aside{Wir nutzen ungerichtete Graphen und setzen $N = \binom n 2$} diesem Kapitel werden wir uns auf ungerichtete Graphen konzentrieren.
+
+Betrachten wir zunächst \Gnm Graphen.
+Für diese zeigten Erd\H{o}s und R\'enyi, bereits einige Schwellwerte an denen sog. Phasenübergänge stattfinden.
+Für \emph{sehr} dünne Graphe mit $m(n) = o(\sqrt n)$, bewiesen sie etwa, dass diese wahrscheinlich nur isolierte Knoten und Kanten beinhalten.
+An dieser Aussage, wollen wir uns eine Aussage ansehen, mit der wir die Wahrscheinlichkeit solch eines Ereignisses abschätzen können.
+
+\begin{lemma}
+    Sehr dünne $\Gnm$ Graphen mit $m = o(m)$ haben wahrscheinlich keine Knoten mit mehr als einer Kante.
+\end{lemma}
+
+\begin{proof}
+    Sei $p(n,m)$ die Wahrscheinlichkeit, dass keine zwei Kanten einen gemeinsamen Endpunkt haben, zu zeigen.
+    Hierzu vergleichen wir die Anzahl der möglichen Graphen mit der Anzahl der gewünschten Graphen, die diese erfüllen.
+    Zunächst beobachten wir, dass es $|\mathbb G(n,m)| = \binom N m = \binom{\binom n 2}{m}$ verschiedene $\Gnm$ Graphen gibt.
+    Wie viele von diesen haben keine Knoten mit mindestens Kanten?
+
+    Stellen wir uns dazu vor, dass wir die Kanten $E = \set{\set{u_1, v_1}, \ldots, \set{u_m, v_m}}$ erstellen, indem wir $2m$ Knoten $u_1, v_1, u_2, v_2, \ldots, u_m, v_m$ ziehen.
+    Da keine zwei Kanten einen gemeinsamen Endpunkt haben sollen und Schleifen verboten ist, müssen wir also $2m$ \underline{verschiedene} Knoten ziehen!
+    Es ist aber egal, in welcher Reihenfolge wir die $m$~Kanten ziehen und ob ein Endpunkt als $u_i$ oder $v_i$ gezogen wird.
+    Die Anzahl ergibt sich also als
+    \begin{align}
+        \frac{\overbrace{\binom{n}{2m}}^\text{$2m$ verschiedene Knoten aus $n$}}{
+            \underbrace{m!}_\text{Reihenfolge der Kanten egal\ \ \ }
+            \underbrace{2^m}_\text{Reihenfolge in einer Kante egal}
+        }.
+    \end{align}
+
+    \noindent
+    Die wir jeden möglichen Graphen mit derselben Wahrscheinlichkeit ziehen, gilt
+    \begin{align}
+        \bar p(n, m) = \frac{\binom{n}{2m} (2m)!}{m! 2^m \binom{\binom n 2}{m}}
+    \end{align}
+
+    \noindent
+    Wir werden im Folgenden eine \emph{untere} Schranke für $\bar p(n,m)$ zeigen.
+    Dazu nutzen wir folgende Abschätzung von $\binom n k$
+
+    \begin{align}
+        \binom n k \approx \frac{n^k \exp\left(-\frac{k^2}{2n} - \frac{k^3}{6n^2}\right)}{k!}
+        \quad\quad \text{für } k = o(n^{3/4}).
+    \end{align}
+
+    Der Einfachhalt halber verzichten wir auf die Analyse des Fehlers dieser Abschätzung.
+    Es folgt
+    \begin{align}
+        p(n, m)
+         & \ge \frac{\binom{n}{2m} (2m!)}{m! 2^m \binom{n^2/2}{m}}                                                                                   \\
+         & = \frac{\textcolor{blue}{\binom{n}{2m}}(2m!)}{\textcolor{red}{\binom{n^2/2}{m}} m! 2^m}                                                   \\
+         & \approx \frac{
+        \textcolor{blue}{n^{2m} \exp\left(-2\frac{m^2}{n} - \frac{8m^3}{6n^2}\right)}\textcolor{red}{m!}(2m!)
+        }{
+        \textcolor{blue}{(2m)!}\textcolor{red}{\underbrace{(n^2/2)^m}_{=n^{2m} / 2^m} \exp\left(-2\frac{m^2}{n^4} - \frac{8m^3}{6n^6}\right)} m!2^m} \\
+         & = \exp\left(-2\frac{m^2}{n} (1 - \frac{1}{n^3}) - \frac{8m^3}{6n^2} (1 - \frac{1}{n^4}) \right)                                           \\
+         & \ge \exp\left(-2\frac{m^2}{n} - \frac{8m^3}{6n^2} \right)                                                                                 \\
+         & \ge \exp\left(-4\frac{m^2}{n} \right) \quad \text{für hinreichend großes $n$}
+    \end{align}
+
+    Damit gilt also $\lim_{n \to \infty} p(n, m(n)) = 1$ falls $m(n) = o(n)$.
+\end{proof}
+
+\bigskip
+
+Wir wechseln nun zu \Gnp Graphen.
+Hier werden wir einen Beweis sehen, der Unabhängigkeit aller Kanten ausnutzt.
+Zu erst schauen wir uns aber einige wohl bekannte Phasenübergänge an.
+Sei $\epsilon >0$ hinreichend klein.
+Dann gilt:
+\begin{itemize}
+    \item Falls $np < 1 - \epsilon$ haben mit hoher Wahrscheinlichkeit alle Zusammenhangskomponent Größe $\Oh{\log n}$.
+    \item Falls $np = 1$ hat die größte Zusammenhangskomponent mit hoher Wahrscheinlichkeit Größe $\Omega(n^{2/3})$.
+    \item Falls $np > 1$ gibt es mit hoher Wahrscheinlichkeit eine einzelne Zusammenhangskomponente mit Größe $\Theta(n)$.
+    \item Falls $np < (1-\epsilon)\log n$ gibt es mit hoher Wahrscheinlichkeit einzelne Knoten ohne inzidente Kanten.
+    \item Falls $np > (1+\epsilon)\log n$ ist der Graph mit hoher Wahrscheinlichkeit zusammenhängend.
+\end{itemize}
+
+Beachte, dass in diesen Definitionen $p$ bzw. $m$ als Funktionen in $n$ verstanden werden müssen.
+Konkret bedeutet z.B. $np = 1$, dass $p(n) = 1 /n$ ist.
+, dass es für gewisse Phasenübergänge (z.B. zwischen dem nicht-zusammenhängenden Regime ins Zusammenhängende) scharfe Schwellwertfunktion~$A$ (threshold functions) gibt, formal.
+Hierzu \qq{zählten} sie kombinatorisch die Anzahl an Graphen mit und ohne die gewünschten Eigenschaften; wir werden diese Technik für die Analyse von lokalem Clustering sehen.
+
+\begin{exercise}
+    Zeige ein möglichst großes $p(n)$ für das $\Gnp$ Graphen mit hoher Wahrscheinlichkeit keine Kanten haben.
+\end{exercise}
+
+Wir möchten nun das Verhalten um $np = 1$ besser verstehen und folgen einem algorithmischen Beweis von \cite{DBLP:journals/rsa/KrivelevichS13}.
+Die Idee ist relativ einfach:
+wir führen eine Tiefensuche auf einem $\Gnp$ Graphen aus, wobei die Nachbarschaft durch Ziehen von Einträgen in der Adjazenzmatrix erkunden.
+Dann zeigen wir, dass für $np < 1$ so wenig Einsen vorhanden sind, dass es sehr unwahrscheinlich ist, dass wir eine große Zusammenhangskomponent beobachten.
+Für $np > 1$, hingegen, sehen wir ausreichend viele Einsen.
+
+\subsection{Tiefensuche auf $\Gnp$}
+Im Folgenden definieren wir eine klassische Tiefensuche (DFS) auf eine Weise, die für den folgenden Beweise hilfreich ist.
+Implementieren sollte man sie so besser nicht...
+Während einer DFS können wir die Knotenmenge $V$ in drei Teilmengen $B$, $S$, $U$ partitionieren:
+\begin{itemize}
+    \item \underline Bearbeitete Knoten~$B$ sind Knoten, die besucht wurden und keine Kinder in $U$ mehr haben.
+    \item Knoten~$S$ werden gerade erkundet und liegen daher auf dem \underline Stack.
+    \item \underline Unbekannte Knoten wurde noch nicht gefunden.
+\end{itemize}
+
+Bevor die DFS startet gilt also $B = S = \emptyset$ und $U = V$.
+Die Suche terminiert sobald $B = V$ und $S = U = \emptyset$.
+Solange dies noch nicht der Fall ist, wird einer von zwei Schritten ausführt:
+
+\begin{enumerate}
+    \item Falls $S \ne \emptyset$ sei $v$ der Knoten, der als letztes eingefügt wurde ($S$ ist ein Stack)
+          \begin{enumerate}
+              \item Falls $v$ einen Nachbarn $w \in U$ hat: entferne $w$ aus $U$ und füge $w$ in $S$ ein
+              \item Falls nicht, ist $v$ vollständig bearbeitet: entferne $v$ aus $S$ und füge $v$ in $B$ ein
+          \end{enumerate}
+    \item Falls $S = \emptyset$ entnehme den ersten Knoten $v \in U$ und füge ihn in $S$ ein
+\end{enumerate}
+
+Um Uneindeutigkeiten zu vermeiden, fixieren wir die Knotenreihenfolgen.
+Hierzu nehmen wir oBdA an, dass $V = \set{1, \ldots, n}$ natürliche Zahlen sind.
+Die Mengen $V$ und $U$ seien aufsteigend geordnet, insbesondere werden immer die kleinsten passenden Elemente entnommen (in Schritten 1a und 2).
+Weiter, sei $S$ ein Stack, d.h. das Element, das als letztes eingefügt wurde, wird als erstes entfernt.
+
+Das besondere an unser DFS ist, dass wir keine Kantenliste als Eingabe bekommen, sondern uns verstellen, einen Strom von unabhängig zufälligen Bits $X_1, \ldots, X_N$ zu erhalten, wobei $\prob{X_i = 1} = p$.
+Wenn wir nun in Schritt 1a einen Nachbar von $v$ suchen, iterieren wir gleichzeitig über $U$ und $X$.
+Dann gegeben wir das erste $w$ zurück, dessen Bit gesetzt war (falls es existiert).
+Wenn wir das nächste Mal mit Knoten $v$ zu Schritt 1a kommen, suchen wir nur nach $w' \in U$ mit $w' > w$.
+
+\begin{exercise}
+    Zeige, dass jeder Eintrag der Adjazenzmatrix höchstens einmal betrachtet wird und wir mittels der $X_i$ somit ein DFS auf \Gnp simulieren.
+    Die zweite Beobachtung (s.u.) folgt hieraus.
+\end{exercise}
+
+Wir werden später folgende Beobachtung ausnutzen:
+\begin{itemize}
+    \item In jeder Iteration wird ein Knoten entweder von $U$ nach $S$ (Schritt 1a oder 2) oder von $S$ nach $B$ (Schritt 1b).
+    \item Zu jedem Zeitpunkt gilt, dass der Graph keine Kanten zwischen $U$ und $B$ hat (insb. ändern noch nicht entdeckte Kanten hieran nichts mehr).
+    \item Alle Knoten in $S$ gehören zur selben Zusammenhangskomponent.
+\end{itemize}
 
 \section{Gradverteilung}
