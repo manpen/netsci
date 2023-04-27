@@ -1061,7 +1061,7 @@ Für \emph{sehr} dünne Graphen mit $m(n) = o(\sqrt n)$, bewiesen sie etwa, dass
 Wir wollen uns an dieser Aussage ansehen, wie man die Wahrscheinlichkeit eines solchen Ereignisses abschätzen kann.
 
 \begin{lemma}
-    Sehr dünne $\Gnm$ Graphen mit $m = o(n)$ haben für $n \to \infty$ wahrscheinlich keine Knoten mit mehr als einer Kante.
+    Sehr dünne $\Gnm$ Graphen mit $m = o(\sqrt n)$ haben für $n \to \infty$ wahrscheinlich keine Knoten mit mehr als einer Kante.
 \end{lemma}
 
 \begin{proof}
@@ -1222,7 +1222,7 @@ Hierfür zeigen wir zunächst folgende Lemma:
     Mittels Chernoff kann man zeigen
     \begin{align}
         \prob{Y_1 - \expv{Y_1} \ge k} < \exp\left(-\frac{\epsilon^2(1-\epsilon)}{3} \cdot \frac{10}{\epsilon^2} \ln n \right)
-        = \exp\left(- \underbrace{(1-\epsilon)}_{\to 1} \frac{10}{3} \ln 2   \right)
+        = \exp\left(- \underbrace{(1-\epsilon)}_{\to 1} \frac{10}{3} \ln n \right)
     \end{align}
 
     Da die Behauptung nicht nur über ein Interval~$Y_1$ spricht, sondern für über alle, benötigen wir noch einen sog. \emph{union bound}.
@@ -1230,7 +1230,7 @@ Hierfür zeigen wir zunächst folgende Lemma:
     \begin{align}
         \prob{\exists i:\ Y_i \ge k} & \le \sum_{i=1}^{N-k} \prob{Y_i \ge k}                                                                         \\
                                      & \le N \prob{Y_1 \ge k}
-                                     & \le n^2 / 2 \underbrace{\exp\left(- \underbrace{(1-\epsilon)}_{\to 1} \frac{10}{3} \ln 2 \right)}_{=o(1/n^3)}
+                                     & \le n^2 / 2 \underbrace{\exp\left(- \underbrace{(1-\epsilon)}_{\to 1} \frac{10}{3} \ln n \right)}_{=o(1/n^3)}
                                      & \le \frac{1}{2n}
     \end{align}
 
