@@ -542,7 +542,7 @@ Im konkreten Fall besteht der Datenstrom also aus allen $s_i$ in beliebiger Reih
 Vereinfachend können wir also annehmen, dass der Strom mindestens $k$ Elemente enthält.
 
 \begin{algorithm}[H]
-    \KwIn{Eingabe: Datenstrom~$S$, Stichprobengröße: $k$}
+    \KwIn{Eingabe: Datenstrom~$S$, Stichprobengröße~$k$}
     \KwOut{Array $R[1..k]$ mit $k$ zufällig ausgewählten Elementen}
 
     Initialisiere ein anfangs leeres Array $R$ mit Kapazität $k$\;
@@ -580,12 +580,12 @@ In \cref{thm:reservoir-sampling} zeigen wir die Korrektheit von \cref{algo:reser
 \begin{proof}
     Sei $N$ die Länge des Stroms (ist dem Algorithmus nicht bekannt).
     Seien zudem $s_1, \ldots, s_N$ die Elemente in der Reihenfolge, in der sie aus dem Strom gelesen werden;
-    oBdA gelte $s_i = s_j \ \Leftrightarrow\ i = j$ (d.h. alle Elemente sind unterschiedlich; falls nicht, können wir die Tuple $(s_i, i)$ betrachten).
+    oBdA gelte $s_i = s_j \ \Leftrightarrow\ i = j$ (d.h. alle Elemente sind unterschiedlich; falls nicht, können wir die Tupel $(s_i, i)$ betrachten).
 
     Sei $R$ die Zufallsvariable, welche die Ausgabe des Algorithmus modelliert.
     Dann ist zu zeigen, dass $\prob{R = s_i} = 1 / N$ für alle $1 \le i \le N$.
     \begin{eqnarray}
-        \prob{R = s_i} &=& \prob{\text{$s_i$ wird in Runde~$i$ gewält}} \cdot \prob{\text{$s_i$ wird nicht ersetzt}} \\
+        \prob{R = s_i} &=& \prob{\text{$s_i$ wird in Runde~$i$ gewählt}} \cdot \prob{\text{$s_i$ wird nicht ersetzt}} \\
         &=& \frac{1}{i} \cdot \underbrace{\prod_{j=i+1}^N \frac{j-1}{j}}_{\text{Teleskop-Produkt}}
         = \frac{1}{i} \cdot \frac{i}{N} = \frac{1}{N}
     \end{eqnarray}
@@ -595,7 +595,7 @@ In \cref{thm:reservoir-sampling} zeigen wir die Korrektheit von \cref{algo:reser
 
 \begin{exercise}
     Zeige die Korrektheit von \cref{algo:reservoir-sampling} indem du den Beweis von \cref{thm:reservoir-sampling} auf $k \ge 1$ verallgemeinerst.
-    Die lässt sich etwa über Induktion über die Datenstromlänge $|S|$ erreichen.
+    Dies lässt sich etwa über Induktion über die Datenstromlänge $|S|$ erreichen.
 \end{exercise}
 
 Wir können also \Gnm Graphen mittels Reservoir Sampling erzeugen.
@@ -607,7 +607,7 @@ Im Folgenden skizzieren wir einen alternativen Ansatz um $k$~Elemente ohne Zurü
 Dieser nutzt das Grundgerüst in~\cref{algo:basis-ziehen-ohne-zuruecklegen}, das wir um einige Details erweitern müssen, um eine praktisch schnelle Implementierung zu erreichen:
 
 \begin{algorithm}[H]
-    \KwIn{Eingabe: Universum~$S$, Stichprobengröße: $k$}
+    \KwIn{Eingabe: Universum~$S$, Stichprobengröße~$k$}
     \KwOut{Menge $R$ mit $k$ zufällig ausgewählten Elementen}
 
     Initialisiere $R = \emptyset$\;
@@ -698,7 +698,7 @@ Wie wir in \cref{fig:ziehen-ohne-zuruecklegen-iterationen} sehen, gilt für rela
 \bigskip
 
 \Cref{lemma:basis-ziehen-ohne-zuruecklegen-versuche} besagt, dass \cref{algo:basis-ziehen-ohne-zuruecklegen} für $k \le N / 2$ erwartet $\Oh{k}$ Iterationen ausführt und somit (in Erwartung) optimal ist.
-Nur für $k \to N$ der $\log$-Faktor asymptotisch relevant wird, und wir bekommen eine suboptimale Laufzeit von $\Omega(N \log N)$.
+Nur für $k \to N$ wird der $\log$-Faktor asymptotisch relevant, und wir bekommen eine suboptimale Laufzeit von $\Omega(N \log N)$.
 
 Auf \aside{Komplementbildung stellt sicher: $k \ge N /2$} der einen Seite sollte das für \emph{übliche} Graphen kein Problem sein (sie sind dünn und daher $k \ll N$); dennoch lässt sich das Problem einfach vermeiden.
 Für $k > N / 2$ können wir zunächst das Komplement~$\bar R$ mit  $| \bar R | = N - k < N/2$ ziehen und dann alle Elemente außer solche in $\bar R$ ausgeben.
@@ -721,10 +721,10 @@ Um Beobachtungen wie diese zu formalisieren, nutzt man häufig folgende Definiti
 \end{definition}
 
 In anderen Worten: je \qq{größer} unser Problem wird, desto unwahrscheinlicher sind extreme Ausreißer.
-On der Regel ist der Parameter aus dem Kontext klar und wird daher in der Literatur oft nicht erwähnt (im folgenden Lemma wäre es $k$):
+In der Regel ist der Parameter aus dem Kontext klar und wird daher in der Literatur oft nicht erwähnt (im folgenden Lemma wäre es $k$):
 
 \begin{lemma}
-    \Cref{algo:basis-ziehen-ohne-zuruecklegen} verwendet mit hoher Wahrscheinlichkeit \Oh{k} Iteration für $k \le N/2$.
+    \Cref{algo:basis-ziehen-ohne-zuruecklegen} verwendet mit hoher Wahrscheinlichkeit \Oh{k} Iterationen für $k \le N/2$.
 \end{lemma}
 
 \begin{proof}
@@ -741,7 +741,7 @@ On der Regel ist der Parameter aus dem Kontext klar und wird daher in der Litera
         \prob{X > t} \le \prob{X' > t}.
     \end{equation}
 
-    Wir können nun unsere Worst-Case Abschätzung $X'$ auch alternative interpretieren:
+    Wir können nun unsere Worst-Case Abschätzung $X'$ auch alternativ interpretieren:
     Wir werfen solange Münzen bis wir $k$ mal \qq{Kopf} gesehen haben.
     Die Anzahl der Versuche entspricht dann $X'$.
 
@@ -815,14 +815,14 @@ Unsere Analysen sagen jedoch eine konstante Laufzeit pro gezogenem Element für 
 Wir sind also im Algorithm-Engineering-Zyklus auf eine Diskrepanz zwischen Theorie und Praxis gestoßen!
 Ist unsere Analyse falsch? Jaein.
 In der Bestimmung der Laufzeit nutzen wir eine Unit-Cost Random-Access-Machine (d.h. wir gingen davon aus, dass jede Operation gleich viel Zeit benötigt).
-Moderne Compute verfügen jedoch über ausgeklügelte Techniken, die gewisse Aspekte besonders beschleunigen.
+Moderne Computer verfügen jedoch über ausgeklügelte Techniken, die gewisse Aspekte besonders beschleunigen.
 
 Hierzu gehören die sog. Speicherhierarchien: Ein Prozessor kann nur auf Daten operieren, die sich auf dem physischen Chip befinden, genauer in den Registern.
 Aus physikalischen und ökonomischen Gründen, gibt es aber nur sehr wenig \qq{Register-Speicher}.
 Die meisten aktiven Daten werden daher im Arbeitsspeicher vorgehalten; dieser ist aber recht langsam.
 Eine typische CPU kann in der Zeit, die es dauert ein Datum aus dem Arbeitsspeicher zu beziehen, etwa 100 bis 1000 Operationen ausführen.
 Um dies aufzufangen, werden mehrere Caches eingefügt: die CPU \qq{rät} welche Daten in naher Zukunft benötigt werden und hält diese im schnelleren Cache vor.
-Die klappt aber mit Zufallsdaten oft nicht (sie sollen ja gerade \emph{nicht} vorhersehbar sein).
+Dies klappt aber mit Zufallsdaten oft nicht (sie sollen ja gerade \emph{nicht} vorhersehbar sein).
 
 In \cref{fig:benchmark_gnm_scale} (rechts) sehen wir also genau den Punkt ab dem die Datenstrukturen nicht mehr in den Cache passen.
 Für Hashset und Reservoir-Sampling nutzen diese Datenstrukturen etwa $64 k = 16 N$ Bits (das Hashset aufgrund des Load-Factors < 1 auch ein bisschen mehr).
@@ -875,7 +875,7 @@ Grob \aside{Work Stealing} kann man annehmen, dass der Prozessor~$P_0$, der $t_0
 Wenn während der Ausführung von $t_1$ ein anderer Prozessor verfügbar ist, übernimmt dieser $t_2$.
 In diesem Fall sind $t_1$ und $t_2$ also nebenläufig.
 Wenn sich kein anderer Prozessor findet, wird $P_0$ den Task $t_2$ übernehmen, sobald $t_1$ beendet wurde.
-Wir erhalten also dynamisches System, das (i) nicht wissen muss, wie viele Prozessoren es gibt, und (ii) auch relativ gut damit umgehen kann, dass $t_1$ und $t_2$ evtl. sehr unterschiedliche Laufzeiten haben.
+Wir erhalten also ein dynamisches System, das (i) nicht wissen muss, wie viele Prozessoren es gibt, und (ii) auch relativ gut damit umgehen kann, dass $t_1$ und $t_2$ evtl. sehr unterschiedliche Laufzeiten haben.
 Praktisch ist es kein Problem viel mehr Tasks zu erzeugen als es Prozessoren gibt.
 
 Wir messen die Güte eines Fork-Join-Algorithmus mit zwei Eigenschaften:
@@ -1041,7 +1041,7 @@ Die Hauptideen sind: ein Span von $\Oh{\log N}$ folgt trivial wie in unserem Bei
 Um den Span jedoch auf $\Oh{\log k}$ zu reduzieren, müssen wir zeigen, dass sich auch die Stichprobengröße ungefähr gleich auf beide Teilprobleme verteilt.
 Dies folgt aus der relativ kleinen Varianz der Hypergeometrischen Verteilung für hinreichend großes $k$.
 Nur für sehr kleines $k$ laufen wir Gefahr, dass eines der beiden Teilprobleme alle Samples enthält;
-das ist aber zum Einen unkritisch (weil $|S|$ trotzdem halbiert wird und so die Dicht $k/N$ steigt) und zum Anderen, wie wir gleich sehen werden, für praktische Implementierungen unerheblich.
+das ist aber zum Einen unkritisch (weil $|S|$ trotzdem halbiert wird und so die Dichte $k/N$ steigt) und zum Anderen, wie wir gleich sehen werden, für praktische Implementierungen unerheblich.
 
 Wie in \cref{fig:benchmark_gnm_recursive_scale} gezeigt, zeigt eine (sequentielle) Implementierung von \cref{algo:parallel_k_aus_N} ein gutes Skalierungsverhalten.
 Die Laufzeit hängt nur von $\Oh{k}$ ab und steigt nicht für großes $N$ --- sie ist jedoch allgemein recht hoch (das Ziehen einer Hypergeometrischen Zufallsvariable ist recht langsam).
@@ -1061,7 +1061,7 @@ Für \emph{sehr} dünne Graphe mit $m(n) = o(\sqrt n)$, bewiesen sie etwa, dass 
 An dieser Aussage, wollen wir uns eine Aussage ansehen, mit der wir die Wahrscheinlichkeit solch eines Ereignisses abschätzen können.
 
 \begin{lemma}
-    Sehr dünne $\Gnm$ Graphen mit $m = o(m)$ haben wahrscheinlich keine Knoten mit mehr als einer Kante.
+    Sehr dünne $\Gnm$ Graphen mit $m = o(n)$ haben wahrscheinlich keine Knoten mit mehr als einer Kante.
 \end{lemma}
 
 \begin{proof}
@@ -1117,7 +1117,7 @@ An dieser Aussage, wollen wir uns eine Aussage ansehen, mit der wir die Wahrsche
 \bigskip
 
 Wir wechseln nun zu \Gnp Graphen.
-Hier werden wir einen Beweis sehen, der Unabhängigkeit aller Kanten ausnutzt.
+Hier werden wir einen Beweis sehen, der die Unabhängigkeit aller Kanten ausnutzt.
 Zu erst schauen wir uns aber einige wohl bekannte Phasenübergänge an.
 Sei $\epsilon >0$ hinreichend klein.
 Dann gilt:
@@ -1140,18 +1140,18 @@ Hierzu \qq{zählten} sie kombinatorisch die Anzahl an Graphen mit und ohne die g
 
 Wir möchten nun das Verhalten um $np = 1$ besser verstehen und folgen einem algorithmischen Beweis von \cite{DBLP:journals/rsa/KrivelevichS13}.
 Die Idee ist relativ einfach:
-wir führen eine Tiefensuche auf einem $\Gnp$ Graphen aus, wobei die Nachbarschaft durch Ziehen von Einträgen in der Adjazenzmatrix erkunden.
-Dann zeigen wir, dass für $np < 1$ so wenig Einsen vorhanden sind, dass es sehr unwahrscheinlich ist, dass wir eine große Zusammenhangskomponent beobachten.
+wir führen eine Tiefensuche auf einem $\Gnp$ Graphen aus, wobei die Nachbarschaft durch Ziehen von Einträgen in der Adjazenzmatrix erkundet wird.
+Dann zeigen wir, dass für $np < 1$ so wenig Einsen vorhanden sind, dass es sehr unwahrscheinlich ist eine große Zusammenhangskomponente zu beobachten.
 Für $np > 1$, hingegen, sehen wir ausreichend viele Einsen.
 
 \subsection{Tiefensuche auf $\Gnp$}
-Im Folgenden definieren wir eine klassische Tiefensuche (DFS) auf eine Weise, die für den folgenden Beweise hilfreich ist.
+Im Folgenden definieren wir eine klassische Tiefensuche (DFS) auf eine Weise, die für den folgenden Beweis hilfreich ist.
 Implementieren sollte man sie so besser nicht...
 Während einer DFS können wir die Knotenmenge $V$ in drei Teilmengen $B$, $S$, $U$ partitionieren:
 \begin{itemize}
     \item \underline Bearbeitete Knoten~$B$ sind Knoten, die besucht wurden und keine Kinder in $U$ mehr haben.
     \item Knoten~$S$ werden gerade erkundet und liegen daher auf dem \underline Stack.
-    \item \underline Unbekannte Knoten wurde noch nicht gefunden.
+    \item \underline Unbekannte Knoten wurden noch nicht gefunden.
 \end{itemize}
 
 Bevor die DFS startet gilt also $B = S = \emptyset$ und $U = V$.
@@ -1174,7 +1174,7 @@ Weiter, sei $S$ ein Stack, d.h. das Element, das als letztes eingefügt wurde, w
 
 Das besondere an unser DFS ist, dass wir keine Kantenliste als Eingabe bekommen, sondern uns verstellen, einen Strom von unabhängig zufälligen Bits $X_1, \ldots, X_N$ zu erhalten, wobei $\prob{X_i = 1} = p$.
 Wenn wir nun in Schritt 1a einen Nachbar von $v$ suchen, iterieren wir gleichzeitig über $U$ und $X$.
-Dann gegeben wir das erste $w$ zurück, dessen Bit gesetzt war (falls es existiert).
+Dann geben wir das erste $w$ zurück, dessen Bit gesetzt war (falls es existiert).
 Wenn wir das nächste Mal mit Knoten $v$ zu Schritt 1a kommen, suchen wir nur nach $w' \in U$ mit $w' > w$.
 
 \begin{exercise}
@@ -1186,7 +1186,7 @@ Wir werden später folgende Beobachtung ausnutzen:
 \begin{itemize}
     \item In jeder Iteration wird ein Knoten entweder von $U$ nach $S$ (Schritt 1a oder 2) oder von $S$ nach $B$ (Schritt 1b).
     \item Zu jedem Zeitpunkt gilt, dass der Graph keine Kanten zwischen $U$ und $B$ hat (insb. ändern noch nicht entdeckte Kanten hieran nichts mehr).
-    \item Alle Knoten in $S$ gehören zur selben Zusammenhangskomponent.
+    \item Alle Knoten in $S$ gehören zur selben Zusammenhangskomponente.
 \end{itemize}
 
 \section{Gradverteilung}
