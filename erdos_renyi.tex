@@ -28,7 +28,7 @@ Je nach Wahl, ist der Grundraum von $\Gn$
 \noindent Die Wahrscheinlichkeitsverteilung $f$ folgt dann als $f_{\gGn}(G) = 1 / | \gGn |$, oder konkret:
 \begin{align}
     f_{\mathbb G_\text{ger}(n)}(G)  & =  \frac{1}{| \mathbb G_\text{ger}(n) |} = 2^{-n^2}\label{eq:gleichverteilt_gerichtet_gn} \\
-    f_{\mathbb G_\text{unge}(n)}(G) & =  \frac{1}{| \mathbb G_\text{unge}(n) |} = 2^{-\binom n 2} = 2^{-\frac{2}{n(n-1)}}.
+    f_{\mathbb G_\text{unge}(n)}(G) & =  \frac{1}{| \mathbb G_\text{unge}(n) |} = 2^{-\binom n 2} = 2^{-\frac{n(n-1)}{2}}.
 \end{align}
 
 Die geschlossene Form $| \mathbb G_\text{ger}(n) | = 2^{n^2}$ in \cref{eq:gleichverteilt_gerichtet_gn} ergibt sich daraus, dass ein gerichteter Graph $n^2$ potentielle Kanten hat (die Adjazenzmatrix hat $n \times n$ Einträge).
@@ -39,7 +39,7 @@ Beachte aber auch, dass formal \cref{eq:gerichtet_gn} und \cref{eq:gleichverteil
 In \cref{eq:gerichtet_gn} fordern wir nur, dass die Knotenmenge~$V$ die Kardinalität $|V| = n$ hat.
 Offensichtlich gibt es unbeschränkt viele dieser Wahlen; für $n=3$ z.B. $\set{1,2,3}$, $\set{2,3,4}$, \ldots, $\set{k, k+1, k+2}$ für alle $k \in \mathbb N$.
 Die Wahl der Knotenbezeichner hat jedoch keinen Einfluss auf die Netzwerkeigenschaften.
-Daher werden wir in dieser Veranstaltung grundsätzlich annehmen, dass die Kantenmengen in irgendeiner Form fixiert sind, z.B. als $V = \set{1, \ldots, n} = [n]$ oder $V = \set{v_1, \ldots, v_n}$.
+Daher werden wir in dieser Veranstaltung grundsätzlich annehmen, dass die Knotenmengen in irgendeiner Form fixiert sind, z.B. als $V = \set{1, \ldots, n} = [n]$ oder $V = \set{v_1, \ldots, v_n}$.
 
 \bigskip
 
