@@ -976,9 +976,13 @@ Dann setzen wir den Prozess bedingt auf $k_1$ fort:
     \SetKwFunction{Fork}{Fork}
     \SetKwFunction{Join}{Join}
     \Fn{\ParSelect{$S=(s_1, \ldots, s_N), k$}}{
-        \If{$k = 1$}{
+        \uIf{$k = 0$}{
+            gebe $\emptyset$ zurück und beende Task\;
+        } \uElseIf{$k = 1$}{
             $x \gets$ zufällig uniform aus $S$\;
             gebe $\set{x}$ zurück und beende Task\;
+        } \ElseIf{$k = N$}{
+            gebe $S$ zurück und beende Task\;
         }
         \BlankLine
         $N_L \gets \lfloor N / 2 \rfloor$\;
