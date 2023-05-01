@@ -975,7 +975,7 @@ Dann setzen wir den Prozess bedingt auf $k_1$ fort:
     \SetKwFunction{ParSelect}{ParSample}
     \SetKwFunction{Fork}{Fork}
     \SetKwFunction{Join}{Join}
-    \Fn{\ParSelect{$S=(s_1, \ldots, s_N), k$}}{
+    \Fn{\ParSelect{$S=\set{s_1, \ldots, s_N}, k$}}{
         \uIf{$k = 0$}{
             gebe $\emptyset$ zurück und beende Task\;
         } \uElseIf{$k = 1$}{
@@ -989,8 +989,8 @@ Dann setzen wir den Prozess bedingt auf $k_1$ fort:
         $k_L \gets$ zufällig hypergeometrisch: ziehe $N_L$ Element aus $N$ mit $k$ Treffern\;
         \BlankLine
         \Fork{$
-                \underbrace{\ParSelect{$S_L = (s_1, \ldots, s_{N_L}), k_L$}}_{\text{Task $t_1$}}, \ \
-                \underbrace{\ParSelect{$S_R = (s_{N_L + 1}, \ldots, s_N), k - k_L$}}_{\text{Task $t_2$}}
+                \underbrace{\ParSelect{$S_L = \set{s_1, \ldots, s_{N_L}}, k_L$}}_{\text{Task $t_1$}}, \ \
+                \underbrace{\ParSelect{$S_R = \set{s_{N_L + 1}, \ldots, s_N}, k - k_L$}}_{\text{Task $t_2$}}
             $}\;
         $(R_1, R_2) \gets \Join{$t_1, t_2$}$\;
         gebe $R_1 \cup R_2$ zurück und beende Task
