@@ -1000,10 +1000,10 @@ Dann setzen wir den Prozess bedingt auf $k_1$ fort:
 \noindent
 Um die Performance von \cref{algo:parallel_k_aus_N} zu analysieren, treffen wir zwei Annahmen:
 \begin{enumerate}
-    \item Wir können $S$ in $\Oh{1}$ Zeit in zwei (fast) gleichgroße Hälften teilen.
+    \item Wir können $S$ in $\Oh{1}$ Zeit in zwei (fast) gleich große Hälften teilen.
           Das ist in vielen Fällen möglich:
           \begin{itemize}
-              \item Für $\Gnm$ Graphen gehen wir davon aus, dass $S$ nur implizit existiert und das Interval $[1, n^2]$ repräsentiert.
+              \item Für $\Gnm$ Graphen gehen wir davon aus, dass $S$ nur implizit existiert und das Intervall $[1, n^2]$ repräsentiert.
                     Dies können wir durch Verschieben der Intervallgrenzen trivial in $[1, n^2 / 2]$ und $[n^2/2 + 1, n^2]$ teilen.
               \item Wenn $S$ ein Array ist, können in die Rekursion Pointer auf den Anfang und das Ende des Teilproblems gegeben.
           \end{itemize}
@@ -1041,7 +1041,7 @@ Die Hauptideen sind: ein Span von $\Oh{\log N}$ folgt trivial wie in unserem Bei
 Um den Span jedoch auf $\Oh{\log k}$ zu reduzieren, müssen wir zeigen, dass sich auch die Stichprobengröße ungefähr gleich auf beide Teilprobleme verteilt.
 Dies folgt aus der relativ kleinen Varianz der Hypergeometrischen Verteilung für hinreichend großes $k$.
 Nur für sehr kleines $k$ laufen wir Gefahr, dass eines der beiden Teilprobleme alle Samples enthält;
-das ist aber zum Einen unkritisch (weil $|S|$ trotzdem halbiert wird und so die Dichte $k/N$ steigt) und zum Anderen, wie wir gleich sehen werden, für praktische Implementierungen unerheblich.
+das ist aber zum einen unkritisch (weil $|S|$ trotzdem halbiert wird und so die Dichte $k/N$ steigt) und zum anderen, wie wir gleich sehen werden, für praktische Implementierungen unerheblich.
 
 Wie in \cref{fig:benchmark_gnm_recursive_scale} gezeigt, zeigt eine (sequentielle) Implementierung von \cref{algo:parallel_k_aus_N} ein gutes Skalierungsverhalten.
 Die Laufzeit hängt nur von $\Oh{k}$ ab und steigt nicht für großes $N$ --- sie ist jedoch allgemein recht hoch (das Ziehen einer Hypergeometrischen Zufallsvariable ist recht langsam).
@@ -1126,7 +1126,7 @@ Wir sagen daher, dass \Gnm Graphen einen Phasenübergang mit Schwellwertfunktion
 
 Wir wechseln nun zu \Gnp Graphen.
 Hier werden wir einen Beweis sehen, der die Unabhängigkeit aller Kanten ausnutzt.
-Zu erst schauen wir uns aber einige wohl bekannte Phasenübergänge an.
+Zuerst schauen wir uns aber einige wohlbekannte Phasenübergänge an.
 Sei $\epsilon >0$ hinreichend klein.
 Dann gilt:
 \begin{itemize}
@@ -1138,11 +1138,6 @@ Dann gilt:
     \item Falls $np < (1-\epsilon)\log n$ gibt es mit hoher Wahrscheinlichkeit einzelne Knoten ohne inzidente Kanten.
     \item Falls $np > (1+\epsilon)\log n$ ist der Graph mit hoher Wahrscheinlichkeit zusammenhängend.
 \end{itemize}
-
-Beachte, dass in diesen Definitionen $p$ bzw. $m$ als Funktionen in $n$ verstanden werden müssen.
-Konkret bedeutet z.B. $np = 1$, dass $p(n) = 1 /n$ ist.
-, dass es für gewisse Phasenübergänge (z.B. zwischen dem nicht-zusammenhängenden Regime ins Zusammenhängende) scharfe Schwellwertfunktion~$A$ (threshold functions) gibt, formal.
-Hierzu \qq{zählten} sie kombinatorisch die Anzahl an Graphen mit und ohne die gewünschten Eigenschaften; wir werden diese Technik für die Analyse von lokalem Clustering sehen.
 
 \begin{exercise}
     Zeige ein möglichst großes $p(n)$ für das $\Gnp$ Graphen mit hoher Wahrscheinlichkeit keine Kanten haben.
@@ -1157,16 +1152,16 @@ Für $np > 1$, hingegen, sehen wir ausreichend viele Einsen.
 \subsection{Tiefensuche auf $\Gnp$}
 Im Folgenden definieren wir eine klassische Tiefensuche (DFS) auf eine Weise, die für den folgenden Beweis hilfreich ist.
 Implementieren sollte man sie so besser nicht...
-Während einer DFS können wir die Knotenmenge $V$ in drei Teilmengen $B$, $S$, $U$ partitionieren:
+Während einer DFS können wir die Knotenmenge~$V$ in drei Teilmengen $B$, $S$, $U$ partitionieren:
 \begin{itemize}
     \item \underline Bearbeitete Knoten~$B$ sind Knoten, die besucht wurden und keine Kinder in $U$ mehr haben.
-    \item Knoten~$S$ werden gerade erkundet und liegen daher auf dem \underline Stack.
+    \item Knoten in~$S$ werden gerade erkundet und liegen daher auf dem \underline Stack.
     \item \underline Unbekannte Knoten wurden noch nicht gefunden.
 \end{itemize}
 
-Bevor die DFS startet gilt also $B = S = \emptyset$ und $U = V$.
+Bevor die DFS startet, gilt also $B = S = \emptyset$ und $U = V$.
 Die Suche terminiert sobald $B = V$ und $S = U = \emptyset$.
-Solange dies noch nicht der Fall ist, wird einer von zwei Schritten ausführt:
+Solange dies noch nicht der Fall ist, wird einer der folgenden Schritte ausführt:
 
 \begin{enumerate}
     \item Falls $S \ne \emptyset$ sei $v$ der Knoten, der als letztes eingefügt wurde ($S$ ist ein Stack)
@@ -1177,21 +1172,22 @@ Solange dies noch nicht der Fall ist, wird einer von zwei Schritten ausführt:
     \item Falls $S = \emptyset$ entnehme den ersten Knoten $v \in U$ und füge ihn in $S$ ein
 \end{enumerate}
 
-Um Uneindeutigkeiten zu vermeiden, fixieren wir die Knotenreihenfolgen.
+Um Uneindeutigkeiten zu vermeiden, fixieren wir die Knotenordnung.
 Hierzu nehmen wir oBdA an, dass $V = \set{1, \ldots, n}$ natürliche Zahlen sind.
 Die Mengen $V$ und $U$ seien aufsteigend geordnet, insbesondere werden immer die kleinsten passenden Elemente entnommen (in Schritten 1a und 2).
 Weiter, sei $S$ ein Stack, d.h. das Element, das als letztes eingefügt wurde, wird als erstes entfernt.
 
-Das besondere an unser DFS ist, dass wir keine Kantenliste als Eingabe bekommen, sondern uns verstellen, einen Strom von unabhängig zufälligen Bits $X_1, \ldots, X_N$ zu erhalten, wobei $\prob{X_i = 1} = p$.
+Das Besondere an unser DFS ist, dass wir keine Kantenliste als Eingabe bekommen, sondern uns verstellen, einen Strom von unabhängig zufälligen Bits $X_1, \ldots, X_N$ zu erhalten, wobei $\prob{X_i = 1} = p$.
 Wenn wir nun in Schritt 1a einen Nachbar von $v$ suchen, iterieren wir gleichzeitig über $U$ und $X$.
 Dann geben wir das erste $w$ zurück, dessen Bit gesetzt war (falls es existiert).
-Wenn wir das nächste Mal mit Knoten $v$ zu Schritt 1a kommen, suchen wir nur nach $w' \in U$ mit $w' > w$.
+Wenn wir das nächste Mal mit Knoten $v$ zu Schritt 1a kommen, suchen wir nur nach $w' \in U$ mit $w' > w$ --- wir machen als an der Stelle weiter, an der wir einen Nachbarn gefunden haben.
 
 \begin{exercise}
     Zeige, dass jeder Eintrag der Adjazenzmatrix höchstens einmal betrachtet wird und wir mittels der $X_i$ somit ein DFS auf \Gnp simulieren.
     Die zweite Beobachtung (s.u.) folgt hieraus.
 \end{exercise}
 
+\noindent
 Wir werden später folgende Beobachtung ausnutzen:
 \begin{itemize}
     \item In jeder Iteration wird ein Knoten entweder von $U$ nach $S$ (Schritt 1a oder 2) oder von $S$ nach $B$ (Schritt 1b).
@@ -1200,41 +1196,130 @@ Wir werden später folgende Beobachtung ausnutzen:
     \item Alle Knoten in $S$ gehören zur selben Zusammenhangskomponente.
 \end{itemize}
 
+\subsection{Zusammenhangskomponenten für $np = (1-\epsilon)$ sind klein}
 Wenn wir nun DFS ausführen, werden wir unsere Strukturaussagen zu \Gnp auf Eigenschaften Stroms von Zufallsbits reduzieren.
-Hierfür zeigen wir zunächst folgende Lemma:
+Die Hauptarbeit dieser Analyse leisten wir in \cref{lemma:dfs_kaum_einsen_in_X}.
 
-\begin{lemma}[\cite{DBLP:journals/rsa/KrivelevichS13}]
-    Sei $\epsilon > 0$ eine hinreichend kleine Konstante und seien $X = (X_1, \ldots, X_N)$ unabhängige Zufallsvariablen, die Bernoulli mit Parameter~$p$ verteilt sind.
-    \begin{enumerate}
-        \item Sei $p = (1 - \epsilon) / n$ und $k = (10 / \epsilon^2) \ln n$.
-              Dann gibt es mit hoher Wahrscheinlichkeit kein Interval mit Länge $nk$ (d.h. $X_i, \ldots, X_{i+nk}$) in dem mindestens $k$ Zufallsvariablen den Wert 1 haben.
+Der \aside{union bound} Beweis des Lemmas nutzt eine übliche Struktur.
+Wir möchten zeigen, dass etwas nicht passiert, obwohl es viele Möglichkeiten $X_1, \ldots, X_n$ hierfür gibt.
+Man schätzt also zunächst die Einzelwahrscheinlichkeiten~$\prob{X_i}$ ab (vereinfachend nimmt man oft an, dass die $X_i$ unabhängig sind).
+Hier sollten sich extrem kleine Erfolgswahrscheinlichkeiten $\prob{X_i} < 1/n$.
+Dann schätzt man die Wahrscheinlichkeit, dass mindestens eins eintritt, einfach als Summe der Einzelwahrscheinlichkeiten nach oben ab.
+Booles \aside{Booles Ungleichung} Ungleichung besagt:
+\begin{align}
+    \prob{\bigcup_{i=1}^n X_i} = \prob{\text{mindestens ein $X_i$ tritt ein}} \le \sum_{i=1}^n \prob{X_i}
+\end{align}
 
-        \item Sei $p = (1 + \epsilon) /n$ und $N_0 = \epsilon n^2/2$.
-              Dann gilt mit hoher Wahrscheinlichkeit $|\sum_{i=1}^{N_0} X_i - [\epsilon(1+\epsilon]/2| \le n^{2/3}$.
-              \qedhere
-    \end{enumerate}
+\noindent
+Nun können wir eine wichtige Eigenschaft unserer Zufallsbits zeigen.
+Wir befinden uns zunächst im subkritischen Bereich, sprich unsere Analyse betrachtet Graphen mit $np < (1 - \epsilon)$.
+
+\begin{lemma}[basiert auf \cite{DBLP:journals/rsa/KrivelevichS13}]\label{lemma:dfs_kaum_einsen_in_X}
+    Sei $\epsilon > 0$ \aside{kleines $\epsilon > 0$ \\ $N = \binom n 2$ \\ $p = (1 - \epsilon) / n$ \\ $k = (10 / \epsilon^2) \ln n$} eine hinreichend kleine Konstante und seien $X = (X_1, \ldots, X_N)$ unabhängige Zufallsvariablen, die Bernoulli mit Parameter~$p$ verteilt sind.
+    %\begin{enumerate}
+    %\item
+    Sei $p = (1 - \epsilon) / n$ und $k = (10 / \epsilon^2) \ln n$.
+    Dann gibt es mit hoher Wahrscheinlichkeit keine zusammenhängende Teilfolge (Intervall) mit Länge $nk$ (d.h. $X_i, \ldots, X_{i+nk}$) in dem mindestens $k$ Zufallsvariablen den Wert 1 haben.
+
+    %\item Sei $p = (1 + \epsilon) /n$ und $N_0 = \epsilon n^2/2$.
+    %      Dann gilt mit hoher Wahrscheinlichkeit $|\sum_{i=1}^{N_0} X_i - \epsilon(1+\epsilon)/2| \le n^{2/3}$.
+    %      \qedhere
+    %\end{enumerate}
 \end{lemma}
 
 \begin{proof}
-    Beginnen wir mit der ersten Aussage und fixieren \emph{ein} Interval mit Länge $nk$.
-    Wir definition $Y_i = \sum_{j=1}^{nk} X_{i+j}$.
-    Aus Symmetrie können wir uns zunächst auf ein Interval $Y_1$ beschränken.
-    Mittels Chernoff kann man zeigen
+    %Beginnen wir mit der ersten Aussage.
+    Wir definieren $Y_i = \sum_{j=1}^{nk} X_{i+j-1}$ als die Anzahl an Einsen im Intervall, das mit $X_i$ beginnt.
+    Aus Symmetrie können wir uns zunächst auf ein Intervall $Y_1$ beschränken.
+    Mittels additiver Chernoff Ungleichung kann man zeigen
     \begin{align}
-        \prob{Y_1 - \expv{Y_1} \ge k} < \exp\left(-\frac{\epsilon^2(1-\epsilon)}{3} \cdot \frac{10}{\epsilon^2} \ln n \right)
+        \prob{Y_1 \ge k} < \exp\left(-\frac{\epsilon^2(1-\epsilon)}{3} \cdot \frac{10}{\epsilon^2} \ln n \right)
         = \exp\left(- \underbrace{(1-\epsilon)}_{\to 1} \frac{10}{3} \ln n \right)
     \end{align}
 
-    Da die Behauptung nicht nur über ein Interval~$Y_1$ spricht, sondern für über alle, benötigen wir noch einen sog. \emph{union bound}.
-    Hierzu nutzen wir Booles Ungleichung:
+    Da die Behauptung nicht nur über ein Intervall~$Y_1$ spricht, sondern für über alle $Y_1, \ldots, Y_{N-nk}$, benötigen wir noch einen \emph{union bound}.
+    Hierfür betrachten wir die Einzelereignisse $Y_i \ge k$ für alle $i$:
+
     \begin{align}
-        \prob{\exists i:\ Y_i \ge k} & \le \sum_{i=1}^{N-k} \prob{Y_i \ge k}                                                                         \\
-                                     & \le N \prob{Y_1 \ge k}
-                                     & \le n^2 / 2 \underbrace{\exp\left(- \underbrace{(1-\epsilon)}_{\to 1} \frac{10}{3} \ln n \right)}_{=o(1/n^3)}
+        \prob{\exists i:\ Y_i \ge k} & \le \sum_{i=1}^{N-k} \prob{Y_i \ge k}                                                                                        \\                                                                      \\
+                                     & \le N \cdot \prob{Y_1 \ge k}                                                                                                 \\
+                                     & \le \frac{n^2}{2} \ \cdot\ \underbrace{\exp\left(- \underbrace{(1-\epsilon)}_{\to 1} \frac{10}{3} \ln n \right)}_{=o(1/n^3)}
                                      & \le \frac{1}{2n}
     \end{align}
 
     Da die Gegenwahrscheinlichkeit durch $1/2n$ nach oben beschränkt ist, gilt die Aussage mit hoher Wahrscheinlichkeit.
 \end{proof}
+
+Wir wissen also, dass für $p < (1 - \epsilon) / n$, wir in $nk$ Zufallsbits ziemlich sicher keine $k$ Einsen finden.
+Die Intuition für \Gnp ist also, dass wir in $k$ Zeilen der Adjazenzmatrix keine $k$ Nachbarn finden.
+Diese $k$ Zeilen können also nicht zusammenhängend sein!
+Wir formalisieren dieses Bauchgefühl in folgendem Theorem:
+
+\begin{theorem}[basiert auf \cite{DBLP:journals/rsa/KrivelevichS13}]
+    Sei \aside{$\Gnp$ mit $np = (1-\epsilon)$ hat nur Zusammenhangskomponenten mit $\Oh{\log n}$ Knoten.} $\epsilon > 0$ hinreichend klein.
+    Ferner sei $G \sim \Gnp$ ein zufälliger Graph mit $np = (1 - \epsilon)$.
+    Dann haben alle Zusammenhangskomponenten mit hoher Wahrsceinlichkeit eine Größe von höchstens $10 \epsilon^{-2} \ln n$.
+\end{theorem}
+
+\begin{proof}
+    Beweis durch Widerspruch.
+    Nehmen wir an, es gibt eine Zusammenhangskomponente~$K$ mit mehr als $k = 10 \epsilon^{-2} \ln n$ Knoten.
+    Betrachten wir die Phasen in der DFS während $K$ exploriert wird.
+
+    Konkret betrachten wir den Moment, zu dem der $k+1$ Knoten entdeckt wird (dieser wird also gleich von $U$ nach $S$ bewegt).
+    Seien $\Delta K = K \cap B$ die Knoten der Zusammenhangskomponente~$K$ die bereits fertig bearbeitet wurden.
+    Dann gilt $|\Delta K \cup S| = |\Delta K| + |S| = k$; sonst hätten wir nicht eben den $k+1$ Knoten entdecken können.
+
+    Den ersten dieser $k$ Knoten bekamen wir \qq{kostenlos}, da er in Schritt 2 von $U$ nach $S$ bewegt wurde, um die Suche in der neuen Zusammenhangskomponente zu starten.
+    Jeder weitere Knoten musste über eine Kanten zu einem Knoten in $\Delta K \cup S$ entdeckt wurden sein.
+    Da Kanten zu einer Eins in unseren Zufallsbits korrespondiert, müssen wir als beim Entdecken des $k+1$ Knoten genau $k$ Einsen gesehen haben.
+
+    Von jedem Knoten in $\Delta K \cup S$ suchten wir nach höchstens $n$ Nachbarn (grobe Überabschätzung!).
+    In anderen wurden, wir haben höchstens $k n$ Bits gelesen und dabei $k$ Einsen gefunden.
+    Das passiert gemäß \cref{lemma:dfs_kaum_einsen_in_X} mit hoher Wahrscheinlichkeit nicht.
+\end{proof}
+
+Durch geeignete Abschätzung, dass es für $np = (1 + \epsilon)$ \qq{viele} Einsen gibt, lassen sich folgende Resultate zeigen.
+Mit hoher Wahrscheinlichkeit enthält $G \sim \Gnp$ \ldots
+\begin{itemize}
+    \item \ldots einen Pfad mit mindestens $\epsilon^2 n / 5$ Knoten.
+    \item \ldots einen Kreis mit $\Theta(\epsilon^2) n$ Knoten.
+    \item \ldots eine Zusammenhangskomponente mit mindestens $\epsilon n / 2$ Knoten.
+\end{itemize}
+
+Beobachte, dass die giant component deutlich größer ist als die Pfadlänge.
+Dies ist inhaltlich richtig (und erwartet --- warum??), bedarf aber auch eine deutlich genaueren Abschätzung unserer Zufallsbits.
+
+Weiter ist die $\epsilon^2$ Abhängigkeit der ersten beide Aussagen optimal.
+Tatsächlich ist das Resultat zur Pfadlänge der Grund, weshalb wir uns eine Tiefensuche statt einer Breitensuche angesehen haben.
+Wenn wir in der Tiefensuche jemals eine Stackgröße von $|S| = k$ erreichen, wissen wir, dass der untersuchte Graph einen Pfad mit mindestens $k$ Knoten enthält;
+das gilt nicht für die Breitensuche!
+Der Beweis zeigt also, dass wir ausreichend viele Einsen sehen um ein hinreichend großen Stack zu sehen.
+
+\subsection{Existenz von großen Kreisen}
+Zuletzt wollen wir uns noch eine Beweistechnik ansehen, bei der wir zwei geeignet parametrisiert $\Gnp$ durch Vereinigung ihrer Kantenmengen \qq{aufaddieren}.
+Mit dieser Technik lässt sich aus der (mit hoher Wahrscheinlichkeit) Existenz eines Pfads mit $\alpha n$ Knoten $\alpha > 0$, die (mit hoher Wahrscheinlichkeit) Existenz eines Kreises mit $\Theta(\alpha n)$ Knoten folgern.
+Hierzu ziehen wir einen weiteren $\mathcal G(n, p')$ Graphen mit ausreichend großen $p' = o(1/n)$.
+Diese neuen Kanten fügen wir zu unserem ursprünglichen Graphen $G$ hinzu und erhalten $G' \sim \mathcal G(n, p'')$ mit $p'' \lessapprox p + p'$.
+Da $p' = o(1/n)$ ist $p + p' = (1+\epsilon)/n + o(1/n)$ für $n \to \infty$ weiterhin durch $p$ dominiert.
+
+Zur einfacheren Illustration nehmen wir $p' = n^{-3/2} = o(1/n)$ an.
+Weiter betrachten wir die ersten und letzten $\ell = 2 n^x$ Knoten des Pfades mit hinreichend großem $x < 1$.
+Es bleibt ein Mittelteil von $M$ Knoten \qq{übrig}:
+\begin{align}
+    M = \alpha n - 2\ell =\alpha n - 4 n^x =  n(\alpha - \underbrace{4n^{x - 1}}_{=o(1)\text{, da } x < 1})
+\end{align}
+
+Im Grenzwert von $n\to\infty$, sind also der Präfix und Suffix des Pfades relativ zum Mittelteil asymptotisch verschwindet klein.
+
+Es gibt aber $\binom{\ell}{2} \ge n^{2x}$ mögliche Kanten zwischen dem Präfix und dem Suffix.
+Aus $G'$ bekommen wir also erwartet mehr als $n^{2x} p'$ Kanten --- eine reicht um einen einen Kreis, der länger als $M$ ist, zu schließen.
+In unserem Beispiel mit $p = n^{-3/2}$ gilt:
+\begin{align}
+    n^{2x} p' = n^{2x - 3/2}
+\end{align}
+
+Wenn wir also $x = 3/4$ wählen, erwarten wir mindestens eine Kante, die dann den versprochenen Kreis schließt.
+Für $x > 3/4$ existiert eine solche Kante mit hoher Wahrscheinlichkeit.
 
 \section{Gradverteilung}
