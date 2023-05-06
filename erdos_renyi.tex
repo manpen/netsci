@@ -198,7 +198,7 @@ Graphisch kann man sich also \Gnp als Adjazenzmatrix vorstellen, in der die Eint
 Durch ihre einfache Konstruktion sind beide Zufallsgraphen bis heute sehr verbreitete Modelle in der Netzwerkforschung.
 Wir werden jedoch sehen, dass viele Eigenschaften von echten Netzwerken auch von \Gnp oder \Gnm-Graphen nicht beschrieben werden können.
 
-\subsection{Anzahl von Kanten in \Gnp}
+\subsection{Anzahl von Kanten in \Gnp}\label{subsec:anzahl_kanten_in_gnp}
 Während bei \Gnm Graphen die Anzahl der Kanten durch den Parameter~$m$ fixiert ist, ist $|E|$ bei \Gnp Graphen eine Zufallsvariable.
 
 \begin{lemma}\label{lemma:erwartete_kanten_in_gnp}
@@ -1177,10 +1177,10 @@ Hierzu nehmen wir oBdA an, dass $V = \set{1, \ldots, n}$ natürliche Zahlen sind
 Die Mengen $V$ und $U$ seien aufsteigend geordnet, insbesondere werden immer die kleinsten passenden Elemente entnommen (in Schritten 1a und 2).
 Weiter, sei $S$ ein Stack, d.h. das Element, das als letztes eingefügt wurde, wird als erstes entfernt.
 
-Das Besondere an unser DFS ist, dass wir keine Kantenliste als Eingabe bekommen, sondern uns verstellen, einen Strom von unabhängig zufälligen Bits $X_1, \ldots, X_N$ zu erhalten, wobei $\prob{X_i = 1} = p$.
+Das Besondere an unser DFS ist, dass wir keine Kantenliste als Eingabe bekommen, sondern uns vorstellen, einen Strom von unabhängig zufälligen Bits $X_1, \ldots, X_N$ zu erhalten, wobei $\prob{X_i = 1} = p$.
 Wenn wir nun in Schritt 1a einen Nachbar von $v$ suchen, iterieren wir gleichzeitig über $U$ und $X$.
 Dann geben wir das erste $w$ zurück, dessen Bit gesetzt war (falls es existiert).
-Wenn wir das nächste Mal mit Knoten $v$ zu Schritt 1a kommen, suchen wir nur nach $w' \in U$ mit $w' > w$ --- wir machen als an der Stelle weiter, an der wir einen Nachbarn gefunden haben.
+Wenn wir das nächste Mal mit Knoten $v$ zu Schritt 1a kommen, suchen wir nur nach $w' \in U$ mit $w' > w$ --- wir machen also an der Stelle weiter, an der wir einen Nachbarn gefunden haben.
 
 \begin{exercise}
     Zeige, dass jeder Eintrag der Adjazenzmatrix höchstens einmal betrachtet wird und wir mittels der $X_i$ somit ein DFS auf \Gnp simulieren.
@@ -1190,8 +1190,8 @@ Wenn wir das nächste Mal mit Knoten $v$ zu Schritt 1a kommen, suchen wir nur na
 \noindent
 Wir werden später folgende Beobachtung ausnutzen:
 \begin{itemize}
-    \item In jeder Iteration wird ein Knoten entweder von $U$ nach $S$ (Schritt 1a oder 2) oder von $S$ nach $B$ (Schritt 1b).
-          Es gibt also stetigen Fortschritt.
+    \item In jeder Iteration wird ein Knoten entweder von $U$ nach $S$ (Schritt 1a oder 2) oder von $S$ nach $B$ (Schritt 1b) bewegt.
+          Es gibt also einen stetigen Fortschritt und der Algorithmus terminiert nach $\Oh{n}$ Schritten.
     \item Zu jedem Zeitpunkt gilt, dass der Graph keine Kanten zwischen $U$ und $B$ hat; insb. ändern noch nicht entdeckte Kanten hieran nichts mehr.
     \item Alle Knoten in $S$ gehören zur selben Zusammenhangskomponente.
 \end{itemize}
@@ -1201,9 +1201,9 @@ Wenn wir nun DFS ausführen, werden wir unsere Strukturaussagen zu \Gnp auf Eige
 Die Hauptarbeit dieser Analyse leisten wir in \cref{lemma:dfs_kaum_einsen_in_X}.
 
 Der \aside{union bound} Beweis des Lemmas nutzt eine übliche Struktur.
-Wir möchten zeigen, dass etwas nicht passiert, obwohl es viele Möglichkeiten $X_1, \ldots, X_n$ hierfür gibt.
+Wir möchten zeigen, dass etwas mit hoher Wahrscheinlichkeit nicht passiert, obwohl es viele Möglichkeiten $X_1, \ldots, X_n$ hierfür gibt.
 Man schätzt also zunächst die Einzelwahrscheinlichkeiten~$\prob{X_i}$ ab (vereinfachend nimmt man oft an, dass die $X_i$ unabhängig sind).
-Hier sollten sich extrem kleine Erfolgswahrscheinlichkeiten $\prob{X_i} < 1/n$.
+Hier sollten sich extrem kleine Erfolgswahrscheinlichkeiten $\prob{X_i} \le 1/n^2$.
 Dann schätzt man die Wahrscheinlichkeit, dass mindestens eins eintritt, einfach als Summe der Einzelwahrscheinlichkeiten nach oben ab.
 Booles \aside{Booles Ungleichung} Ungleichung besagt:
 \begin{align}
@@ -1212,7 +1212,7 @@ Booles \aside{Booles Ungleichung} Ungleichung besagt:
 
 \noindent
 Nun können wir eine wichtige Eigenschaft unserer Zufallsbits zeigen.
-Wir befinden uns zunächst im subkritischen Bereich, sprich unsere Analyse betrachtet Graphen mit $np < (1 - \epsilon)$.
+Wir befinden uns zunächst im subkritischen Bereich, sprich unsere Analyse betrachtet Graphen mit $np \le (1 - \epsilon)$.
 
 \begin{lemma}[basiert auf \cite{DBLP:journals/rsa/KrivelevichS13}]\label{lemma:dfs_kaum_einsen_in_X}
     Sei $\epsilon > 0$ \aside{kleines $\epsilon > 0$ \\ $N = \binom n 2$ \\ $p = (1 - \epsilon) / n$ \\ $k = (10 / \epsilon^2) \ln n$} eine hinreichend kleine Konstante und seien $X = (X_1, \ldots, X_N)$ unabhängige Zufallsvariablen, die Bernoulli mit Parameter~$p$ verteilt sind.
@@ -1237,7 +1237,7 @@ Wir befinden uns zunächst im subkritischen Bereich, sprich unsere Analyse betra
         = \exp\left(- \underbrace{(1-\epsilon)}_{\to 1} \frac{10}{3} \ln n \right)
     \end{align}
 
-    Da die Behauptung nicht nur über ein Intervall~$Y_1$ spricht, sondern für über alle $Y_1, \ldots, Y_{N-nk}$, benötigen wir noch einen \emph{union bound}.
+    Da die Behauptung nicht nur über ein Intervall~$Y_1$ spricht, sondern über alle $Y_1, \ldots, Y_{N-nk}$, benötigen wir noch einen \emph{union bound}.
     Hierfür betrachten wir die Einzelereignisse $Y_i \ge k$ für alle $i$:
 
     \begin{align}
@@ -1250,7 +1250,7 @@ Wir befinden uns zunächst im subkritischen Bereich, sprich unsere Analyse betra
     Da die Gegenwahrscheinlichkeit durch $1/2n$ nach oben beschränkt ist, gilt die Aussage mit hoher Wahrscheinlichkeit.
 \end{proof}
 
-Wir wissen also, dass für $p < (1 - \epsilon) / n$, wir in $nk$ Zufallsbits ziemlich sicher keine $k$ Einsen finden.
+Wir wissen also, dass für $p \le (1 - \epsilon) / n$, wir in $nk$ Zufallsbits ziemlich sicher keine $k$ Einsen finden.
 Die Intuition für \Gnp ist also, dass wir in $k$ Zeilen der Adjazenzmatrix keine $k$ Nachbarn finden.
 Diese $k$ Zeilen können also nicht zusammenhängend sein!
 Wir formalisieren dieses Bauchgefühl in folgendem Theorem:
@@ -1258,16 +1258,16 @@ Wir formalisieren dieses Bauchgefühl in folgendem Theorem:
 \begin{theorem}[basiert auf \cite{DBLP:journals/rsa/KrivelevichS13}]
     Sei \aside{$\Gnp$ mit $np = (1-\epsilon)$ hat nur Zusammenhangskomponenten mit $\Oh{\log n}$ Knoten.} $\epsilon > 0$ hinreichend klein.
     Ferner sei $G \sim \Gnp$ ein zufälliger Graph mit $np = (1 - \epsilon)$.
-    Dann haben alle Zusammenhangskomponenten mit hoher Wahrsceinlichkeit eine Größe von höchstens $10 \epsilon^{-2} \ln n$.
+    Dann haben alle Zusammenhangskomponenten mit hoher Wahrscheinlichkeit eine Größe von höchstens $10 \epsilon^{-2} \ln n$.
 \end{theorem}
 
 \begin{proof}
-    Beweis durch Widerspruch.
+    Beweis durch \qq{Widerspruch} (tatsächlich kein echter Widerspruch, da die Aussage ja nur mit hoher Wahrscheinlichkeit gelten soll).
     Nehmen wir an, es gibt eine Zusammenhangskomponente~$K$ mit mehr als $k = 10 \epsilon^{-2} \ln n$ Knoten.
     Betrachten wir die Phasen in der DFS während $K$ exploriert wird.
 
     Konkret betrachten wir den Moment, zu dem der $k+1$ Knoten entdeckt wird (dieser wird also gleich von $U$ nach $S$ bewegt).
-    Seien $\Delta K = K \cap B$ die Knoten der Zusammenhangskomponente~$K$ die bereits fertig bearbeitet wurden.
+    Seien $\Delta K = K \cap B$ die Knoten der Zusammenhangskomponente~$K$, die bereits fertig bearbeitet wurden.
     Dann gilt $|\Delta K \cup S| = |\Delta K| + |S| = k$; sonst hätten wir nicht eben den $k+1$ Knoten entdecken können.
 
     Den ersten dieser $k$ Knoten bekamen wir \qq{kostenlos}, da er in Schritt 2 von $U$ nach $S$ bewegt wurde, um die Suche in der neuen Zusammenhangskomponente zu starten.
@@ -1275,8 +1275,9 @@ Wir formalisieren dieses Bauchgefühl in folgendem Theorem:
     Da Kanten zu einer Eins in unseren Zufallsbits korrespondiert, müssen wir als beim Entdecken des $k+1$ Knoten genau $k$ Einsen gesehen haben.
 
     Von jedem Knoten in $\Delta K \cup S$ suchten wir nach höchstens $n$ Nachbarn (grobe Überabschätzung!).
-    In anderen wurden, wir haben höchstens $k n$ Bits gelesen und dabei $k$ Einsen gefunden.
+    In anderen Worten: wir haben höchstens $k n$ Bits gelesen und dabei $k$ Einsen gefunden.
     Das passiert gemäß \cref{lemma:dfs_kaum_einsen_in_X} mit hoher Wahrscheinlichkeit nicht.
+    Der \qq{Widerspruch} zur Annahme folgt.
 \end{proof}
 
 Durch geeignete Abschätzung, dass es für $np = (1 + \epsilon)$ \qq{viele} Einsen gibt, lassen sich folgende Resultate zeigen.
@@ -1294,7 +1295,7 @@ Weiter ist die $\epsilon^2$ Abhängigkeit der ersten beide Aussagen optimal.
 Tatsächlich ist das Resultat zur Pfadlänge der Grund, weshalb wir uns eine Tiefensuche statt einer Breitensuche angesehen haben.
 Wenn wir in der Tiefensuche jemals eine Stackgröße von $|S| = k$ erreichen, wissen wir, dass der untersuchte Graph einen Pfad mit mindestens $k$ Knoten enthält;
 das gilt nicht für die Breitensuche!
-Der Beweis zeigt also, dass wir ausreichend viele Einsen sehen um ein hinreichend großen Stack zu sehen.
+Der Beweis zeigt also, dass wir ausreichend viele Einsen sehen, um ein hinreichend großen Stack zu bekommen.
 
 \subsection{Existenz von großen Kreisen}
 Zuletzt wollen wir uns noch eine Beweistechnik ansehen, bei der wir zwei geeignet parametrisiert $\Gnp$ durch Vereinigung ihrer Kantenmengen \qq{aufaddieren}.
@@ -1310,10 +1311,10 @@ Es bleibt ein Mittelteil von $M$ Knoten \qq{übrig}:
     M = \alpha n - 2\ell =\alpha n - 4 n^x =  n(\alpha - \underbrace{4n^{x - 1}}_{=o(1)\text{, da } x < 1})
 \end{align}
 
-Im Grenzwert von $n\to\infty$, sind also der Präfix und Suffix des Pfades relativ zum Mittelteil asymptotisch verschwindet klein.
+Im Grenzwert von $n\to\infty$, sind also Präfix und Suffix des Pfades relativ zum Mittelteil $2\ell / M = o(1)$ asymptotisch verschwindet klein.
 
 Es gibt aber $\binom{\ell}{2} \ge n^{2x}$ mögliche Kanten zwischen dem Präfix und dem Suffix.
-Aus $G'$ bekommen wir also erwartet mehr als $n^{2x} p'$ Kanten --- eine reicht um einen einen Kreis, der länger als $M$ ist, zu schließen.
+Aus $G'$ bekommen wir also erwartet mehr als $n^{2x} p'$ Kanten --- eine reicht um einen Kreis, der länger als $M$ ist, zu schließen.
 In unserem Beispiel mit $p = n^{-3/2}$ gilt:
 \begin{align}
     n^{2x} p' = n^{2x - 3/2}
@@ -1322,4 +1323,29 @@ In unserem Beispiel mit $p = n^{-3/2}$ gilt:
 Wenn wir also $x = 3/4$ wählen, erwarten wir mindestens eine Kante, die dann den versprochenen Kreis schließt.
 Für $x > 3/4$ existiert eine solche Kante mit hoher Wahrscheinlichkeit.
 
-\section{Gradverteilung}
+\subsection{Cliquen in \Gnp}
+Gemäß der Definition einer Zusammenhangskomponente~$K \subset V$ in einem Graphen $G=(V,E)$ finden wir für jedes Knotenpaar $u, v \in K$ einen Pfad von $u$ nach $v$.
+Cliquen~$C \subseteq V$ sind ein Extremfall dieses Konzeptes, da zwischen alle Konstituenten $u \ne v \in C$ eine direkte Kante existiert.
+Nach unserer bisherigen Diskussion scheint es eine natürliche Frage zu sein, wie viele Knoten eine größte Clique in einem Graphen $G \sim \Gnp$ hat.
+
+Zunächst analysieren wir, wie viele Cliquen der Größe $k$ wir erwarten können.
+Beachte, dass $C$ genau dann eine Clique ist, wenn der durch $C \subset V$ induzierter Teilgraph genau $\binom{k}{2}$ Kanten mit $k = |C|$ hat.
+Insbesondere darf der Teilgraph keine \emph{Nichtkanten} enthalten.
+Da jede Kante existieren muss, ist es besonders einfach die Wahrscheinlichkeit $\prob{\text{$C$ ist Clique}}$ zu beschreiben:
+\begin{align}
+    \prob{\text{$C$ ist Clique}} = p^{\binom{|C|}{2}}
+\end{align}
+
+Wir müssen nur noch die Anzahl möglicher Cliquen finden.
+Es gibt genau $\binom{|V|}{k}$ verschiedene Knotenteilmengen der Größe~$k$.
+Analog zum Beweis von \cref{lemma:erwartete_kanten_in_gnp} können wir für jede eine Indikatorvariable~$I_C$ annehmen, wobei $\prob{I_C = 1} = \expv{I_C} = p^{\binom{|C|}{2}}$.
+Durch die Linearität des Erwartungswertes folgt dann die erwartete Anzahl an Cliquen der Größe~$k$ als
+\begin{align}
+    \binom{|V|}{k} p^{k(k-1)/2}.
+\end{align}
+
+Wenn wir uns den Spezialfall von $\Gn$ (d.h. $\Gnp$ mit $p = 1/2$) ansehen, lässt sich zeigen, dass es eine Funktion $f(n) \approx 2\ln n$ gibt,
+sodass eine größte Clique in $G \sim \Gn$ mit hoher Wahrscheinlichkeit entweder $f(n)$ oder $f(n)+1$ Knoten hat.
+Diese können wir aufgrund der kleinen Größe relativ einfach finden!
+Wenn wir alle möglichen Cliquen explizit enumerieren und prüfen, ergibt sich \qq{nur} eine quasipolynomielle Laufzeit von $2^{\Theta(\log^2 n)}$.
+Der Zufall vermeidet also pathologische Strukturen und vereinfacht das eigentlich $\mathcal{NP}$-schwere Clique-Problem auf $\Gn$ (und auf $\Gnp$ mit $p \le 1/2$) deutlich.
