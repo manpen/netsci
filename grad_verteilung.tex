@@ -1,8 +1,11 @@
 % !TeX root = skript.tex
+\emph{Die nicht-algorithmischen Aspekte dieses Kapitels orientiert sich stark an \cite{barabasi2014network}.}
+\bigskip
+
 Eine elementare Aufgabe in Network Science ist es die Wichtigkeit von Knoten zu bewerten --- man spricht auch \aside{Zentralität: Wichtigkeit eines Knotens} von der \emph{Zentralität} der Knoten.
-Die Anzahl der Nachbarn (Grad, engl. degree) ist eine sehr einfache Metrik mit eingänglicher Intuition:
+Die Anzahl der Nachbarn (Grad, engl. degree) ist eine sehr einfache Metrik mit direkter Intuition:
 wenn ein Knoten überdurchschnittlich viele Nachbarn hat, dann steht die Vermutung im Raum, dass diesem Knoten auch eine überdurchschnittlich wichtige Funktion im Netzwerk zu kommt.
-Daher wollen wir die Verteilung von Graden in Graphen in diesen Kapitel genauer betrachten.
+Daher wollen wir die Verteilung von Graden in Graphen in diesem Kapitel genauer betrachten.
 
 Zur Wiederholung:
 In einem ungerichteten Graphen~$G=(V,E)$ beschreibt
@@ -26,7 +29,7 @@ Beobachte, dass für jede $\degseq_G$ von $G=(V,E)$ gilt:
         \includegraphics[width=0.6\textwidth]{data/gnp_degrees.pdf}
     \end{center}
     \caption{
-        Histogram der Gradsequenz~$\degseq_G$ eines Graphen~$G \sim \Gnp$.
+        Histogramm der Gradsequenz~$\degseq_G$ eines Graphen~$G \sim \Gnp$.
         Die vertikale Linie zeigt den Durchschnittsgrad $\bar k$,
         die Punkte die Vorhersage mittels Binomialverteilung.
     }
@@ -38,7 +41,7 @@ Für die meisten Graphen mit vielen Knoten können wir --vereinfachend-- davon a
 Wir \aside{Grad\underline{verteilung}} nennen diese Wahrscheinlichkeitsverteilung dann die \emph{Gradverteilung}.
 Das ist besonders sinnvoll, wenn $G$ selbst aus einem Zufallsgraph stammt.
 Dann versuchen wir die Gradverteilung auf das durch den Zufallsgraphen definierte Ensemble auszuweiten.
-Im folgenden betrachten wir etwa die Gradverteilung von $\Gnp$ Graphen.
+Im Folgenden betrachten wir etwa die Gradverteilung von $\Gnp$ Graphen.
 
 Aus \cref{subsec:anzahl_kanten_in_gnp} wissen wir bereits, dass die Kantenanzahl eines $\Gnp$ Graphen binomial verteilt ist.
 Die Analyse für Grade läuft analog, allerdings nicht für $\binom n 2$ Einträge der Adjazenzmatrix, sondern nur für $n-1$ (da Eigenschleifen verboten sind: $-1$).
@@ -133,7 +136,7 @@ Beim letzten Ausdruck handelt es sich um die Poissonverteilung:
     \end{center}
     \caption{
         Vergleich von Binomialverteilung und Poissonverteilung für fixierten Durchschnittsgrad $\bar k = 100$.
-        Je größer $n$, desto eher ist die Approximationsvoraussetzung $\bar k \ll n$ erfüllt, und desto mehr sind Binomialverteilung und Poissonverteilung deckungsgleich.
+        Je größer $n$, desto eher ist die Approximations-Voraussetzung $\bar k \ll n$ erfüllt, und desto mehr sind Binomialverteilung und Poissonverteilung deckungsgleich.
     }
     \label{fig:binom_vs_poisson}
 \end{figure}
@@ -143,7 +146,8 @@ Beim letzten Ausdruck handelt es sich um die Poissonverteilung:
 Aus dieser Approximation mittels Poissonverteilung ergibt sich eine interessante Einsicht.
 Während \aside{Für $\bar k \ll n$ ist die Gradverteilung nur von $\bar k$ abhängig} die Binomialverteilung von der Knotenanzahl~$n$ und Kantenwahrscheinlichkeit~$p$ abhängt, hat die Poissonverteilung nur den Parameter~$\lambda = p / (n-1) \approx \bar k$.
 Die Interpretation hiervon ist, dass für $\bar k \ll n$ die Gradverteilung nur vom Durchschnittsgrad~$\bar k$, nicht aber von der Knotenanzahl im Graphen abhängen sollte.
-\Cref{fig:binom_vs_poisson} untermauert diese Interpretation: die Binomialverteilungen der zwei größten Netze sind mit dem bloßen Auge nicht mehr von der Poissonverteilung unterscheidbar.
+\Cref{fig:binom_vs_poisson} untermauert diese Interpretation:
+Die Binomialverteilungen der zwei größten Netze sind mit dem bloßen Auge nicht mehr von der Poissonverteilung unterscheidbar.
 
 Diese Einsicht können wir uns wie folgt erklären:
 Die Poissonverteilung beschreibt die Anzahl von Ereignissen, die innerhalb eines fixierten Intervalls auftreten, wenn die mittlere Rate konstant ist.
@@ -151,7 +155,7 @@ In diesem Bild ist jede Zeile der Adjazenzmatrix solch ein Intervall und die mit
 
 Beachte auch, dass die Varianz der Poissonverteilung mit $\var(X) = \bar d$ größer ist als die Varianz der Binomialverteilung $\var(X) = n p(1 - p) \approx \bar d (1 - \bar d / n )$, wobei der geklammerte Faktor kleiner als $1$ ist.
 
-\section{Powerlaw Gradverteilung}
+\section{Power-Law Gradverteilung}
 \begin{figure}
     \begin{center}
         \includegraphics[width=\textwidth]{data/dblp_degree_distribution.pdf}
@@ -160,15 +164,15 @@ Beachte auch, dass die Varianz der Poissonverteilung mit $\var(X) = \bar d$ grö
     \label{fig:grade_in_dblp}
 \end{figure}
 
-In \cref{fig:grade_in_dblp} stellen wir die Gradverteilung, genauer das Histogram der Gradsequenz, von zwei beobachteten Netzwerken dar.
+In \cref{fig:grade_in_dblp} stellen wir die Gradverteilung, genauer das Histogramm der Gradsequenz, von zwei beobachteten Netzwerken dar.
 Die genaue Herkunft der Graphen ist hier nicht wichtig; viele beobachte komplexe Netzwerke zeigen einen qualitativ ähnlichen Verlauf.
 Was sofort auffällt, ist, dass die rot dargestellte Binomialverteilung keine satisfaktionsfähige Übereinstimmung mit der beobachteten Verteilung zeigt:
 
 \begin{itemize}
-    \item Die Binomialverteilung sagt vorher, dass die meisten Knoten grob den Durchschnittsgrad haben müssten.
+    \item Die  Binomialverteilung sagt vorher, dass die meisten Knoten grob den Durchschnittsgrad haben müssten.
           Zu beiden Richtungen ---sprich für kleinere und größere Grade--- sollte es deutlich weniger Knoten geben.
 
-    \item Der maximale Grad ($\approx 30$ im linken Schaubild) sollte in etwa dieselbe Größenordnung haben, wie der Durchschnittsgrad ($\approx 10$).
+    \item Der \aside{Binomialverteilung / Poissonverteilung haben keine extremen Gerade} maximale Grad ($\approx 30$ im linken Schaubild) sollte in etwa dieselbe Größenordnung haben, wie der Durchschnittsgrad ($\approx 10$).
 \end{itemize}
 
 \noindent
@@ -180,5 +184,259 @@ Das beobachtete Netzwerk hat jedoch ein signifikant anderes Verhalten:
           Es sollte daher auch nicht überraschend, dass diese sog. Hubs viele Eigenschaften des Netzwerks prägen.
 \end{itemize}
 
+In \cref{fig:grade_in_dblp} \aside{Power Law entspricht einer Geraden im Histogramm} fällt ebenfalls auf, dass sich das Histogramm durch eine Gerade (im Folgenden als Linie bezeichnet um Verwechselung mit Grad auszuschließen) relativ gut approximieren lässt.
+Dies trifft besonders auf größere Grade zu --- aufgrund des doppel-logarithmischen Plots stellen diese in absoluten Zahlen einen deutlich größeren Bereich dar, als die Abbildung suggeriert.
+Wir können also als Arbeitshypothese annehmen, dass die meisten Knotengrade gut durch eine Linie im log-log-Plot beschrieben werden.
+Welche Gesetzmäßigkeit können wir daraus ableiten?
 
+Wir können eine Linie mittels $y = mx + b$ beschreiben.
+Im log-log-Plot sind nun beide Achsen skaliert.
+Es gilt daher $x = \log d$ und $y = \log h(d)$, wobei $d$ der Grad sei und $h(d)$ die Häufigkeit widerspiegele.
+Dann gilt:
+\begin{align}
+    y               & = mx + b              \\
+    \log h(d)       & = m\log d + b         \\
+    \exp[\log h(d)] & = \exp[\log(d^m) + b] \\
+    h(d)            & = \exp(b) \cdot d^m
+\end{align}
+
+Die Häufigkeit skaliert also proportional zu $d^m$.
+Wir \aside{Potenzgesetz, Power Law: $p \propto d^{-\gamma}$ für (meist) $2 < \gamma < 3$} sprechen daher von einem Potenzgesetz (engl. Power Law).
+Da die Anzahl der Beobachtungen für größere Grade abnimmt, ist der Exponent immer negativ.
+Wir schreiben ihn daher als $d^{-\gamma}$, wobei der sog \emph{Power Law Exponent}~$\gamma$ aus dem Intervall $2 < \gamma < 3$ stammt (falls nicht anders angegeben).
+
+Um eine Wahrscheinlichkeitsverteilung $p(d)$ zu erhalten, müssen wir die Terme noch skalieren:
+\begin{align}
+    p(d) = C' h(d) = \underbrace{C'\exp(b)}_{:= C} d^{-\gamma}
+\end{align}
+
+\noindent
+Wir absorbieren also den $\exp(b)$ Faktor in die Normierungskonstante~$C$:
+\begin{align}
+    1                & \stackrel{!}{=} \sum_{i=1}^\infty C d^{-\gamma}                          \\
+    C                & = \frac{1}{\sum_{i=1}^\infty d^{-\gamma}}      = \frac{1}{\zeta(\gamma)} \\
+    \nonumber                                                                                   \\
+    \Rightarrow p(d) & = \frac{d^{-\gamma}}{\zeta(\gamma)}
+\end{align}
+
+Die Funktion $\zeta(\gamma)$ ist die sog. Riemann-Zeta-Funktion (wir werden diese im Folgenden nicht dediziert betrachten).
+
+Beobachte, dass $0^a$ für $a < 0$ eine Division durch $0$ darstellt.
+Daher ist $p(0)$ nicht definiert und wird explizit in der vorherigen Summierung herausgenommen.
+Sollte ein Graph $n_0>0$ isolierte Knoten beinhalten, betrachtet man diese idR als Sonderfall.
+Wir definieren also $p(0) = n_0 / n$ und skalieren die Power Law Verteilung auf $1  - n_0 /n$.
+
+\def\dmin{\ensuremath{{d_{\text{min}}}}}
+\def\dmax{\ensuremath{{d_{\text{max}}}}}
+\def\dnc{\ensuremath{{d_{\text{nc}}}}}
+
+Umgekehrt ist es oft auch sinnvoll, die minimalen und maximalen Grade $\dmin < \dmax$ explizit zu beschränken.
+Wir müssen dann nur die Skalierungskonstante auf den kleineren Bereich anpassen:
+\begin{align}
+    C_{\dmin,\dmax} = 1 / \sum_{d = \dmin}^\dmax d^{-\gamma}
+\end{align}
+
+\begin{exercise}\label{aufg:dmin_dmax}
+    Entwickele durch ein paar stichprobenartige Rechnungen eine Intuition, welchen Einfluss $\dmin$ und $\dmax$ auf $C_{\dmin,\dmax}$ haben.
+    Erkläre deine Beobachtungen.
+\end{exercise}
+
+\subsection{Kontinuierlicher Formalismus}
+In der Herleitung des diskreten Power Law haben wir bereits in der Normierung die transzendente $\zeta(\gamma)$ Funktion gesehen.
+Weitere Analysen werden durch die diskrete Natur der Verteilung nicht einfacher.
+Daher ist es oft bequemer die Gradverteilung als kontinuierliches Konstrukt anzunehmen.
+An der Grundform ändert sich dann erst einmal nichts, außer, dass der Grad nun eine strikt positive reelle Zahl sein darf:
+
+\begin{align}
+    p(d) = C d^{-\gamma} \quad\quad d \in \mathbb R_{> 0}
+\end{align}
+
+Für die Normierung steht uns nun aber das Integral statt der Summe zur Verfügung und führt zu deutlich handlicheren Ergebnissen.
+Allerdings reicht es nicht mehr, nur $d = 0$ auszuschließen.
+Wir definieren die Verteilung daher immer für einen expliziten minimalen Grad~\dmin; \dmax{} lässt sich analog einführen, wir verzichten aber darauf (siehe auch \cref{aufg:dmin_dmax}).
+
+\begin{align}
+    C_\dmin                           & = 1 / \int_{d=\dmin}^\infty d^{-\gamma} \intd k                                                \\
+                                      & = 1 / \left[ \frac{1}{-\gamma + 1} d^{-\gamma + 1}  \right]_\dmin^\infty                       \\
+                                      & = 1 / \left( - \frac{1}{-\gamma + 1} \dmin^{\textcolor{red}{1 - \gamma}}  \right)              \\
+                                      & = \underbrace{( \gamma-1)}_{\text{$> 0$ für $\gamma > 1$}} \dmin^{\textcolor{red}{\gamma - 1}} \\
+    \nonumber                                                                                                                          \\
+    \Rightarrow\quad p_\text{cont}(d) & = (\gamma-1) \dmin^{\gamma - 1} \cdot d^{-\gamma}
+\end{align}
+
+Wichtig ist nun allerdings, dass $p_\text{cont}(d)$ keine natürliche punktweise Interpretation mehr hat.
+Vielmehr müssen wir nun immer die Wahrscheinlichkeit, dass ein $X$ aus einem Intervall $[a, b]$ stammt, betrachten:
+\begin{align}
+    \prob{a \le X \le b} = \int_{a}^b p_\text{cont}(d) \intd k
+\end{align}
+
+\begin{exercise}
+    Berechne den Erwartungswert der kontinuierlichen Power Law Verteilung mit fixierten Grenzen $0 < \dmin < \dmax \le \infty$.
+\end{exercise}
+
+\subsection{Größe von Hubs}
+Eine zentrale Motivation von Poissonverteilungen abzurücken, war es, dass sie keine außergewöhnlich großen Grade zulassen.
+Daher wollen wir den größten Grad eines Knotens in einer Power Law Verteilungen abschätzen.
+
+Konkret suchen wir die Größe \dnc{} (engl. natural cut-off), sodass wir nur einen Knoten mit Grad $\ge \dnc$ erwarten.
+Es muss also gelten, dass $\prob{\deg(u) \ge \dnc} = 1 / n$ ist:
+\begin{align}
+    1/n                                & = \int_\dnc^\infty p(d) \intd d                                                               \\
+                                       & = C \int_\dnc^\infty d^{-\gamma} \intd d                                                      \\
+                                       & = (\gamma-1) \dmin^{\gamma - 1} \left[ \frac{d^{-\gamma + 1}}{-\gamma +1} \right]_\dnc^\infty \\
+                                       & = (\gamma-1) \dmin^{\gamma - 1} \left( 0 - \frac{\dnc^{-\gamma + 1}}{-\gamma +1} \right)      \\
+                                       & = \dmin^{\gamma - 1} \dnc^{1 - \gamma}                                                        \\
+    \nonumber                                                                                                                          \\
+    \Rightarrow\quad \dnc^{\gamma - 1} & = \dmin^{\gamma - 1} n                                                                        \\
+    \Leftrightarrow\quad \dnc          & = \dmin n^{1/(\gamma - 1)}
+\end{align}
+
+Für $\gamma  < 2$ sagt diese Gleichung einen Knoten voraus, der mehr Nachbarn hat, als es Knoten im Graphen gibt.
+Dies ist nur eines von vielen Indizien, die zu unserer Annahme $\gamma > 2$ führen.
+Für $\gamma \searrow 2$ (d.h. rechts-seitiger Grenzwert für $\gamma \to 2$) skaliert der maximale Grad als $\Theta(n)$.
+Für $\gamma = 3$ ist er noch $\Theta(\sqrt{n})$ et cetera.
+
+\section{Wie entstehen eine Power Law Gradverteilungen?}
+Das Entstehen von Power Law Verteilungen in  unterschiedlichsten Netzwerken gibt Anlass zu der Frage, wie solche Verteilungen denn eigentlich entstehen.
+Barabasi und Albert~\cite{barabasi1999emergence} geben eine sehr populäre Erklärung, die besonders durch ihre Simplizität besticht.
+Ähnliche Techniken wurden jedoch bereits früher verfolgt (z.B.~\cite{10.2307/1716232}).
+
+Die beiden Autoren schlagen neues Modell vor, das wir im Folgenden BA-Modell nennen.
+Es stellt zwei implizite Annahmen von \Gnp und \Gnm Graphen infrage:
+\begin{itemize}
+    \item
+          In \Gnp Graphen fixieren wir die Knotenanzahl initial und ändern diese dann nicht mehr.
+          Netzwerke in der freien Wildbahn unterliegen jedoch in der Regel einer Dynamik:
+          Knoten und Kanten kommen hinzu und verschwinden ggf. wieder.
+
+    \item
+          Wenn wir einen Knoten im \Gnp Graphen als Spieler interpretieren, nimmt das Modell an, dass die Nachbarn rein zufällig ausgesucht werden.
+          Tatsächlich unterliegen aber viele Handlungen im echten Leben einem sog. Bias (d.h. einer verzerrten Wahrscheinlichkeitsverteilung).
+
+          Dies ist besonders auffällig, wenn es zu einer Form von Selektion kommt.
+          So kann kein Mensch alle Webseiten kennen (und dann darauf verlinken); von Facebook, Twitter, und Google haben die Meisten aber gehört.
+          Wenn also eine zufällige Person einen Artikel schreibt, ist es deutlich wahrscheinlicher, dass ein Link zu Twitter entsteht, als ein Link zu einer bestimmten obskuren Webseite.
+\end{itemize}
+
+\subsection{Das BA Modell}
+Das \aside{BA Modell beinhaltet Wachstum und Preferential Attachment} BA-Modell trägt beiden Beobachtungen Rechnungen.
+Wir starten zunächst mit einem (meist) kleinen und zusammenhängenden Startgraphen mit $n_0$ Knoten und $m_0$ Kanten.
+Dann fügen wir iterativ $N$ neue Knoten hinzu und erhalten so am Ende $n = n_0 + N$ Knoten.
+Jeder neue Knoten verbindet sich mit $\nu \le n_0$ zufällig gewählten Nachbarn.
+Wir sagen, dass der $t$-te neue Knoten im $t$-ten Zeitschritt (für $t = 1,2, \ldots, N$) hinzufügt wird;
+unmittelbar nach dem $t$-ten Zeitschritt hat der Graph also
+\begin{align}
+    n_t = n_0 + t \text{ Knoten} \quad \text{und} \quad
+    m_t = m_0 + \nu t \text{ Kanten}.
+\end{align}
+Analog bezeichnen wir den Grad von Knoten $v$ nach Zeitschritt $t$ als $\deg_t(v)$.
+Für $t \ggg n_0$ konvergiert das BA Modell also gegen einen Durchschnittsgrad von
+\begin{align}
+    \bar{d_t} = \frac{1}{n_t} \sum_{v} \deg_t(v) = 2 \frac{m_0 + \nu t}{n_0 + t} \to 2 \nu
+\end{align}
+
+Um den zuvor genannten Bias zu implementieren, nehmen wir aber an, dass Knoten mit vielen Nachbarn besonders bekannt sind und unterstellen einen linearen Zusammenhang.
+Wenn wir also aus zwei Knoten $a$ und $b$ mit $\deg(a) = 2\deg(b)$ wählen müssen, ziehen wir Knoten~$a$ mit doppelter Wahrscheinlichkeit.
+Sei $p_t(v)$ die Wahrscheinlichkeit, dass wir Knoten $v$ in Zeitschritt $t + 1$ ziehen.
+Dann gilt:
+\begin{align}
+    p_t(v) = \frac{\deg_t(v)}{\sum_u  \deg_t(u)} = \frac{\deg_t(v)}{2(m_0 + \nu t)}
+\end{align}
+
+\subsection{Dynamik in der Gradverteilung}
+Der beschriebene Bias wird \emph{Preferential Attachment} bezeichnet.
+Es bildet sich eine positive Rückkopplung:
+ein Knoten mit hohem Grad wird wahrscheinlicher als andere Knoten gezogen.
+Ein gut vernetzter Knoten akkumuliert also schneller neue Nachbarn, und wird dadurch noch berühmter.
+Der Prozess liegt daher einigen Sprichworten zugrunde, z.B. \qq{the rich get richer} (dt. \qq{Der Teufel ... auf den größten Haufen}).
+Es gibt diverse Methoden zur formalen Analyse des Prozess --- eine der einfachsten ist der kontinuierliche Formalismus, in der wir Knotengrade und die Zeit durch reelle Zahlen approximieren.
+Der Einfachheit halber, verwenden wir dennoch weiterhin den Begriff Zeitschritt, womit wir ein Zeitintervall von Einheitslänge meinen.
+
+Wir gehen davon aus, dass die $\nu$ Kanten in einem Zeitschritt gleichzeitig gezogen werden;
+es können also Mehrfachkanten entstehen.
+Die erwartete Anzahl an Nachbarn, die Knoten~$v$ in einem Schritt~$t+1$ ansammelt, ist dann also $\nu p_t(v)$.
+Da die Zeit ab jetzt kontinuierlich angenommen wird, \emph{fixieren wir einen Knoten $v_i$}, der zum Zeitpunkt $t_i$ hinzugefügt wird, und betrachten seinen Grad als zeitabhängige Funktion $d(t)$.
+Es gilt $d(t) = 0$ für $t < t_i$ und $d(t_i) = \nu$.\footnote{
+    Wir weichen an dieser Stelle von der diskreten Notation ab, bei der erst $d(t_i + 1) = \nu$ wäre.
+    Dies hat aber keinen signifikanten Einfluss auf unsere Analyse und vereinfacht die Formeln.
+}
+Analog sei $m(t) = m_0 + \nu t$ die kontinuierliche Kantenanzahl.
+
+Das Wachstum $\intd d(t) / \intd t$ der Funktion hängt nun vom Grad $d(t)$ selbst ab.
+Es ergibt sich somit die folgende Differentialgleichung:
+\begin{align}
+    \frac{\intd d(t)}{\intd t}
+     & = \nu p_t(v)
+    = \nu \frac{d(t)}{2 m(t)}
+    = \nu \frac{d(t)}{2(m_0 + \nu t)}                                         \\
+     & \stackrel{t \gg 0}{\approx} \nu \frac{d(t)}{2 \nu t} = \frac{d(t)}{2t}
+\end{align}
+
+Diese spezielle Differentialgleichung lässt sich relativ einfach lösen.
+Wir teilen beide Seiten durch $d(t)$ (ab Zeitpunkt $t \ge t_i$ gilt $d(t) > 0$) und integrieren dann von $t_i$ (dem Zeitpunkt zu dem der Knoten $v_i$ hinzugefügt wurde) bis $T$:
+
+\begin{align}
+    \int_{t_i}^T  \frac{\frac{\intd d(t)}{\intd t}}{d(t)} \intd t & = \int_{t_i}^T \frac{1}{2t} \intd
+\end{align}
+
+\noindent
+Die rechte Seite ist ein Standardintegral:
+\begin{align}
+    \int_{t_i}^T \frac{1}{2t} \intd = \left[ \frac 1 2 \log t \right]_{t_i}^T = \frac 1 2 \log\left(\frac{T}{t_i}\right)
+\end{align}
+
+Die linke Seite lässt sich mittels Substitution von $u = d(t)$ und $\intd u = \frac{\intd d(t)}{\intd t} \intd t$ analog zur rechten Seite integrieren.
+Somit folgt insg:
+\begin{align}
+    \log\left(\frac{d(T)}{d(t_i)}\right) & = \frac 1 2 \log \left(\frac{T}{t_0}\right)                             \\
+    \frac{d(T)}{d(t_i)}                  & = \sqrt{\frac{T}{t_i}}                                                  \\
+    d(T)                                 & = d(t_i) \sqrt{\frac{T}{t_i}} = \nu \left( \frac{T}{t_i} \right)^\beta,
+\end{align}
+wobei $\beta = 1/2$ der \aside{Dynamischer Exponent $\beta = 1/2$} dynamische Exponent bezeichnet wird.
+
+Diese unscheinbare Gleichung gibt bereits viel über das Verhalten von BA Netzwerken preis.
+Zunächst fällt auf, dass der Grad monoton wächst (es gibt schließlich keinen Prozess um ihn zu reduzieren).
+Die erwartete Anzahl der Nachbarn von verschiedenen Knoten $v_i$ und $v_j$ unterscheidet sich zudem nur durch die Zeitpunkte $t_i$ und $t_j$ zu denen sie hinzugefügt wurden.
+Je früher ein Knoten ins Netz eintrat, desto höher ist sein erwarteter Grad --- der sogenannte \aside{first-mover advantage} \emph{first-mover advantage}.
+
+Die Situation für später hinzugekommen ist sogar noch schlechter, als man zunächst erwarten würde:
+Die Startzeit~$t_i$ skaliert mit $\sqrt{1 / t_i}$ in den Knotengrad.
+Während ein frühes Mitglied innerhalb einer gewissen Zeitspanne nach ihrem Beitritt noch $X$ Nachbarn anhäufen konnte, bekommt ein spätere Knoten in derselben Zeit nur noch einen Bruchteil dieser Knoten.
+Dies liegt einfach daran, dass es in späteren Zeitpunkten mehr \qq{Konkurrenz} gibt und somit Nachzügler kaum Aufmerksamkeit bekommen.
+Dies kann man als Schwäche des Netzwerks interpretieren, da die einzige Chance im Mittel erfolgreich zu sein darin besteht, früh beigetreten zu sein.
+
+\subsection{Gradverteilung des BA-Modells}
+Im vorherigen Kapitel haben wir herausgefunden, dass der Grad eines Knotens~$v_i$ nach dem Beitritt ins Netz zu Zeitpunkt $t_i$ gemäß $d(t) = \nu (t  / t_i)^{1/2}$ wächst.
+Wir müssen dieses Ergebnis noch in eine Gradverteilung zum Zeitpunkt $T \ggg 1$ übersetzen.
+
+Die Intuition hierfür ist folgende:
+Wir wissen, dass wir zum Zeitpunkt~$T$ insgesamt $T$ zufällige Knoten hinzugefügt haben und können annehmen, dass wir das in einem regelmäßigen Takt getan haben.
+Dann müssen wir nur noch extrapolieren, welchen Grad wir für jeden diesen Knoten zu Zeitpunkt $T$ erwarten.
+Konkret fragen wir uns, wann ein Knoten eingefügt werden musste, s.d. er höchsten Grad $k$ hat:
+\begin{align}
+                    &  & d(T)                                   & < k         \\
+    \Leftrightarrow &  & \nu \left(\frac{T}{t_i}\right)^\beta   & < k         \\
+    \Leftrightarrow &  & \frac{\nu}{k} T^\beta                  & < t_i^\beta \\
+    \Leftrightarrow &  & \left(\frac{\nu}{k}\right)^{1/\beta} T & < t_i
+\end{align}
+
+Wir erwarten also, dass Knoten, die ab dem Zeitpunkt $t_i > (\nu / k)^{1/\beta} T$ eingefügt wurden, einen Grad von höchsten $k$ haben.
+Davon gibt es $T - (\nu / k)^{1/\beta} T$ viele!
+Sei $X$ nun ein zum Zeitpunkt~$T$ uniform gewählter Knoten und $P(k) = \prob{X \le k}$ die kumulative Verteilungsfunktion.
+Dann gilt:
+\begin{align}
+    P(k) & = \prob{X \le k} = \frac{T - (\nu / k)^{1/\beta} T}{n_T} = \frac{T - (\nu / k)^{1/\beta} T}{n_0 + T} \\
+         & \stackrel{T \gg n_0}{\approx} \frac{T - (\nu / k)^{1/\beta} T}{T} = 1 - (\nu / k)^{1/\beta}
+\end{align}
+
+Für die Gradverteilung benötigen wir nun die Wahrscheinlichkeitsverteilung $p(k)$; also die Ableitung von $P(k)$:
+\begin{align}
+    p(k) & = \frac{\intd P(k)}{\intd k} = \frac{\intd}{\intd k} (1 - (\nu / k)^{1/\beta}) \\
+         & = - \nu ^ {1/\beta}  \frac{\intd}{\intd k} k ^{-1/\beta}                       \\
+         & = \frac{1}{\beta} \nu ^{1 / \beta} k^{-\beta - 1}                              \\
+         & = 2 \nu^2 k^{-3}
+\end{align}
+
+Hierbei sind $2 \nu^2$ konstante Vorfaktoren.
+Durch Parametervergleich ergibt sich also eine Power Law Verteilung mit Exponent $\gamma = 3$.
 
