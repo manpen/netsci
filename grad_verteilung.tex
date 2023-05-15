@@ -440,3 +440,243 @@ Für die Gradverteilung benötigen wir nun die Wahrscheinlichkeitsverteilung $p(
 Hierbei sind $2 \nu^2$ konstante Vorfaktoren.
 Durch Parametervergleich ergibt sich also eine Power Law Verteilung mit Exponent $\gamma = 3$.
 
+\section{Generieren von BA Graphen}
+\begin{algorithm}[t]
+    \KwIn{Startgraph als Kantenliste $E_0$ über Knoten $1, \ldots, n_0$. Anzahl der Zufallsknoten~$N$ sowie deren Nachbaranzahl~$\nu$.}
+    \KwOut{Kantenliste $E$}
+    \SetKwFunction{pushback}{pushBack}
+
+    Allokiere leeres Array $E$ mit Kapazität $2(|E_0| + \nu n_0)$\;
+    \ForEach{$\set{u,v} \in E_0$}{
+        E.\pushback{$u$}\;
+        E.\pushback{$v$}\;
+        gebe Kante $\set{u,v}$ aus und fahre fort\;
+    }
+
+    \For{$1 \le i \le N$}{
+        \For{$1 \le j \le \nu$}{
+            $x \gets $ uniform zufällig aus $E$\;
+            E.\pushback{$x$}\;
+            E.\pushback{$n_0 + i$}\;
+            gebe Kante $\set{x,n_0+i}$ aus und fahre fort\;
+        }
+    }
+
+    \caption{Linearzeit~\cite{batagelj2005efficient} Generator für BA Graphen.}
+    \label{alg:bb_ba}
+    \vspace{1em}
+\end{algorithm}
+
+
+BA Graphen lassen sich mit einem überraschend einfachen Generator in Zeit linear in der Ausgabegröße erzeugen.
+Das Grundgerüst des Algorithmus~\cite{batagelj2005efficient} folgt dem BA Modell.
+Wir unterhalten eine Datenstruktur, die den wachsenden Graphen repräsentiert, und fügen dann iterativ Kanten hinzu.
+
+Um zum Zeitpunkt~$t$ die $m_t$ Kanten zu speichern, nutzen wir ein Array~$A$ mit $2m_t$ Einträgen.
+Die $i$-te Kanten $\set{u_i, v_i}$ wird dabei durch $A[2i - 1] = u_i$ und $A[2i] = v_i$ gespeichert.
+Die zentrale Beobachtung ist nun, dass in $A[1 .. 2m_t]$ jeder Knoten $u$ genau $\deg_t(u)$ mal abgespeichert ist.
+Wir müssen als nur einen Eintrag aus $A$ uniform zufällig ziehen, um die benötigte Verteilung zu erhalten.
+Der vollständige Generator ist in \cref{alg:bb_ba} zusammengefasst.
+
+Der Generator \cref{alg:bb_ba} hat jedoch eine praktische Schwäche:
+die $\nu$ Nachbarn eines Knotens werden unabhängig gezogen --- es kann also zu Mehrfachkanten kommen.
+Dies ist in viele Anwendungen unerwünscht.
+Daher gehen wir im Folgenden davon aus, dass der Startgraph einfach ist (d.h., keine Mehrfachkanten enthält).
+
+Dann können wir Mehrfachkanten recht einfach erkennen:
+wir müssen nur die $\nu$ anfänglichen Nachbarn eines jeden neuen Knoten auf Duplikate prüfen.
+(Warum reicht das?)
+Es gibt zwei übliche Strategien, wenn wir ein Duplikate detektiert haben.
+
+\begin{enumerate}
+    \item Wenn wir einen Knoten $x$ mehrfach als Nachbar eines neuen Knotens~$v$ gezogen haben, \qq{löschen} wir alle bis auf eine resultierende Kante.
+          Dies verändert zwar die Ausgabeverteilung, ist aber für große Ausgaben gar nicht so signifikant, da diese relativ selten auftreten (s.u.).
+
+    \item Wir stellen sicher, dass wir $\nu$ verschiedene Nachbarn ziehen.
+          Eine Technik hierfür haben wir bereits in \cref{sec:sampling_gnm} gesehen, um $k$ verschiedene Samples aus $N$ ohne Zurücklegen zu erstellen:
+          Wir ziehen einfach für den neuen Knoten~$v$ unabhängig neue Nachbarn;
+          wenn wir einen Nachbarn ziehen, der bereits mit $v$ verbunden ist, verwerfen wir diesen und versuchen es erneut.
+          Mit dem gleichen Argument wie beim Löschen von Nachbarn hat dieses Verfahren keine Auswirkungen auf die erwartete asymptotische Laufzeit.
+
+\end{enumerate}
+
+\begin{exercise}
+    Sei $G$ ein einfacher BA Graph mit fixierten $\nu$ und $N \gg n_0$.
+    Vereinfachend kann angenommen werden, dass $G$ vollständig der erwarteten Gradverteilung unterliegt.
+    Schätze die erwartete Anzahl uniformen Stichproben ab, die benötigt werden, um $\nu$ verschiedene Nachbarn zu finden.
+\end{exercise}
+
+Wenn die Ausgabe in den Hauptspeicher des Computers passt, funktioniert der vorgestellte Algorithmus praktisch sehr gut.
+In \cref{DBLP:conf/alenex/MeyerP16}, werden zwei Algorithmen beschrieben, die über die Grenze hinweg funktionieren.
+
+\subsection{Paralleles Ziehen von BA Graphen}
+Im Folgenden möchten wir uns zwei parallele Generatoren für BA Graphen ansehen.
+Vereinfachend betrachten wir nur $\nu = 1$; die Ideen lassen sich aber auch auf $\nu > 1$ verallgemeinern.
+
+\subsubsection{Abhängigkeiten vermeiden}
+Das Generieren von BA Graphen wurde bis vor wenigen Jahren noch als \emph{inhärent sequentielles} Problem bezeichnet.
+Jeder gezogene Knoten verändert die Gradverteilung, s.d. sich zwischen den neu eingefügten Kanten Abhängigkeiten ergeben.
+Allerdings gibt uns \cref{alg:bb_ba} bereits ein mentales Bild an die Hand, mit dem wir diese Abhängigkeiten in den Griff bekommen können.
+Um die Beschreibung zu vereinfachen, gehen wir davon aus, dass jeder Eintrag im Array einer Kante entspricht (statt eigentlich zwei Einträgen pro Kante).
+Dies ist eine asymptotisch nicht relevante Abschätzung zu unseren Ungunsten (siehe auch \cref{subsec:ba_sanders}).
+
+Angenommen, wir haben bereits $\ell$ Kanten berechnet und diese in $E[1..\ell]$ geschrieben.
+Dann können wir $p$ Kanten parallel bearbeiten, falls alle $p$ Kanten nur auf bereits bekannte Werte zugreifen.
+In der Skizze korrespondiert dies zu der Situation, dass alle Kanten auf der rechten Seite der roten Linie nur Werte links von der roten Linie lesen.
+
+\begin{center}
+    \begin{tikzpicture}
+        \foreach \x in {3, 6, ..., 120} {
+                \path[draw=black, opacity=0.5] (\x mm, 0) to ++(0, 8mm);
+            }
+        \node[inner sep=0, minimum height=8mm, minimum width=120mm, draw, anchor=south west] at (0,0) {};
+
+        \draw[thick, red] (99mm, -3mm) to ++(0, 14mm);
+        \draw[decorate, decoration = {brace, mirror}] (0, -5mm) to node[below] {Fertiggestellt} ++(98mm, 0);
+        \draw[decorate, decoration = {brace, mirror}] (100mm, -5mm) to node[below] {Parallel} ++(20mm, 0);
+
+        \foreach \x/\l in {0/$1$, 96/$\ell$, 117/$\ell+p$} {
+                \path[draw, ->] (\x mm + 1.5mm, 12mm) to ++(0, -3mm);
+                \node[anchor=south] at (\x mm + 1.5mm, 12mm) {\l};
+            }
+    \end{tikzpicture}
+\end{center}
+
+Leider ist der einzige Wert, für den wir garantieren können, dass es zu keinerlei Abhängigkeiten kommt, $p=1$; nicht hilfreich.
+Daher erweitern wir unseren Algorithmus um einen Fallback.
+
+Bevor die $p$ Einträge berechnet werden, schreiben wir an die Stellen $E[\ell..\ell+p] \gets \bot$ einen besonderen Wert, der anzeigt, dass diese Zelle keine valide Kante enthält.
+Dann ziehen wir unabhängig zufällig für jeden der $1, \ldots, p$ neuen Einträge den Index~$s_i$, von dem gelesen werden soll.
+Es gibt zwei Möglichkeiten:
+\begin{itemize}
+    \item Falls $s_i \le \ell$ gibt es keine Abhängigkeiten.
+          Wir können $E[s_i]$ also sicher lesen, die neue Kante berechnen, und das Ergebnis in $E[\ell + i]$ schreiben.
+    \item Falls $s_i > \ell$ benötigen wir einen Wert, der gerade parallel berechnet wird.
+          Wir lesen nun wiederholt solange von $E[s_i]$ bis wir einen Wert finden, der nicht $\bot$ ist.
+          Dann berechnen wir unseren eigenen Eintrag und schreiben ihn nach $E[\ell +i]$.
+          Jeden Versuch bezeichnen wir als Runde.
+\end{itemize}
+
+Um die Analyse einfach zu halten, nehmen wir an, alle Prozessoren alle Standardoperation in konstanter Zeit ausführen können.
+Weiter können wir in konstanter Zeit feststellen, ob alle Prozessoren fertig sind (das geht z.B. im CRCW-PRAM Modell).
+
+Die schlechte Nachricht: Der Algorithmus hat ein schlechtes worst-case Verhalten.
+Für den Fall, dass $s_i = \ell + i - 1$ ist, hängt jede Kante von ihrem Vorgänger ab.
+Pro \qq{Runde} des Fallback Algorithmus können wir also nur eine weitere Kante produzieren.
+Das ist nicht besser als ein sequentieller Algorithmus; wir verschwenden also $\Theta(p^2)$ Arbeit.
+Die gute Nachricht ist aber, dass dies sehr unwahrscheinlich ist, wenn wir $p$ nicht allzu groß wählen.
+
+\begin{lemma}\label{lem:par_ba_einzelschritt}
+    Für \aside{Es handelt sich hier um einen Spezialfall des Geburtstags\qq{paradox}} eine vorhandene Kantenliste $E$ mit $\ell = |E|$ können wir $p = \Oh{\sqrt{\ell}}$ Kanten parallel in erwarteter konstanter Zeit einfügen.
+\end{lemma}
+
+\begin{proof}
+    Wir zeigen, dass die erwartete Anzahl an Abhängigkeit extrem klein ist.
+    Sei $Y_i$ eine Indikatorvariable, die anzeigt, dass $s_i > \ell$ ist, also von einem neuen Eintrag abhängt.
+    Es gilt also:
+    \begin{align}
+        \prob{Y_i = 1} = \prob{s_i > \ell} = \frac{i - 1}{\ell + i - 1}
+    \end{align}
+
+    \noindent
+    Somit folgt die erwartete Anzahl von Abhängigkeiten als
+    \begin{align}
+        \exp{\sum_{i=1}^p Y_i} & = \sum_{i=1}^{p} \frac{i - 1}{\ell + i - 1} \\
+                               & = \sum_{i=0}^{p-1} \frac{i}{\ell + i}       \\
+                               & \le p \frac{p}{\ell + p}                    \\
+                               & \le \frac{p^2}{\ell}
+    \end{align}
+
+    \noindent
+    Für $p = \Oh{\ell}$ können wir also den Erwartungswert durch $1$ nach oben beschränken.
+\end{proof}
+
+Basierend auf \cref{lem:par_ba_einzelschritt} können wir nun mehrere Epochen aufbauen.
+In der ersten Epoche starten wir mit $e_1 = \ell$ Kanten und fügen $\sqrt{\ell}$ neue hinzu.
+In der nächsten Epoche haben wir dann schon $e_2 = \ell + \sqrt{\ell}$ und können schon $\sqrt{\ell + \sqrt{\ell}}$ neue Ergebnisse erzielen.
+Es gilt also:
+\begin{align}
+    e_i = \begin{cases}
+        \ell                     & \text{falls } i = 1 \\
+        e_{i-1} + \sqrt{e_{i-1}} & \text{sonst}
+    \end{cases}
+\end{align}
+
+Da jede Epoche in Erwartung eine Laufzeit von $\Oh{1}$ hat, hängt also die Laufzeit des Gesamtalgorithmus von der Anzahl notwendiger Epochen ab.
+
+\begin{lemma}
+    Für $e_1 = \sqrt{m}$ benötigen wir $\sqrt{m}$ Epochen um insg. $m$ Kanten zu produzieren.
+\end{lemma}
+
+\begin{proof}
+    Beginnen wir einfach: wie viele Epochen benötigen wir höchstens um von $e_1$ Kanten auf $2e_1$ Kanten zu kommen?
+    Wir unterschätzen die Anzahl neuer Kanten pro Epoche durch $\sqrt{e_1}$ (also der Zuwachs aus der ersten Epoche).
+    Dann sind wir nach $\sqrt{e_1}$ Epochen am Ziel $e_1 + \sqrt{e_1} \sqrt{e_1} = 2 e_1$.
+
+    Dieses Vorgehen wiederholen wir logarithmisch oft.
+    Vorsicht ist aber geboten, da wir um von $2e_1 \to 2(2e_1)$ zu kommen $\sqrt{2 e_1}$ (statt wie vorher nur $\sqrt{e_1}$) Epochen benötigen.
+    Sei $k$ die Anzahl an notwendigen Epochen, d.h. $e_k \ge m$.
+    Es folgt:
+
+    \begin{align}
+        k & \le \sum_{i=0}^{\ld(m/e_1)} \sqrt{2^i e_1}      \\
+          & = \sqrt{e_1} \sum_{i=0}^{\ld e_1} 2^{i/2}       \\
+          & \le \sqrt{e_1} 2 \sum_{i=1}^{(1+\ld e_1)/2} 2^i \\
+          & = \sqrt{e_1} \Oh{2^{2 + (\ld e_1) / 2}}         \\
+          & = \sqrt{e_1} \Oh{\sqrt{e_1}} = \Oh{e_1}
+    \end{align}
+\end{proof}
+
+Wir können also mit einem sequentiellen Algorithmus starten und in Zeit $\Oh{\sqrt m}$ einen Graphen zu generieren, der hinreichend groß ist, um in den parallelen Betrieb zu wechseln.
+Ab da benötigen wir weiter erwartete $\Oh{\sqrt m}$ Zeit um die verbleibenden $m - \sqrt{m}$ Kanten zu ziehen.
+
+\subsubsection{Abhängigkeiten vermeiden}\label{subsec:ba_sanders}
+Im vorherigen Kapitel haben wir eine allgemeine Technik gesehen, um sequentielle Algorithmen mit kompatiblen zufälligen Zugriffsmustern zu parallelisieren.
+Die Strategie besteht dann darin kleine Epochen zu konstruieren, um Abhängigkeiten möglichst ganz zu vermeiden.
+Für BA Graphen im Speziellen, zeigten~\cref{SANDERS2016489} jedoch, dass wir sogar $\Theta{m}$ Prozessoren sinnvoll Arbeit zu kommen lassen und einen BA Graphen mit hoher Wahrscheinlichkeit in $\Oh{\log m}$ Zeit erzeugen können.
+Betrachten wir noch einmal die \qq{echte} Kantenliste, in der jede Kante aus zwei Einträgen besteht:
+
+\begin{center}
+    \begin{tikzpicture}
+        \foreach \x in {0, 6, ..., 114} {
+                \node[inner sep=0, minimum height=8mm, minimum width=3mm, fill=black!30, anchor=south west] at (\x mm, 0) {};
+            }
+        \foreach \x in {6, 12, ..., 114} {
+                \path[draw] (\x mm, -2mm) to ++(0, 12mm);
+            }
+        \node[inner sep=0, minimum height=8mm, minimum width=120mm, draw, anchor=south west] at (0,0) {};
+    \end{tikzpicture}
+\end{center}
+
+Jede Kante besteht aus einem \qq{deterministischen} Eintrag, nämlich dem Index des neuen Knotens, der sich aus dem Kantenindex ableiten lässt, und einem zufälligen Wert (hier weiß).
+Wir nehmen nun an, dass jeder Kante~$i$ ein eigenen Prozessor~$p_i$ zugeordnet ist.
+Kanten aus dem Startgraph kopieren einfach den entsprechenden Wert.
+Alle anderen Prozessoren führen folgendes Programm parallel aus:
+
+\begin{algorithm}[H]
+    $E[2i - 1] \gets$ KnotenId von neuem Knoten\;
+    $E[2i] \gets \bot$\;
+    \BlankLine
+    $s_i \gets $ uniform zufällig aus $1 \ldots 2(i-1)$\;
+    \While{$E[s_i] = \bot$}{
+        warte auf nächste Runde\;
+    }
+
+    $E[2i] \gets E[s_i]$\;
+\end{algorithm}
+
+Dieser Algorithmus funktioniert so gut, weil sich in jeder Runde die erwartete Anzahl an nicht fertiggestellten Kanten halbiert.
+Nach der ersten Runde sind alle Kanten fertig, deren $s_i$ ungerade war; in diesem Fall konnten wir nämlich einfach die \qq{deterministischen} Hälfte einer Kante lesen.
+Da $s_i$ uniform gezogen wurde, ist $s_i$ mit Wahrscheinlichkeit $1/2$ ungerade.
+
+In der zweiten Runde können wir von den verbleibenden Kanten all jene fertig stellen, die auf eine Kante zeigen, die in der ersten Runde fertig gestellt wurde.
+In anderen Worten, solche Kanten haben einen gerades $s_i$, das auf ein ungerades $s'_i$ zeigt --- dies betrifft in Erwartung $1/4$ aller Kanten.
+
+In der der $i$-ten Runde setzt sich die Kette analog fort.
+Insg. benötigen wir $i-1$ Verweise von gerade auf gerade, gefolgt von einem einzelnen auf ungerade.
+
+Die erwartete Anzahl der Runden der letzten Kante ist also geometrisch mit Erfolgswahrscheinlichkeit $1/2$ verteilt.
+In Erwartung sind wir für diese Kante nach $2$ Runden fertig.
+
+Mittels Chernoffungleichung können wir zeigen, die Wahrscheinlichkeit für geeignetes~$\beta$ mehr als $\beta \log n$ Runden zu benötigen auf $n^{-2}$ beschränken.
+Durch union-bound folgt dann, dass der Algorithmus mit hoher Wahrscheinlichkeit nur $\Oh{\log n}$ Zeit benötigt.
