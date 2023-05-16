@@ -395,13 +395,13 @@ Somit folgt insg:
 wobei $\beta = 1/2$ der \aside{Dynamischer Exponent $\beta = 1/2$} dynamische Exponent bezeichnet wird.
 
 Diese unscheinbare Gleichung gibt bereits viel über das Verhalten von BA Netzwerken preis.
-Zunächst fällt auf, dass der Grad monoton wächst (es gibt schließlich keinen Prozess um ihn zu reduzieren).
+Zunächst fällt auf, dass der Grad monoton wächst (es gibt schließlich keinen Prozess, um ihn zu reduzieren).
 Die erwartete Anzahl der Nachbarn von verschiedenen Knoten $v_i$ und $v_j$ unterscheidet sich zudem nur durch die Zeitpunkte $t_i$ und $t_j$ zu denen sie hinzugefügt wurden.
 Je früher ein Knoten ins Netz eintrat, desto höher ist sein erwarteter Grad --- der sogenannte \aside{first-mover advantage} \emph{first-mover advantage}.
 
 Die Situation für später hinzugekommen ist sogar noch schlechter, als man zunächst erwarten würde:
 Die Startzeit~$t_i$ skaliert mit $\sqrt{1 / t_i}$ in den Knotengrad.
-Während ein frühes Mitglied innerhalb einer gewissen Zeitspanne nach ihrem Beitritt noch $X$ Nachbarn anhäufen konnte, bekommt ein spätere Knoten in derselben Zeit nur noch einen Bruchteil dieser Knoten.
+Während ein frühes Mitglied innerhalb einer gewissen Zeitspanne nach ihrem Beitritt noch $X$ Nachbarn anhäufen konnte, bekommt ein späterer Knoten in derselben Zeit nur noch einen Bruchteil dieser Knoten.
 Dies liegt einfach daran, dass es in späteren Zeitpunkten mehr \qq{Konkurrenz} gibt und somit Nachzügler kaum Aufmerksamkeit bekommen.
 Dies kann man als Schwäche des Netzwerks interpretieren, da die einzige Chance im Mittel erfolgreich zu sein darin besteht, früh beigetreten zu sein.
 
@@ -545,35 +545,36 @@ In der Skizze korrespondiert dies zu der Situation, dass alle Kanten auf der rec
 Leider ist der einzige Wert, für den wir garantieren können, dass es zu keinerlei Abhängigkeiten kommt, $p=1$; nicht hilfreich.
 Daher erweitern wir unseren Algorithmus um einen Fallback.
 
-Bevor die $p$ Einträge berechnet werden, schreiben wir an die Stellen $E[\ell..\ell+p] \gets \bot$ einen besonderen Wert, der anzeigt, dass diese Zelle keine valide Kante enthält.
+Bevor die $p$ Einträge berechnet werden, schreiben wir an die Stellen $E[\ell..\ell+p] \gets \bot$ einen besonderen Wert, der anzeigt, dass diese Zellen keine valide Kante enthält.
 Dann ziehen wir unabhängig zufällig für jeden der $1, \ldots, p$ neuen Einträge den Index~$s_i$, von dem gelesen werden soll.
 Es gibt zwei Möglichkeiten:
 \begin{itemize}
     \item Falls $s_i \le \ell$ gibt es keine Abhängigkeiten.
           Wir können $E[s_i]$ also sicher lesen, die neue Kante berechnen, und das Ergebnis in $E[\ell + i]$ schreiben.
-    \item Falls $s_i > \ell$ benötigen wir einen Wert, der gerade parallel berechnet wird.
-          Wir lesen nun wiederholt solange von $E[s_i]$ bis wir einen Wert finden, der nicht $\bot$ ist.
+    \item Falls $s_i > \ell$ benötigen wir einen Wert, der gerade erst parallel berechnet wird.
+          Wir lesen nun wiederholt von $E[s_i]$ bis wir einen Wert finden, der nicht $\bot$ ist.
           Dann berechnen wir unseren eigenen Eintrag und schreiben ihn nach $E[\ell +i]$.
           Jeden Versuch bezeichnen wir als Runde.
 \end{itemize}
 
-Um die Analyse einfach zu halten, nehmen wir an, alle Prozessoren alle Standardoperation in konstanter Zeit ausführen können.
-Weiter können wir in konstanter Zeit feststellen, ob alle Prozessoren fertig sind (das geht z.B. im CRCW-PRAM Modell).
+Um die Analyse einfach zu halten, nehmen wir an, dass die Prozessoren alle Standardoperation in konstanter Zeit ausführen können.
+Weiter können wir am Ende jeder Runde in konstanter Zeit feststellen, ob alle Prozessoren fertig sind.
+Für diese Annahmen ist das sog. CRCW-PRAM Modell wäre ein geeignetes Maschinenmodell.
 
-Die schlechte Nachricht: Der Algorithmus hat ein schlechtes worst-case Verhalten.
+Die schlechte Nachricht ist leider:
+Der Algorithmus hat ein furchtbares worst-case Verhalten.
 Für den Fall, dass $s_i = \ell + i - 1$ ist, hängt jede Kante von ihrem Vorgänger ab.
-Pro \qq{Runde} des Fallback Algorithmus können wir also nur eine weitere Kante produzieren.
+Pro \qq{Runde} des Fallback können wir also nur eine Kante produzieren.
 Das ist nicht besser als ein sequentieller Algorithmus; wir verschwenden also $\Theta(p^2)$ Arbeit.
 Die gute Nachricht ist aber, dass dies sehr unwahrscheinlich ist, wenn wir $p$ nicht allzu groß wählen.
 
 \begin{lemma}\label{lem:par_ba_einzelschritt}
-    Für \aside{Es handelt sich hier um einen Spezialfall des Geburtstags\qq{paradox}} eine vorhandene Kantenliste $E$ mit $\ell = |E|$ können wir $p = \Oh{\sqrt{\ell}}$ Kanten parallel in erwarteter konstanter Zeit einfügen.
+    Bei \aside{Es handelt sich hier um einen Spezialfall des Geburtstags\qq{paradoxon}} einer vorhandenen Kantenliste $E$ mit $\ell = |E|$ können wir $p = \Oh{\sqrt{\ell}}$ Kanten parallel in erwarteter konstanter Zeit einfügen.
 \end{lemma}
 
 \begin{proof}
     Wir zeigen, dass die erwartete Anzahl an Abhängigkeit extrem klein ist.
-    Sei $Y_i$ eine Indikatorvariable, die anzeigt, dass $s_i > \ell$ ist, also von einem neuen Eintrag abhängt.
-    Es gilt also:
+    Sei $Y_i$ eine Indikatorvariable mit $Y_i = 1 \Leftrightarrow s_i > \ell$:
     \begin{align}
         \prob{Y_i = 1} = \prob{s_i > \ell} = \frac{i - 1}{\ell + i - 1}
     \end{align}
@@ -581,14 +582,14 @@ Die gute Nachricht ist aber, dass dies sehr unwahrscheinlich ist, wenn wir $p$ n
     \noindent
     Somit folgt die erwartete Anzahl von Abhängigkeiten als
     \begin{align}
-        \exp{\sum_{i=1}^p Y_i} & = \sum_{i=1}^{p} \frac{i - 1}{\ell + i - 1} \\
-                               & = \sum_{i=0}^{p-1} \frac{i}{\ell + i}       \\
-                               & \le p \frac{p}{\ell + p}                    \\
-                               & \le \frac{p^2}{\ell}
+        \expv{\sum_{i=1}^p Y_i} & = \sum_{i=1}^{p} \frac{i - 1}{\ell + i - 1} \\
+                                & = \sum_{i=0}^{p-1} \frac{i}{\ell + i}       \\
+                                & \le p \frac{p}{\ell + p}                    \\
+                                & \le \frac{p^2}{\ell}
     \end{align}
 
     \noindent
-    Für $p = \Oh{\ell}$ können wir also den Erwartungswert durch $1$ nach oben beschränken.
+    Für $p = \Oh{\sqrt{\ell}}$ können wir also den Erwartungswert durch $\Oh{1}$  beschränken.
 \end{proof}
 
 Basierend auf \cref{lem:par_ba_einzelschritt} können wir nun mehrere Epochen aufbauen.
@@ -605,11 +606,11 @@ Es gilt also:
 Da jede Epoche in Erwartung eine Laufzeit von $\Oh{1}$ hat, hängt also die Laufzeit des Gesamtalgorithmus von der Anzahl notwendiger Epochen ab.
 
 \begin{lemma}
-    Für $e_1 = \sqrt{m}$ benötigen wir $\sqrt{m}$ Epochen um insg. $m$ Kanten zu produzieren.
+    Für $e_1 = \sqrt{m}$ können wir $m$ Kanten in $\Oh{\sqrt{m}}$ Epochen erzeugen.
 \end{lemma}
 
 \begin{proof}
-    Beginnen wir einfach: wie viele Epochen benötigen wir höchstens um von $e_1$ Kanten auf $2e_1$ Kanten zu kommen?
+    Beginnen wir einfacher: wie viele Epochen benötigen wir höchstens, um von $e_1$ Kanten auf $2e_1$ Kanten zu kommen?
     Wir unterschätzen die Anzahl neuer Kanten pro Epoche durch $\sqrt{e_1}$ (also der Zuwachs aus der ersten Epoche).
     Dann sind wir nach $\sqrt{e_1}$ Epochen am Ziel $e_1 + \sqrt{e_1} \sqrt{e_1} = 2 e_1$.
 
@@ -627,13 +628,14 @@ Da jede Epoche in Erwartung eine Laufzeit von $\Oh{1}$ hat, hängt also die Lauf
     \end{align}
 \end{proof}
 
-Wir können also mit einem sequentiellen Algorithmus starten und in Zeit $\Oh{\sqrt m}$ einen Graphen zu generieren, der hinreichend groß ist, um in den parallelen Betrieb zu wechseln.
-Ab da benötigen wir weiter erwartete $\Oh{\sqrt m}$ Zeit um die verbleibenden $m - \sqrt{m}$ Kanten zu ziehen.
+Wir können also mit einem sequentiellen Algorithmus starten und in Zeit $\Oh{\sqrt m}$ einen Graphen generieren, der hinreichend groß ist, um in den parallelen Betrieb zu wechseln.
+Ab dann ziehen wir die verbleibenden $m - \sqrt{m}$ Kanten in erwarteter $\Oh{\sqrt m}$ Zeit.
 
-\subsubsection{Abhängigkeiten vermeiden}\label{subsec:ba_sanders}
-Im vorherigen Kapitel haben wir eine allgemeine Technik gesehen, um sequentielle Algorithmen mit kompatiblen zufälligen Zugriffsmustern zu parallelisieren.
-Die Strategie besteht dann darin kleine Epochen zu konstruieren, um Abhängigkeiten möglichst ganz zu vermeiden.
-Für BA Graphen im Speziellen, zeigten~\cref{SANDERS2016489} jedoch, dass wir sogar $\Theta{m}$ Prozessoren sinnvoll Arbeit zu kommen lassen und einen BA Graphen mit hoher Wahrscheinlichkeit in $\Oh{\log m}$ Zeit erzeugen können.
+\subsubsection{Abhängigkeiten beherrschen}\label{subsec:ba_sanders}
+Im vorherigen Kapitel haben wir eine allgemeine Technik gesehen, um sequentielle Algorithmen mit geeigneten zufälligen Zugriffsmustern zu parallelisieren.
+Wir konstruieren kleine Epochen, um Abhängigkeiten möglichst zu vermeiden und behandeln dennoch auftretende Abhängigkeiten als Sonderfall.
+
+Für BA Graphen im Speziellen, zeigen~\cite{SANDERS2016489} jedoch, dass wir sogar $\Theta(m)$ Prozessoren sinnvoll Arbeit zukommen lassen und einen BA Graphen mit hoher Wahrscheinlichkeit in $\Oh{\log m}$ Zeit erzeugen können.
 Betrachten wir noch einmal die \qq{echte} Kantenliste, in der jede Kante aus zwei Einträgen besteht:
 
 \begin{center}
@@ -648,16 +650,16 @@ Betrachten wir noch einmal die \qq{echte} Kantenliste, in der jede Kante aus zwe
     \end{tikzpicture}
 \end{center}
 
-Jede Kante besteht aus einem \qq{deterministischen} Eintrag, nämlich dem Index des neuen Knotens, der sich aus dem Kantenindex ableiten lässt, und einem zufälligen Wert (hier weiß).
-Wir nehmen nun an, dass jeder Kante~$i$ ein eigenen Prozessor~$p_i$ zugeordnet ist.
+Jede Kante besteht aus einem trivialen \qq{deterministischen} Eintrag, nämlich dem Index des neuen Knotens, der sich aus dem Kantenindex ableiten lässt, und einem zufälligen Wert (hier weiß).
+Wir nehmen nun an, dass jeder Kante~$i$ ein eigener Prozessor~$p_i$ zugeordnet ist.
 Kanten aus dem Startgraph kopieren einfach den entsprechenden Wert.
-Alle anderen Prozessoren führen folgendes Programm parallel aus:
+Danach führen alle anderen Prozessoren folgendes Programm parallel aus:
 
 \begin{algorithm}[H]
     $E[2i - 1] \gets$ KnotenId von neuem Knoten\;
     $E[2i] \gets \bot$\;
     \BlankLine
-    $s_i \gets $ uniform zufällig aus $1 \ldots 2(i-1)$\;
+    $s_i \gets $ uniform zufällig aus $\set{1 \ldots 2(i-1)}$\;
     \While{$E[s_i] = \bot$}{
         warte auf nächste Runde\;
     }
@@ -666,17 +668,40 @@ Alle anderen Prozessoren führen folgendes Programm parallel aus:
 \end{algorithm}
 
 Dieser Algorithmus funktioniert so gut, weil sich in jeder Runde die erwartete Anzahl an nicht fertiggestellten Kanten halbiert.
-Nach der ersten Runde sind alle Kanten fertig, deren $s_i$ ungerade war; in diesem Fall konnten wir nämlich einfach die \qq{deterministischen} Hälfte einer Kante lesen.
+Nach der ersten Runde sind alle Kanten fertig, deren $s_i$ ungerade war;
+in diesem Fall konnten wir nämlich einfach die \qq{deterministische} Hälfte einer Kante lesen.
 Da $s_i$ uniform gezogen wurde, ist $s_i$ mit Wahrscheinlichkeit $1/2$ ungerade.
 
-In der zweiten Runde können wir von den verbleibenden Kanten all jene fertig stellen, die auf eine Kante zeigen, die in der ersten Runde fertig gestellt wurde.
-In anderen Worten, solche Kanten haben einen gerades $s_i$, das auf ein ungerades $s'_i$ zeigt --- dies betrifft in Erwartung $1/4$ aller Kanten.
+In der zweiten Runde können wir von den verbleibenden Kanten all jene fertigstellen, die auf eine Kante zeigen, die in der ersten Runde fertig gestellt wurde.
+In anderen Worten, solche Kanten haben einen gerades $s_i$, das auf ein ungerades $s_{s_i}$ zeigt --- dies betrifft in Erwartung $1/4$ aller Kanten.
 
-In der der $i$-ten Runde setzt sich die Kette analog fort.
+In der $i$-ten Runde setzt sich die Kette analog fort:
 Insg. benötigen wir $i-1$ Verweise von gerade auf gerade, gefolgt von einem einzelnen auf ungerade.
 
 Die erwartete Anzahl der Runden der letzten Kante ist also geometrisch mit Erfolgswahrscheinlichkeit $1/2$ verteilt.
 In Erwartung sind wir für diese Kante nach $2$ Runden fertig.
+Mittels Chernoff-Ungleichung können wir die Wahrscheinlichkeit mehr als $\beta \log n$ Runden zu benötigen für geeignetes~$\beta$ auf $n^{-2}$ beschränken.
+Durch union-bound folgt dann, dass der Algorithmus mit hoher Wahrscheinlichkeit eine Laufzeit von $\Oh{\log n}$ hat.
 
-Mittels Chernoffungleichung können wir zeigen, die Wahrscheinlichkeit für geeignetes~$\beta$ mehr als $\beta \log n$ Runden zu benötigen auf $n^{-2}$ beschränken.
-Durch union-bound folgt dann, dass der Algorithmus mit hoher Wahrscheinlichkeit nur $\Oh{\log n}$ Zeit benötigt.
+\subsubsection{Abhängigkeiten ausschließen}
+Der eben vorgestellte Algorithmus kann auch so abgeändert werden, dass es zu keinerlei expliziten Abhängigkeiten kommt.
+Dazu vermeiden wir es einfach vollständig zufällige Vorgänger zu lesen.
+Dies ist vor allem im Kontext von verteilten Multicomputern von Vorteil, bei denen Zugriffe auf den Speicher von anderen Computern typischerweise zu erheblicheren Verlangsamung führen.
+
+Die Idee ist simple: statt von einer Position der Kantenliste zu lesen, ziehen wir einfach die Berechnung, die dort stattgefunden haben muss, selbst nach.
+
+Angenommen wir befinden uns an Position~$i$ und ziehen~$s_i$.
+Falls $s_i$ ungerade ist, befindet sich dort der Index eines neuen Knotens, den wir einfach nachrechnen können.
+Falls $s_i$ gerade ist, müssen wir \qq{nur} denselben zufälligen Vorgänger~$s_{s_i}$ ziehen, der am Index $s_i$ gezogen wurde.
+
+Dieses Oxymoron können wir lösen, indem wir die deterministische Natur unserer Pseudo-Zufallsgeneratoren ausnutzen.
+Wir erzeugen an jeder Position der Kantenliste einen Pseudo-Zufallsgenerator, dessen Zustand deterministisch von der Position in der Kantenliste abgeleitet werden kann.
+Man könnte beispielsweise einfach den Index als Seedwert für den Generator nutzen.
+
+Hierbei müssen wir allerdings vorsichtig sein, da Pseudo-Zufallsgeneratoren in der Regel eine sogenannte Burn-in Phase benötigen, da die ersten Werte ungewünschte Eigenschaften besitzen können.
+Außerdem ist das Erzeugen eines Zufallszahlengenerators oft sehr viel teurer als das Ziehen eines Zufallswortes.
+Daher nutzen die Autoren~\cite{SANDERS2016489} statt eines dedizierten Pseudo-Zufallsgenerator eine zufällige Hashfunktion.
+
+Dies ist eine pragmatische Entscheidung und liefert --je nach Hashfunktion-- eine vergleichsweise kleines Ensemble an möglichen Ausgaben.
+Empirisch scheinen aber die erzeugten Graphen ähnlich zu BA Graphen zu sein.
+Daher kann der Generator ---gerade bei verteilten Berechnungen--- das Mittel der Wahl sein.
