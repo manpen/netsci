@@ -274,7 +274,7 @@ Vielmehr müssen wir nun immer die Wahrscheinlichkeit, dass ein $X$ aus einem In
     Berechne den Erwartungswert der kontinuierlichen Power Law Verteilung mit fixierten Grenzen $0 < \dmin < \dmax \le \infty$.
 \end{exercise}
 
-\subsection{Größe von Hubs}
+\subsection{Größe von Hubs}\label{subsec:groesse_von_hubs}
 Eine zentrale Motivation von Poissonverteilungen abzurücken, war es, dass sie keine außergewöhnlich großen Grade zulassen.
 Daher wollen wir den größten Grad eines Knotens in einer Power Law Verteilungen abschätzen.
 
@@ -298,7 +298,7 @@ Für $\gamma = 3$ ist er noch $\Theta(\sqrt{n})$ et cetera.
 
 \section{Wie entstehen eine Power Law Gradverteilungen?}
 Das Entstehen von Power Law Verteilungen in  unterschiedlichsten Netzwerken gibt Anlass zu der Frage, wie solche Verteilungen denn eigentlich entstehen.
-Barabasi und Albert~\cite{barabasi1999emergence} geben eine sehr populäre Erklärung, die besonders durch ihre Simplizität besticht.
+Barab{\'{a}}si und Albert~\cite{barabasi1999emergence} geben eine sehr populäre Erklärung, die besonders durch ihre Simplizität besticht.
 Ähnliche Techniken wurden jedoch bereits früher verfolgt (z.B.~\cite{10.2307/1716232}).
 
 Die beiden Autoren schlagen neues Modell vor, das wir im Folgenden BA-Modell nennen.
@@ -705,3 +705,60 @@ Daher nutzen die Autoren~\cite{SANDERS2016489} statt eines dedizierten Pseudo-Zu
 Dies ist eine pragmatische Entscheidung und liefert --je nach Hashfunktion-- eine vergleichsweise kleines Ensemble an möglichen Ausgaben.
 Empirisch scheinen aber die erzeugten Graphen ähnlich zu BA Graphen zu sein.
 Daher kann der Generator ---gerade bei verteilten Berechnungen--- das Mittel der Wahl sein.
+
+\subsection{Skalenfreie Netze}
+Skalenfreie Netz (scale-free network) sind Graphen mit Power Law Gradverteilungen (Gegendarstellung: \cite{doi:10.1073/pnas.200327197});
+hierbei handelt es sich um einen sehr gebräuchlichen Begriff in der Network Science Literatur.
+Der Begriff selbst hat zwei (verwandte) Erklärungen, die uns noch ein Einblicke in die Eigenschaften von Power Law Verteilungen erlauben.
+
+\subsubsection{Skaleninvariant}
+Wir können \qq{skalenfrei} als \qq{skaleninvariant} auffassen.
+Damit wird auf die Selbstähnlichkeit der Power-Law Verteilung hingewiesen:
+eine perfekte Power Law Verteilung ist in einem Log-Log-Plot immer eine Grade mit Steigung $-\gamma$.
+Dabei ist unerheblich wie groß der zugrunde liegende Objekt (hier Knotenmenge) ist.
+
+Wir können also die Verteilung umskalieren, z.B. die Knotenanzahl um einen Faktor $a$ vergrößern.
+Dann gilt für die entsprechende Zufallsvariablen $X$ und $X'$:
+
+\begin{align}
+    \prob{X = k}   &                                                                                           & \propto k^{-\gamma}  \label{eq:prop-scalefree-1} \\
+    \prob{X' = ak} & \propto (ak)^{-\gamma} = \underbrace{a^{-\gamma}}_{\text{unabhängig von $k$}} k^{-\gamma} & \propto k^{-\gamma}\label{eq:prop-scalefree-2}
+\end{align}
+
+Beobachte, dass die Proportionalität in \cref{eq:prop-scalefree-1,eq:prop-scalefree-2} jeweils andere Normierungen verbirgt.
+
+\subsubsection{Unbegrenztes Wachstum}
+Der Begriff \qq{scale-free network} wird regelmäßig Barab{\'{a}}si und Albert, den Autoren des BA Modells, zugeschrieben.
+Barab{\'{a}}si selbst erklärt den Begriff über das unbeschränkte Wachstum des $k$-ten Moments der Power Law Verteilung für $n \to \infty$.
+
+Das $k$-te Moment einer kontinuierlichen (Grad)Verteilung $p(d)$ ist definiert als:
+\begin{align}
+    \langle d^k \rangle = \int_\dmin^\dmax d^k p(d) \intd d
+\end{align}
+
+Für $k=1$ erhalten wir also den Erwartungswert, $\langle d^2 \rangle$ ist essentiell in der Berechnung der Varianz $\langle d^2 \rangle - \langle d \rangle^2$, $\langle d^3 \rangle$ beeinflusst die Schiefe (skewness) et cetera.
+Bezogen auf Power Law Verteilungen ergibt sich:
+\begin{align}
+    \langle d^k \rangle
+     & = \int_\dmin^\dmax d^k C d^{-\gamma} \intd d
+    = C \left[ \frac{1}{k + 1 - \gamma} d^{k + 1 -\gamma}\right]_\dmin^\dmax    \\
+     & = C \frac{\dmax^{k + 1 -\gamma} - \dmin^{k + 1 -\gamma}}{k + 1 - \gamma}
+\end{align}
+
+Das Verhalten des $k$-ten Moments für $n \to \infty$ (und dadurch $\dmax \to \infty$) wird also maßgeblich durch $k + 1 - \gamma$ beschrieben:
+\begin{itemize}
+    \item Für $k + 1 < \gamma$ konvergiert $\lim_{\dmax \to \infty} \dmax^{k + 1 -\gamma} = 0$.
+          Somit ist $\langle d^k \rangle$ endlich.
+
+    \item Für $k + 1 = \gamma$ ist das $k$-te Moment konstant.
+
+    \item Für $k + 1 > \gamma$ divergiert das $k$-te Moment und wächst grenzenlos.
+\end{itemize}
+
+\noindent
+Bisher nahmen wir $2 < \gamma \le 3$ an.
+In diesem Regime konvergiert $\langle d \rangle$, somit erwarten wir, dass der Durchschnittsgrad in einem wachsenden Netz irgendwann stagniert.
+Dies widerspricht aber scheinbar unserer Analyse in \cref{subsec:groesse_von_hubs}, wo wir zeigten, dass der Grad von Hubs polynomiell in der Knotenanzahl wächst.
+Dem wird aber schlicht dadurch Rechnung getragen, dass die Varianz über das divergierende zweite Moment $\langle d^2 \rangle$ wächst.
+Polemisch gesagt, werden also Hubs als Outlayer verbucht.
+Ein zufällig gezogener Knoten kann kleinen oder großen Grad haben mit einem Streuung über viele Größenordnungen --- es gibt also kein Konzept von Größenverhältnissen (engl., scale).
