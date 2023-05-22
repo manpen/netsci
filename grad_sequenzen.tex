@@ -1,0 +1,240 @@
+Während wir im vorherigen Kapitel Gradsequenzen als Stichproben einer Gradverteilung analysiert haben, möchten wir in diesem Kapitel konkrete Gradsequenzen als Charakterisierung eines Graphen verstehen.
+Konkret möchten wir für eine gegebene Gradsequenz~$\degseq$ einen Graphen~$G$ erzeugen, der folgende Eigenschaften erfüllt:
+\begin{enumerate}
+    \item Graph~$G$ soll die Gradsequenz~$\degseq$ haben.
+    \item Graph~$G$ soll einfach sein (d.h., keine Mehrfachkanten oder Schleifen haben).
+    \item Graph~$G$ soll eine uniforme Stichprobe aus allen passenden Graphen sein.
+\end{enumerate}
+
+Im Folgenden werden wir eine Reihe von Ansätzen untersuchen.
+Dabei wird sich zeigen, dass es einfach ist, wenn wir nur zwei Eigenschaften (d.h. 1\&2, 2\&3, oder 1\&3) erfüllen müssen.
+Für eine allgemeine Gradsequenz~$\degseq$ ist es hingegen schwer allen drei Anforderungen gerechnet zu werden.
+
+Bevor wir aber anfangen, sollten wir das \qq{Warum?} klären.
+Es gibt zwei zentrale Motivationen Graphen mit allgemeinen Gradsequenzen erzeugen zu wollen:
+\begin{itemize}
+    \item
+          Es handelt sich um einen Baustein für komplexere Generatoren.
+          Ein bekanntes Beispiel ist das LFR-Benchmark~\cite{lancichinetti2008benchmark}, ein Zufallsgraph, um die Qualität von Community-Detection-Algorithmen zu messen.
+          Hierfür werden Graphen erzeugt, von denen wir wissen, welche Knoten zu welchen Communities gehören.
+          Der Generator erzeugt dafür parametrisierte Communities in Isolation und fügt diese dann zu seinem größeren Graphen zusammen.
+          In beiden Schritten müssen Zufallsgraphen mit gegebenen Gradsequenzen erzeugt werden.
+
+    \item
+          In datengetriebenen Wissenschaften müssen wir regelmäßig die statistische Signifikanz von Beobachtungen messen.
+          Oft bewerkstelligen wir diese durch Widerlegen einer Nullhypothese.
+
+          Ein Beispiel in Network Science haben wir bereits gesehen:
+          wir beobachteten Hub-Knoten, deren Grad wir nicht mit $\Gnp$ Graphen erklären konnten.
+          Daraufhin schlugen wir das BA Modell vor.
+
+          Wenig überraschend haben das $\Gnp$ und das BA Modell deutliche Unterschiede (z.B. sind selbst sehr dünne BA Graphen zusammenhängend).
+          Egal welches Modell wir wählen, es führt immer zu einer Verzerrung in der Bewertung unserer Beobachtungen.
+
+          Daher kommen nicht selten uniform zufällige und einfache Graphen, die dieselbe Gradsequenz wie das beobachtete Netz ausweisen, zum Einsatz.
+\end{itemize}
+
+\section{Configuration Model}
+Ein Graph des Configuration Modells lässt sich wie folgt erzeugen.
+Sei eine Gradsequenz~$\degseq = (d_1, \ldots, d_n)$ mit $\sum_i d_i$ gerade gegeben.
+Dann legen wir für jedes $i$ genaue $d_i$ Bälle mit Aufdruck~$i$ in eine Urne.
+Solange die Urne nicht leer ist, ziehen wir je zwei zufällige Bälle ohne Zurücklegen.
+Für jedes Paar mit Aufschrift $i$ und $j$ fügen wir die Kante $\set{i, j}$ in den Graph ein.
+Per Konstruktion erhalten wir eine Ausgabe mit $m = (\sum_i d_i) / 2$ Kanten und $n$ Knoten.
+
+Wir bezeichnen die Bälle als \emph{Halbkanten} oder \emph{stubs}.
+
+\noindent
+Prüfen wir kurz unser Lastenheft:
+\begin{itemize}
+    \item \emph{Graph~$G$ soll die Gradsequenz~$\degseq$ haben}.
+          Das stimmt: per Konstruktion ist jede Knoten~$i$ genau $d_i$ mal vertreten.
+
+    \item \emph{Graph~$G$ soll einfach sein (d.h., keine Mehrfachkanten oder Schleifen haben).}
+          Das können wir nicht versprechen: niemand stoppt uns ein Paar $i = j$ zu ziehen, wenn $d_i > 1$.
+          Analog kann es auch passieren, dass wir dasselbe Paar mehrfach ziehen.
+
+    \item \emph{Graph~$G$ soll eine uniforme Stichprobe aus allen passenden Graphen sein.}
+          Wenn wir zufällig einen einfachen Graphen produzieren, dann ist dieser uniform unter allen einfachen Graphen (siehe Übung).
+\end{itemize}
+
+Wir bezeichnen mit \CMd die vom Configuration Model erzeugte Verteilung.
+
+\subsection{Effizientes Ziehen aus dem Configuration Model}
+\begin{algorithm}[t]
+    \KwIn{Gradsequenz $\degseq = (d_1, \ldots, d_n)$}
+    \KwOut{Kantenarray $E$}
+
+    \SetKwFunction{pushback}{pushBack}
+    \SetKwFunction{popback}{popBack}
+
+    \If{$\sum_i d_i \text{ ungerade}$}{
+        breche mit Fehler ab\;
+    }
+
+    Allokiere leeres Array $U$ für Urne mit Kapazität $\sum_i d_i$\;
+    \For{$1 \le i \le n$}{
+        \For{$1 \le j \le d_i$}{
+            $U.\pushback{i}$;
+        }
+    }
+
+    Allokiere leeres Array $E$ für Kantenliste mit Kapazität $\sum_i d_i$\;
+    \While{$U \neq \emptyset$}{
+        $i \gets $ uniformer Index aus $\set{1, \ldots, |U|}$\;
+        vertausche $U[i]$ und $U[|U|]$\;
+        $x \gets U.\popback{}$\;
+        \BlankLine
+        $y$ analog gezogen wie $x$\;
+        \BlankLine
+        $E.\pushback{\set{x, y}}$\;
+    }
+
+    \caption{Linearzeit Generator das Configuration Model.}
+    \label{alg:cm_einfach}
+    \vspace{1em}
+\end{algorithm}
+
+
+Auf den ersten Blick benötigen wir erneut dynamisches gewichtetes Ziehen, um Knoten gewichtete nach ihrem Grad samplen zu können.
+Derselbe Trick, den wir schon für BA Graphen gesehen haben, kann aber erneut angewendet werden.
+Statt die $n$ veränderlichen Gewichte $d_1, \ldots, d_n$ abzuspeichern und daraus gewichtete zu ziehen, erzeugen wir ein Array mit $2m$ Einträgen (einen pro stub) und ziehen daraus uniform.
+Der entsprechende Generator ist in \cref{alg:cm_einfach} skizziert.
+
+Tatsächlich kennen wir aber einen sehr ähnlichen Algorithmus bereits, der sogar noch besser funktioniert.
+Es handelt sich um den Fisher-Yates Shuffle: statt einer Urne und einer Kantenliste benötigen wir nur ein Array, das für jedes entnommene Element der Urne einen stub fixiert.
+Wir können also das Configuration Model implementieren, in dem wir die Urne in eine zufällige Permutation bringen und dann je zwei benachbarte Einträge als Kante interpretieren.
+Das hat den Vorteil, dass zufällige Permutation ein gut verstandenes Konzept sind und es auf diverse Plattformen effiziente Implementierungen gibt.
+
+\begin{exercise}
+    In der Praxis lässt sich dieser Ansatz sogar noch beschleunigen (besonders im parallelen Kontext).
+    Wir partitionieren zunächst die Urne~$U[1..2m]$ anhand von Zufallsbits:
+    am Anfang stehen alle Elemente für die wir eine 0 warfen, am Ende alle mit einer 1.
+    Wir permutieren nun nur die größere der beiden Gruppen.
+    Da partitionieren extrem schnell ist, ist der resultierende Algorithmus oft schneller.
+    Zeige, dass wir einen Graphen des Configuration Models erhalten, wenn wir $U[i]$ und $U[2m - i + 1]$ als $i$-te Kante interpretieren.
+\end{exercise}
+
+\subsection{Graphische Gradsequenzen}
+Wie wir im letzten Kapitel gesehen haben, kann das Configuration Model Mehrfachkanten und Eigenschleifen erzeugen.
+Tatsächlich gibt es sogar Eingaben, für die sich das gar nicht vermeiden lässt.
+Zum Beispiel: $\degseq = (2,)$, $\degseq = (2, 2)$, $\degseq = (3,3)$, oder $\degseq = (4, 1, 1)$.
+Wir treffen daher folgende Definitionen:
+
+\begin{definition}
+    Sei $\gd$ die Menge aller einfache Graphen mit Gradsequenz~$\degseq$.
+    Dann beschreibt $\Gd$ die uniforme Verteilung auf $\gd$.
+\end{definition}
+
+\begin{definition}
+    Sei $\degseq$ eine Gradsequenz.
+    Wir nennen $\degseq$ genau dann \emph{graphisch}, wenn $\gd \neq \emptyset$ (d.h., wenn es mindestens einen einfachen Graphen gibt, der $\degseq$ erfüllt).
+\end{definition}
+
+\noindent
+Wir werden später zwei Charakterisierungen von \emph{graphischen} Gradsequenzen sehen.
+
+\subsection{Einfache Graphen aus dem Configuration Model}
+Angenommen $\degseq$ ist graphisch.
+Wie erhalten wir dann aus dem Configuration Model einen einfachen Graph?
+Leider ist dies nicht immer exakt und effizient möglich.
+Im Folgenden leiten wir aber her, dass die manchmal Situation gar nicht so schlimm ist.
+
+Hierzu wechseln wir erneut von Gradsequenzen~\degseq{} zu Gradverteilungen.
+Sei $p_d = n_d / n$ die Wahrscheinlichkeit, dass ein zufälliger Knoten Grad $d$ hat, wobei $n_d$ die Anzahl der Knoten in $\degseq$ mit Grad~$d$ beschreibt.
+Die Wahl einer Gradverteilung erlaubt es uns nun beliebig große Graphen zu betrachten.
+Wir verdeutlichen dies mit der Notation $\CMnd$.
+In diesem Setting analysieren wir für große Knotenanzahl~$n$ die erwartete Anzahl von Mehrfachkanten $\expv{M_n}$ und Eigenschleifen~$\expv{S_n}$.
+
+\begin{lemma}\label{lem:cm_anzahl_nicht_einfach}
+    Sei $G \follows \CMnd$ ein von Configuration Model erzeugter Graph und $X$ ein zufälliger Grad mit $\prob{X = d} = p_d$.
+    Wir bezeichnen mit $S_n$ die Anzahl der Eigenschleifen und mit $M_n$ die Anzahl der Mehrfachkanten.
+    Dann gilt
+    \begin{align}
+        \expv{S_n} \approx c/2 \qquad \text{und} \qquad \expv{M_n} \le c^2 / 4,
+    \end{align}
+    wobei $c_n = (\expv{X^2} - \expv{X}) / \expv{X}$.
+\end{lemma}
+
+\begin{exercise}
+    Seien $G_1$ und $G_2$ zwei Graphen mit gleicher Knoten- und Kantenanzahl.
+    Beschreibe (qualitativ) zwei Gradverteilungen, s.d. wir für $G_1$ möglichst wenig kritische Kanten erwarten, während $G_2$ möglichst viele haben soll.
+    Erkläre (qualitativ), weshalb $\expv{M_n} \propto \expv{S_n^2}$ plausible wirkt.
+\end{exercise}
+
+\begin{remark}
+    Wie bereits in \cref{subsec:scaleinvariant} diskutiert, sind $\expv{X}$ und $\expv{X^2}$ das erste bzw. zweite Moment der Gradverteilung.
+    Wir definieren also~$c_n$ über bekannte Größen von Wahrscheinlichkeitsverteilungen um es möglichst einfach anwenden zu können.
+    Für den folgenden Beweis ist aber hilfreich, $c_n$ nach zu rechnen.
+    Für den Durchschnittsgrad wissen wir bereits
+    \begin{align}
+        \expv{X} & = \sum_{v_i \in V} \frac{d_i}{n} = \frac {2m}{n}.
+    \end{align}
+
+    \noindent
+    Für das zweite Moment gilt gemäß seiner Definition
+    \begin{align}
+        \expv{X^2}
+         & = \sum_{d=1}^{n-1} d^2 p_d
+        = \sum_{d=1}^{n-1} d^2 (n_d / n)
+        = \frac 1 n \underbrace{\sum_{d=1}^{n-1} n_d \cdot d^2}_\text{$n_d$ mal Grad $d$}
+        = \frac 1 n \sum_{i=1}^n d_i^2.
+    \end{align}
+
+    \noindent
+    Somit folgt $c_n$ als
+    \begin{align}
+        c_n
+        = \frac{\expv{X^2} - \expv{X}}{\expv{X}}
+        = \frac{ \frac 1 n \left(\sum_{i=1}^n d_i^2\right) - \frac 1 n \left(\sum_{i=1}^n d_i\right)}{\frac 1 n \sum_{i=1}^n d_i}
+        = \sum_{i=1}^n \frac{d_i (d_i - 1)}{2m}.
+    \end{align}
+\end{remark}
+
+\begin{proof}[Beweis von \cref{lem:cm_anzahl_nicht_einfach}]
+    Sei $G= (V,E)$ mit $V = \set{v_1, \ldots, v_n}$.
+    Dann bringt jeder Knoten $v_i \in V$ exakt $d_i$ Halbkanten $s_{1}^{(i)}, \ldots, s_{d_i}^{(i)}$ in die Urne ein.
+    Wir nehmen an, dass diese unterscheidbar sind.
+
+    \textbf{Schleifen. }
+    Sei $I_{a,b}^{(i)}$ eine Indikatorvariable, die anzeigt, dass von Knoten $v_i$ die $a$-te und $b$-te Halbkante eine gemeinsame Kante (Eigenschleife!) bilden;
+    hierzu betrachten wir nur $1\le a < b \le d_i$.
+    Da die Halbkanten uniform zufällig gezogen werden und die Kantenreihenfolge irrelevant sind, gilt
+    \begin{align}
+        \prob{I_{a,b}^{(i)}} = \underbrace{\prob{I_{1,2}^{(i)}}}_\text{falls $d_i \ge 2$} = \frac{1}{2m - 1}.
+    \end{align}
+
+    \noindent
+    Dann folgt die Schleifenanzahl als Summe der Erwartungswerte der Indikatorvariablen:
+    \begin{align}
+        \expv{S_n} & = \expv{\sum_{v_i \in V} \sum_{1 \le a < b \le d_i} I_{a,b}^{(i)}}                   \\
+                   & = \sum_{v_i \in V} \sum_{1 \le a < b \le d_i} \textcolor{blue}{\expv{I_{a,b}^{(i)}}} \\
+                   & = \sum_{v_i \in V} \binom{d_i}{2} \textcolor{blue}{\prob{I_{1,2}^{(i)}}}             \\
+                   & = \frac 1 2 \sum_{v_i \in V} d_i (d_i - 1) \textcolor{blue}{\frac{1}{2m - 1}}        \\
+                   & \approx \frac 1 2 \sum_{v_i \in V} \frac{d_i (d_i - 1)}{2 m} = \frac{c_n}{2}
+    \end{align}
+
+    Beobachte, dass $I_{1,2}^{(i)}$ für Knoten~$v_i$ mit Grad $d_i <2$ nicht definiert ist.
+    In diesem Fall ist aber auch $\binom{d_i}{2} = 0$; somit verzichten wir auf eine Ausnahmebehandlung.
+
+    \textbf{Mehrfachkanten.}
+    Die Beweisidee ist analog zur Schleifenanzahl, mit dem Unterschied, dass wir deutlich komplexere Indikatorvariablen benötigen.
+    Wir nutzen $I^{(i,j)}_{a_1,b_1;a_2,b_2}$ um anzuzeigen, dass zwischen den Knoten $v_i$ und $v_j$ zwei Kanten existieren --- und zwar mit dem $a_1$-ten und $a_2$-ten Halbkanten von $v_i$ und den $b_1$-ten und $b_2$-ten Halbkanten von $v_j$.
+    Es folgt:
+    \begin{align}
+        \prob{I^{(i,j)}_{a_1,b_1;a_2,b_2}} = \underbrace{\frac{1}{2m - 1}}_\text{erste Kante wie zuvor} \cdot \underbrace{\frac{1}{2m - 3}}_\text{Erste Kante fixiert zwei stubs}
+    \end{align}
+
+    Dies funktioniert gut für Doppelkanten; wenn im Graph eine Mehrfachkante mit höherer Multiplizität vorhanden ist, überschätzen wir diese aber (warum?).
+    Daher leiten wir nur eine obere Schranke her:
+
+    \begin{align}
+        \expv{M_n}
+         & = \sum_{v_i, v_j \in V\colon i < j} \left[ \sum_{1 \le a_1 \textcolor{green}{<} a_2 \le d_i} \left( \sum_{1 \le b_1 \textcolor{red}{\ne} b_2 \le d_j} \prob{I^{(i,j)}_{a_1,b_1;a_2,b_2}} \right) \right] \\
+         & = \frac 1 2 \sum_{v_i, v_j \in V} \left[ \textcolor{green}{\binom{d_i}{2}} \textcolor{red}{2\binom{d_j}{2}} \frac{1}{(2m - 1)(2m - 3)}   \right]                                                         \\
+         & \approx \sum_{v_i, v_j \in V} \left[ \binom{d_i}{2} \binom{d_j}{2} \frac{1}{(2m)(2m)}   \right]                                                                                                          \\
+         & = \left[ \frac{1}{2} \sum_{v_i \in V} \frac{d_i (d_i - 1)}{2m}  \right] \left[ \frac{1}{2} \sum_{v_j \in V} \frac{d_j (d_j - 1)}{2m} \right]
+        = \frac{c_n^2}{4} \qedhere
+    \end{align}
+\end{proof}
+

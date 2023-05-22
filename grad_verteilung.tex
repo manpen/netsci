@@ -711,7 +711,7 @@ Skalenfreie Netz (scale-free network) sind Graphen mit Power Law Gradverteilunge
 hierbei handelt es sich um einen sehr gebräuchlichen Begriff in der Network Science Literatur.
 Der Begriff selbst hat zwei (verwandte) Erklärungen, die uns noch ein Einblicke in die Eigenschaften von Power Law Verteilungen erlauben.
 
-\subsubsection{Skaleninvariant}
+\subsubsection{Skaleninvariant}\label{subsec:scaleinvariant}
 Wir können \qq{skalenfrei} als \qq{skaleninvariant} auffassen.
 Damit wird auf die Selbstähnlichkeit der Power-Law Verteilung hingewiesen:
 eine perfekte Power Law Verteilung ist in einem Log-Log-Plot immer eine Grade mit Steigung $-\gamma$.
@@ -733,8 +733,9 @@ Barab{\'{a}}si selbst erklärt den Begriff über das unbeschränkte Wachstum des
 
 Das $k$-te Moment einer kontinuierlichen (Grad)Verteilung $p(d)$ ist definiert als:
 \begin{align}
-    \langle d^k \rangle = \int_\dmin^\dmax d^k p(d) \intd d
+    \langle d^k \rangle = \expv{X^k} = \int_\dmin^\dmax d^k p(d) \intd d,
 \end{align}
+wobei $X \follows p$ eine nach $p$-verteilte Zufallsvariable ist.
 
 Für $k=1$ erhalten wir also den Erwartungswert, $\langle d^2 \rangle$ ist essentiell in der Berechnung der Varianz $\langle d^2 \rangle - \langle d \rangle^2$, $\langle d^3 \rangle$ beeinflusst die Schiefe (skewness) et cetera.
 Bezogen auf Power Law Verteilungen ergibt sich:
