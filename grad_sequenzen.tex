@@ -38,11 +38,12 @@ Es gibt zwei zentrale Motivationen Graphen mit allgemeinen Gradsequenzen erzeuge
 Ein Graph des Configuration Modells lässt sich wie folgt erzeugen.
 Sei eine Gradsequenz~$\degseq = (d_1, \ldots, d_n)$ mit $\sum_i d_i$ gerade gegeben.
 Dann legen wir für jedes $i$ genaue $d_i$ Bälle mit Aufdruck~$i$ in eine Urne.
-Solange die Urne nicht leer ist, ziehen wir je zwei zufällige Bälle ohne Zurücklegen.
+Solange die Urne nicht leer ist, ziehen wir je zwei uniform zufällige Bälle ohne Zurücklegen.
 Für jedes Paar mit Aufschrift $i$ und $j$ fügen wir die Kante $\set{i, j}$ in den Graph ein.
 Per Konstruktion erhalten wir eine Ausgabe mit $m = (\sum_i d_i) / 2$ Kanten und $n$ Knoten.
+Wir bezeichnen die Bälle als \emph{Halbkanten} oder \emph{stubs}, und mit \CMd die vom Configuration Model erzeugte Verteilung.
 
-Wir bezeichnen die Bälle als \emph{Halbkanten} oder \emph{stubs}.
+\medskip
 
 \noindent
 Prüfen wir kurz unser Lastenheft:
@@ -58,7 +59,6 @@ Prüfen wir kurz unser Lastenheft:
           Wenn wir zufällig einen einfachen Graphen produzieren, dann ist dieser uniform unter allen einfachen Graphen (siehe Übung).
 \end{itemize}
 
-Wir bezeichnen mit \CMd die vom Configuration Model erzeugte Verteilung.
 
 \subsection{Effizientes Ziehen aus dem Configuration Model}
 \begin{algorithm}[t]
@@ -109,7 +109,7 @@ Das hat den Vorteil, dass zufällige Permutation ein gut verstandenes Konzept si
 \begin{exercise}
     In der Praxis lässt sich dieser Ansatz sogar noch beschleunigen (besonders im parallelen Kontext).
     Wir partitionieren zunächst die Urne~$U[1..2m]$ anhand von Zufallsbits:
-    am Anfang stehen alle Elemente für die wir eine 0 warfen, am Ende alle mit einer 1.
+    am Anfang stehen alle Elemente für die wir eine 0 warfen, ans Ende kommen alle mit einer 1.
     Wir permutieren nun nur die größere der beiden Gruppen.
     Da partitionieren extrem schnell ist, ist der resultierende Algorithmus oft schneller.
     Zeige, dass wir einen Graphen des Configuration Models erhalten, wenn wir $U[i]$ und $U[2m - i + 1]$ als $i$-te Kante interpretieren.
@@ -134,7 +134,7 @@ Wir treffen daher folgende Definitionen:
 \noindent
 Wir werden später zwei Charakterisierungen von \emph{graphischen} Gradsequenzen sehen.
 
-\subsection{Einfache Graphen aus dem Configuration Model}
+\subsection{Erwartete Anzahl an Schleifen und Mehrfachkanten}\label{subsec:anzahl-illegaler-kanten}
 Angenommen $\degseq$ ist graphisch.
 Wie erhalten wir dann aus dem Configuration Model einen einfachen Graph?
 Leider ist dies nicht immer exakt und effizient möglich.
@@ -151,7 +151,7 @@ In diesem Setting analysieren wir für große Knotenanzahl~$n$ die erwartete Anz
     Wir bezeichnen mit $S_n$ die Anzahl der Eigenschleifen und mit $M_n$ die Anzahl der Mehrfachkanten.
     Dann gilt
     \begin{align}
-        \expv{S_n} \approx c/2 \qquad \text{und} \qquad \expv{M_n} \le c^2 / 4,
+        \expv{S_n} \approx c_n/2 \qquad \text{und} \qquad \expv{M_n} \le c_n^2 / 4,
     \end{align}
     wobei $c_n = (\expv{X^2} - \expv{X}) / \expv{X}$.
 \end{lemma}
@@ -165,7 +165,7 @@ In diesem Setting analysieren wir für große Knotenanzahl~$n$ die erwartete Anz
 \begin{remark}
     Wie bereits in \cref{subsec:scaleinvariant} diskutiert, sind $\expv{X}$ und $\expv{X^2}$ das erste bzw. zweite Moment der Gradverteilung.
     Wir definieren also~$c_n$ über bekannte Größen von Wahrscheinlichkeitsverteilungen um es möglichst einfach anwenden zu können.
-    Für den folgenden Beweis ist aber hilfreich, $c_n$ nach zu rechnen.
+    Für den folgenden Beweis ist aber hilfreich, $c_n$ nachzurechnen.
     Für den Durchschnittsgrad wissen wir bereits
     \begin{align}
         \expv{X} & = \sum_{v_i \in V} \frac{d_i}{n} = \frac {2m}{n}.
@@ -207,10 +207,10 @@ In diesem Setting analysieren wir für große Knotenanzahl~$n$ die erwartete Anz
     \noindent
     Dann folgt die Schleifenanzahl als Summe der Erwartungswerte der Indikatorvariablen:
     \begin{align}
-        \expv{S_n} & = \expv{\sum_{v_i \in V} \sum_{1 \le a < b \le d_i} I_{a,b}^{(i)}}                   \\
-                   & = \sum_{v_i \in V} \sum_{1 \le a < b \le d_i} \textcolor{blue}{\expv{I_{a,b}^{(i)}}} \\
-                   & = \sum_{v_i \in V} \binom{d_i}{2} \textcolor{blue}{\prob{I_{1,2}^{(i)}}}             \\
-                   & = \frac 1 2 \sum_{v_i \in V} d_i (d_i - 1) \textcolor{blue}{\frac{1}{2m - 1}}        \\
+        \expv{S_n} & = \expv{\sum_{v_i \in V} \left( \sum_{1 \le a < b \le d_i} I_{a,b}^{(i)} \right)}                    \\
+                   & = \sum_{v_i \in V}  \left( \sum_{1 \le a < b \le d_i} \textcolor{blue}{\expv{I_{a,b}^{(i)}}} \right) \\
+                   & = \sum_{v_i \in V} \binom{d_i}{2} \textcolor{blue}{\prob{I_{1,2}^{(i)}}}                             \\
+                   & = \frac 1 2 \sum_{v_i \in V} d_i (d_i - 1) \textcolor{blue}{\frac{1}{2m - 1}}                        \\
                    & \approx \frac 1 2 \sum_{v_i \in V} \frac{d_i (d_i - 1)}{2 m} = \frac{c_n}{2}
     \end{align}
 
@@ -226,15 +226,439 @@ In diesem Setting analysieren wir für große Knotenanzahl~$n$ die erwartete Anz
     \end{align}
 
     Dies funktioniert gut für Doppelkanten; wenn im Graph eine Mehrfachkante mit höherer Multiplizität vorhanden ist, überschätzen wir diese aber (warum?).
-    Daher leiten wir nur eine obere Schranke her:
-
+    Daher leiten wir nur eine obere Schranke her.
+    Beachte, dass die zwei Approximationen die Schranke eigentlich reduzieren, jedoch asymptotisch irrelevant sind:
     \begin{align}
         \expv{M_n}
-         & = \sum_{v_i, v_j \in V\colon i < j} \left[ \sum_{1 \le a_1 \textcolor{green}{<} a_2 \le d_i} \left( \sum_{1 \le b_1 \textcolor{red}{\ne} b_2 \le d_j} \prob{I^{(i,j)}_{a_1,b_1;a_2,b_2}} \right) \right] \\
-         & = \frac 1 2 \sum_{v_i, v_j \in V} \left[ \textcolor{green}{\binom{d_i}{2}} \textcolor{red}{2\binom{d_j}{2}} \frac{1}{(2m - 1)(2m - 3)}   \right]                                                         \\
-         & \approx \sum_{v_i, v_j \in V} \left[ \binom{d_i}{2} \binom{d_j}{2} \frac{1}{(2m)(2m)}   \right]                                                                                                          \\
+         & \le \sum_{v_i, v_j \in V\colon i \textcolor{red!50!black}{\le} j} \left[ \sum_{1 \le a_1 \textcolor{green}{<} a_2 \le d_i} \left( \sum_{1 \le b_1 \textcolor{red}{\ne} b_2 \le d_j} \prob{I^{(i,j)}_{a_1,b_1;a_2,b_2}} \right) \right] \\
+         & \approx \underbrace{\textcolor{red!50!black}{\frac 1 2}}_\text{Approx.} \sum_{v_i, v_j \in V} \left[ \textcolor{green}{\binom{d_i}{2}} \textcolor{red}{2\binom{d_j}{2}} \frac{1}{(2m - 1)(2m - 3)}   \right]                           \\
+         & \approx \sum_{v_i, v_j \in V} \left[ \binom{d_i}{2} \binom{d_j}{2} \frac{1}{(2m)(2m)}   \right]                                                                                                                                        \\
          & = \left[ \frac{1}{2} \sum_{v_i \in V} \frac{d_i (d_i - 1)}{2m}  \right] \left[ \frac{1}{2} \sum_{v_j \in V} \frac{d_j (d_j - 1)}{2m} \right]
         = \frac{c_n^2}{4} \qedhere
     \end{align}
 \end{proof}
 
+Beobachte, \aside{Erased Configuration Model} dass für Gradverteilung mit endlichen ersten und zweiten Moment, $c_n$ für $n \to \infty$ konvergiert.
+Ein Beispiel hierfür sind etwa reguläre Graphen.
+In diesem Fall ergibt sich eine erwartete konstante Anzahl an illegalen Kanten, die für $n \to \infty$ eine immer kleinere Rolle spielen.
+Ein probates Mittel ist es daher Eigenschleifen zu entfernen und von jeder $k$-fachen Mehrfachkante $k{-}1$ Exemplare zu löschen.
+Man spricht vom sogenannten \emph{Erased Configuration Model}.
+
+Während für Gradverteilungen mit $c_n = \Oh{1}$ das \emph{Erased Configuration Model} kaum Einfluss auf die Gradsequenz des Graphen hat, ist das für Graphen mit $c_n = \omega(1)$ nicht immer der Fall.
+Insbesondere skalenfrei Powerlaw Verteilungen sind notorisch schwierig.
+Dies liegt unter anderem daran, dass illegale Kanten häufiger auftreten und sich zudem um Hubs herum konzentrieren.
+Das \emph{Erased Configuration Model} hat daher einen Bias den Grad von Knoten mit vielen Nachbarn besonders stark abzusenken;
+dies wiederum hat signifikante Auswirkungen auf die Graphstruktur (siehe z.B. \cite{DBLP:journals/snam/SchlauchHZ15}).
+Wir werden später Techniken diskutieren, die illegale Kanten entfernen können, ohne dabei die Gradsequenz zu verändern.
+
+\subsection{Ans Gute glauben und das Schlechte ablehnen}
+In \cref{subsec:anzahl-illegaler-kanten} zeigten wir, dass der Anteil illegaler Kanten bei gutmütigen Verteilungen zu vernachlässigen ist.
+Wir können aber noch einen Schritt weiter gehen, und uns fragen, mit welcher Wahrscheinlichkeit sehen wir \emph{gar keine} nicht-einfachen Kanten?
+
+Mit einer sorgsamen Analyse können wir zeigen, dass für $c_n = \Oh{1}$ und $n \to \infty$ die Größen $S_n$ und $M_n$ gegen unabhängige Poisson-verteilte Zufallsvariablen mit $\lambda = c_n/2$ bzw. $\lambda = c_n^2/4$ konvergieren.
+Das wiederum führt direkt zu folgendem Satz.
+
+\begin{theorem}\label{thm:einfaches_cm}
+    Sei $G \follows \CMnd$. Dann ist die Wahrscheinlichkeit, dass $G$ einfach ist
+    \begin{align}
+        \prob{\text{$G$ ist einfach}} = \exp\left(-\frac{c_n}{2}\right)\exp\left(-\frac{c_n^2}{4}\right)(1 + o(1)). \hspace{2cm}\qedhere
+    \end{align}
+\end{theorem}
+
+Beachte, dass wir in den vorherigen Kapiteln typischerweise exponentielle Schranken für die Fehlerwahrscheinlichkeit gezeigt haben.
+\Cref{thm:einfaches_cm} hingegen beschränkt die Erfolgswahrscheinlichkeit.
+Für $c_n \ggg 0$ ist das also ein katastrophales Resultat.
+
+Selbst für eigentlich gutmütige reguläre Graphen kommen wir schnell an unsere Grenzen.
+Wenn wir aber einen sehr kleinen Grad, etwa $r = \alpha 2 \sqrt{\log{n}}$, wählen, ergibt sich aber wenigstens noch eine erwartete polynomielle Laufzeit:
+\begin{align}
+    c_n = \frac{\expv{X^2} - \expv{X}}{\expv{X}} = \frac{r^2 - r}{r} \approx r = \alpha\sqrt{\log n}
+\end{align}
+
+\noindent
+Somit ergibt sich eine Erfolgswahrscheinlichkeit von
+\begin{align}
+    \prob{\text{$G$ ist einfach}}
+    = \exp\left(-\frac{c_n}{2}\right)\exp\left(-\frac{c_n^2}{4}\right)(1 + o(1))
+    = \Omega\left(\frac{1}{n^{2\alpha}}\right).
+\end{align}
+
+Wenn wir solange Graphen produzieren, bis wir zufällig einen einfachen Graph erhalten haben, reichen also in Erwartung $\Oh{n^{2\alpha}}$ Versuche.
+Tatsächlich handelt es sich hierbei dann auch um ein uniformes zufälliges Sample aus $\gd$ (siehe Rejection Sampling).
+Da jeder Graph in Zeit $\Oh{rn}$ erzeugt werden kann, ergibt sich also ein Generator mit polynomieller Laufzeit.
+
+\subsection{Einzelne Kanten zurückweisen}
+Obwohl uns \cref{lem:cm_anzahl_nicht_einfach} verspricht, dass für viele Gradverteilungen der Anteil der illegalen Kanten asymptotisch insignifikant ist, zeigt uns die Diskussion, dass es oft relativ unwahrscheinlich ist, einen vollständig einfachen Graph zu erhalten.
+Das liegt schlicht daran, dass eine einzige illegale Kante unter $2m$ Kanten, zum Misserfolg führt.
+Die Idee liegt auf der Hand:
+
+Während wir die Kanten iterativ aus der Urne entnehmen, prüfen wir, ob die gezogene Kante legal ist.
+Falls nicht, legen wir die beiden Bälle zurück in die Urne und versuchen es erneut.
+Leider können wir hierbei \qq{stecken bleiben}.
+Als Extrembeispiel betrachten wir für großes $k \ggg 0$ die folgende Gradsequenz über $n = k + 1$ Knoten:
+\begin{align}
+    \degseq = \left(
+    \underbrace{k-1, k-1, \ldots, k-1}_\text{$k-1$ mal},
+    \underbrace{k}_\text{Knoten $u$},
+    \underbrace{1}_\text{Knoten $v$}
+    \right)
+\end{align}
+
+Hierbei handelt es sich um eine sog. Threshold Sequenz --- eine Gradsequenz bei denen alle einfache Graph isomorph sind (d.h. wenn wir die Knotenindizes löschen sind alle Graphen identisch).
+Die hier beschriebene Sequenz erzeugt einen Graph mit einer Clique aus $k$ Knoten, wobei einer der Knoten~$u$ noch zu Knoten~$v$ verbunden ist.
+
+Das Problem besteht nun darin, dass das Blatt~$v$ genau zu Knoten~$u$ verbunden sein muss.
+Die Wahrscheinlichkeit, dass just diese Kante erzeugt wird skaliert aber grob mit $1/n$.
+Sobald wir das Blatt~$v$ mit einem anderen Knoten~$u' \ne u$ verbunden haben, gibt es keine Möglichkeit die verbleibende Grade nur mit einfachen Kanten zu verteilen.
+Es bleibt also grob 1 Versuch aus $\Oh{n}$ nicht stecken.
+
+Wir betrachten daher einen anderen Zufallsgraph.
+
+\section{Chung-Lu Graphen}
+Das Kernproblem einzelne Kanten im Configuration Model zurückzuweisen besteht darin, dass jede gezogene Kante einen Effekt auf folgende Kanten hat ---
+einfach weil wir ohne Zurücklegen ziehen und jede eingefügte Kante zwei Bälle aus der Urne entfernt.
+Das Chung-Lu Modells hat strukturelle Ähnlichkeiten zum Configuration Model, umgeht aber genaue diese Schwäche.
+
+Die Eingabe des Chung-Lu Modells besteht aus einem Vektor $w = (w_1, \ldots, w_n) \in \mathbb{R}_{>0}^n$, der die Funktion einer Gradverteilung übernimmt und nicht normiert sein muss.
+Daher ist auch die Wahl $w = \degseq$ nicht unüblich.
+Es wird dann ein Graph mit $n$ Knoten erzeugt und jede Kante~$\set{v_i,v_j}$ unabhängig mit Wahrscheinlich $p_{i,j}$ eingefügt.
+Es gilt
+\begin{align}
+    \prob{\set{v_i,v_j} \in E} = p_{i,j} := \frac{w_iw_j}{\sigma} \qquad \text{mit} \qquad \sigma = \sum_{v \in V} w_v
+\end{align}
+
+Per Definition kann es also keine Mehrfachkanten geben.
+In der Analyse des Chung-Lu Modells werden in der Regel Eigenschleife erlaubt, um Sonderfälle zu vermeiden.
+In praktischen Implementierung ist es aber trivial diese zu verbieten.
+
+Betrachten wir zunächst den erwarteten Grad~\expv{\deg{v_i}}:
+\begin{align}
+    \expv{\deg{v_i}} & = \sum_{v_j \in V} p_{i,j} = \sum_{v_j \in V} \frac{w_iw_j}{\sigma}      \\
+                     & =w_i \cdot \frac{1}{\sigma} \underbrace{\sum_{v_j \in V} w_j}_{= \sigma} \\
+                     & = w_i
+\end{align}
+
+Das Gewicht~$w_i$ eines Knotens~$v_i$ entspricht also seinem erwarteten Grad.
+Bei der Wahl von $w$ müssen wir jedoch dafür sorgen, dass für alle $i, j$ der Parameter~$p_{i,j} \le 1$ sich als Wahrscheinlichkeit eignet.
+Beachte, dass das gilt (weshalb?):
+\begin{align}
+    \max_{i,\textcolor{red}{j}} \set{p_{i,\textcolor{red}{j}}} \le \max_{i}\set{p_{i,\textcolor{red}{i}}}
+\end{align}
+
+Daher können wir durch Beschränkung der \qq{Diagonaleinträge} gleichzeitig alle $p_{i,j}$ nach oben beschränken.
+Um nun sicherzustellen, dass alle $p_{i,j} \le 1$ wird oft gefordert:
+\begin{align}
+    \max_i{\left(w_i^2\right)} \le \sigma
+    \qquad \Leftrightarrow \qquad \max_i{\left(\frac{w_iw_i}{\sigma}\right)} \le 1
+    \qquad \Leftrightarrow \qquad \max_i{\left(p_{ii}\right)} \le 1.
+\end{align}
+
+Eine Alternative besteht darin, die Definition von $p_{i,j}$ um eine explizite obere Schranke zu erweitern:
+\begin{align}
+    p'_{i,j} = \min(1, \frac{w_iw_j}{\sigma})
+\end{align}
+
+Von Anwenderseite ist $p'_{i,j}$ bequemer, da $w$ weniger Restriktionen unterliegt;
+die Analyse des Modells wird aber unhandlicher.
+Daher nutzen wir im Folgenden die ursprüngliche Definition und gehen davon aus, dass $w$ korrekt beschränkt ist.
+
+Bevor wir uns effiziente Generatoren für das Chung-Lu Modell ansehen, diskutieren wir uns zunächst einige allgemeine Sampling-Techniken, die hierfür nützlich sein werden.
+
+\subsection{Rejection Sampling}
+Im Folgenden verallgemeinern wird die sog. Verwerfungsmethode (rejection sampling), die wir bereits in einer sehr einfachen Ausprägung beim Ziehen ohne Zurücklegen und Generieren einfacher Graphen genutzt.
+Damals war die Kernidee jedes Mal etwa:
+\floatmarginfigure{
+    \begin{tikzpicture}
+        \node[draw, minimum width=4cm, minimum height=4cm] {};
+
+        \foreach \x in {-18, -16, ..., 18} {
+                \foreach \y in {-18, -16, ..., 18} {
+                        \node[circle, inner sep=0, minimum width=0.5mm, fill] at (\x mm, \y mm) {};
+                    }
+            }
+        \node[fill=blue, opacity=0.2, cloud, minimum width=3.8cm, minimum height=2.5cm] (c) at (0,0) {};
+        \node[draw, cloud, minimum width=3.8cm, minimum height=2.5cm] (c) at (0,0) {Ziel};
+    \end{tikzpicture}
+    \caption{Rejection Sampling für Uniforme Verteilung}
+    \label{fig:rejection-uniform}
+}
+Wir nutzen einen stochastischen Prozess, der uns Vorschläge unterbreitet (proposal distribution).
+Dieser Prozess hatte bereits die gewünschte Verteilung, lieferte aber u.U. Vorschläge, die wir kategorisch ablehnen mussten;
+bei $\Gnm$ mussten wir bereits gezogene Kanten zurückweisen.
+Beim BA Modell waren es Knoten, zu denen wir bereits verbunden sind, und beim Configuration Model verwarfen wir nicht-einfache Graphen.
+Nachdem Ablehnen ungewünschter Element erhielten wir dann die Zielverteilung (target distribution) automatisch.
+
+\Cref{fig:rejection-uniform} veranschaulicht diese Idee.
+Die proposal distribution entspricht der uniformen Verteilung in der Box (visualisiert durch das reguläre Gitter).
+Die Zielverteilung ist ebenfalls uniform --- allerdings über einer eingeschränkten Grundgesamtheit.
+Das Gitter ist auch auf dieser uniform verteilt.
+
+Ein weiteres Beispiel ist ein normaler Spielwürfel mit sechs gleich-wahrscheinlichen Seiten, die von 1 bis 6 beschriftet sind.
+Wir können mit diesem Würfel uniform aus \set{1,2,3,4,5} ziehen:
+falls eine Sechs gewürfelt wird, verwerfen wir diese und versuchen es erneut.
+In Erwartung benötigen wir $6/5$ Versuche, um ein Ergebnis zu produzieren.
+
+Die Verwerfungsmethode ist aber mächtiger --- es muss nicht immer ganz oder gar nicht sein.
+Sie eignet sich auch, um die Wahrscheinlichkeit in einzelnen Bereichen anzuheben bzw. abzusenken.
+
+Angenommen, wir möchten die Zielverteilung~$T$ mit $t\colon \Omega \to [0, 1]$ erzeugen.
+Dann benötigen wir einen Generator für die Verteilung~$P$, der einen Vorschlag mit Wahrscheinlichkeitsverteilung $p\colon \Omega \to [0, 1]$ erzeugt.
+Wir gehen davon aus, dass mindestens ein $x \in \Omega$ existiert, s.d. $t(x) \ne p(x)$ --- sonst sind die Verteilungen identisch und wir fertig.
+OBdA nehmen wir an, dass $\Omega$ endlich ist und es sich somit um diskrete Verteilungen handelt; die Verwerfungsmethode funktioniert aber auch mit kontinuierlichen Verteilungen.
+
+Als Nächstes benötigen wir einen Skalierungsfaktor~$s$, s.d. $t(x) \le s \cdot p(x)$ für alle $x \in \Omega$.
+Beobachte, dass dies impliziert, dass der Support von $p$ den Support von $t$ beinhaltet:
+für jedes $x\in \Omega$ gilt $t(x) > 0 \Rightarrow p(x) > 0$.
+In \cref{fig:rejection-uniform}, beinhaltet die Box daher jeden Punkt der Wolke; wären teile der Wolke außerhalb der Box, könnten dort keine Vorschläge \qq{hinfallen}.
+
+\begin{algorithm}[t]
+    \KwIn{Generator für $P$, $p(x)$, $t(x)$ und $s$, s.d. $\max_x \set{t(x) / (s\cdot p(x))} \le 1$}
+    \While{für immer}{
+        Schlage $x \follows P$ vor\;
+        Ziehe $u$ uniform aus $[0, 1]$\;
+        Berechne $a(x) = t(x) / (s \cdot p(x))$\;
+        \If{$u \le a(x)$}{
+            akzeptiere: gebe $x$ zurück und beende\;
+        }
+    }
+    \caption{Generischer Rejection-Sampling Algorithmus}
+    \label{alg:rejection_sampling}
+\end{algorithm}
+
+Der Parameter~$s$ ist erforderlich, da sowohl $p$ als auch $t$ auf $1$ normiert sind, d.h.
+\begin{align}
+    \sum_{x \in \Omega} p(x) = \sum_{x \in \Omega} = 1.
+\end{align}
+Wenn es nun ein $x \in \Omega$ mit $t(x) < p(x)$, muss es zwangsläufig ein $x' \in \Omega$ geben, s.d. $t(x') > p(x')$.
+Da die Verwerfungsmethode nur ablehnen kann, besteht die einzige Möglichkeit die relative Frequenz einzelner Elemente zu erhöhen, darin, alle anderen Elemente seltener auftreten zu lassen.
+Dazu verwenden wir ein $s > 1$ gekoppelt mit \qq{ein bisschen} Rejection.
+Die Details sind in \cref{alg:rejection_sampling} zusammengefasst.
+
+\begin{lemma}
+    In jeder Runde akzeptiert \cref{alg:rejection_sampling} mit Wahrscheinlichkeit $1 / s$.
+\end{lemma}
+
+\begin{proof}
+    Die Wahrscheinlichkeit Element $x \in \Omega$ in einer fixierten Runde zu produzieren folgt als
+    \begin{align}
+        \prob{\text{Gebe $x$ zurück}} & = \prob{\text{akzeptiere $x$}\ \middle|\ \text{schlage $x$ vor}}                  \\
+                                      & = \prob{\text{schlage $x$ vor}} \prob{\text{akzeptiere $x$}}                      \\
+                                      & = p(x) \cdot \frac{t(x)}{s p(x)} = \frac{1}{s} t(x) \label{eq:reject-accept-prob}
+    \end{align}
+
+    Beobachte, die Ergebnisse \emph{Gebe $x$ zurück} und \emph{Gebe $y$ zurück} für $x \ne y$ disjunkt sind,
+    Da pro Runde genau ein Element vorgeschlagen wird und es nicht $x$ und $y$ gleichzeitig sein kann.
+    Wir können also die Akzeptanzwahrscheinlichkeit über das Gesetz der totalen Wahrscheinlichkeit als Summe der bedingten Wahrscheinlichkeiten berechnen:
+    \begin{align}
+        \prob{\text{Akzeptiere}} & = \sum_{x \in \Omega} \prob{\text{akzeptiere $x$}\ \middle|\ \text{schlage $x$ vor}} \\
+                                 & = \frac{1}{s} \underbrace{\sum_{x \in \Omega} t(x)}_{=1} = \frac{1}{s}
+        \qedhere
+    \end{align}
+\end{proof}
+
+Der Algorithmus wiederholt, solange bis zum ersten Mal akzeptiert wird.
+Die Fehlschläge sind dabei unabhängig voneinander sind.
+
+\begin{corollary}\label{cor:laufzeit-rejection-sampling}
+    Die Anzahl an Runde in \cref{alg:rejection_sampling} ist geometrisch mit Erfolgswahrscheinlichkeit $\frac{1}{s}$ verteilt.
+    In Erwartung werden also $s$ Versuche benötigt.
+\end{corollary}
+
+Unser Ziel sollte in der Regel sein, ein möglichst kleines $s$ zu finden, das gerade noch $\max_x \set{t(x) / (s \cdot p(x))} \le 1$ erfüllt.
+In manchen Fällen, ist aber eine obere Schranke schneller zu berechnen, wodurch ein Algorithmus ---trotz höherer Rejectionrate--- unterm Strich schneller sein kann.
+
+\begin{exercise}
+    Unser erklärtes Ziel war es $t(x)$ zu generieren.
+    In \cref{eq:reject-accept-prob} berechneten wir aber, dass $x$ mit Wahrscheinlichkeit $t(x) / s$ ausgegeben wird.
+    Erkläre, weshalb das in Ordnung ist.
+
+    Sei $s' > s$ ein suboptimaler Skalierungsfaktor.
+    Wie beeinflusst die Wahl die Korrektheit und Effizienz des von \cref{alg:rejection_sampling}?
+\end{exercise}
+
+\subsubsection{Gezinkte Münzen}
+Wir haben eine ideale deutsche Euromünze, deren beide Seiten $A$ (\texttt{Adler}) und $Z$ (\texttt{Zahl}) je mit Wahrscheinlichkeit $1/2$ erscheinen.
+Diese soll als Vorschlagsgenerator dienen; es gilt also $p(A) = p(Z) = 1/2$.
+In der Zielverteilung soll $Z$ aber mit doppelter Wahrscheinlichkeit auftreten, d.h. $t(A) = 1/3$ und $t(Z) = 2/3$.
+Berechnen wir den Skalierungsfaktor~$s$:
+\begin{align}
+    s \ge \max\set{ \frac{t(A)}{p(A)}, \frac{t(Z)}{p(Z)} } = \max\set{ \frac{2/3}{1/2}, \frac{1/3}{1/2} } = \frac{4}{3}
+\end{align}
+
+\noindent
+Natürlich wählen wir den kleinstmöglichen Wert, es gilt also $s=4/3$. Dann können \cref{alg:rejection_sampling} spezialisieren:
+\begin{enumerate}
+    \item Wir werfen eine Münze und erhalten Seite~$x$.
+    \item Falls $x = Z$ akzeptieren wir mit Wahrscheinlichkeit
+          $$
+              a(Z) = \frac{t(Z)}{s \cdot p(Z)} = \frac{\frac 2 3}{\frac 4 3 \cdot \frac 1 2} = 1.
+          $$
+          Es gibt also nichts zu tun --- eine vorgeschlagene \texttt{Zahl} wird immer akzeptiert.
+    \item Falls $x = A$ akzeptieren wir mit Wahrscheinlichkeit
+          $$
+              a(A) = \frac{t(A)}{s \cdot p(A)} = \frac{\frac 1 3}{\frac 4 3 \cdot \frac 1 2} = \frac 1 2.
+          $$
+          Statt nun uniform $u$ aus $[0, 1]$ zu ziehen und dann mit $a(A) = 1/2$ zu vergleichen, können wir abkürzen.
+          Wir werfen eine weitere Münze. Falls diese (arbiträr) $A$ ist akzeptieren wir, sonst verwerfen wir.
+\end{enumerate}
+
+Wir können uns den Algorithmus wie folgt bildlich vorstellen, wobei die grauen Werte irrelevant sind und nicht geworfen werden müssen:
+\begin{center}
+    \begin{tabular}{c|c|c||c|c}
+        Erster Wurf    & Zweiter Wurf                         & Ergebnis           & W'keit & \ldots falls akzeptiert \\\hline
+        \texttt{Zahl}  & \textcolor{black!50}{\texttt{Zahl}}  & \texttt{Zahl}      & 1/4    & 1/3                     \\
+        \texttt{Zahl}  & \textcolor{black!50}{\texttt{Adler}} & \texttt{Zahl}      & 1/4    & 1/3                     \\\hline
+        \texttt{Adler} & \texttt{Zahl}                        & \texttt{Adler}     & 1/4    & 1/3                     \\\hline
+        \texttt{Adler} & \texttt{Adler}                       & \emph{Wiederholen} & 1/4    & ---
+    \end{tabular}
+\end{center}
+
+\subsubsection{Gewichtetes Ziehen ohne Zurücklegen: Rejection Sampling}
+Wir betrachten eine Verallgemeinerung des $\Gnp$ Samplings aus \cref{subsec:gnp_zufaellige_spruenge}.
+Anstelle eines gemeinsamen Akzeptanzparameters~$p$ wie bei Gilbert-Graphen, sei $w = (w_1, \ldots, w_n) \in [0, 1]^n$ ein Vektor, der jedem Element eine individuelle Wahrscheinlichkeit zuweist.
+Wir gehen weiter davon aus, dass $w$ absteigend sortiert ist, d.h. $w_i \ge w_{i+1}$ für alle $1 \le i < n$.
+Unser Ziel ist es eine Ausgabemenge $R \subseteq [n]$ zu generieren, s.d. $\prob{i \in R} = w_i$.
+Das Problem ist also \emph{gewichtetes Ziehen ohne Zurücklegen}.
+
+Ein naiver Ansatz iteriert einfach über alle $n$ Element und akzeptiert jedes Element mit Wahrscheinlichkeit $w_i$.
+Das ist in Laufzeit $\Oh{n}$ möglich und in Erwartung optimal, falls mindestens ein konstanter Anteil der Elemente von unten durch eine strikt-positive Konstante beschränkt ist.
+\begin{exercise}
+    Beschreibe für jedes $n$, einen Vektor $w = (w_1, \ldots, w_n)$ mit strikt-positiven Gewichten, der zu einer suboptimalen Laufzeit führt.
+\end{exercise}
+
+Das Problem (und auch einen Lösungsansatz!) kennen wir aber schon von $\Gnp$-Graphen.
+Hier haben wir für kleine $p$ zu geometrischen Sprüngen gegriffen und einfach \qq{Nullen} in der Adjazenzmatrix übersprungen.
+Die \qq{Nullen} entsprechen nun den nicht-gewählten Einträgen.
+
+Allerdings kennen wir hier nicht die genauen Wahrscheinlichkeiten der übersprungenen Elemente.
+Die offensichtliche Frage lautet daher, welche Erfolgswahrscheinlichkeit können wir den Sprüngen zugrunde legen?
+Konservativ müssen wir eine Wahrscheinlichkeit wählen, die mindestens so groß ist, wie jedes der übersprungenen Elemente (es wäre peinlich ein Element~$i$ mit $w_i = 1$ zu verpassen ...).
+
+Hier trifft es sich gut, dass $w$ absteigend sortiert ist.
+Angenommen wir haben gerade Element~$i$ gewählt, dann führen wir einen geometrischen Sprung mit Erfolgswahrscheinlichkeit $w_{i+1}$ aus.
+Sei $j$ der Index den wir gezogen haben.
+Wenn $w_{i+1} = w_j$ gilt, hatten wir Glück, falls nicht haben wir $w_j$ überschätzt und müssen das korrigieren\ldots z.B. mit Rejection Sampling.
+
+Element~$j$ wurde mit Wahrscheinlichkeit $w_{i+1}$ vorgeschlagen, es soll aber nur mit Wahrscheinlichkeit $w_j$ ausgegeben werden.
+Wir akzeptieren also mit Wahrscheinlichkeit $w_{j} / (s \cdot w_{i+1})$; als Skalierung wählten1 wir also implizit $s=1$ (warum?).
+
+Interessant wird es aber, falls der Vorschlag~$j$ verworfen wird.
+Im klassischen Rejection Sampling generieren wir Vorschläge immer aus derselben Verteilung; falsch ist das auch hier nicht.
+Effizienter ist es aber, $j$ als neuen Startpunkt zu wählen und einen neuen Sprung mit Erfolgswahrscheinlichkeit $w_{j+1}$ zu ziehen.
+
+\begin{exercise}
+    Begründe, weshalb wir einen neuen Startwert nehmen können, ob wir diesen \emph{nicht} in $R$ aufnehmen.
+\end{exercise}
+
+Die Laufzeit dieses Ansatzes analysieren wir im Kontext von Chung-Lu Graphen später.
+
+\subsection{Gewichtetes Ziehen mit Zurücklegen: Die Alias-Tabelle}
+Die Verwerfungsmethode ist ein recht mächtiges Werkzeug, aber nicht immer optimal.
+Betrachten wir folgendes Problem:
+gegeben ist ein Vektor $w = (w_1, \ldots, w_n) \in \mathbb R_{\ge 0}^n$ mit $\sum_i w_i = 1$.
+Wir nehmen an, dass $w$ fremdbestimmt ist und wir a-priori nichts darüber wissen.
+Wir möchten ein Element~$X$ auswählen wobei $\prob{X = i} = w_i$.
+Vorab dürfen wir $\Oh{n}$ Zeit investieren, um eine Datenstruktur zu konstruieren.
+
+Mittels Rejection Sampling ist das einfach.
+Als Vorschlagsverteilung nehmen wir die Verteilung auf $[n]$ an; dies ist beste Wahl, falls wir nichts über $w$ wissen.
+Es gilt also $p(i) = 1/n$ und somit ist kleinste Skalierungskonstante $s = n \max_i{w_i}$.
+Diese müssen wir eingangs einmal berechnen --- das geht, wie gefordert, in Zeit $\Oh{n}$.
+
+Beim Blick auf \cref{cor:laufzeit-rejection-sampling} sollten die Alarmglocken läuten.
+Für ein $\epsilon > 0$ betrachten wir die Eingabe $w_1 = 1 - \epsilon$ und $w_i = \epsilon / (n - 1)$ für $1 < i \le n$.
+In der Grenze $\epsilon \to 0$, gilt dann $s \to n$  --- damit erhalten wir eine erwartete Laufzeit linear in der Eingabegröße.
+Mit einem Binärbaum hätten wir $\Oh{\log n}$ Zeit geschafft.
+
+\begin{figure}
+    \begin{center}
+        \def\w{5cm}
+        \def\h{5mm}
+        \begin{tikzpicture}
+            \foreach \x/\c [count = \i] in {0.8/green, 0.1/yellow, 0.02/blue, 0.02/blue, 0.02/blue, 0.02/blue, 0.02/blue} {
+            \node[anchor=west, minimum width=\w, minimum height=0.5mm, fill=black!20, inner sep=0] at (0mm, -\i * \h) {};
+            \node[anchor=west, minimum width=\w*0.8, minimum height=4mm, fill=red, inner sep=0] at (0mm, -\i * \h) {};
+            \node[anchor=west, minimum width=\w * \x, minimum height=4mm, fill=\c, inner sep=0, label=left:{$w_\i$}] at (0mm, -\i * \h) {};
+            }
+
+            \def\b{-8 * \h}
+
+            \path[draw, thick] (0, 0) to ++(0, \b) node[below] {0};
+            \path[draw, thick] (\w, 0) to ++(0, \b) node[below] {1};
+
+            \path[draw, thick] (\w * 0.8, 0) to ++(0, \b) node[below] {$\max_i \set{w_i}$};
+            \path[draw, dotted] (\w / 7, 0) to ++(0, \b) node[below] {$1/n$};
+        \end{tikzpicture}
+    \end{center}
+    \caption{
+        Rejection Sampling bei stark verzerrter Verteilung.
+        Wir wählen zuerst eine Zeile zufällig uniform.
+        Dann ziehen wir uniform zufällig einen horizontalen Punkt.
+        Wenn wir dabei die rote Linie treffen verwerfen wir --- bei der gezeigten Verteilung in Zeilen $2$ bis $n$ also fast immer.
+    }
+    \label{fig:alias-tab-motivation}
+\end{figure}
+
+Eine vergleichbar problematische Situation ist in \cref{fig:alias-tab-motivation} visualisiert.
+Dem gegenüber wäre eine besonders gute Eingabe ein $w_i = 1/n \pm \epsilon$ für alle $i$.
+In der Abbildung würde das der Situation entsprechen, dass alle Zeilen etwa auf der gestrichelten Linien enden würden --- es käme zu keiner Rejection.
+
+Tatsächlich können wir durch einen kleinen Kniff eine beliebige Eingabe komplett ohne Verwerfung samplen.
+Hierzu beobachten wir, dass die Fläche der grünen Box von $w_1$ rechts des gestrichelten Durchschnitts genau der roten Fläche links des Durchschnitts entspricht.
+Dies folgt, da sonst die gestrichelte Linie sonst nicht der Durchschnitt wäre.
+
+Die Idee der Alias Methode besteht darin, die den Überschuss auf die rote Fläche aufzuteilen.
+Hierbei wollen wir aber am \emph{entweder-oder} Schema der Verwurfsmethode festhalten;
+sprich pro Zeile soll es nur zwei Wahlen geben.
+Das ist problematisch, da es bis zu $n-1$ überlange Zeilen geben kann, die dann nicht alle in die eine unterlange Zeile verteilen dürfen.
+
+Um im Folgenden nicht ständig den Durchschnitt $1/n$ als Faktor schreiben zu müssen, nehmen wir an, dass die Gewichtssumme~$\sum_i w'_i$ auf $n$ statt auf $1$ normiert ist.
+Dann folgt das durchschnittliche Gewicht als $\sum_i w'_i / n = n /n = 1$.
+Die Alias-Tabelle baut auf folgender Einsicht auf:
+
+\begin{theorem}
+    Seien $w_1, \ldots, w_n$ nicht-negative reelle Gewichte mit Summe $\sum_i w_i = n$.
+    Dann können wir eine Tabelle mit $n$ Zeilen konstruieren, so dass jede Zeile ein Gewicht von genau $1$ hat, und höchstens zwei Einträge pro Zeile vorhanden sind.
+\end{theorem}
+
+\begin{proof}[Beweis durch Induktion]
+    Für $n=1$ ist die Aussage trivial wahr, da es nur ein Gewicht $w_1 = 1$ gibt.
+    Nehmen wir also an, dass die Aussage für $n$ gilt und betrachten $n + 1$.
+
+    Wir haben also Gewichte $w_1, \ldots, w_{n+1}$ mit $\sum_{i=1}^{n+1} w_i = n + 1$.
+    Dann existieren Indizes $k$ und~$g$ mit $w_k \le 1$ und $w_g \ge 1$ (beobachte, dass wir $k = g$ nicht ausschließen).
+    Da $w_k \le 1$ müssen wir ein Gewicht $c = 1 - w_k$ ergänzen, um eine Zeile mit Gewicht $1$ zu erhalten.
+    Dies nehmen wir uns von $w_g$ und produzieren die Zeile.
+
+    Übrig bleiben alle unveränderten Gewichte $w_i$ mit $i \not\in \set{g, k}$.
+    Falls $g = k$, ware $w_k = 1$ und $c=0$.
+    Falls $g \ne k$, verbleibt noch Eintrag $g$ mit Gewicht $w_g - c > 0$.
+    In jedem Fall sind noch $n$ Gewichte mit einer Summe von $(n+1) - 1 = n$ im Spiel.
+    Per Induktionsannahme können wir für diese eine entsprechende Tabelle konstruieren.
+\end{proof}
+
+Konkret besteht unsere Tabelle aus zwei Arrays $G[1\ldots n]$ und $A[1\ldots n]$.
+In der $i$-ten Zeile speichern wir als ersten Eintrag Element~$i$ mit einem anteiligen Gewicht von $G[i] \le w_i$ ab.
+Der Rest der Zeile wird vom sog. Alias $A[i]$ eingenommen, der per Konstruktion ein Gewicht $1 - G[i]$ hat und daher nicht explizit gespeichert werden muss.
+
+Für jede endliche Verteilung $w_1, \ldots, w_n$ können wir eine solche Tabelle in Zeit $\Oh{n}$ konstruieren --- i.A. ist die Tabelle aber nicht eindeutig.
+Eine mögliche Belegung kann mittels zweier Listen $K$ (kleiner) und $D$ (drübba) erzeugt werden.
+\begin{itemize}
+    \item Falls $w_i < 1$ fügen wir $(i, w_i)$ in $K$ ein
+    \item Falls $w_i \ge 1$ fügen wir $(i, w_j)$ in $D$ ein
+\end{itemize}
+
+Solange $K$ und $D$ nicht leer sind, entnehmen wir ein Element $(k, w_k)$ aus $K$ und ein Element $(g, w_g)$ aus $D$.
+Wir schreiben $G[i] = w_k$ und $A[i] = g$.
+Sei $w'_g = w_g - (1 - w_k)$ das verbleibende Gewicht von $g$.
+Wenn $w'_g < 1$ fügen wir $(g, w'_g)$ in $K$ ein, sonst in $D$.
+
+Per Konstruktion kann $K$ niemals vor $D$ leer werden; es kann aber durchaus vorkommen, dass $K$ leer ist, während $D$ noch Werte enthält.
+Dann haben aber alle Einträge in $G$ Gewicht genau $1$; wir können sie in der offensichtlichen Art in $G$ ein.
+Praktische Implementierungen müssen aufgrund der wiederholten Subtraktionen mit Rundungsfehlern der Gewichte umgehen können;
+dann kann auch $D$ zuerst leer werden; die Elemente in $K$ haben dann aber Gewicht $1 - \epsilon$.
+
+Das Ziehen aus der Alias-Tabelle läuft analog zu Rejection-Sampling:
+wir wählen eine Zeile $1 \le i \le n$ zufällig uniform und werden ein reelles $0 \le u \le 1$.
+Falls $u < G[i]$ geben wir $i$ zurück, sonst $A[i]$.
+Die gelingt in Zeit $\Oh{1}$.
