@@ -479,7 +479,7 @@ In manchen Fällen, ist aber eine obere Schranke schneller zu berechnen, wodurch
 \subsubsection{Gezinkte Münzen}
 Wir haben eine ideale deutsche Euromünze, deren beide Seiten $A$ (\texttt{Adler}) und $Z$ (\texttt{Zahl}) je mit Wahrscheinlichkeit $1/2$ erscheinen.
 Diese soll als Vorschlagsgenerator dienen; es gilt also $p(A) = p(Z) = 1/2$.
-In der Zielverteilung soll $Z$ aber mit doppelter Wahrscheinlichkeit auftreten, d.h. $t(A) = 1/3$ und $t(Z) = 2/3$.
+In der Zielverteilung soll $Z$ aber mit doppelter Wahrscheinlichkeit auftreten, d.\,h. $t(A) = 1/3$ und $t(Z) = 2/3$.
 Berechnen wir den Skalierungsfaktor~$s$:
 \begin{align}
     s \ge \max\set{ \frac{t(A)}{p(A)}, \frac{t(Z)}{p(Z)} } = \max\set{ \frac{2/3}{1/2}, \frac{1/3}{1/2} } = \frac{4}{3}
@@ -493,13 +493,13 @@ Natürlich wählen wir den kleinstmöglichen Wert, es gilt also $s=4/3$. Dann k�
           $$
               a(Z) = \frac{t(Z)}{s \cdot p(Z)} = \frac{\frac 2 3}{\frac 4 3 \cdot \frac 1 2} = 1.
           $$
-          Es gibt also nichts zu tun --- eine vorgeschlagene \texttt{Zahl} wird immer akzeptiert.
+          Es gibt also nichts zu tun -- eine vorgeschlagene \texttt{Zahl} wird immer akzeptiert.
     \item Falls $x = A$ akzeptieren wir mit Wahrscheinlichkeit
           $$
               a(A) = \frac{t(A)}{s \cdot p(A)} = \frac{\frac 1 3}{\frac 4 3 \cdot \frac 1 2} = \frac 1 2.
           $$
           Statt nun uniform $u$ aus $[0, 1]$ zu ziehen und dann mit $a(A) = 1/2$ zu vergleichen, können wir abkürzen.
-          Wir werfen eine weitere Münze. Falls diese (arbiträr) $A$ ist akzeptieren wir, sonst verwerfen wir.
+          Wir werfen eine weitere Münze. Falls diese (arbiträr) $A$ ist, akzeptieren wir, sonst verwerfen wir.
 \end{enumerate}
 
 Wir können uns den Algorithmus wie folgt bildlich vorstellen, wobei die grauen Werte irrelevant sind und nicht geworfen werden müssen:
@@ -508,8 +508,8 @@ Wir können uns den Algorithmus wie folgt bildlich vorstellen, wobei die grauen 
         Erster Wurf    & Zweiter Wurf                         & Ergebnis           & W'keit & \ldots falls akzeptiert \\\hline
         \texttt{Zahl}  & \textcolor{black!50}{\texttt{Zahl}}  & \texttt{Zahl}      & 1/4    & 1/3                     \\
         \texttt{Zahl}  & \textcolor{black!50}{\texttt{Adler}} & \texttt{Zahl}      & 1/4    & 1/3                     \\\hline
-        \texttt{Adler} & \texttt{Zahl}                        & \texttt{Adler}     & 1/4    & 1/3                     \\\hline
-        \texttt{Adler} & \texttt{Adler}                       & \emph{Wiederholen} & 1/4    & ---
+        \texttt{Adler} & \texttt{Zahl}                        & \emph{Wiederholen} & 1/4    & ---                     \\\hline
+        \texttt{Adler} & \texttt{Adler}                       & \texttt{Adler}     & 1/4    & 1/3
     \end{tabular}
 \end{center}
 
