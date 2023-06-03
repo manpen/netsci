@@ -631,7 +631,7 @@ Die Alias-Tabelle baut auf folgender Einsicht auf:
     Dies nehmen wir uns von $w_g$ und produzieren die Zeile.
 
     Übrig bleiben alle unveränderten Gewichte $w_i$ mit $i \not\in \set{g, k}$.
-    Falls $g = k$, ware $w_k = 1$ und $c=0$.
+    Falls $g = k$, war $w_k = 1$ und $c=0$.
     Falls $g \ne k$, verbleibt noch Eintrag $g$ mit Gewicht $w_g - c > 0$.
     In jedem Fall sind noch $n$ Gewichte mit einer Summe von $(n+1) - 1 = n$ im Spiel.
     Per Induktionsannahme können wir für diese eine entsprechende Tabelle konstruieren.
@@ -662,3 +662,143 @@ Das Ziehen aus der Alias-Tabelle läuft analog zu Rejection-Sampling:
 wir wählen eine Zeile $1 \le i \le n$ zufällig uniform und werden ein reelles $0 \le u \le 1$.
 Falls $u < G[i]$ geben wir $i$ zurück, sonst $A[i]$.
 Die gelingt in Zeit $\Oh{1}$.
+
+\subsection{Intermezzo: Schnelles Ziehen von uniformen Ganzzahlen}
+\emph{Dieses Kapitel basiert in großen Teilen auf \cite{DBLP:journals/tomacs/Lemire19}.}
+
+\bigskip
+
+Auf praktischen Computern erhalten wir (Pseudo)Zufallszahlen in der Regel in der Größe eines Maschinenwortes, oft mit $L = 32$ oder $64$ Bit.
+Wir können dies entweder als $L$~unabhängige Zufallsbits interpretieren, oder z.B. als eine vorzeichenlose Ganzzahl~$X$, die uniform auf $[0, 2^L)$ verteilt ist.
+In Anwendungen benötigen wir jedoch häufig Zahlen aus einem Intervall $[a, b)$ und müssen daher $X$ transformieren.
+
+Den kleinsten Wert anzupassen ist einfach: wir ziehen aus $Y' \in [0, b-a)$ und geben $Y = a + Y'$ zurück.
+Daher reduzieren wir im Folgenden die Diskussion auf Intervalle $[0, s)$, wobei wir $1 \le s \le 2^L$ annehmen (die obere Schranke lässt sich durch Konkatenation mehrerer $L$-Bit Wörter umgehen).
+
+Der Standardweg eine Zahl $X \in [0, 2^L)$ auf $[0, s)$ zu reduzieren, besteht darin $Y = X \mod s$ zu berechnen
+--- allein auf GitHub findet sich das Pattern \texttt{rand() \%} über 470.000 mal.
+Der einzige Grund: es ist schnell zu schreiben und garantiert $Y \in [0, s)$.
+Es ist aber zum einen recht langsam, und auch nur dann uniform, wenn $s | 2^L$, d.h. $2^L \mod s = 0$ ist.
+Dies lässt sich an einem Bild leicht erkennen.
+Betrachte die Sequenz $0, \ldots, 2^L \mod s$:
+
+\begin{align}
+    \underbrace{
+        \overbrace{0, 1, \ldots, s{-}1}^\text{$s$ Werte},\
+        \overbrace{0, 1, \ldots, s{-}1}^\text{$s$ Werte},\
+        \ldots, \
+        \overbrace{0, 1, \ldots, s{-}1}^\text{$s$ Werte}
+    }_\text{$(2^L \div s)$ Blöcke mit insg. $2^L - (2^L \div s)$ Werten},\
+    \overbrace{0, 1, \ldots, (2^L \mod s){-}1}^\text{$2^L \mod s$ Werte},\
+    \label{eq:s_bloecke_in_2l}
+\end{align}
+
+Jeder Wert in $[0, s)$ taucht also exakt $\lfloor 2^L / s \rfloor$ oder $\lceil 2^L /s \rceil$ oft auf.
+Es handelt sich also genau dann um eine uniforme Verteilung, wenn $\lfloor 2^L / s \rfloor = \lceil 2^L /s \rceil\ \ \Leftrightarrow\ \ 2^L \mod s = 0$.
+Wir formalisieren dies in folgendem Lemma:
+
+\begin{lemma}\label{lem:gleichverteilt_in_ab}
+    Seien $a < b$ die Grenzen des ganzzahligen Intervalls $[a, b)$ und $s \in \mathbb N_{>0}$.
+    Dann existieren genau $(b - a) \div s$ verschiedene Ganzzahlen $x, y \in [a, b)$ mit $x \mod s = y \mod s$, genau dann, wenn $s$ die Intervalllänge $b-a$ teilt.
+\end{lemma}
+\begin{proof}[Beweis durch Bild]
+\end{proof}
+
+Für $s \ll 2^L$ kann der Unterschied verschmerzbar klein sein, für $s > 2^L / 2$ gibt es aber einige Elemente die mit doppelter Wahrscheinlichkeit von anderen zurück geliefert werden.
+
+\subsubsection{Rejection Sampling to the help}
+Es sollte nicht überraschen, dass Rejection Sampling hier helfen kann.
+Ein naiver Ansatz verwirft $X \ge s$ und akzeptiert nur $X < s$.
+Wenn $X$ uniform ist, ist es die Aussage dann auch.
+Allerdings ist für $s \ll 2^L$ die Rejectionrate exorbitant hoch; in Erwartung benötigen wir $2^L / s$ Versuche!
+
+Besser ist es natürlich ein möglichst großes $k \ge 1$ zu wählen, s.d. $k s \le 2^L$, dann nur $X \ge ks$ zu verwerfen und sonst $X / k$ zurückzuliefern.
+Die beste Wahl ist $k = 2^L \div s$.
+Dieses Verfahren hat eine Akzeptanzwahrscheinlichkeit von
+\begin{align}
+    \frac{k \cdot s}{2^L} = 1 - \frac{2^L \mod s}{2^L} \ge 1/2,
+\end{align}
+und benötigt daher in Erwartung höchstens zwei Versuche.
+
+Beobachte, dass es hierbei egal ist, ob wir $X \ge ks$ oder $X < (2^L - ks) = 2^L \mod s = (2^L -s) \mod s$ verwerfen.
+Die letzte Variante ist aber auf echten Maschinen in der Regel schneller.
+Das führt zu folgendem Schema, das auch als OpenBSD Algorithmus bekannt ist:
+
+\begin{algorithm}[H]
+    $t \gets (2^L - s) \mod s$\;
+    $x \gets \text{zufällige Ganzzahl aus $[0, 2^L)$}$\;
+    \While{x < t}{
+    $x \gets \text{zufällige Ganzzahl aus $[0, 2^L)$}$\;
+    }
+    \Return $x \mod s$\;
+    \caption{OpenBSD Algorithmus zum Ziehen uniformer Zufallszahlen.}
+\end{algorithm}
+
+Der OpenBSD Algorithmus ist einfach und korrekt, hat aber einen enormen Nachteil in der Praxis:
+Pro Aufruf muss ein Modulo und eine Division (das ist idR dieselbe CPU-Instruktion!) berechnet werden.
+Eine \texttt{div} Instruktion gehört zu den teuersten skalaren Operationen\footnote{Sehr umfangreiche Benchmarks und Infos: \url{https://www.agner.org/optimize/instruction_tables.pdf}}, die CPUs unterstützen.
+Im Vergleich zu einfacher Arithmetik (z.B. Addition) ist eine Division oft um ein bis zwei Größenordnungen langsamer.
+Insb. erzeugen moderne nicht-kryptographischen Pseudozufallsgeneratoren eine Zufallszahl oft schneller als eine einzelne Division dauert!
+
+OpenJDK verwendet ein anderes Verfahren, das die Anzahl der Division an die Anzahl der Runden des Rejection Samplings knüpft.
+
+\begin{algorithm}[H]
+    $x \gets \text{zufällige Ganzzahl aus $[0, 2^L)$}$\;
+    $r \gets x \mod s$\;
+    \While{$x - r > 2^L - s$}{
+    $x \gets \text{zufällige Ganzzahl aus $[0, 2^L)$}$\;
+    $r \gets x \mod s$\;
+    }
+    \Return $r$;
+    \caption{Java Algorithmus zum Ziehen uniformer Zufallszahlen.}
+\end{algorithm}
+
+Die Korrektheit des Verfahrens lässt sich erneut bildlich verstehen.
+Zunächst beobachte, dass $r \le x$ und somit $x - r \ge 0$.
+\todo{Bild}
+
+Der Vorteil von des Java-Algorithmus gegenüber der OpenBSD Methode besteht darin, dass Java im günstigen Fall nur eine Division ausführen muss.
+Wenn für $s \to 2^L$ die Rejection-Rate jedoch steigt, nimmt auch die Anzahl der Division zu und ist im Worst-Case gar unbeschränkt (eine WHP Schranke lässt sich mittels Chernoff zeigen).
+
+Lemire~\cite{DBLP:journals/tomacs/Lemire19} schlägt daher ein Verfahren vor, das oft komplett ohne (generische) Division auskommt und im Worst-Case nur eine benötigt.
+Hierzu nutzt er aus, dass eine Division $x \div 2^k$ nicht durch eine aufwendige \texttt{div} Instruktion ausgeführt werden muss, sondern einfach einem Bitshift um $k$ Bits nach rechts entspricht.
+Konkret nutzen wir, dass
+\begin{align}
+    0 \ \le \ (x \cdot s) \div 2^L = (x \cdot s)\  < \  s\quad \forall x \in [0, 2^L), s \in [0, 2^L)
+\end{align}
+
+Dabei implementieren wir $(x \cdot s) \div 2^L$ als $\texttt{shift-right}(x \cdots s, L)$; der Ausdruck ist also im Wesentlichen eine Multiplikation von zwei $L$-Bit Zahlen zu einer Zahl mit $2L$ gefolgt von einem Shift um $L$ Bits.
+Analog können wir die unteren $L$ Bits mittels Verundung der unteren $L$ Bits extrahieren.
+Warum ist das nützlich?
+
+Durch die Multiplikation von $s$ mit einem zufälligen $x \in [0, 2^L)$ bilden wir auf alle Vielfachen von $s$ in $[0, s\cdot 2^L)$ ab.
+Durch die Division, transformieren wir alle Vielfachen von $s$ in $[0, 2^L)$ auf $0$, in $[2^L, 2\cdots2^L)$ auf $1$, und $[i 2^L, (i+1)\cdots2^L)$ auf $i$.
+Im Allgemeinen teilt aber $s$ nicht $2^L$ (sonst wären wir schon fertig);
+daher müssen wir $2^L \mod s$ Element aus dem Intervall herausschneiden.
+Wir verwerfen daher für jedes $i$ die Elemente in $[i 2^L, i 2^L + (2^L \mod s))$ und akzeptieren $[ i 2^L + (2^L \mod s), (i+1)\cdots2^L)$.
+Das führt zu folgendem Algorithmus:
+
+\begin{algorithm}[H]
+    $x \gets \text{zufällige Ganzzahl aus $[0, 2^L)$}$\;
+    $m \gets x \times s$\;
+    $\ell \gets m \mod 2^L$\;
+    \If(\tcc*{Abkürzung falls wir sicher Akzeptieren können}){$\ell < s$}{
+    $t \gets (2^L -s) \mod s$\tcc*{$2^L \mod s = (2^L -s) \mod s$}
+    \While{$\ell < t$}{
+    $x \gets \text{zufällige Ganzzahl aus $[0, 2^L)$}$\;
+    $m \gets x \times s$\;
+    $\ell \gets m \mod 2^L$\;
+    }
+    }
+    \Return{$m \div 2^L$}
+\end{algorithm}
+
+Der \texttt{if}-Block ist dabei nicht funktional wichtig --- wenn wir die Bedingung durch \texttt{true} ersetzen, arbeitet der Algorithmus weiterhin korrekt und führt die Rejection richtig aus.
+Er ist aber essentiell in der Vermeidung der Division.
+Beobachte, dass $t = 2^L \mod s (2^L - s) \mod s < s$ ist und wir nur verwerfen, wenn $\ell < t$.
+Das bedeutet aber insbesondere auch, dass wenn $\ell \ge s$ ist, wissen wir, dass $\ell$ nicht kleiner als $t$ sein kann.
+Daher müssen wir $t$ erst gar nicht berechnen.
+Der Algorithmus läuft nur mit Wahrscheinlichkeit $s / 2^L$ in den \texttt{true}-Block; mit der Gegenwahrscheinlichkeit $1 - s/2^L$ ist er also divisionsfrei.
+
+Die Strategie Abkürzungen für sicheres Verwerfen/Akzeptieren zu konstruieren, um unnötige Berechnungen zu sparen, ist eine gängige Technik in effizieten Implementierung;
+man findet sie z.B. auch
