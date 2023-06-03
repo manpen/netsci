@@ -33,7 +33,7 @@
 \colorlet{color5}{lichtblau}
 
 
-% Header/Footer	
+% Header/Footer
 \usepackage{fancyhdr}
 \fancyhf{}
 \def\headerFormat{\sffamily\color{dunkelgrau}}
@@ -152,21 +152,22 @@
 
 \declaretheorem[style=endmarker, numberlike=theorem]{definition}
 \declaretheorem[style=endmarker, numbered=no, name=Definition]{definition*}
-\declaretheorem[style=endmarker, numberlike=theorem]{corollary}
+\declaretheorem[style=endmarker, numberlike=theorem, name=Korollar]{corollary}
 \declaretheorem[style=endmarker, numbered=no, name=Korollar]{corollary*}
 \declaretheorem[style=endmarker, numberlike=theorem]{lemma}
 \declaretheorem[style=endmarker, numbered=no, name=Lemma]{lemma*}
 \declaretheorem[style=endmarker, numberlike=theorem]{proposition}
 \declaretheorem[style=endmarker, numbered=no, name=Proposition]{proposition*}
-\declaretheorem[style=endmarker, numberlike=theorem]{conjecture}
+\declaretheorem[style=endmarker, numberlike=theorem, name=Vermutung]{conjecture}
 \declaretheorem[style=endmarker, numbered=no, name=Vermutung]{conjecture*}
 \declaretheorem[style=endmarker, numberlike=theorem, name=Beispiel]{example}
 \declaretheorem[style=endmarker, numbered=no, name=Beispiel]{example*}
-\declaretheorem[style=endmarker, numbered=no, name=Anmerkung]{note*}
+\declaretheorem[style=endmarker, numberlike=theorem, name=Notiz]{note}
+\declaretheorem[style=endmarker, numbered=no, name=Notiz]{note*}
 \declaretheorem[style=endmarker, numberlike=theorem, name=Beobachtung]{observation}
 \declaretheorem[style=endmarker, numbered=no, name=Beobachtung]{observation*}
-\declaretheorem[style=endmarker, numberlike=theorem]{remark}
-\declaretheorem[style=endmarker, numbered=no, name=Anmerkung]{remark*}
+\declaretheorem[style=endmarker, numberlike=theorem, name=Bemerkung]{remark}
+\declaretheorem[style=endmarker, numbered=no, name=Bemerkung]{remark*}
 \declaretheorem[style=endmarker, numberlike=theorem, name=Aufgabe]{exercise}
 \declaretheorem[style=endmarker, numbered=no, name=Aufgabe]{exercise*}
 
@@ -254,7 +255,7 @@
 	{} % label \thechapter
 	{0pt} % sep
 	{} % before
-	[] % after		
+	[] % after
 
 	\clearpage{\thispagestyle{empty}\cleardoublepage}
 	\chapter[#2]{
@@ -304,9 +305,9 @@
 			\sffamily%
 			\@chapter@abstract
 		\end{minipage}%
-		%		
+		%
 		\vfill\vfill
-		\noindent%		
+		\noindent%
 		\@chapter@remarks
 		\begin{relatedbib}
 			\foreach \x in \@chapter@basedon {\bibentryitem{\x}}
@@ -316,10 +317,10 @@
 			\subsubsection*{My contribution}
 			\@chapter@contribution
 		\fi
-		%	
+		%
 		\vfill\vfill
 		\vfill\vfill
-		%	
+		%
 		\clearpage%
 	}
 }{%
