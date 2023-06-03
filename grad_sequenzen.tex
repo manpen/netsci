@@ -365,7 +365,7 @@ Daher nutzen wir im Folgenden die ursprüngliche Definition und gehen davon aus,
 Bevor wir uns effiziente Generatoren für das Chung-Lu Modell ansehen, diskutieren wir uns zunächst einige allgemeine Sampling-Techniken, die hierfür nützlich sein werden.
 
 \subsection{Rejection Sampling}
-Im Folgenden verallgemeinern wird die sog. Verwerfungsmethode (rejection sampling), die wir bereits in einer sehr einfachen Ausprägung beim Ziehen ohne Zurücklegen und Generieren einfacher Graphen genutzt.
+Im Folgenden verallgemeinern wird die sog. Verwerfungsmethode (rejection sampling), die wir bereits in einer sehr einfachen Ausprägung beim Ziehen ohne Zurücklegen und Generieren einfacher Graphen genutzt haben.
 Damals war die Kernidee jedes Mal etwa:
 \floatmarginfigure{
     \begin{tikzpicture}
@@ -383,36 +383,36 @@ Damals war die Kernidee jedes Mal etwa:
     \label{fig:rejection-uniform}
 }
 Wir nutzen einen stochastischen Prozess, der uns Vorschläge unterbreitet (proposal distribution).
-Dieser Prozess hatte bereits die gewünschte Verteilung, lieferte aber u.U. Vorschläge, die wir kategorisch ablehnen mussten;
-bei $\Gnm$ mussten wir bereits gezogene Kanten zurückweisen.
-Beim BA Modell waren es Knoten, zu denen wir bereits verbunden sind, und beim Configuration Model verwarfen wir nicht-einfache Graphen.
-Nachdem Ablehnen ungewünschter Element erhielten wir dann die Zielverteilung (target distribution) automatisch.
+Dieser Prozess hatte bereits die gewünschte Verteilung, lieferte aber u.\,U. Vorschläge, die wir kategorisch ablehnen mussten;
+beim $\Gnm$-Modell mussten wir bereits gezogene Kanten zurückweisen.
+Beim BA-Modell waren es Knoten, zu denen wir bereits verbunden sind, und beim Configuration Model verwarfen wir nicht einfache Graphen.
+Nach dem Ablehnen unerwünschter Element erhielten wir dann die Zielverteilung (target distribution) automatisch.
 
 \Cref{fig:rejection-uniform} veranschaulicht diese Idee.
 Die proposal distribution entspricht der uniformen Verteilung in der Box (visualisiert durch das reguläre Gitter).
-Die Zielverteilung ist ebenfalls uniform --- allerdings über einer eingeschränkten Grundgesamtheit.
+Die Zielverteilung ist ebenfalls uniform -- allerdings über einer eingeschränkten Grundgesamtheit.
 Das Gitter ist auch auf dieser uniform verteilt.
 
-Ein weiteres Beispiel ist ein normaler Spielwürfel mit sechs gleich-wahrscheinlichen Seiten, die von 1 bis 6 beschriftet sind.
+Ein weiteres Beispiel ist ein normaler Spielwürfel mit sechs gleich wahrscheinlichen Seiten, die von $1$ bis $6$ beschriftet sind.
 Wir können mit diesem Würfel uniform aus \set{1,2,3,4,5} ziehen:
-falls eine Sechs gewürfelt wird, verwerfen wir diese und versuchen es erneut.
+Falls eine Sechs gewürfelt wird, verwerfen wir diese und versuchen es erneut.
 In Erwartung benötigen wir $6/5$ Versuche, um ein Ergebnis zu produzieren.
 
-Die Verwerfungsmethode ist aber mächtiger --- es muss nicht immer ganz oder gar nicht sein.
+Die Verwerfungsmethode ist aber mächtiger -- es muss nicht immer ganz oder gar nicht sein.
 Sie eignet sich auch, um die Wahrscheinlichkeit in einzelnen Bereichen anzuheben bzw. abzusenken.
 
 Angenommen, wir möchten die Zielverteilung~$T$ mit $t\colon \Omega \to [0, 1]$ erzeugen.
 Dann benötigen wir einen Generator für die Verteilung~$P$, der einen Vorschlag mit Wahrscheinlichkeitsverteilung $p\colon \Omega \to [0, 1]$ erzeugt.
-Wir gehen davon aus, dass mindestens ein $x \in \Omega$ existiert, s.d. $t(x) \ne p(x)$ --- sonst sind die Verteilungen identisch und wir fertig.
-OBdA nehmen wir an, dass $\Omega$ endlich ist und es sich somit um diskrete Verteilungen handelt; die Verwerfungsmethode funktioniert aber auch mit kontinuierlichen Verteilungen.
+Wir gehen davon aus, dass mindestens ein $x \in \Omega$ existiert, s.\,d. $t(x) \ne p(x)$ -- sonst sind die Verteilungen identisch und wir fertig.
+O.\,B.\,d.\,A. nehmen wir an, dass $\Omega$ endlich ist und es sich somit um diskrete Verteilungen handelt; die Verwerfungsmethode funktioniert aber auch mit kontinuierlichen Verteilungen.
 
-Als Nächstes benötigen wir einen Skalierungsfaktor~$s$, s.d. $t(x) \le s \cdot p(x)$ für alle $x \in \Omega$.
+Als Nächstes benötigen wir einen Skalierungsfaktor~$s$, s.\,d. $t(x) \le s \cdot p(x)$ für alle $x \in \Omega$.
 Beobachte, dass dies impliziert, dass der Support von $p$ den Support von $t$ beinhaltet:
-für jedes $x\in \Omega$ gilt $t(x) > 0 \Rightarrow p(x) > 0$.
-In \cref{fig:rejection-uniform}, beinhaltet die Box daher jeden Punkt der Wolke; wären teile der Wolke außerhalb der Box, könnten dort keine Vorschläge \qq{hinfallen}.
+Für jedes $x\in \Omega$ gilt $t(x) > 0 \Rightarrow p(x) > 0$.
+In \cref{fig:rejection-uniform} beinhaltet die Box daher jeden Punkt der Wolke; wären Teile der Wolke außerhalb der Box, könnten dort keine Vorschläge \qq{hinfallen}.
 
 \begin{algorithm}[t]
-    \KwIn{Generator für $P$, $p(x)$, $t(x)$ und $s$, s.d. $\max_x \set{t(x) / (s\cdot p(x))} \le 1$}
+    \KwIn{Generator für $P$, $p(x)$, $t(x)$ und $s$, s.\,d. $\max_x \set{t(x) / (s\cdot p(x))} \le 1$}
     \While{für immer}{
         Schlage $x \follows P$ vor\;
         Ziehe $u$ uniform aus $[0, 1]$\;
@@ -425,12 +425,12 @@ In \cref{fig:rejection-uniform}, beinhaltet die Box daher jeden Punkt der Wolke;
     \label{alg:rejection_sampling}
 \end{algorithm}
 
-Der Parameter~$s$ ist erforderlich, da sowohl $p$ als auch $t$ auf $1$ normiert sind, d.h.
+Der Parameter~$s$ ist erforderlich, da sowohl $p$ als auch $t$ auf $1$ normiert sind, d.\,h.
 \begin{align}
     \sum_{x \in \Omega} p(x) = \sum_{x \in \Omega} = 1.
 \end{align}
-Wenn es nun ein $x \in \Omega$ mit $t(x) < p(x)$, muss es zwangsläufig ein $x' \in \Omega$ geben, s.d. $t(x') > p(x')$.
-Da die Verwerfungsmethode nur ablehnen kann, besteht die einzige Möglichkeit die relative Frequenz einzelner Elemente zu erhöhen, darin, alle anderen Elemente seltener auftreten zu lassen.
+Wenn es nun ein $x \in \Omega$ mit $t(x) < p(x)$ gibt, muss es zwangsläufig ein $x' \in \Omega$ geben, s.\,d. $t(x') > p(x')$ gilt.
+Da die Verwerfungsmethode nur ablehnen kann, besteht die einzige Möglichkeit, die relative Frequenz einzelner Elemente zu erhöhen, darin, alle anderen Elemente seltener auftreten zu lassen.
 Dazu verwenden wir ein $s > 1$ gekoppelt mit \qq{ein bisschen} Rejection.
 Die Details sind in \cref{alg:rejection_sampling} zusammengefasst.
 
@@ -439,41 +439,39 @@ Die Details sind in \cref{alg:rejection_sampling} zusammengefasst.
 \end{lemma}
 
 \begin{proof}
-    Die Wahrscheinlichkeit Element $x \in \Omega$ in einer fixierten Runde zu produzieren folgt als
+    Die Wahrscheinlichkeit, Element $x \in \Omega$ in einer fixierten Runde zu produzieren, folgt als
     \begin{align}
-        \prob{\text{Gebe $x$ zurück}} & = \prob{\text{akzeptiere $x$}\ \middle|\ \text{schlage $x$ vor}}                  \\
-                                      & = \prob{\text{schlage $x$ vor}} \prob{\text{akzeptiere $x$}}                      \\
+        \prob{\text{Gebe $x$ zurück}} & = \prob{\text{Schlage $x$ vor}} \prob{\text{Akzeptiere $x$} \ \middle|\ \text{schlage $x$ vor}} \\
                                       & = p(x) \cdot \frac{t(x)}{s p(x)} = \frac{1}{s} t(x) \label{eq:reject-accept-prob}
     \end{align}
 
-    Beobachte, die Ergebnisse \emph{Gebe $x$ zurück} und \emph{Gebe $y$ zurück} für $x \ne y$ disjunkt sind,
-    Da pro Runde genau ein Element vorgeschlagen wird und es nicht $x$ und $y$ gleichzeitig sein kann.
-    Wir können also die Akzeptanzwahrscheinlichkeit über das Gesetz der totalen Wahrscheinlichkeit als Summe der bedingten Wahrscheinlichkeiten berechnen:
+    Beobachte, dass die Ergebnisse \emph{Gebe $x$ zurück} und \emph{Gebe $y$ zurück} für $x \ne y$ disjunkt sind, da pro Runde genau ein Element vorgeschlagen wird und es nicht $x$ und $y$ gleichzeitig sein können.
+    Wir können also die Akzeptanzwahrscheinlichkeit als Summe der Wahrscheinlichkeiten berechnen:
     \begin{align}
-        \prob{\text{Akzeptiere}} & = \sum_{x \in \Omega} \prob{\text{akzeptiere $x$}\ \middle|\ \text{schlage $x$ vor}} \\
-                                 & = \frac{1}{s} \underbrace{\sum_{x \in \Omega} t(x)}_{=1} = \frac{1}{s}
+        \prob{\text{Aakzeptiere}} & = \sum_{x \in \Omega} \prob{\text{Gebe $x$ zurück}} \\
+                                  & = \frac{1}{s} \underbrace{\sum_{x \in \Omega} t(x)}_{=1} = \frac{1}{s}
         \qedhere
     \end{align}
 \end{proof}
 
-Der Algorithmus wiederholt, solange bis zum ersten Mal akzeptiert wird.
-Die Fehlschläge sind dabei unabhängig voneinander sind.
+Der Algorithmus läuft solange, bis zum ersten Mal akzeptiert wird.
+Die Fehlschläge sind dabei unabhängig voneinander.
 
 \begin{corollary}\label{cor:laufzeit-rejection-sampling}
-    Die Anzahl an Runde in \cref{alg:rejection_sampling} ist geometrisch mit Erfolgswahrscheinlichkeit $\frac{1}{s}$ verteilt.
+    Die Anzahl an Runden in \cref{alg:rejection_sampling} ist geometrisch mit Erfolgswahrscheinlichkeit $\frac{1}{s}$ verteilt.
     In Erwartung werden also $s$ Versuche benötigt.
 \end{corollary}
 
 Unser Ziel sollte in der Regel sein, ein möglichst kleines $s$ zu finden, das gerade noch $\max_x \set{t(x) / (s \cdot p(x))} \le 1$ erfüllt.
-In manchen Fällen, ist aber eine obere Schranke schneller zu berechnen, wodurch ein Algorithmus ---trotz höherer Rejectionrate--- unterm Strich schneller sein kann.
+In manchen Fällen, ist aber eine obere Schranke schneller zu berechnen, wodurch ein Algorithmus -- trotz höherer Rejectionrate -- unterm Strich schneller sein kann.
 
 \begin{exercise}
-    Unser erklärtes Ziel war es $t(x)$ zu generieren.
+    Unser erklärtes Ziel war es, $t(x)$ zu generieren.
     In \cref{eq:reject-accept-prob} berechneten wir aber, dass $x$ mit Wahrscheinlichkeit $t(x) / s$ ausgegeben wird.
     Erkläre, weshalb das in Ordnung ist.
 
     Sei $s' > s$ ein suboptimaler Skalierungsfaktor.
-    Wie beeinflusst die Wahl die Korrektheit und Effizienz des von \cref{alg:rejection_sampling}?
+    Wie beeinflusst die Wahl Korrektheit und Effizienz von \cref{alg:rejection_sampling}?
 \end{exercise}
 
 \subsubsection{Gezinkte Münzen}
