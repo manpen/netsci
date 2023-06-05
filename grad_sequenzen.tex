@@ -550,7 +550,7 @@ Effizienter ist es aber, $j$ als neuen Startpunkt zu wählen und einen neuen Spr
 
 Die Laufzeit dieses Ansatzes analysieren wir im Kontext von Chung-Lu Graphen später.
 
-\subsection{Gewichtetes Ziehen mit Zurücklegen: Die Alias-Tabelle}
+\subsection{Gewichtetes Ziehen mit Zurücklegen: Die Alias-Tabelle}\label{subsec:alias1}
 Die Verwerfungsmethode ist ein recht mächtiges Werkzeug, aber nicht immer optimal.
 Betrachten wir folgendes Problem:
 gegeben ist ein Vektor $w = (w_1, \ldots, w_n) \in \mathbb R_{\ge 0}^n$ mit $\sum_i w_i = 1$.
@@ -661,7 +661,7 @@ wir wählen eine Zeile $1 \le i \le n$ zufällig uniform und werden ein reelles 
 Falls $u < G[i]$ geben wir $i$ zurück, sonst $A[i]$.
 Die gelingt in Zeit $\Oh{1}$.
 
-\subsection{Intermezzo: Schnelles Ziehen von uniformen Ganzzahlen}
+\subsection{Intermezzo: Schnelles Ziehen von uniformen Ganzzahlen}\label{subsec:uniforme_ganzzahlen}
 \emph{Dieses Kapitel basiert in auf \cite{DBLP:journals/tomacs/Lemire19}.}
 Wir übernehmen auch die Notation $a \div b = \lfloor a / b \rfloor$.
 
@@ -771,7 +771,8 @@ Konkret nutzen wir, dass
     \quad \forall x \in [0, 2^L), s \in [0, 2^L)
 \end{align}
 
-Dabei implementieren wir $(x \cdot s) \div 2^L$ als $\texttt{shift-right}(x \cdot s, L)$; der Ausdruck ist also im Wesentlichen eine Multiplikation von zwei $L$-Bit Zahlen zu einer Zahl mit $2L$ Bit gefolgt von einem Shift um $L$ Bits.
+Dabei implementieren wir $(x \cdot s) \div 2^L$ als $\texttt{shift-right}(x \cdot s, L)$;
+der Ausdruck ist also im Wesentlichen eine Multiplikation von zwei $L$-Bit Zahlen zu einer Zahl mit $2L$ Bit gefolgt von einem Shift um $L$ Bits.
 Analog können wir die unteren $L$ Bits mittels Verundung der unteren $L$ Bits extrahieren.
 Warum ist das nützlich?
 
@@ -795,6 +796,8 @@ Das führt zu folgendem Algorithmus:
     }
     }
     \Return{$m \div 2^L$}
+    \caption{Uniformes Ziehen fast ohne Division}
+    \label{algo:uniform_lemire}
 \end{algorithm}
 
 Der \texttt{if}-Block ist dabei nicht funktional wichtig --- wenn wir die Bedingung durch \texttt{true} ersetzen, arbeitet der Algorithmus weiterhin korrekt und führt die Rejection richtig aus.
@@ -805,3 +808,96 @@ Daher müssen wir $t$ erst gar nicht berechnen.
 Der Algorithmus läuft daher nur mit Wahrscheinlichkeit $s / 2^L$ in den \texttt{true}-Block; mit der Gegenwahrscheinlichkeit $1 - s/2^L$ ist er also divisionsfrei.
 
 Die Strategie Abkürzungen für sicheres Verwerfen/Akzeptieren zu konstruieren, um unnötige Berechnungen zu sparen, ist eine gängige Technik in effizienten Implementierungen von Rejection-Sampling.
+
+\subsection{Alias-Tabelle: Teil 2}
+In \cref{subsec:uniforme_ganzzahlen} stellen wir effiziente Methoden vor, um uniforme Ganzzahlen zu ziehen.
+Hiermit können wir nun schnell eine zufällige Zeile in der Alias-Tabelle bestimmen.
+Es geht aber noch besser:
+
+\begin{enumerate}
+    \item
+          Der erste Ansatz besteht darin \cref{algo:uniform_lemire} zu optimieren.
+          Beobachte, dass wir immer einen Zeilenindex aus $[0, n)$ (oder äquivalent $[1, n]$) ziehen.
+          Es gilt also, dass die Intervallgröße auf $s = n$ fixiert ist.
+          Wir können daher $t \gets (2^L -s) \bmod s$ einmalig bei der Konstruktion der Tabelle berechnen und ab dann echt divisionsfrei ziehen.
+          Dann können wir sogar auf die getrennte \texttt{if}-Abfrage verzichten.
+          Diese Technik funktioniert immer, wenn sich die Intervallgröße nicht (oft) ändert.
+
+    \item
+          Wir können Rejection-Sampling sogar komplett vermeiden, indem wir die Anzahl der Elemente $n$ auf die kleinste Zweierpotenz~$n' \ge n$ aufrunden.
+          Dann reicht es aus $\log_2 n'$ Zufallsbits zu entnehmen, um eine zufällige Zeile zu samplen.
+          Für die neuen $n' -n < n$ Elemente setzen wir einfach ein Gewicht von $0$ (und renormieren ggf. die restlichen Elemente).
+\end{enumerate}
+
+Die Einfachheit der Alias-Tabelle macht sie in praktischen Anwendungen oft komplexeren Datenstrukturen überlegen.
+Ein Beispiel wird in~\cite{DBLP:conf/esa/BerenbrinkHK0PT20} vorgestellt, in dem eine Abwandlung der Alias-Tabelle für ganzzahlige und dynamische Verteilungen genutzt wird.
+Die dort betrachtete Anwendung muss eine Urne mit $n$ Bällen verwalten, wobei jeder Ball eine von $k$ Farben hat.
+Zwei Bälle gleicher Farbe sind ununterscheidbar.
+Es gilt außerdem, dass $n \ggg k^2$ ist (oft ist $k = o(\log n)$).
+Die Anwendung benötigt drei Operationen:
+\begin{itemize}
+    \item Ziehe einen Ball zufällig uniform und gebe die Farbe zurück.
+    \item Ziehe \emph{und entnehme} einen Ball zufällig uniform und gebe die Farbe zurück.
+    \item Füge einen Ball mit beliebiger Farbe ein.
+\end{itemize}
+
+Um die Datenstruktur speicher-effizient zu gestalten, konstruieren wir eine Tabelle mit $k$ Zeilen.
+Statt die Verteilung auf $1$ oder $k$ zu normieren, verwenden wir direkt die Anzahl an Kugeln pro Farbe.
+Das hat zum Einen den Vorteil, dass wir mit reiner Ganzzahlarithmetik arbeiten können, zum Anderen aber auch nicht renormieren müssen, wenn Kugeln hinzugefügt oder entnommen werden.
+
+Aus unserer Diskussion des letzten Kapitels wissen wir aber bereits, dass es im Allgemeinen nicht möglich sein kann, $n$ Kugeln auf $k$ Zeilen zu verteilen, s.d. alle Zeilen identisches Gewicht haben.
+Sei $T[i]$ das Gewicht der $i$-ten Zeile.
+Falls $n \bmod k \ne 0$, gibt es mindestens zwei Zeilen $i$ und $j$ mit  $T[i] = \lfloor n / k \rfloor\ \ne\ \rfloor n / k = T[j]$.
+mit Rejection-Sampling können wir aber die leichte Verzerrung einfach korrigieren.
+Hierfür berechnen wir einfach eingangs $g_\text{max}$, das Gewicht der schwersten Zeile, und akzeptieren eine zufällig gezogen Zeile~$i$ mit Wahrscheinlichkeit $T[i] / g_\text{max} \le 1$.
+
+In einer klassischen Alias-Tabelle haben alle Zeilen Gewicht genau $1$.
+Somit ist es ausreichend pro Zeile die Wahrscheinlichkeitsmasse~$G[i]$ eines Eintrags zu speichern --- die des anderen folgt automatisch als $1 - G[i]$.
+In der modifizierten Tabelle, speichern wir hingegen das ganzzahlige Gewicht~$G[i]$ des ersten Eintrags, sowie das Gesamtgewicht~$T[i]$ der Zeile.
+Das Gewicht des zweiten Eintrags ist also $T[i] - G[i]$ --- eine Größe, die aber niemals explizit benötigt wird.
+
+Wir können also Ziehen \emph{mit Zurücklegen} implementieren.
+Die Verwerfungsmethode erlaubt es uns aber auch einfach \emph{ohne Zurücklegen} zu ziehen:
+Wenn wir einen Eintrag in der $i$-ten Zeile zufällig gezogen haben, reduzieren wir $T[i]$ um eins;
+wenn es der erste Eintrag der Zeile war auch noch $G[i]$.
+Dieser Zufallsprozess ist recht gutmütig verteilt.
+
+Aus Ball-in-Bins Spielen, wissen wir, dass wenn wir $n$ Bälle auf $k$ Eimer uniform zufällig verteilen, dass für $n > k \log k$ mit hoher Wahrscheinlichkeit kein Eimer mehr als $n/k +\Oh{\sqrt{(n\log k) / k}}$ Bälle hat.
+Der zuvor genannte Prozess ist sogar noch konzentrierter, da Zeilen mit wenig Gewicht seltener gewählt werden und Zeilen mit höherem Gewicht schneller Bälle verlieren.
+Wir können also davon ausgehen, dass alle Zeilen mit hoher Wahrscheinlichkeit ähnlich schnell an Masse verlieren und das System so balanciert bleibt.
+Allerdings sollten wir $g_\text{max}$ von Zeit zu Zeit aktualisieren, um eine unnötig hohe Verwerfungsrate zu vermeiden (s.u.).
+
+Jedoch sprach unser Lastenheft davon, dass wir auch noch Kugeln mit beliebigen Farben hinzufügen können müssen.
+Das Einfügen einer Kugel mit Farbe~$i$ implementieren wir, indem wir $G[i]$ und $T[i]$ je um eins inkrementieren;
+wir erhöhen also einfach das Gewicht des ersten Eintrags der $i$-ten Zeile.
+Falls $T[i]$ nun $g_\text{max}$ übersteigt, setzen wir noch $g_\text{max} \gets T[i]$.
+Ein bösartiger Gegenspieler könnte folglich immer dieselbe Farbe hinzufügen und damit erreichen, dass $g_\text{max}$ linear steigt.
+Das führt zu einer Situation analog zu \cref{fig:alias-tab-motivation}
+--- eine Zeile vereinnahmt den Großteil der Wahrscheinlichkeitsmasse, während alle anderen zu einer enorm hohen Verwerfungsrate führen.
+
+Wir lösen das Problem, indem wir nicht nur $g_\text{max}$, sondern auch $g_\text{min}$ speichern und aktualisieren (zeige, dass das auch trivial implizit geht!).
+Bei jeder Änderungen einer der beiden Größen prüfen wir, ob noch die Invariante
+\begin{align}
+    \alpha \frac n m < g_\text{min} \le g_\text{max} < \beta \frac n m
+\end{align}
+erfüllt ist.
+Falls nicht, rekonstruieren wir die Datenstruktur.
+Es gilt also $\alpha \le 1$ und $\beta \ge 1$; falls $\beta / \alpha = \Oh{1}$ ergeben sich in Erwartung $\Oh{1}$ Versuche bis wir eine Kugel akzeptieren.
+
+Das Neubauen der Datenstruktur ist in Zeit $\Oh{k}$ möglich.
+Für $\alpha < 1$ und $\beta > 1$ benötigen wir $\Omega(n / k)$ Zugriffe auf die Datenstruktur, bis die Invariante frühstens verletzt ist.
+Im schlimmsten Fall müssen wir also $\Oh{k / (n / k)} = \Oh{k^2 / n}$ amortisierte Arbeit pro Zugriff leisten.
+Da wir $k^2 < n$ annehmen, ist dieser Beitrag nur $\Oh{1}$.
+Alle Ergebnisse werden von folgendem Theorem zusammengefasst:
+
+\begin{theorem}
+    Sei $U$ eine Urne, die mittels zuvor beschriebener dynamischer Alias-Tabelle implementiert ist und $n$ Kugel mit $k$ Farben unterstützt.
+    Dann benötigt $U$ genau $\Theta(k \log n)$ Bits Speicherplatz.
+    Falls $n \ge n^2$, unterstützt folgende Operationen:
+    \begin{itemize}
+        \item Ziehen einer Kugel \emph{mit Zurücklegen} in $\Oh{1}$ erwarteter Zeit,
+        \item Ziehen einer Kugel \emph{ohne Zurücklegen} in $\Oh{1}$ erwartet amortisierter Zeit,
+        \item Einfügen einer Kugel mit beliebiger Farbe in $\Oh{1}$ amortisierter Zeit.
+    \end{itemize}
+\end{theorem}
+
