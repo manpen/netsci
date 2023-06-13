@@ -448,7 +448,7 @@ Die Details sind in \cref{alg:rejection_sampling} zusammengefasst.
     Beobachte, dass die Ergebnisse \emph{Gebe $x$ zurück} und \emph{Gebe $y$ zurück} für $x \ne y$ disjunkt sind, da pro Runde genau ein Element vorgeschlagen wird und es nicht $x$ und $y$ gleichzeitig sein können.
     Wir können also die Akzeptanzwahrscheinlichkeit als Summe der Wahrscheinlichkeiten berechnen:
     \begin{align}
-        \prob{\text{Aakzeptiere}} & = \sum_{x \in \Omega} \prob{\text{Gebe $x$ zurück}}                    \\
+        \prob{\text{Akzeptiere}} & = \sum_{x \in \Omega} \prob{\text{Gebe $x$ zurück}}                    \\
                                   & = \frac{1}{s} \underbrace{\sum_{x \in \Omega} t(x)}_{=1} = \frac{1}{s}
         \qedhere
     \end{align}
@@ -726,13 +726,13 @@ Die letzte Variante ist aber auf echten Maschinen in der Regel schneller.
 Das führt zu folgendem Schema, das auch als OpenBSD Algorithmus bekannt ist:
 
 \begin{algorithm}[H]
-    $t \gets (2^L - s) \bmod s$\tcc{$2^L \bmod s = (2^L -s) \bmod s$. $2^L$ ist aber ggf. ein Overflow}\;
+    $t \gets (2^L - s) \bmod s$\tcc{$2^L \bmod s = (2^L -s) \bmod s$. $2^L$ ist aber ggf. ein Overflow}
     $x \gets \text{zufällige Ganzzahl aus $[0, 2^L)$}$\;
     \While{x < t}{
     $x \gets \text{zufällige Ganzzahl aus $[0, 2^L)$}$\;
     }
     \Return $x \bmod s$\;
-    \caption{OpenBSD Algorithmus: Ziehen uniformer Ganzzahlen.}
+    \caption{OpenBSD Algorithmus zum Ziehen uniformer Ganzzahlen.}
 \end{algorithm}
 
 Der OpenBSD Algorithmus ist einfach und korrekt, hat aber einen enormen Nachteil in der Praxis:
@@ -741,7 +741,7 @@ Eine \texttt{div} Instruktion gehört zu den teuersten skalaren Operationen\foot
 Im Vergleich zu einfacher Arithmetik (z.B. Addition) ist eine Division oft um ein bis zwei Größenordnungen langsamer.
 Insb. erzeugen moderne nicht-kryptographischen Pseudozufallsgeneratoren eine Zufallszahl oft schneller als eine einzelne Division dauert!
 
-OpenJDK verwendet ein anderes Verfahren, das die Anzahl der Division an die Anzahl der Runden des Rejection Samplings knüpft.
+OpenJDK verwendet ein anderes Verfahren, das die Anzahl der Divisionen an die Anzahl der Runden des Rejection Samplings knüpft.
 
 \begin{algorithm}[H]
     $x \gets \text{zufällige Ganzzahl aus $[0, 2^L)$}$\;
@@ -751,16 +751,16 @@ OpenJDK verwendet ein anderes Verfahren, das die Anzahl der Division an die Anza
     $r \gets x \bmod s$\;
     }
     \Return $r$;
-    \caption{Java Algorithmus zum Ziehen uniformer Zufallszahlen.}
+    \caption{Java Algorithmus zum Ziehen uniformer Ganzzahlen.}
 \end{algorithm}
 
 Wir müssen genau dann verwerfen, wenn $ks \le x \le (k+1)s$ mit $(k+1)s > 2^L$, d.h. wenn $x$ aus einem \qq{$s$-Intervall} stammt, das nicht vollständig in $[0, 2^L)$ enthalten ist.
 Beobachte, dass $x - r = x - (x \bmod s) = (x \div s)s$ dem größten Vielfachen von $s$ entspricht, das $x$ nicht übersteigt;
 es ist also die linke Intervallgrenze.
 Die rechte Intervallgrenze ergibt sich dann als $x- r +s$.
-Allerdings kann $x - r + s$ zu einem Überlauf führen; daher prüft der Algorithmus --äquivalent aber sicher vor Überlauf--- auf $x - r > 2^L - s$.
+Allerdings kann $x - r + s$ zu einem Überlauf führen; daher prüft der Algorithmus --äquivalent, aber sicher vor Überlauf--- auf $x - r > 2^L - s$.
 
-Der Vorteil von des Java-Algorithmus gegenüber der OpenBSD Methode besteht darin, dass Java im günstigen Fall nur eine Division ausführen muss.
+Der Vorteil des Java-Algorithmus gegenüber der OpenBSD Methode besteht darin, dass Java im günstigen Fall nur eine Division ausführen muss.
 Wenn für $s \to 2^L$ die Verwerfungsrate jedoch steigt, nimmt auch die Anzahl der Division zu und ist im Worst-Case gar unbeschränkt (eine WHP Schranke lässt sich mittels Chernoff zeigen).
 
 Lemire~\cite{DBLP:journals/tomacs/Lemire19} schlägt daher ein Verfahren vor, das oft komplett ohne (generische) Division auskommt und im Worst-Case nur eine benötigt.
@@ -772,14 +772,14 @@ Konkret nutzen wir, dass
 \end{align}
 
 Dabei implementieren wir $(x \cdot s) \div 2^L$ als $\texttt{shift-right}(x \cdot s, L)$;
-der Ausdruck ist also im Wesentlichen eine Multiplikation von zwei $L$-Bit Zahlen zu einer Zahl mit $2L$ Bit gefolgt von einem Shift um $L$ Bits.
+der Ausdruck ist also im Wesentlichen eine Multiplikation von zwei $L$-Bit Zahlen zu einer Zahl mit $2L$ Bits gefolgt von einem Shift um $L$ Bits.
 Analog können wir die unteren $L$ Bits mittels Verundung der unteren $L$ Bits extrahieren.
 Warum ist das nützlich?
 
 Durch die Multiplikation von $s$ mit einem zufälligen $x \in [0, 2^L)$ bilden wir auf alle Vielfachen von $s$ in $[0, s\cdot 2^L)$ ab.
-Durch die Division mit $2^L$, transformieren wir alle Vielfachen von $s$ in $[0, 2^L)$ auf $0$, in $[2^L, 2\cdot2^L)$ auf $1$, und $[i 2^L, (i+1)\cdot2^L)$ auf $i$.
+Durch die Division mit $2^L$ transformieren wir alle Vielfachen von $s$ in $[0, 2^L)$ auf $0$, in $[2^L, 2\cdot2^L)$ auf $1$, und $[i 2^L, (i+1)\cdot2^L)$ auf $i$.
 Im Allgemeinen teilt aber $s$ nicht $2^L$ (sonst wären wir schon fertig);
-daher müssen wir $2^L \bmod s$ Element aus dem Intervall herausschneiden.
+daher müssen wir $2^L \bmod s$ Elemente aus dem Intervall herausschneiden.
 Wir verwerfen daher für jedes $i$ die Elemente in $[i 2^L, i 2^L + (2^L \bmod s))$ und akzeptieren $[ i 2^L + (2^L \bmod s), (i+1)\cdot2^L)$.
 Das führt zu folgendem Algorithmus:
 
@@ -787,7 +787,7 @@ Das führt zu folgendem Algorithmus:
     $x \gets \text{zufällige Ganzzahl aus $[0, 2^L)$}$\;
     $m \gets x \times s$\;
     $\ell \gets m \bmod 2^L$\;
-    \If(\tcc*{Abkürzung falls wir nicht sicher Akzeptieren können}){$\ell < s$}{
+    \If(\tcc*[f]{Abkürzung falls wir akzeptieren können}){$\ell < s$}{
     $t \gets (2^L -s) \bmod s$\tcc*{$2^L \bmod s = (2^L -s) \bmod s$}
     \While{$\ell < t$}{
     $x \gets \text{zufällige Ganzzahl aus $[0, 2^L)$}$\;
@@ -796,7 +796,7 @@ Das führt zu folgendem Algorithmus:
     }
     }
     \Return{$m \div 2^L$}
-    \caption{Uniformes Ziehen fast ohne Division}
+    \caption{Uniformes Ziehen ganzer Zahlen fast ohne Division}
     \label{algo:uniform_lemire}
 \end{algorithm}
 
