@@ -1,0 +1,133 @@
+\section{Charakterisierungen graphischer Sequenzen}
+Wir können graphische Gradsequenzen anhand mehrere Eigenschaften charakterisieren, wobei das Erd\H{o}s-Gallai Theorem sowie das Havel-Hakimi Theorem wohl die bekanntesten Ansätze darstellen.
+Das Erd\H{o}s-Gallai Theorem ist nicht-konstruktiv und kommt daher in der Praxis besonders zum Testen auf graphische Sequenzen zum Einsatz.
+Aus dem Havel-Hakimi Theorem, hingegen, können wir einen Graphgenerator konstruieren.
+Die Intuition von beiden Ansätzen ist aber ähnlich.
+
+\subsection{Erd\H{o}s-Gallai Theorem}
+\begin{theorem}
+    Sei $\degseq = (d_1, \ldots, d_n)$ eine nicht-wachsende Gradsequenz, d.h.
+    \begin{align}
+        n > d_1 \ge d_2 \ge \ldots \ge d_n \ge 1.
+    \end{align}
+    Dann ist~$\degseq$ genau dann graphisch, wenn folgende beide Bedingungen erfüllt sind:
+    \begin{enumerate}
+        \item Die Summe der Grade $\sum_{i=1}^n d_i$ ist gerade (durch 2 teilbar)
+        \item Für alle $1 \le k \le n$ gilt $\sum_{i=1}^k d_i \le k(k-1) + \sum_{i=k+1}^n \min(k, d_i)$\hfill\qedhere
+    \end{enumerate}
+\end{theorem}
+
+\begin{exercise}
+    Beschreibe einen möglichst effizienten Algorithmus, der das Erd\H{o}s-Gallai Theorem nutzt, um zu entscheiden, ob eine Gradsequenz~$\degseq$ graphisch ist.
+    Analysiere dessen Laufzeit.
+\end{exercise}
+
+Im Folgenden diskutieren wir kurz, weshalb das Erd\H{o}s-Gallai Theorem eine notwendige Bedingung formuliert (d.h. jede graphisch Sequenz erfüllt das Theorem).
+Die Gegenrichtung (d.h. jede erfüllende Gradsequenz ist graphisch) ist deutlich komplexer und wird hier nicht behandelt.
+
+Die Anforderung, dass die Gradsumme gerade sein muss, folgt trivial aus dem Handshaking Lemma:
+jede Kante hat zwei Endpunkte und erhöht somit die Gradsumme um zwei
+--- eine Ausnahme wäre es lediglich, wenn wir Eigenschleifen nur als Grad~$1$ zählen würden; das ist aber egal, da einfache Graphen sowieso kein Schleifen besitzen.
+
+Für die zweite Bedingung konzentrieren wir uns zunächst auf die Ungleichung für $k = n$.
+Diese lautet
+\begin{align}
+    \sum_{i=1}^n d_i \le n(n-1) + 0
+\end{align}
+
+Dies ist trivial richtig, da nur der vollständige Graph $K_n$ mit $\degseq = (n{-}1, \ldots, n{-}1)$ die Ungleichung mit Gleichheit erfüllt.
+Für jeden anderen Graphen ist die linke Seite der Ungleichung echt kleiner.
+
+Für $k < n$, beschreibt also der $k(k-1)$ Term der rechten Seite die Grade, die durch Kanten innerhalb der ersten $k$ Knoten erklärt werden können.
+Falls ein $k$ existiert mit $\sum_{i=1}^k (d_i) - k(k-1) = \Delta > 0$, müssen $\Delta$ Kanten die ersten $k$ Knoten mit den verbleibenden $n - k$ verbinden.
+Es muss also $\sum_{i=k+1}^k d_i \ge \Delta$ gelten; tatsächlich muss die Grenze aber noch schärfer gewählt werden.
+Da wir keine Mehrfachkanten erlauben, darf jeder der $n-k$ verbleibenden Knoten zu jedem der $k$ ersten Knoten höchstens einmal verbunden werden.
+Falls $d_i > k$ für ein $i > k$, können wir diesen Grad nicht vollständig nutzen --- sondern nur $k$ \qq{Endpunkte} zählen.
+Daher fordert das Erd\H{o}s-Gallai Theorem $\Delta \le \sum_{i=k+1}^n \min(k, d_i)$.
+
+\subsection{Havel-Hakimi Theorem}
+\begin{theorem}
+    Sei $\degseq = (s, t_1, \ldots, t_s, d_{s+1}, \ldots, d_n)$ eine nicht-wachsende Gradsequenz auf $n$ Knoten, d.h.
+    \begin{align}
+        n > s \ge t_1 \ge \ldots t_s \ge d_{s+1} \ge \ldots \ge d_n \ge 1.
+    \end{align}
+
+    \noindent
+    Dann definiere $\degseq' = \text{sort}((t_1 - 1, \ldots, t_s - 1, d_{s+1}, \ldots, d_n))$ als die sortierte Gradsequenz auf $n-1$ Knoten,
+    die dadurch entsteht, dass wir den ersten (= größten) Eintrag entfernen und die verbleibenden $s$ größten Einträge um eins reduzieren.
+    Dann ist $\degseq$ genau dann graphisch, wenn $\degseq'$ graphisch ist.
+\end{theorem}
+
+\begin{proof}
+    Wir \aside{$\degseq' \text{ ist graphisch} \Rightarrow \degseq \text{ ist graphisch}$} zeigen zunächst die Implikation \qq{$\degseq' \text{ ist graphisch} \Rightarrow \degseq \text{ ist graphisch}$}.
+    Angenommen, $\degseq'$ ist graphisch, dann existiert ein einfacher Graph~$G'$, der $\degseq'$ erfüllt.
+    Dann können wir einen neuen einfachen Graphen~$G$ erzeugen, in dem wir einen neuen Knoten~$u$ hinzufügen und ihn zu den Knoten mit Graden $t_1{-}1, \ldots, t_s{-}1$ verbinden.
+    Der neue Knoten~$u$ hat offensichtlich Grad~$s$ und erhöht die Grade seiner Nachbarn auf $t_1, \ldots, t_s$.
+    Daher erfüllt der erzeugte Graph~$G$ die Gradsequenz~$\degseq$.
+    Da jede neue Kanten zu Knoten~$u$ inzident ist, können sie nicht mit alten Kanten in $G'$ kollidieren.
+    Weiterhin sind die neuen Kanten zu paarweise verschiedenen existierenden Knoten inzident --- auch hier können sich weder Schleifen noch Mehrfachkanten bilden.
+
+    Nun \aside{$\degseq \text{ ist graphisch} \Rightarrow \degseq' \text{ ist graphisch}$} zur Gegenrichtung \qq{$\degseq \text{ ist graphisch} \Rightarrow \degseq' \text{ ist graphisch}$}.
+    Angenommen $\degseq = (s, t_1, \ldots, t_s, d_{s+1}, \ldots, d_n)$ ist graphisch, dann existiert ein einfacher Graph~$G$, dessen Knoten wir $S, T_1, \ldots, T_s, D_{s+1}, \ldots, D_n$ (anhand des offensichtlichen Mappings) nennen.
+    Wenn $S$ zu $T_1, \ldots T_s$ verbunden ist, sind wir fast fertig: wir entfernen $S$ und alle inzidenten Kanten und erhalten den Graphen $G'$, der $\degseq'$ erfüllt.
+
+    Im Allgemeinen ist dies aber nicht richtig, d.h. es existiert ein $T_i$ das \emph{nicht} adjazent zu $S$ ist.
+    Wir konstruieren nun aus $G$ einen einfachen Graphen $G_i$, in dem die Kante $\set{S, T_i}$ existiert ohne zuvor ggf. existierenden Kanten $\set{S, T_j}$ zu verändern.
+
+    Fixiere also ein $i$, s.d. die Kante $(S, T_i)$ nicht existiert, und ein $j$, s.d. die Kante $\set{S, D_j}$ existiert.
+    Aufgrund der Sortierung von~$\degseq$ gilt $t_i \ge d_j$:
+    \begin{figure}
+        \begin{center}
+            \begin{tikzpicture}[
+                    node distance=4em,
+                    node/.style={draw, inner sep=0, minimum width=1.5em, minimum height=1.5em, circle},
+                    edge/.style={draw, thick, black},
+                    nonedge/.style={draw, dashed, red},
+                ]
+
+                \node[node] (S0) at (0,0) {$S$};
+                \node[node, above right of=S0] (T0) {$T_i$};
+                \node[node, below right of=S0] (D0) {$D_j$};
+                \node[node, below right of=T0] (X0) {$X$};
+
+                \path[edge] (S0) to (D0);
+                \path[edge] (T0) to (X0);
+                \path[nonedge] (S0) to (T0);
+                \path[nonedge] (D0) to (X0);
+
+                %%%
+
+                \node[node] (S1) at (15em,0) {$S$};
+                \node[node, above right of=S1] (T1) {$T_i$};
+                \node[node, below right of=S1] (D1) {$D_j$};
+                \node[node, below right of=T1] (X1) {$X$};
+
+                \path[nonedge] (S1) to (D1);
+                \path[nonedge] (T1) to (X1);
+                \path[edge] (S1) to (T1);
+                \path[edge] (D1) to (X1);
+
+
+                \node at ($(X0)!0.5!(S1)$) {\Large $\Rightarrow$};
+            \end{tikzpicture}
+        \end{center}
+        \caption{
+            Edge Switch im induzierten Teilgraph auf Knoten $S$, $T_i$, $D_j$ und $X$
+            (rot gestrichelt zeigt an, dass hier keine Kante existiert).
+            Beachte, dass sich die Grade der Knoten nicht ändern.
+        }
+        \label{fig:hh_edge_switch}
+    \end{figure}
+
+    \begin{itemize}
+        \item
+              Falls $t_i = d_j$ können wir einfach die Knoten $T_i$ und $D_j$ tauschen und sind fertig.
+        \item
+              Falls $t_i > d_j$ hat $T_i$ echt mehr Nachbarn als $D_j$; daher existiert ein Nachbar $X$ der mit $T_i$ aber nicht $D_j$ verbunden ist.
+              Wie in \cref{fig:hh_edge_switch} gezeigt, führen wir einen sog. Edge Switch aus und ersetzen die Kanten $\set{S, D_j}$ und $\set{T_i, X}$ durch $\set{S, T_i}$ und $\set{D_j, X}$.
+              Hierdurch findet keine Gradveränderung statt.
+    \end{itemize}
+
+    In beiden Fällen erhalten wir also einen Graphen in dem nun $S$ zu $T_i$ verbunden ist.
+    Durch Mehrfachanwendung dieser Konstruktion erhalten wir schlussendlich einen Graphen, in  dem $S$ genau zu allen $T_j$ verbunden ist und können wie zuvor verfahren.
+\end{proof}

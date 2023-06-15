@@ -929,7 +929,7 @@ Für alle praktischen Anwendungen, in denen $n$ linear zu einer Ressource (etwa 
 
 Als Eingabe erhalten wir $n$ strikt-positive\footnote{Es ist trivial auch Gewicht $0$ zu unterstützen; wir verbieten es hier nur, um Randfälle zu vermeiden.} Gewichte $(w_1, \ldots, w_n) \in \mathbb Q_{>0}^n$.
 Dann sei $W = \sum_{i=1}^n w_i$ deren Summe.
-Wir nehmen ein \textsc{Ram}-Maschinenmodel an, wobei Arithmetik auf Integern (oder Festkommadarstellung mit ausreichender Präzision) der Größenordnung $\Oh{W}$ in Konstantzeit möglich sei.
+Wir nehmen ein \textsc{Ram}-Maschinenmodel an, wobei Arithmetik auf Ganzzahlen (oder Festkommadarstellung mit ausreichender Präzision) der Größenordnung $\Oh{W}$ in Konstantzeit möglich sei.
 Unsere Aufgabe ist es eine Datenstruktur zu konstruieren, die folgende Operationen effizient unterstützt:
 \begin{itemize}
     \item \emph{sample$()$}: Gibt ein zufälliges $1 \le X \le n$ zurück, wobei $\prob{X = k} = w_k / W$ ist.
