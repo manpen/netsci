@@ -59,7 +59,7 @@
 \sidecaptionvpos{table}{t}
 \renewcommand*\sidecaptionrelwidth{0.75}
 \captionsetup[table]{format=plain, font={color=sidecolor,small}}
-\DeclareCaptionStyle{marginfigure}{format=plain, labelfont={sf,color=labelcolor,small}, textfont={sl,sf,small}}
+\DeclareCaptionStyle{marginfigure}{format=plain, labelfont={sf,color=labelcolor}, textfont={sf}}
 \DeclareCaptionStyle{sidecaption}{format=plain, font={color=sidecolor, small}, labelfont={sf,color=labelcolor}, textfont={sl,sf}}
 \DeclareCaptionStyle{sidecapfmt}{format=plain, font={color=sidecolor, small}, labelfont={sf,color=labelcolor}, textfont={sl,sf}}
 
@@ -371,11 +371,4 @@ state?/.style={conflict}
 		}{
 		\resettocdepth
 	\end{subappendices}
-}
-
-\newcommand{\floatmarginfigure}[1]{
-	\begin{figure}[h]%
-		\aside{\ \par \vspace{-0.5em} #1}%
-		\vspace{-1.5em}
-	\end{figure}
 }
