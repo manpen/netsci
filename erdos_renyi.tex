@@ -1,10 +1,10 @@
 % !TeX root = skript.tex
-Ein Zufallsgraph ist ein Modell einer Graphfamilie --- etwa wie eine Zufallsvariable ein Modell einer Zufallsgröße ist.
+Ein Zufallsgraph ist ein Modell einer Graphfamilie -- etwa wie eine Zufallsvariable ein Modell einer Zufallsgröße ist.
 Der Zufallsgraph beschreibt also ein Ensemble von Graphen, das so entworfen sein kann, dass bestimmte Eigenschaften in den betrachteten Graphen verstärkt auftreten.
-So maßgeschneiderte Zufallsgraphen werden oft als \emph{Netzwerkmodell} bezeichnet.
+Solche maßgeschneiderte Zufallsgraphen werden oft als \emph{Netzwerkmodell} bezeichnet.
 
 Das Forschungsfeld der Zufallsgraphen nahm mit den Arbeiten von Gilbert~\cite{gilbert_1959}, sowie Erd\H{o}s und R\'enyi~\cite{erdos_renyi_1960} Anfang der 1960er Jahre an Fahrt auf.
-Die beiden Arbeiten definieren Zufallsgraphen, die zunächst für abstrakte Untersuchungen (z.B. die Probabilistische Methode) verwendet wurden.
+Die beiden Arbeiten definieren Zufallsgraphen, die zunächst für abstrakte Untersuchungen (z.\,B. die probabilistische Methode) verwendet wurden.
 Der Fokus auf die Modellierung von beobachteten Netzwerken kam erst später hinzu.
 Dennoch spielen die Modelle in der Netzwerkforschung bis heute eine wichtige Rolle.
 Wir werden sie daher bald genauer betrachten, fangen jedoch mit einem noch einfacheren Modell an.
@@ -13,37 +13,37 @@ Wir werden sie daher bald genauer betrachten, fangen jedoch mit einem noch einfa
 Ein Zufallsgraph $(\mathbb G, f)$ ist eine Wahrscheinlichkeitsverteilung $f\colon \mathbb G \to [0, 1]$ über einer Menge von Graphen $\mathbb G$.
 Oftmals wird der Grundraum $\mathbb G$ durch eine Parametrisierung eingeschränkt; auch $f$ kann parametrisiert sein.
 
-Das \aside{$\Gn$ Graphen} einfachste Modell ist $\Gn$, welches die Gleichverteilung über alle Graphen mit $n$ Knoten beschreibt.
+Das \aside{$\Gn$-Graphen} einfachste Modell ist $\Gn$, welches die Gleichverteilung über alle Graphen mit $n$ Knoten beschreibt.
 Hierbei ist zu beachten, dass wir mit \emph{alle Graphen} in der Regel entweder alle \emph{gerichteten} oder alle \emph{ungerichteten} Graphen meinen.
-Die Details der Analysen in den folgenden Kapiteln hängen von dieser Entscheidung ab --- allerdings ergeben sich meist keine qualitativen Unterschiede.
+Die Details der Analysen in den folgenden Kapiteln hängen von dieser Entscheidung ab -- allerdings ergeben sich meist keine qualitativen Unterschiede.
 Daher werden wir oft den für uns einfacheren Fall wählen.
-Je nach Wahl, ist der Grundraum von $\Gn$
+Je nach Wahl ist der Grundraum von $\Gn$
 \begin{align}
     \mathbb G_\text{ger}(n)  & =
-    \twoset{G(V,E)}{|V| = n \land E \subseteq V \times V} \\\label{eq:gerichtet_gn}
+    \twoset{G = (V,E)}{|V| = n \land E \subseteq V \times V} \\\label{eq:gerichtet_gn}
     \mathbb G_\text{unge}(n) & =
-    \twoset{G(V,E)}{|V| = n \land  E \subseteq \twoset{\set{u,v}}{u,v \in V \text{ mit } u \ne v}}.
+    \twoset{G = (V,E)}{|V| = n \land  E \subseteq \twoset{\set{u,v}}{u,v \in V \text{ mit } u \ne v}}.
 \end{align}
 
-\noindent Die Wahrscheinlichkeitsverteilung $f$ folgt dann als $f_{\gGn}(G) = 1 / | \gGn |$, oder konkret:
+\noindent Die Wahrscheinlichkeitsverteilung $f$ folgt dann als $f_{\gGn}(G) = 1 / | \gGn |$ oder konkret:
 \begin{align}
     f_{\mathbb G_\text{ger}(n)}(G)  & =  \frac{1}{| \mathbb G_\text{ger}(n) |} = 2^{-n^2}\label{eq:gleichverteilt_gerichtet_gn} \\
     f_{\mathbb G_\text{unge}(n)}(G) & =  \frac{1}{| \mathbb G_\text{unge}(n) |} = 2^{-\binom n 2} = 2^{-\frac{n(n-1)}{2}}.
 \end{align}
 
 Die geschlossene Form $| \mathbb G_\text{ger}(n) | = 2^{n^2}$ in \cref{eq:gleichverteilt_gerichtet_gn} ergibt sich daraus, dass ein gerichteter Graph $n^2$ potentielle Kanten hat (die Adjazenzmatrix hat $n \times n$ Einträge).
-Für jede dieser Kanten haben wir unabhängig genau zwei Möglichkeiten: sie existiert oder eben nicht.
+Für jede dieser Kanten haben wir unabhängig genau zwei Möglichkeiten: Sie existiert oder eben nicht.
 Analog sieht es für die $\binom n 2$ möglichen Kanten in einem ungerichteten Graphen aus.
 
 Beachte aber auch, dass formal \cref{eq:gerichtet_gn} und \cref{eq:gleichverteilt_gerichtet_gn} widersprüchlich scheinen.
 In \cref{eq:gerichtet_gn} fordern wir nur, dass die Knotenmenge~$V$ die Kardinalität $|V| = n$ hat.
-Offensichtlich gibt es unbeschränkt viele dieser Wahlen; für $n=3$ z.B. $\set{1,2,3}$, $\set{2,3,4}$, \ldots, $\set{k, k+1, k+2}$ für alle $k \in \mathbb N$.
+Offensichtlich gibt es unbeschränkt viele dieser Wahlen; für $n=3$ z.\,B. $\set{1,2,3}$, $\set{2,3,4}$, \ldots, $\set{k, k+1, k+2}$ für alle $k \in \mathbb N$.
 Die Wahl der Knotenbezeichner hat jedoch keinen Einfluss auf die Netzwerkeigenschaften.
-Daher werden wir in dieser Veranstaltung grundsätzlich annehmen, dass die Knotenmengen in irgendeiner Form fixiert sind, z.B. als $V = \set{1, \ldots, n} = [n]$ oder $V = \set{v_1, \ldots, v_n}$.
+Daher werden wir in dieser Veranstaltung grundsätzlich annehmen, dass die Knotenmengen in irgendeiner Form fixiert sind, z.\,B. als $V = \set{1, \ldots, n} = [n]$ oder $V = \set{v_1, \ldots, v_n}$.
 
 \bigskip
 
-Ist das $\Gn$ Modell aber nun realistisch?
+Ist das $\Gn$-Modell aber nun realistisch?
 Das hängt davon ab, was wir mit ihm bezwecken und was wir mit \emph{realistisch} meinen.
 Es ist aber sicherlich nicht geeignet, um gängige Netzwerke zu beschreiben.
 Dies liegt unter anderem daran, dass $\Gn$ oft Graphen mit vielen Kanten erzeugt;
@@ -63,18 +63,18 @@ intuitiv hat \glqq jeder zweite Graph\grqq{} mindestens die Hälfte aller mögli
 
 
 \begin{observation}
-    Sei $G(V,E)$ ein Graph, der zufällig aus $\Gn$ mit $n > 1$ gezogen wurde.
+    Sei $G = (V,E)$ ein Graph, der zufällig aus $\Gn$ mit $n > 1$ gezogen wurde.
     Dann gilt für gerichtete Graphen $\prob{|E| \ge n^2 / 2} \ge 1/2$ und für ungerichtete Graphen $\prob{|E| \ge \binom{n}{2} / 2} \ge 1/2$.
 \end{observation}
 
 \begin{proof}
     Im Folgenden betrachten wir nur gerichtete Graphen; der Beweis läuft analog für ungerichtete Graphen.
-    Stellen wir uns einen beliebigen Graphen~$G(V, E)$ vor.
-    Dann sei $\bar G(V, \bar E)$ sein Komplement, d.h. für alle möglichen Kanten gilt:
+    Stellen wir uns einen beliebigen Graphen~$G = (V, E)$ vor.
+    Dann sei $\bar G = (V, \bar E)$ sein Komplement, d.\,h. für alle möglichen Kanten gilt:
     \begin{equation}
         \forall e \in V\times V\colon \quad\quad e \in \bar E \Leftrightarrow e \notin E
     \end{equation}
-    Beobachte, dass es eine Bijektion zwischen allen Graphen in $\mathbb G$ und ihren Komplementen gibt: jeder Graph hat ein eineindeutiges Komplement.
+    Beobachte, dass es eine Bijektion zwischen allen Graphen in $\mathbb G$ und ihren Komplementen gibt: Jeder Graph hat ein eineindeutiges Komplement.
     Per Konstruktion gilt außerdem:
     \begin{eqnarray}
         E \cup \bar E &=& V \times V\\
@@ -88,7 +88,7 @@ intuitiv hat \glqq jeder zweite Graph\grqq{} mindestens die Hälfte aller mögli
 
 \section{Kantenanzahl in beobachteten Netzwerken}\label{sec:kanten-in-beobachteten-netzen}
 Wie viele Kanten haben echte Netzwerke? Hierzu führen wir ein Experiment durch:
-wir nutzen die Datenbank \url{https://networkrepository.com/}, die über 5000 Netzwerke aus unterschiedlichen Bereichen enthält~\cite{networkrepository}.
+Wir nutzen die Datenbank \url{https://networkrepository.com/}, die über 5000 Netzwerke aus unterschiedlichen Bereichen enthält~\cite{networkrepository}.
 In \cref{fig:kantenanzahl} zeichnen wir die Kantenanzahl als Funktion der Knotenanzahl.
 Zwei Eigenschaften fallen direkt auf:
 \begin{enumerate}
@@ -98,27 +98,27 @@ Zwei Eigenschaften fallen direkt auf:
 
 \subsection{Netzwerktypen haben unterschiedliche Kantendichten}
 Betrachten wir die erste Beobachtung genauer, indem wir Straßennetze und Freundschaftsnetze vergleichen.
-Wir modellieren ein Straßennetz dadurch, dass Adressen (Häuser, Kreuzung, usw.) als Knoten und Straßen als Kanten dargestellt werden.
-Diese Netze \aside{Straßennetze} sind im wesentlichen ein zwei-dimensionales Konstrukt.
-Wenn wir Tunnel, Brücken und der gleichen ignorieren, verlaufen Straßen nicht über einander.
+Wir modellieren ein Straßennetz dadurch, dass Adressen (Häuser, Kreuzung usw.) als Knoten und Straßen als Kanten dargestellt werden.
+Diese Netze \aside{Straßennetze} sind im wesentlichen ein zweidimensionales Konstrukt.
+Wenn wir Tunnel, Brücken und dergleichen ignorieren, verlaufen Straßen nicht über einander.
 Daher erwarten wir, dass die Graphen von Straßennetzen fast planar sind.
-Nach dem Eulerischen Polyedersatz erfüllen einfache, \aside{planare Graphen} planare und zusammenhängende Graphen:
+Nach dem Euler'schen Polyedersatz erfüllen einfache, \aside{planare Graphen} planare und zusammenhängende Graphen:
 \begin{equation}
     |E| \le 3 |V| - 6
 \end{equation}
-Knoten in einem Straßennetz sollten also im Schnitt höchstens 6 Nachbarn haben.
+Knoten in einem Straßennetz sollten also im Schnitt höchstens sechs Nachbarn haben.
 
-In \aside{Freundschaftsnetze} sozialen Netzwerken ist die Situation anders ---
+In \aside{Freundschaftsnetze} sozialen Netzwerken ist die Situation anders --
 stellen wir uns etwa einen Freundschaftsgraphen vor, in dem Knoten die Nutzer eines sozialen Netzwerks sind und Kanten eine Freundschaft anzeigen.
-Im Jahr 2014, hatten Facebook-Nutzer im Schnitt mehr als 300 Freunde (mehr dazu später).
+Im Jahre 2014 hatten Facebook-Nutzer im Schnitt mehr als 300 Freunde (mehr dazu später).
 Dies ist offensichtlich deutlich mehr als in planaren Graphen möglich wäre.
-Ganz ähnlich sieht es mit anderen sozialen Netzen aus: ein durchschnittlicher Erwachsener kennt deutlich mehr als 6 andere Menschen persönlich (oft werden Zahlen zwischen 100 und 300 genannt).
+Ganz ähnlich sieht es mit anderen sozialen Netzen aus: Ein durchschnittlicher Erwachsener kennt deutlich mehr als sechs andere Menschen persönlich (oft werden Zahlen zwischen 100 und 300 genannt).
 
 \subsection{Die meisten Netzwerke sind dünn}
-In \cref{fig:kantenanzahl} hat nur ein verschwindend geringer Anteil der Netzwerke mindestens die Hälfte aller Kanten (d.h. ist oberhalb der roten Linie).
+In \cref{fig:kantenanzahl} hat nur ein verschwindend geringer Anteil der Netzwerke mindestens die Hälfte aller Kanten (d.\,h. ist oberhalb der roten Linie).
 Wie erklärt sich das?
 In der Regel verursacht eine Kante Kosten:
-eine Straße muss gebaut werden, eine Freundschaft muss aufrecht erhalten werden (Zeitinvestment), eine Nachricht muss geschrieben werden, etc.
+Eine Straße muss gebaut werden, eine Freundschaft muss aufrecht erhalten werden (Zeitinvestment), eine Nachricht muss geschrieben werden etc.
 Daher gibt es in den meisten Netzwerken einen gewissen Selektionsdruck, der dazu führt, dass jeder Knoten nur ausgewählte Nachbarn besitzt.
 Wir klassifizieren Netzwerktypen, die auffallend viele oder wenig Kanten haben:
 
@@ -133,14 +133,14 @@ Wir klassifizieren Netzwerktypen, die auffallend viele oder wenig Kanten haben:
 \end{remark}
 
 \section{Die Zufallsgraphen $\Gnm$ und $\Gnp$}
-Das $\Gn$ Modell verfügt über keinen Mechanismus um Kanten auszudünnen.
-Wir benötigen also Prozesse, die weniger dichte Graphen erzeugen können ---
+Das $\Gn$-Modell verfügt über keinen Mechanismus um Kanten auszudünnen.
+Wir benötigen also Prozesse, die weniger dichte Graphen erzeugen können --
 am besten parametrisiert, damit wir unterschiedlichen Netzwerktypen Rechnung tragen können.
 Im Folgenden betrachten wir zwei solcher Modelle.
 
-Das \Gnm-Modell \aside{Erd\H{o}s-R\'enyi Graphen \Gnm} von P.~Erd\H{o}s und A.~R\'enyi beschreibt die Gleichverteilung über allgemeinen Graphen mit $n$ Knoten und $m$ Kanten, d.h. wir betrachten die Grundmenge
+Das \Gnm-Modell \aside{Erd\H{o}s-R\'enyi Graphen \Gnm} von P.~Erd\H{o}s und A.~R\'enyi beschreibt die Gleichverteilung über allgemeinen Graphen mit $n$ Knoten und $m$ Kanten, d.\,h. wir betrachten die Grundmenge
 \begin{equation}
-    \gGnm = \twoset{G}{G=(V,E) \in \mathbb G(n) \text{ und } |E| = m}.
+    \gGnm = \twoset{G}{G=(V,E) \in \mathbb G(n) \textnormal{ und } |E| = m}.
 \end{equation}
 Da gleichverteilt gewählt wird, gilt für die Wahrscheinlichkeitsverteilung~{$f\colon \mathbb G \to [0,1]$}
 \begin{equation}
@@ -151,9 +151,9 @@ Da gleichverteilt gewählt wird, gilt für die Wahrscheinlichkeitsverteilung~{$f
     Berechne $|\gGnm|$ für gerichtete und ungerichtete Graphen.
 \end{exercise}
 
-E.~Gilbert \aside{Gilbert-Graphen \Gnp} beschreibt ein ähnliches Modell, das \Gnp-Modell --- das oft fälschlicherweise \glqq Erd\H{o}s-R\'enyi-Modell \grqq{} genannt wird.
+E.~Gilbert \aside{Gilbert-Graphen \Gnp} beschreibt ein ähnliches Modell, das \Gnp-Modell -- das oft fälschlicherweise \glqq Erd\H{o}s-R\'enyi-Modell \grqq{} genannt wird.
 Um das Modell zu beschreiben, weichen wir von der bisherigen expliziten Definition der Grundmenge und Verteilung ab.
-Stattdessen, spezifizieren wir eine randomisierte Konstruktionsvorschrift:
+Stattdessen spezifizieren wir eine randomisierte Konstruktionsvorschrift:
 \begin{enumerate}
     \item Erzeuge $n$ Knoten $V = \{v_1, \ldots, v_n\}$.
     \item Setze $E = \emptyset$.
@@ -178,12 +178,13 @@ Graphisch kann man sich also \Gnp als Adjazenzmatrix vorstellen, in der die Eint
         };
 
         \node[anchor=west, align=left, xshift=4em] (label) at (mat.east) {
-            $\begin{cases}1 & \text{mit Wahrscheinlichkeit } $p$ \\
-                    0 & \text{mit Wahrscheinlichkeit } 1-p
-                \end{cases}$
+            $\begin{cases*}
+                 1 & mit Wahrscheinlichkeit $p$ \\
+                 0 & mit Wahrscheinlichkeit $1-p$
+             \end{cases*}$
         };
 
-        \path[draw, thick, bend right, ->] (label.west) to (mat.center);
+        \path[draw, thick, bend right, ->] (label.west) to ($(mat.center)+(0.45em,0)$);
     \end{tikzpicture}
 
 \end{center}
@@ -196,26 +197,26 @@ Graphisch kann man sich also \Gnp als Adjazenzmatrix vorstellen, in der die Eint
 \end{exercise}
 
 Durch ihre einfache Konstruktion sind beide Zufallsgraphen bis heute sehr verbreitete Modelle in der Netzwerkforschung.
-Wir werden jedoch sehen, dass viele Eigenschaften von echten Netzwerken auch von \Gnp oder \Gnm-Graphen nicht beschrieben werden können.
+Wir werden jedoch sehen, dass viele Eigenschaften von echten Netzwerken auch von \Gnp- oder \Gnm-Graphen nicht beschrieben werden können.
 
 \subsection{Anzahl von Kanten in \Gnp}\label{subsec:anzahl_kanten_in_gnp}
-Während bei \Gnm Graphen die Anzahl der Kanten durch den Parameter~$m$ fixiert ist, ist $|E|$ bei \Gnp Graphen eine Zufallsvariable.
+Während bei \Gnm-Graphen die Anzahl der Kanten durch den Parameter~$m$ fixiert ist, ist $|E|$ bei \Gnp Graphen eine Zufallsvariable.
 
 \begin{lemma}\label{lemma:erwartete_kanten_in_gnp}
-    Die \aside{Erwartete Kantenanzahl $\expv{|E|}$ in \Gnp} erwartete Kantenanzahl~$m$ in einem gerichteten \Gnp Graphen ist \begin{equation*} \expv{m} = p n^2. \qedhere \end{equation*}
+    Die \aside{erwartete Kantenanzahl $\expv{|E|}$ in \Gnp} erwartete Kantenanzahl~$m$ in einem gerichteten \Gnp Graphen ist \begin{equation*} \expv{m} = p n^2. \qedhere \end{equation*}
 \end{lemma}
 
 \begin{proof}
     Fixiere einen Graphen~$G=(V,E)$ aus \Gnp.
     Für jede Kante $(u,v)$ definiere die Indikatorvariable $I_{u,v}$, die anzeigt, ob die Kante $(u,v) \in E$ enthalten ist:
     \begin{equation}
-        I_{u,v} = \begin{cases}
-            1 & \text{ falls } (u,v) \in E \\
-            0 & \text{ sonst }
-        \end{cases}
+        I_{u,v} = \begin{cases*}
+            1 & falls $(u,v) \in E$, \\
+            0 & sonst.
+        \end{cases*}
     \end{equation}
 
-    \noindent Somit folgt Anzahl der Kanten~$m$ in $G$ als Summe über die Indikatorvariablen
+    \noindent Somit folgt die Kantenanzahl~$m$ in $G$ als Summe über die Indikatorvariablen
     \begin{equation}
         |E| = \sum_{u,v \in V} I_{u,v} = \left(\sum_{(u,v) \not\in E} 0 \right) +  \left(\sum_{(u,v) \in E} 1\right).
     \end{equation}
@@ -233,7 +234,7 @@ Während bei \Gnm Graphen die Anzahl der Kanten durch den Parameter~$m$ fixiert 
 \end{proof}
 
 \begin{exercise}
-    Zeige, dass die erwartete Anzahl an Kanten in einem ungerichteten \Gnp Graphen $\expv{|E|} = \binom{n}{2} p = p n(n-1)/2$ beträgt.
+    Zeige, dass die erwartete Anzahl an Kanten in einem ungerichteten \Gnp-Graphen $\expv{|E|} = \binom{n}{2} p = p n(n-1)/2$ beträgt.
 \end{exercise}
 
 \begin{exercise}
@@ -242,7 +243,7 @@ Während bei \Gnm Graphen die Anzahl der Kanten durch den Parameter~$m$ fixiert 
 
 \bigskip
 
-Wie wir am Beweis von \cref{lemma:erwartete_kanten_in_gnp} sehen, ergibt sich die Kantenanzahl~$m$ als Summe von unabhängigen Bernoulli Zufallsvariablen;
+Wie wir am Beweis von \cref{lemma:erwartete_kanten_in_gnp} sehen, ergibt sich die Kantenanzahl~$m$ als Summe von unabhängigen Bernoulli-Zufallsvariablen;
 sie ist also selbst eine Zufallsvariable und binomial verteilt.
 Da uns die Binomialverteilung regelmäßig begegnen wird, wollen wir uns diese kurz in Erinnerung rufen.
 \begin{definition}
@@ -258,18 +259,18 @@ Da uns die Binomialverteilung regelmäßig begegnen wird, wollen wir uns diese k
 
 Die Standardabweichung $\sigma = \sqrt{\varv{B_{N,p}}} \le \sqrt{\expv{B_{N,p}}}$ ist also relativ klein.
 Wir können daher davon ausgehen, dass für hinreichend großes $N$ die Binomialverteilung recht stark um ihren Erwartungswert $Np$ konzentriert ist.
-Daher sagen wir, dass \Gnm und \Gnp mit $p=m/n^2$ asymptotisch (d.h. für $n \to \infty$) äquivalent sind.
-Häufig ist es jedoch einfacher \Gnp Graphen zu analysieren, da ---im Gegensatz zu \Gnm Graphen--- alle Kanten unabhängig gezogen werden.
+Daher sagen wir, dass \Gnm und \Gnp mit $p=m/n^2$ asymptotisch (d.\,h. für $n \to \infty$) äquivalent sind.
+Häufig ist es jedoch einfacher \Gnp-Graphen zu analysieren, da -- im Gegensatz zu \Gnm-Graphen -- alle Kanten unabhängig gezogen werden.
 
-\section{Effizientes Ziehen von \Gnp Graphen}
+\section{Effizientes Ziehen von \Gnp-Graphen}
 Zufallsgraphen sind nicht nur in der theoretischen Analysen von Prozessen und Algorithmen nützlich, sondern auch für empirische Untersuchungen.
 Nehmen wir etwa an, dass wir einen Algorithmus implementiert haben und dessen Geschwindigkeit oder Qualität vermessen möchten.
 Dann können Zufallsgraphen unter anderem aus folgenden Gründen nützlich sein:
 \begin{itemize}
     \item Wenn die Generatorsoftware vorhanden ist, können wir synthetische Instanzen in quasi unbeschränkter Menge generieren.
-    \item Parametrisierte Generatoren erlauben den Einfluss gewisser Eigenschaften detailliert zu analysieren; z.B. Skalierungsexperimente.
-    \item Beobachtete Graphen haben oft \glqq Rauschen\grqq, d.h. nicht verstandene oder insignifikante Strukturen, die Messungen verfälschen können.
-          Zufallsgraphen, hingegen, haben i.d.R. eine gut verstandene Struktur, die es uns oft ermöglicht vor dem Testen Hypothesen aufzustellen.
+    \item Parametrisierte Generatoren erlauben, den Einfluss gewisser Eigenschaften detailliert zu analysieren, z.\,B. Skalierungsexperimente.
+    \item Beobachtete Graphen haben oft \glqq Rauschen\grqq, d.\,h. nicht verstandene oder insignifikante Strukturen, die Messungen verfälschen können.
+          Zufallsgraphen hingegen haben i.\,d.\,R. eine gut verstandene Struktur, die es uns oft ermöglicht, vor dem Testen Hypothesen aufzustellen.
     \item Einige Generatoren können anhand eines fixierten Startzustands (Random-Seed) dieselben Graphen wiederholt erzeugen.
           Wir müssen also die Eingaben nicht speichern/transferieren und können dennoch reproduzierbare Experimente durchführen.
 \end{itemize}
@@ -281,40 +282,40 @@ Dann können Zufallsgraphen unter anderem aus folgenden Gründen nützlich sein:
 \end{definition}
 
 \subsection{Ein naiver Ansatz}
-Betrachten wir folgenden Graphgenerator für \Gnp Graphen, der im wesentlichen eine 1:1 Implementierung der Definition von \Gnp ist:
+Betrachten wir folgenden Graphgenerator für \Gnp-Graphen, der im wesentlichen eine Eins-zu-eins-Implementierung der Definition von \Gnp ist:
 
 \begin{algorithm}[H]
     \KwIn{Anzahl der Knoten~$n$ und Verbindungswahrscheinlichkeit~$p$}
-    \KwOut{Adjazenzmatrix eines zufälligen Graphs $G \follows \Gnp$}
+    \KwOut{Adjazenzmatrix eines zufälligen Graphen $G \follows \Gnp$}
     Allokiere eine Matrix $A[1..n, 1..n]$\;
     \For{$1 \le i \le n$}{
         \For{$1 \le j \le n$}{
-            Setze $A[i,j] \gets \begin{cases}
-                    0 & \text{mit Wahrscheinlichkeit } 1-p \\
-                    1 & \text{mit Wahrscheinlichkeit } p
-                \end{cases}$\;
+            Setze $A[i,j] \gets \begin{cases*}
+                    0 & mit Wahrscheinlichkeit $1-p$ \\
+                    1 & mit Wahrscheinlichkeit $p$
+                \end{cases*}$\;
         }
     }
     Gebe $A$ zurück
-    \caption{Naiver Graphgenerator für \Gnp Graphen}
+    \caption{Naiver Graphgenerator für \Gnp-Graphen}
     \label{alg:naive-gnp}
 \end{algorithm}
 
-Um \aside{Annahme: aus einfachen Verteilungen kann in kostanter Zeit gezogen werden.} die Laufzeit dieses Algorithmus bestimmen zu können, treffen wir in dieser Veranstaltung folgende Annahme.
+Um \aside{Annahme: Aus einfachen Verteilungen kann in konstanter Zeit gezogen werden.} die Laufzeit dieses Algorithmus bestimmen zu können, treffen wir in dieser Veranstaltung folgende Annahme.
 Wir können unter anderem aus folgenden Zufallsverteilungen in konstanter Zeit ziehen:
 \begin{itemize}
-    \item Ganzzahlig uniform aus $[a, b]$ für $a, b \in \mathbb{Z}$.
-    \item Gleitkommazahl uniform aus $[a, b]$ für $a, b \in \mathbb{R}$.
+    \item Ganzzahl uniform aus $[a, b]$ für $a, b \in \mathbb{Z}$
+    \item Gleitkommazahl uniform aus $[a, b]$ für $a, b \in \mathbb{R}$
     \item Bernoulli (folgt aus vorherigem Punkt)
     \item Binomial, Geometrisch (siehe \cref{{sec:inversionsmethode}}), Hypergeometrisch, Poisson
 \end{itemize}
 
 Tatsächlich können die meisten dieser Verteilungen nur in \emph{erwartet} konstanter Zeit gezogen werden, praktisch sind die Fluktuationen jedoch so klein, dass wir sie vernachlässigen können.
-Das erlaubt es uns auf die Eigenschaften der Graphgeneratoren zu konzentrieren.
+Das erlaubt es uns, uns auf die Eigenschaften der Graphgeneratoren zu konzentrieren.
 
 \begin{lemma}
     \label{lem:naive-gnp}
-    Der Algorithmus \ref{alg:naive-gnp} erzeugt einen \Gnp Graphen in $\Theta(n^2)$ Zeit.
+    Der Algorithmus \ref{alg:naive-gnp} erzeugt einen \Gnp-Graphen in $\Theta(n^2)$ Zeit.
 \end{lemma}
 
 \begin{exercise}
@@ -322,43 +323,43 @@ Das erlaubt es uns auf die Eigenschaften der Graphgeneratoren zu konzentrieren.
 \end{exercise}
 
 Nun könnte man argumentieren, dass dieser naive Algorithmus bereits optimal ist:
-Die Ausgabe hat Größe $\Theta(n^2)$ und somit wir benötigen $\Omega(n^2)$ Zeit, um die Ausgabe zu erzeugen.
-Außerdem hat ein Graph mit $p=\Omega(1)$ erwartete $\Theta(n^2)$ Kanten, was wiederum die Laufzeit von unten beschränkt.
+Die Ausgabe hat Größe $\Theta(n^2)$ und somit benötigen wir $\Omega(n^2)$ Zeit, um die Ausgabe zu erzeugen.
+Außerdem hat ein Graph mit $p=\Omega(1)$ in Erwartung $\Theta(n^2)$ Kanten, was wiederum die Laufzeit von unten beschränkt.
 
-Diese Worst-Case Schranken passen jedoch nicht zu unserer Beobachtung in \cref{sec:kanten-in-beobachteten-netzen}, dass Graphen in der freien Wildbahn meist dünn sind.
+Diese Worst-Case-Schranken passen jedoch nicht zu unserer Beobachtung in \cref{sec:kanten-in-beobachteten-netzen}, dass Graphen in der freien Wildbahn meist dünn sind.
 Es wäre schön, wenn wir diese Graphen schneller erzeugen könnten, jedoch ist \cref{alg:naive-gnp} für alle $p$ gleich \glqq schnell\grqq.
 Hier \aside{ausgabesensitive Algorithmen} helfen \emph{ausgabesensitive Algorithmen} (output-sensitive algorithm), deren Laufzeit maßgeblich durch die Größe der Ausgabe bestimmt wird;
 die meisten Generatoren, die wir betrachten werden, fallen genau in diese Kategorie.
 
 Ausgabesensitive \aside{Kantenlisten} Algorithmen müssen jedoch eine Ausgabedatenstruktur nutzen, die sich an die Größe anpasst.
-Eine Matrix hat immer dieselbe Größe unabhängig davon, wie viele Einsen (Kanten) vorhanden sind.
+Eine Matrix hat immer dieselbe Größe, unabhängig davon, wie viele Einsen (Kanten) vorhanden sind.
 Wir werden im Folgenden fast immer eine Kantenliste annehmen, die nur $\Oh{1}$ Speicherworte pro Kante benötigt.
 
 \subsection{Ziehen mit zufälligen Sprüngen}\label{subsec:gnp_zufaellige_spruenge}
-Wie können wir nun \cref{alg:naive-gnp} verändern, so dass er ---analog zu Kantenlisten--- keine Arbeit für Nichtkanten verrichtet?
+Wie können wir nun \cref{alg:naive-gnp} verändern, so dass er -- analog zu Kantenlisten -- keine Arbeit für Nichtkanten verrichtet?
 Idee: Wir müssen diese einfach überspringen!
-Aber woher wissen wir wo \glqq Nullen\grqq{} gezogen werden, bzw. wie viele Nullen müssen wir überspringen?
-Zählen können wir sie nicht ohne wieder direkt quadratische Arbeit zu verrichten.
+Aber woher wissen wir, wo \glqq Nullen\grqq{} gezogen werden, bzw. wie viele Nullen wir überspringen müssen?
+Zählen können wir sie nicht, ohne wieder direkt quadratische Arbeit zu verrichten.
 
-Ganz \aside{Effizientes Ziehen durch Überspringen von Nullen} einfach: wir fragen uns wie viele Nullen~$\ell$ \cref{alg:naive-gnp} gesetzt hätte und überspringen diese.
+Ganz \aside{effizientes Ziehen durchs Überspringen von Nullen} einfach: Wir fragen uns, wie viele Nullen~$\ell$ \cref{alg:naive-gnp} gesetzt hätte und überspringen diese.
 Zwischen diese zufälligen Sprünge setzen wir dann die Einsen ein.
 Wenn wir nun $\ell$ aus einer geeigneten Verteilung ziehen, haben wir zwei unterschiedliche Zufallsprozesse, deren Ausgabe aber nicht unterscheidbar ist.
 Generalisierungen dieser Methode werden uns noch häufiger begegnen.
 
-Zur \aside{Statt $n \times n$ Matrix, nehmen wir einen $n^2$ Vektor an} Vereinfachung stellen wir uns die Adjazenzmatrix~$A = (a_{ij})_{ij}$ als einen Vektor~$B = (b_k)_k$ vor, der dadurch entsteht, dass wir die Zeilen hinter einander anfügen (row-major layout).
+Zur \aside{$n^2$-dimensionaler Vektor statt $n \times n$-Matrix} Vereinfachung stellen wir uns die Adjazenzmatrix~$A = (a_{ij})_{ij}$ als einen Vektor~$B = (b_k)_k$ vor, der dadurch entsteht, dass wir die Zeilen hinter einander anfügen (row-major layout).
 Eintrag $a_{ij}$ wird also mit $b_{(i-1)n + j}$ identifiziert.
-Dann besteht unsere Aufgabe darin genau alle $b_k$ zu finden, die den Wert $1$ haben.
+Dann besteht unsere Aufgabe darin, genau alle $b_k$ zu finden, die den Wert $1$ haben.
 
 \begin{equation}
     \Big(\quad \cdots \overbrace{1}^{b_k} \ \underbrace{0 \ \ 0\ \ 0 \ \cdots\ \ 0\ \ 0\ \ 0}_{\text{$\ell$ zusammenhängende Nullen}}\  \overbrace{1}^{b_{k + 1+ \ell}} \cdots \quad \Big)
 \end{equation}
 
 \noindent
-Sei $X$ die \aside{Anzahl Nullen $X$ ist geometrisch verteilt} Zufallsvariable, welche die Anzahl der Nullen nach einer Eins modelliert.
+Sei $X$ die \aside{Anzahl Nullen $X$ geometrisch verteilt} Zufallsvariable, welche die Anzahl der Nullen nach einer Eins modelliert.
 \begin{eqnarray}
-    \prob{X = 0} &=& \prob{\text{Nächster Versuch: 1}} = p \\
-    \prob{X = 1} &=& \prob{\text{Nächster Versuch: 0, dann 1}} = (1 - p)p \\
-    \prob{X = 2} &=& \prob{\text{Nächster Versuch: 0, dann 0, dann 1}} = (1 - p)^2 p \\
+    \prob{X = 0} &=& \prob{\textnormal{Nächster Versuch: 1}} = p \\
+    \prob{X = 1} &=& \prob{\textnormal{Nächster Versuch: 0, dann 1}} = (1 - p)p \\
+    \prob{X = 2} &=& \prob{\textnormal{Nächster Versuch: 0, dann 0, dann 1}} = (1 - p)^2 p \\
     &\vdots& \\
     \prob{X = \ell} &=& (1 - p)^\ell p
 \end{eqnarray}
@@ -368,7 +369,7 @@ Es ergibt sich also der folgende einfache Algorithmus:
 
 \begin{algorithm}[H]
     \KwIn{Anzahl der Knoten~$n$ und Verbindungswahrscheinlichkeit~$p$}
-    \KwOut{Kantenliste $E$ eines zufälligen Graphs $G \follows \Gnp$}
+    \KwOut{Kantenliste $E$ eines zufälligen Graphen $G \follows \Gnp$}
     Initialisiere eine leere Kantenliste $E$\;
     $k \gets -1$\;
     \While{true}{
@@ -376,13 +377,13 @@ Es ergibt sich also der folgende einfache Algorithmus:
         $k \gets k + \ell + 1$\;
 
         \If{$k < n^2$}{
-            $(i, j) \gets (\lfloor k / n \rfloor$, \ k \text{ mod } n)\;
+            $(i, j) \gets (\lfloor k / n \rfloor, k \bmod n)$\;
             $E \gets E \cup \{(i+1, j+1)\}$\;
         } \Else {
             Gebe $E$ zurück und beende\;
         }
     }
-    \caption{Generator für \Gnp Graphen mit zufällige Sprüngen}
+    \caption{Generator für \Gnp-Graphen mit zufälligen Sprüngen}
     \label{alg:linear-gnp}
 \end{algorithm}
 
@@ -417,12 +418,12 @@ Hierzu kommt meist die Inversionsmethode zum Einsatz.
     \label{fig:geometric-distr}
 \end{figure}
 
-Die \aside{Inversionsmethode: effizientes Ziehen falls Umkehrfunktion bekannt} Inversionsmethode (inversion transform method) ist ein allgemeines Verfahren, um eine uniforme Zufallsvariable in eine andere Verteilung zu übersetzen.
+Die \aside{Inversionsmethode: effizientes Ziehen, falls Umkehrfunktion bekannt} Inversionsmethode (inversion transform method) ist ein allgemeines Verfahren, um eine uniforme Zufallsvariable in eine andere Verteilung zu übersetzen.
 Wir betrachten die Methode hier am Beispiel der geometrischen Verteilung.
 In \cref{fig:geometric-distr} ist die Wahrscheinlichkeitsverteilung $f(\ell)$ und die kumulative Verteilungsfunktion $F(\ell)$ einer geometrischen Verteilung mit Parameter $p = 0.2$ gezeigt.
 %
 %Da $f(\ell)$ ist eine Wahrscheinlichkeitsverteilung ist, muss $\sum_{\ell=0}^{\infty} f(\ell) = 1$ gelten.
-Betrachten wir die konkreten ersten drei Werte der Funktionen:
+Betrachten wir konkret die ersten drei Werte der Funktionen:
 
 \begin{center}
     \begin{tabular}{l|p{0.2\textwidth}p{0.25\textwidth}p{0.35\textwidth}}
@@ -433,33 +434,32 @@ Betrachten wir die konkreten ersten drei Werte der Funktionen:
 \end{center}
 \vspace{1em}
 
-Ein Generator sollte also z.B. den Wert $0$ mit Wahrscheinlichkeit 20\,\% ausgeben.
+Ein Generator sollte also z.\,B. den Wert $0$ mit Wahrscheinlichkeit 20\,\% ausgeben.
 Da wir einen deterministischen Algorithmus konstruieren möchten, brauchen wir eine Quelle für den Zufall:
-wir erwarten eine uniforme Zufallsvariable $U \in [0, 1)$ als Eingabe.
+Wir erwarten eine uniforme Zufallsvariable $U \in [0, 1)$ als Eingabe.
 Wir können also z.B. prüfen:
 \begin{itemize}
     \item Wenn $U < 0.2$ ist, dann gebe den Wert $0$ zurück.
           Da $U$ uniform verteilt ist, ist die Wahrscheinlichkeit für $U < 0.2$ genau $0.2$.
 
-    \item Falls nicht prüfen wir, ob $U < 0.36 = f(0) + f(1) = F(1)$ ist. Falls ja, geben wir den Wert $1$ zurück.
-          Da $U$ uniform verteilt ist, wir aber wissen, dass $U$ nicht kleiner als $0.2$ ist, ist die Wahrscheinlichkeit $\prob{U < 0.36 | U > 0.2} = 0.16 = f(1)$.
+    \item Falls nicht, prüfen wir, ob $U < 0.36 = f(0) + f(1) = F(1)$ ist. Falls ja, geben wir den Wert $1$ zurück.
+          Da $U$ uniform verteilt ist und wir wissen, dass $U$ nicht kleiner als $0.2$ ist, ist die Wahrscheinlichkeit $\prob{U < 0.36 \mid U > 0.2} = 0.16 = f(1)$.
 
     \item Diesen Prozess setzen wir fort, bis wir das passende Intervall gefunden haben.
 \end{itemize}
 
 Die graphische Interpretation ist also die folgende:
 In \cref{fig:geometric-distr} (rechts) ist die Umkehrfunktion~$F^{-1}(p)$ der kumulativen Verteilungsfunktion $F(x)$ gezeigt.
-Wir werfen nun mittels der zufälligen Eingabe $U$ einen Punkt auf der $x$-Achse und schauen, welchen Wert $F^{-1}(U)$ hat --- dies ist unsere Ausgabe.
+Wir werfen nun mittels der zufälligen Eingabe $U$ einen Punkt auf der $x$-Achse und schauen, welchen Wert $F^{-1}(U)$ hat -- dies ist unsere Ausgabe.
 
 Im folgenden Theorem wird die Inversionsmethode formalisiert, wobei wir vereinfachend einige Annahmen treffen.
 Die Methode lässt sich aber auch auf andere $\Omega$ (inklusive kontinuierliche) und nicht streng monotone $F(x)$ verallgemeinern.
 
 \begin{theorem}
     Sei $X \in \Omega$ eine diskrete Zufallsvariable und $f(x)$ und $F(x)$ ihre Wahrscheinlichkeitsverteilung sowie die kumulative Verteilungsfunktion.
-    Vereinfachend sei $\Omega$ total geordnet und $F(x)$ streng monoton steigend.
-    Dann existiert die Umkehrfunktion $F^{-1}(x)$ mit $F^{-1}(F(x)) = x$.
+    Vereinfachend sei $\Omega$ total geordnet und $F(x)$ streng monoton steigend, sodass es eine Umkehrfunktion $F^{-1}(x)$ mit $F^{-1}(F(x)) = x$ gibt.
     Sei $U$ eine uniforme Zufallsvariable aus $[0, 1)$.
-    Dann ist $X' = F^{-1}(U)$ eine Zufallsvariable mit der Wahrscheinlichkeitsverteilung $f(x)$.
+    Dann ist $X' \coloneq F^{-1}(U)$ eine Zufallsvariable mit der Wahrscheinlichkeitsverteilung $f(x)$.
 \end{theorem}
 
 \begin{proof}
@@ -472,7 +472,7 @@ Die Methode lässt sich aber auch auf andere $\Omega$ (inklusive kontinuierliche
 
     \noindent Daraus folgt dann direkt:
     \begin{eqnarray}
-        \prob{X' \le x} &\stackrel{\text{Inv. Method}} = & \prob{F^{-1}(U) \le x} \\
+        \prob{X' \le x} &\stackrel{\text{Inv.-Methode}} = & \prob{F^{-1}(U) \le x} \\
         &\stackrel{(\ref{eq:inverse-apply-inverse})}{=}& \prob{U \le F(x)} \\
         &\stackrel{\prob{U < z} = z \forall z \in [0, 1]}=& F(x) \\
         &\stackrel{\text{Def.} F(X)}=& \prob{X \le x} \hspace{5em}\hfill \qedhere
@@ -490,8 +490,8 @@ Die Methode lässt sich aber auch auf andere $\Omega$ (inklusive kontinuierliche
 
 \end{figure}
 
-Zurück \aside{Inversionsmethode für geometrische Verteilung} zur geometrischen Verteilung mit $f(\ell) = (1-p)^\ell p$.
-ObdA sei $0 < p < 1$ (da $X$ sonst eine Konstante ist).
+Zurück \aside{Inversionsmethode für geometrische Verteilungen} zur geometrischen Verteilung mit $f(\ell) = (1-p)^\ell p$.
+O.\,b.\,d.\,A. sei $0 < p < 1$, da $X$ sonst eine Konstante ist.
 Die kumulative Verteilungsfunktion lautet
 \begin{equation}
     F(\ell)
@@ -499,7 +499,7 @@ Die kumulative Verteilungsfunktion lautet
     \ \stackrel{(*)}{=} \ p \frac{1 - (1-p)^{\ell+1}}{\underbrace{1 - (1-p)}_{=p}}
     \ = \ 1 - (1-p)^{\ell+1},
 \end{equation}
-wobei wir in $(*)$ die geschlossene Form der $\ell$-ten Partialsumme der geometrischen Reihe nutzen $\sum_{i=0}^\ell x^\ell = (1 - x^{\ell+1})/(1 - x)$.
+wobei wir in $(*)$ die geschlossene Form der $\ell$-ten Partialsumme der geometrischen Reihe nutzen: $\sum_{i=0}^\ell x^\ell = (1 - x^{\ell+1})/(1 - x)$.
 Nun berechnen die Umkehrfunktion $\hat F^{-1}(U) = \ell$ indem wir $F(\ell) = U$ setzen und nach $U$ umformen.
 Hierbei nehmen wir zunächst an, dass die Funktion stetig wäre (daher schreiben wir $\hat F ^{-1}$ statt $F^{-1}$):
 \begin{eqnarray}
@@ -510,13 +510,13 @@ Hierbei nehmen wir zunächst an, dass die Funktion stetig wäre (daher schreiben
 \end{eqnarray}
 
 Schließlich erhalten wir $F^{-1}(U) = \lceil \hat F^{-1} (U) \rceil$ durch Aufrunden der gerade berechneten Funktion.
-Zusammenfassen erzeugt \cref{alg:sample-geometric} eine geometrische Zufallsvariable $X$ mit Parameter $p$ in Zeit $\Oh{1}$:
+Zusammenfassend erzeugt \cref{alg:sample-geometric} eine geometrische Zufallsvariable $X$ mit Parameter $p$ in Zeit $\Oh{1}$:
 
 \begin{algorithm}[H]
-    \If{p=0}{Gebe $\infty$ zurück}
-    \ElseIf{p=1}{Gebe $0$ zurück}
-    \Else{$U \gets \text{ziehen uniform aus $[0, 1)$}$\;
-    Gebe $\lceil \log_{1-p}(1 - U) - 1\rceil$ zurück.}
+    \If{$p=0$}{Gebe $\infty$ zurück}
+    \ElseIf{$p=1$}{Gebe $0$ zurück}
+    \Else{$U \gets \text{ziehe uniform aus $[0, 1)$}$\;
+    Gebe $\lceil \log_{1-p}(1 - U) - 1\rceil$ zurück}
     \caption{Ziehen einer geometrischen Zufallsvariable}
     \label{alg:sample-geometric}
 \end{algorithm}
