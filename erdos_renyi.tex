@@ -217,7 +217,7 @@ Während bei \Gnm Graphen die Anzahl der Kanten durch den Parameter~$m$ fixiert 
 
     \noindent Somit folgt Anzahl der Kanten~$m$ in $G$ als Summe über die Indikatorvariablen
     \begin{equation}
-        |E| = \sum_{u,v \in V} I_{u,v} = \left(\sum_{(u,v) \not\in E} 0 \right) +  \left(\sum_{(u,v) \in E} 1\right).
+        |E| = \smashoperator{\sum_{u,v \in V}} I_{u,v} = \smashoperator{\sum_{(u,v) \not\in E}} 0 + \smashoperator{\sum_{(u,v) \in E}} 1.
     \end{equation}
 
     \noindent Per Definition von \Gnp gilt $\prob{I_{u,v} {=} 1} = p$ und $\prob{I_{u,v} {=} 0} = 1-p$.
@@ -228,7 +228,7 @@ Während bei \Gnm Graphen die Anzahl der Kanten durch den Parameter~$m$ fixiert 
 
     \noindent Durch die Linearität des Erwartungswertes folgt schließlich
     \begin{equation}
-        \expv{|E|} = \sum_{u,v \in V} \expv{I_{u,v}} = \sum_{u,v \in V} p = p n^2. \qedhere
+        \expv{|E|} = \smashoperator{\sum_{u,v \in V}} \expv{I_{u,v}} = \smashoperator{\sum_{u,v \in V}} p = p n^2. \qedhere
     \end{equation}
 \end{proof}
 
