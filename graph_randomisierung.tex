@@ -1,0 +1,222 @@
+Mit dem Havel-Hakimi Generator können wir nun für jede graphische Sequenz einen Graphen als Zeugen für diese Sequenz erzeugen.
+Die generierten Graphen sind aber zum einen deterministisch, d.h. für eine fixierte Sequenz~$\degseq$ wird immer derselbe Graph erzeugt, und zum anderen pathologisch (extrem viele Dreiecke, extrem hohe Grad Assortitivät, \ldots).
+Das Fixed-Degree-Sequence-Model (FDSM)\aside{ Fixed-Degree-Sequence-Model (FDSM)} schlägt daher vor, dass wir erst den Havel-Hakimi Algorithmus ausführen, und dann den Graphen durch viele zufällige kleine Änderungen lokal perturbieren.
+Es besteht die begründete Hoffnung, dass wenn der hierdurch implizierte Irrweg lang genug ist, dass wir dann schlussendlich einen (fast) uniformen Graph aus $\Gd$ produzieren.
+
+Formal beschreiben wir die Perturbation als einen Markov-Chain Monte-Carlo Prozess.
+Der Zustandsraum der Markovkette ist $\gd$.
+Für jeden Graphen $G \in \gd$ bestimmt der gewählte Prozess, welche anderen Graphen $\mathbb G' \subseteq \gd$ (mit welcher Wahrscheinlichkeit) innerhalb von einem Schritt erreicht werden können.
+Es entsteht also ein \aside{Übergangsgraph} Übergangsgraph (den wir auch Markov-Kette nennen), dessen gerichteten und gewichteten Kanten mögliche Schritte zusammenfasst.
+
+\section{Edge Switching}
+Edge Switching ist wohl der meist genutzte Prozess zum Perturbieren von Graphen.
+Das ist sicherlich auch dem geschuldet, dass er sehr einfach zu implementieren ist und in der Praxis relativ gut funktioniert (mehr dazu später).
+
+Anders als bei den meisten Modellen, gibt es signifikante funktionale Unterschiede zwischen gerichteten und ungerichteten Graphen.
+Edge Switching funktioniert aber mit noch ausgefalleneren Graphklassen (siehe z.B. \cite{carstens_2017}), z.B.
+\begin{itemize}
+    \item Ungerichtete einfache Graphen mit fester Gradsequenz
+    \item Ungerichtete einfache zusammenhängende Graphen  mit fester Gradsequenz \cite{DBLP:journals/compnet/VigerL16}
+    \item Gerichtete Graphen  mit fester Gradsequenz
+    \item Gerichtete einfache Graphen (mit einfacher Modifikation)  mit fester Gradsequenz
+    \item Graphen mit fester joint-degree sequence~\cite{DBLP:conf/alenex/StantonP11} (d.h. die Anzahl der Kanten zwischen Knoten mit Graden~$d_1$ bzw.~$d_2$ wird für alle Paare $(d_1, d_2)$ definiert)
+    \item Bipartite Graphen
+    \item Mit weiteren Modifikationen sind auch weitere Klassen möglich
+\end{itemize}
+
+Das \aside{Allgemeine Edge Switches} allgemeine Framework führt eine fixierte Anzahl an sog. \emph{Edge Switchings} aus.
+Diese unterscheiden sich vor allem darin, welche Graphen als legal betrachtet werden:
+\begin{enumerate}
+    \item Ziehe aus $G$ zwei Kanten $e_1 = (a,b)$ und $e_2 = (u,v)$ zufällig mit Zurücklegen.
+    \item Falls $e_1 = e_2$: verwerfe den Switch ersatzlos
+
+    \item Berechne zwei neue Kanten $e'_1 = (a, v)$ und $e'_2 = (u, b)$
+
+    \item Erzeuge Graph~$G'$ aus $G$ durch Ersetzen von $e_1$ und $e_2$ durch $e'_1$ und $e'_2$
+
+    \item Wenn $G'$ durch die Modifikation illegal wurde, verwerfen den Switch ersatzlos
+\end{enumerate}
+
+In \aside{ungerichtete Switches} ungerichteten Graphen entscheiden wir durch fairen Münzwurf, ob wir $e_1 = \set{a,b}$ und $e_2 = \set{u, v}$ durch
+\begin{align}
+    e'_1 = \set{a, v} \qquad e'_2 = \set{b, u},
+\end{align}
+oder
+\begin{align}
+    e'_1 = \set{a, u} \qquad e'_2 = \set{b, v},
+\end{align}
+zu ersetzen versuchen.
+
+\section{Edge Switching auf unbeschränkten Matrizen}\label{sec:edge_switching_irreduzibel}
+Bevor wir analysieren, ob Edge Switching eine uniforme Verteilung erzeugt, sollten wir uns eine viel grundlegendere Frage stellen:
+Können wir von einem beliebigen Startpunkt aus, überhaupt jeden anderen Graphen erzeugen?
+Formal fragen wir also, ob der Übergangsgraph stark-zusammenhängend ist (analog: ist die Markov-Kette irreduzible?).
+Die Antwort wird ein klares und unmissverständliches \qq{It depends ...} sein.
+
+\bigskip
+
+Es ist hilfreich über die Adjazenzmatrizen zu argumentieren.
+Beobachte, dass die Sequenzen der Zeilen- und Spaltensummen der Adjazenzmatrizen von allen Graphen in $\gd$ identisch sind.
+Dies motiviert folgende Abstraktion:
+
+\def\msz{\ensuremath{\mathbb M(Z,S)}\xspace}
+
+Seien $Z=(z_1, \ldots, z_n)$ und $S=(s_1, \ldots, s_m)$ Zeilen- und Spaltensummen.
+Dann \aside{\msz: Binärmatrizen mit fixierten Zeilen- und Spaltensummen} sei \msz die Menge aller $\set{0, 1}^{n \times m}$ Matrizen, die diese Beschränkungen erfüllen.
+Konkrete Graphklassen stellen i.d.R. weitere Anforderungen; so müssen ungerichtete einfache Graphen noch erfüllen:
+\begin{itemize}
+    \item $Z = S$
+    \item Matrizen sind symmetrisch
+    \item Die Hauptdiagonale enthält nur $0$-Einträge (wir sprechen von \emph{strukturellen Nullen}\aside{strukturelle Nullen: verboten Kanten})
+\end{itemize}
+Für den Moment betrachten wir aber solche Einschränkungen nicht.
+
+\begin{exercise}
+    Welche Graphklasse entspricht \msz am ehesten?
+\end{exercise}
+
+Einen gerichteten Edge Switch können wir als sog. \emph{alternierendes Rechteck} modellieren.
+Für eine Matrix $(m_{ij})_{ij} = M \in \msz$, nennen wir $((i_1, j_1),\ (i_2, j_2))$ alternierendes Rechteck, wenn $m_{i_1j_1} = m_{i_2j_2} = 1$  und $m_{i_1j_2} = m_{i_2j_1} =0$;
+jeweils gegenüberliegende Ecken haben also dieselben Werte in der $M$ und deren \qq{Flip} entspricht dem Effekt eines akzeptierten Edge Switches.
+
+\begin{theorem}[nach \cite{rao96}]
+    Seien $A$ und $B$ zwei Matrizen in $\msz$.
+    Sei $t$ das Minimum der Anzahl von Nullen in $A$ und der Anzahl von Einsen in $A$.
+    Dann können wir $A$ in $B$ mittels einer Folge von höchstens $t$ alternierenden Rechteck Switches überführen.
+\end{theorem}
+
+\begin{theorem}
+    OBdA sei $(a_{ij})_{ij} = A \ne B = (b_{ij})_{ij}$ (da wir sonst fertig sind).
+    Dann sei $d$ die Hamming-Distanz zwischen $A$ und $B$, d.h. die Anzahl der Einträge, in denen sich beide unterscheiden.
+    Beobachte, dass $d$ eine gerade positive Zahl sein muss (weshalb?).
+
+    Dann existiert ein Index $(i_1, j_1)$ mit $a_{i_1j_1} \ne b_{i_1j_1}$ und sei oBdA $a_{i_1j_1} = 1$.
+    Da die Summe der $j_1$-ten Spalte fixiert ist, muss es in dieser eine Zeile $i_2$ geben, s.d. $a_{i_2j_1} = 0$ und $b_{i_2j_1} = 1$.
+    Da wiederum die Summe der $i_2$-ten Zeile fixiert ist, muss es ein $j_2$ geben, s.d. $a_{i_2j_2} = 1$ und $b_{i_2j_2} = 0$.
+    Wir haben also drei Ecken gefunden.
+
+    Könnten wir $a_{i_1j_2} = 0$ garantieren, hätten wir ein alternierendes Rechteck und wären fertig;
+    im Allgemeinen gilt das aber nicht.
+    Daher setzen wir diesen Prozess solange fort, bis wir einen sog. alternierenden Kreis schließen.
+    Das muss irgendwann passieren, da wir nur $d < \infty$ passende Einträge haben.
+    Sei $i_1j_1, i_2j_1, i_2j_2, i_3j_2, \ldots, i_kj_k, i_1j_k$ ein \emph{kürzester} alternierender Pfad.
+    Wir zeigen, dass die ersten vier Einträge sich immer für einen Switch eignen:
+    \begin{itemize}
+        \item Wenn $a_{i_1j_2} = 0$ bilden $i_1j_1$, $i_2j_1$, $i_2j_2$ und $i_1j_2$ ein alternierendes Rechteck.
+        \item Wenn $b_{i_1j_2} = 1$ können wir denselben Switch in $B$ ausführen.
+        \item Der Fall $a_{i_1j_2} = 1$ und $b_{i_1j_2} = 0$ ist ein Widerspruch dazu, dass der betrachtete Kreis minimale Länge hat, da wir die ersten drei Einträge des entfernen können.
+    \end{itemize}
+
+    In jedem Fall können wir also entweder in $A$ oder $B$ einen Switch ausführen, der die Hammingdistanz zwischen den beiden Matrizen um mindestens zwei reduziert.
+    Da jeder Switch reversible ist, folgt der starke Zusammenhang der Übergangsmatrix direkt.
+
+    Weiter wissen sogar, dass $A$ und $B$ mittels höchstens $d/2$ Switches in einander überführt werden können.
+    Aufgrund der Symmetrie,
+    \begin{align}
+        d/2 & = \card{\set{ (i, j) \middle| i, j \text{, s.d. } a_{ij} = 1 \land b_{ij} = 0}}  \\
+            & = \card{\set{ (i, j) \middle| i, j \text{, s.d. } a_{ij} = 0 \land b_{ij} = 1}},
+    \end{align}
+    folgt direkt
+    \begin{align}
+        d/2 \le t =  \min\Big(
+         & \card{\set{ (i, j) \middle| i, j \text{, s.d. } a_{ij} = 1}},       \\
+         & \card{\set{ (i, j) \middle| i, j \text{, s.d. } a_{ij} = 0}}  \Big)
+    \end{align}
+\end{theorem}
+
+Wir können also Matrizen in \msz ineinander überführen.
+Das impliziert auch, dass der Übergangsgraph von gerichteten Graphen ohne Mehrfachkanten (aber ggf. mit Eigenschleifen) stark-zusammenhängend ist.
+
+Leider gilt das nicht für gerichtete \emph{einfache} Graphen.
+Als Gegenbeispiel dient ein Graph mit Knoten $V = \set{a,b,c}$ und Kreis $a \to b \to c \to a$.
+Es ist nicht möglich, die Orientierung dieses Dreiecks auf $a \leftarrow b \leftarrow c \leftarrow a$ umzukehren, obwohl beide Graphen eine identische Gradsequenz aufweisen.
+
+\begin{exercise}
+    Konstruiere eine Sequenz von Edge Switches, die das Dreieck umkehren kann und Eigenschleifen verwendet.
+\end{exercise}
+
+Glücklicherweise sind Dreiecke das einzige Problem von Edge Switching auf einfachen gerichteten Graphen.
+Es gibt zwei einfache Lösungsansätze:
+\begin{itemize}
+    \item Führe neue Switchings, die die Orientierung eines gerichteten 3-Kreises ändern.
+    \item Bevor der MCMC Prozess startet, führen wir einen Vorverarbeitungsschritt aus, der alle gerichteten 3-Kreise sucht und zufällig orientiert.
+\end{itemize}
+
+Für einfache \emph{un}gerichtete Graphen ist dies alles nicht notwendig --- die entsprechende Markov-Kette ist stark-zusammenhängend.
+
+\section{Grenzverteilung von Edge Switching}
+Wir wissen nun, dass Edge Switching auf wichtigen Graphklassen potentiell alle Graphen erzeugen kann.
+In diesem Kapitel werden wir zeigen, dass für sehr lange Irrwege, die Wahrscheinlichkeitsverteilung der Ausgabe zu einer Gleichverteilung über alle möglichen Graphen konvergiert;
+der Prozess hat also eine uniforme Grenzverteilung.
+Da wir in der Praxis jedoch immer nur endlich lange Irrwege ausführen können, wird der Edge Switching MCMC Algorithmus oft als \emph{approximativ uniform} bezeichnet.
+
+Zunächst wiederholen wir ein paar Definition aus den Anfangstagen des Informatikstudiums.
+Hierfür stellen wir eine Markov-Kette~$\mathcal M$ oft als Tupel $(G, P)$ mit gerichteten Graph $G = (V, E)$ dar, wobei $P$ ein stochastische $|V| \times |V|$-Matrix ist (d.h. jede Zeile summiert auf $1$) und $(i, j) \in E \Leftrightarrow P_{ij} > 0$.
+Gegeben eine Startverteilung $\pi \in [0, 1]^n$ (Zeilenvektor) entspricht das Vektormatrixprodukt $\pi P$ der Verteilung nach einem Schritt und $\pi P^k$ der Verteilung nach $k$ Schritten.
+
+\begin{definition}
+    Sei $\mathcal M = (G, P)$ eine Markov-Kette.
+    Dann heißt die Verteilung $\mathcal G(\mathcal M)$ Grenzverteilung der Kette~$\mathcal M$, wenn für alle Startverteilungen~$\pi$ gilt
+    \begin{align}
+        \lim_{k \to \infty} \pi P^k = \mathcal G(\mathcal M)
+    \end{align}
+\end{definition}
+
+Wenn eine Markov-Kette eine Grenzverteilung hat, ist es egal wo wir starten:
+irgendwann \qq{vergessen} wir die Startverteilung...
+Jetzt wäre noch wichtig, dass wir überall \qq{raus} kommen können.
+Solche Markov-Ketten nennen wir ergodisch:
+
+\begin{definition}
+    Sei $\mathcal M = (G, P)$. Die Markov-Kette $\mathcal M$ heißt \emph{ergodisch}, wenn $\mathcal G(\mathcal M)$ existiert und die Grenzwahrscheinlichkeit $(\lim_{k \to \infty} P^k)_j > 0$ für alle $j$.
+\end{definition}
+
+Es kann nun gezeigt werden, dass eine Markov-Kette genau dann ergodisch ist, wenn sie (i) irreduzible und (ii) aperiodisch ist.
+Ein Kette heißt \emph{aperiodisch}, wenn für jeden Knoten $v$ der größte gemeinsame Teiler der Längen aller Pfade von $v$ nach $v$ den Wert~$1$ hat.
+
+\begin{theorem}
+    Edge Switching impliziert für u.A. für (i) einfach ungerichte und (ii) gerichtete Graphen mit möglichen Eigenschleifen, eine ergodische Markov-Kette.
+\end{theorem}
+
+\begin{proof}
+    Wir zeigen den Beweis für gerichtete Graphen; er folgt analog für ungerichtete Graphen.
+    Aus \cref{sec:edge_switching_irreduzibel} wissen wir bereits, dass der Übegangsgraph von Edge Switching stark-zusammenhängend ist.
+    Die Markov-Kette ist also irreduzible.
+
+    Wir müssen also nur noch zeigen, dass sie auch aperiodisch ist.
+    Hier wird ein vermeintlicher Bug zum Feature:
+    Im Edge Switching Framework nutzen wir Rejection Sampling und verwerfen illegale Switches ersatzlos.
+    Die Behauptung ist nun, dass für jeden Zustand der Chain mindestens ein illegaler Switch existiert (es würde sogar reichen, wenn es eine einzige Eigenschleife gibt!):
+
+    Da wir ohne Zurücklegen ziehen, kann es passieren, dass $e_1 = e_2$; wir verwerfen also mindestens mit Wahrscheinlichkeit $1 / m$.
+    Dies entspricht einer Eigenschleife im Übergangsgraph.
+    Angenommen, es existiert ein Pfad $v$ nach $v$ der Länge~$k$ (muss existieren, da die Kette irreduzible ist).
+    Dann können wir durch nehmen von Umwegen über Eigenschleifen einen Pfad beliebiger Länge $k' > k$ erzeugen.
+    Der ggT aller Pfade ist $1$.
+
+    Die Markov-Kette ist also irreduzible und aperiodisch und somit ergodisch.
+\end{proof}
+
+Das ist aufgrund des folgenden Lemmas hilfreich:
+\begin{lemma}
+    Sei $\mathcal M = (G, P)$ eine Markov-Kette mit symmetrischer Übergangsmatrix $P_{ij} = P_{ji}$ für alle $i, j$.
+    Falls die Grenzverteilung~$\sigma$ existiert, ist $\sigma$ die Gleichverteilung.
+\end{lemma}
+
+\begin{proof}
+    Angenommen es existiert eine stationäre Verteilung.
+    Dann gilt für $\sigma = (1/n, \ldots, 1/n)$ und jeden Zustand~$j$:
+
+    \begin{align}
+        (\sigma P) _ j & \stackrel{\text{VecMatMul}}{=} \sum_{i=1}^n \sigma_i P_{ij}
+        = \frac 1 n \sum_{i=1}^n P_{ij}                                                   \\
+                       & \stackrel{P\text{ symmetrisch}}{=} \frac 1 n \sum_{i=1}^n P_{ji} \\
+                       & \stackrel{P\text{ stochastisch}}{=} 1 / n = \sigma_j
+    \end{align}
+\end{proof}
+
+Auch hier wird wieder der Bug des Rejection-Samplings zum Feature.
+Jeder gerichtete Switch wird über genau über die zwei betroffenen Kanten~$e_1$ und $e_2$ definiert und somit mit Wahrscheinlichkeit $1/m^2$ gewählt.
+Durch wiederholte Wahl dieser beiden Kanten wird der Switch wieder rückgängig gemacht.
+Die Wahrscheinlichkeiten von Vorwärts- und Rückwärtsrichtung sind also identisch und die Übergangsmatrix daher symmetrisch.
+Analoges gilt auch für ungerichtete Switches.

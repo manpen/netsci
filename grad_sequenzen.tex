@@ -1022,12 +1022,12 @@ Die vollständige Analyse der Datenstruktur findet sich in~\cite{DBLP:journals/m
 \begin{proof}
     Jedes Kind in $\rng{\ell}{j}$ hat ein Gewicht in $[2^{j-1}, 2^j)$.
     Daher folgt für das Gesamtgewicht $\wrng{\ell}{j} \in [m2^{j-1}, m2^j)$.
-    Wir weisen das Intervall also als Kind dem Intervall $\rng{\ell+1}{k}$ zu:
+    Wir weisen das Intervall als Kind dem Intervall $\rng{\ell+1}{k}$ zu:
     \begin{align}
-                               & 2^{k-1} \le \wrng{\ell}{j} < m2^j \\
-        \Leftrightarrow \qquad & \ld(2^{k-1}) < \ld(m2^{j})        \\
-        \Leftrightarrow \qquad & k - 1 < \ld(m) + j                \\
-        \Leftrightarrow \qquad & k - j < \ld(m) + 1
+                               & 2^{k-1}      & \le \wrng{\ell}{j} < m2^j \\
+        \Leftrightarrow \qquad & \ld(2^{k-1}) & < \ld(m2^{j})             \\
+        \Leftrightarrow \qquad & k - 1        & < \ld(m) + j              \\
+        \Leftrightarrow \qquad & k - j        & < \ld(m) + 1
     \end{align}
 
     \noindent
@@ -1042,7 +1042,7 @@ Auf dieser Basis können wir nun die Anzahl der Kinder von höheren internen Int
 \begin{proof}
     Seien $\rng{\ell - 1}{j_1}, \ldots, \rng{\ell - 1}{j_m}$ die Kinder von $\rng{\ell}{j}$, wobei $j > j_1 > j_2 > \ldots > j_m$.
     Aufgrund der strikten Monotonie gilt $j_i \le j - i$.
-    Aus \cref{lem:nachfolger_intervall} wissen wir außerdem, dass $\rng{\ell-1}{j_i}$ mindestens $2^{j - j_i - 1} + 1 \ge 2^{i-1} + 1$ Kinder hat.
+    Aus \cref{lem:nachfolger_intervall} wissen wir außerdem, dass $\rng{\ell-1}{j_i}$ mindestens $2^{j - j_i - 1} + 1 \ge 2^{i-1} + 1$ Kinder hat (sonst könnte es nicht Kind von $\rng{\ell}{j}$ sein).
     Für $i = m$ ergibt sich also also der erste Teil der Behauptung.
     Die Anzahl der Enkelkinder lässt sich als Summe der Kinder von unten beschränken
     \begin{align}
@@ -1050,7 +1050,7 @@ Auf dieser Basis können wir nun die Anzahl der Kinder von höheren internen Int
     \end{align}
 \end{proof}
 
-Mit Hilfe dieser beiden Lemmata folgt, dass für ein $\ell \le k \le 3$ die Anzahl der Nachfahren auf Level $\ell -k$ von eines internen Intervalls $\rng{\ell}{j}$ größer als
+Mit Hilfe dieser beiden Lemmata folgt, dass für ein $\ell \ge k \ge 3$ die Anzahl der Nachfahren auf Level $\ell -k$ eines internen Intervalls $\rng{\ell}{j}$ größer als
 \def\rddots#1{\cdot^{\cdot^{\cdot^{#1}}}}
 \begin{align}
     \left. 2^{2^{\rddots{2^m}}} \right\} \text{$k$ mal}
