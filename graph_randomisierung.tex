@@ -220,3 +220,63 @@ Jeder gerichtete Switch wird über genau über die zwei betroffenen Kanten~$e_1$
 Durch wiederholte Wahl dieser beiden Kanten wird der Switch wieder rückgängig gemacht.
 Die Wahrscheinlichkeiten von Vorwärts- und Rückwärtsrichtung sind also identisch und die Übergangsmatrix daher symmetrisch.
 Analoges gilt auch für ungerichtete Switches.
+
+\section{Implementieren von Edge Switching}
+Die sequentielle Implementierungen von Edge Switching für gerichtete und ungerichtete Graphen ist relativ ähnlich.
+Daher nehmen wir im Folgenden gerichtete Graphen an --- für einen ungerichteten Graphen müssen wir nur beachten, dass $\set{u, v} = \set{v, u}$ ist und beide Kanten\qq{richtungen} diesselbe Kante repräsentieren.
+Üblicherweise repräsentieren wir beide Richtung durch eine kanonische Repräsentation $(u, v)$, wobei wir z.B. durch $u \le v$ Uneindeutigkeiten verhindern.
+Vor jedem Zugriff auf die im Folgenden beschriebenen Datenstrukturen würden also prüfen, ob die Invariante gilt, und anderenfalls die Kantenrichtung flippen.
+
+Ein zufälliger Edge Switch benötigt die folgenden Operationen:
+\begin{itemize}
+    \item Zufälliges Ziehen einer Kante $(u,v) \in E$ (um die aktiven Kanten zu finden)
+    \item Prüfen, ob eine Kante $(u, v)$ existiert (um Mehrfachkanten zu vermeiden)
+    \item Löschen einer Kante $(u, v) \in E$ (um Updates auszuführen)
+    \item Hinzufügen einer Kante $(u, v)$ (um Updates auszuführen)
+\end{itemize}
+
+Die beiden letzten Operationen können auch in eine zusammengefasst werden.
+
+\subsection{Auf Adjazenzmatrizen}
+Adjazenzmatrizen können alle Operationen außer das Ziehen einer zufälligen Kante in konstanter Zeit ausführen.
+Das Ziehen von zufälligen Kanten können wir aber mit einer dedizierten Datenstruktur lösen ---
+z.B. ein ungeordnetes Array~$A$ in dem jede Kante genau einmal gespeichert wird.
+Bei der Implementierungen müssen wir uns aber bei Updates minimal geschickt anstellen.
+Für ein Update der Kante $(u,v)$ benötigen wir den entsprechenden Index~$i$ in $A$ mit $A[i] = (u,v)$;
+diesen müssen wir glücklicherweise nicht suchen, da wir ausnutzen können, dass wir nur Kanten ersetzen, die wir vorher gezogen haben.
+Wir merken uns den Index einfach ...
+Mit diesen wenigen Tricks können wir jeden Edge Switch in konstanter Zeit ausführen.
+%Für große $n$ und dünne Graphen kann allerdings der Speicherverbrauch von $\Theta(n^2)$ Bits ein echtes Problem werden.
+
+\subsection{Auf Adjazenzlisten}
+Adjazenzlisten sind in vielerlei Hinsicht eine Herausforderung für Edge Switching.
+Allerdings verwalten viele existierenden Softwarebibliotheken Graphen in Adjazenzlisten; daher kann es lohnenswert sein, direkt auf der nativen Graphrepräsentation zu arbeiten.
+Dies gilt vor allem dann, wenn wir während jedes Switch zusätzliche Eigenschaften prüfen wollen und z.B. eine Breitensuchen ausführen möchten, um den Zusammenhang des Graphs zu prüfen.
+
+Um in einer Adjazenzlist eine Kante uniform zufällig zu ziehen, bietet sich ein zweistufiges Experiment an.
+Zunächst wählen wir einen Knoten~$u$ mit Wahrscheinlichkeit $\deg(u) / (2m)$ und dann einen von $u$ Nachbarn uniform zufällig.
+Da Edge Switching den Grad von Knoten nicht verändert, ist es sinnvoll vorab in Zeit $\Theta(n)$ eine Alias-Tabelle zu konstruieren, um das gewichtete Ziehen zu beschleunigen.
+
+Um schnelle Updates zu unterstützen, ist es in der Regel hilfreich eine unsortierte Adjazenzlist vorzuhalten.
+Dann kosten aber Existenzanfragen für die Kante $\set{u,v}$ Laufzeit $\Oh{\min(\deg(u), \deg(v))}$.
+Alternativ könnten wir die Nachbarschaften sortiert halten, dann dauern aber Updates $\Oh{\deg(u) + \deg(v)}$ Zeit.
+Gerade bei verzerrten Gradverteiltungen (z.B. Power-Law) bietet sich daher die erste Variante an.
+
+Es gibt aber noch einen weiteren Ansatz: so nutzt die Implementierung von~\cite{DBLP:journals/compnet/VigerL16} eine Adjazenzliste, bei denen hinreichend große Nachbarschaften als HashSets ausgelegt sind.
+In diesem Setting können wir einen Edge Switch mit einer erwartet konstanten Laufzeit ausführen.
+
+\subsection{Mit HashSets}
+Wie wir bereits gesehen haben, sind Adjazenzmatrizen für Edge Switching auf dichten Graphen eine gute Wahl (in diesem Fall können wir sogar auf die Kantenliste verzichen! Warum?)
+Für dünne Graphen kann aber der Speicherverbrauch von $\Theta(n^2)$ Bits problematisch werden.
+Wir können daher ein HashSet nutzen, das alle Kanten abspeichert (für ungerichtete Graphen in kanonischer gerichteter Form).
+
+Im Vergleich zu unserer Diskussion von \emph{Adjazenzmatrizen} können wir sogar gänzlich auf die Kantenliste zu samplen verzichtet, wenn wir ein HashSet mit offener Adressierung nutzen.
+Da sich die Anzahl der Kanten während Edge Switching nicht ändert, ist es einfach einen konstanten Load-Factor des HashSets zu garantieren.
+Dieser sollte so gewählt werden, dass nur ein konstanter Anteil der Zellen im HashSet leer sind;
+dann ziehen wir solange uniform Zellen aus dem HashSet, bis wir eine Kante gefunden haben und geben diese dann zurück.
+Durch den beschränkten Load-Factor ergibt sich eine konstante Akzeptanzwahrscheinlichkeit.
+
+Gerade im Kontext von parallelen Algorithmen ist es hilfreich auf dedizierte Kantenliste zu verzichten, da wir sonst Sicherstellen müssen, dass die Updates in beiden Datenstrukturen von verschiedenen nebenläufigen Prozessen nicht zu Inkonsistenzen führen.
+
+
+
