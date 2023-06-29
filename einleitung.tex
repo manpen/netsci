@@ -7,7 +7,7 @@ Dennoch sollten wir grob die Felder charakterisieren.
 \emph{Network Science} beschäftigt sich mit der Analyse und Modellierung von komplexen Netzwerken.
 Beispiele sind soziale, Kommunikations- und Verkehrsnetze, biologische Netzwerke und viele mehr.
 Sie zeichnen sich durch sogenanntes \emph{emergentes Verhalten} aus: Ohne dass einzelnen Knoten oder Kanten bewusst darauf hinarbeiten, entsteht ein komplexes Verhalten des Gesamtsystems.
-In sozialen Netzen bilden sich z.\,B. lokal stark vernetzte Gruppen (Communities), es gibt einige zentrale Teilnehmer, die übermäßig stark vernetzt sind (Celebrities), und Netze haben überraschend geringe Distanzen zwischen Nutzern.
+In sozialen Netzen bilden sich \zB lokal stark vernetzte Gruppen (Communities), es gibt einige zentrale Teilnehmer, die übermäßig stark vernetzt sind (Celebrities), und Netze haben überraschend geringe Distanzen zwischen Nutzern.
 Network Science versucht, diese Eigenschaften zu finden und zu verstehen.
 Hierzu vereinigt es Methoden aus Mathematik, Informatik, und Physik.
 
@@ -37,7 +37,7 @@ Es geht also darum, theoretisch effiziente als auch praktisch schnelle und imple
 Hierbei kommt oft die in \cref{fig:intro/algorithm-engineering} dargestellte zyklische Entwurfsmethode zum Einsatz:
 
 Wir entwerfen meist zuerst einen Algorithmus und versuchen, dessen Performance theoretisch vorherzusagen;
-diese Hypothesen werden dann experimentell überprüft und -- je nach Ergebnis -- der Algorithmus oder die Analyse (z.\,B. Average Case statt Worst Case) angepasst.
+diese Hypothesen werden dann experimentell überprüft und -- je nach Ergebnis -- der Algorithmus oder die Analyse (\zB Average Case statt Worst Case) angepasst.
 Dieser Zyklus wird wiederholt, bis ein Algorithmus gefunden ist, der sowohl praktisch gut funktioniert als auch theoretisch verstanden ist.
 
 Um praktisch nützliche Vorhersagen treffen zu können, verwendet man im Algorithm Engineering möglichst realistische Modelle für die Maschine und die Eingabedaten.
@@ -48,7 +48,7 @@ So ergänzen sich die beiden Felder.
 \section{Über diese Veranstaltung}
 Lernziele dieser Veranstaltung beinhalten:
 \begin{itemize}
-    \item Wichtige Eigenschaften von beobachteten Netzwerken (z.\,B. Dichte, Gradverteilung, Zusammenhang, Durchmesser, lokales Clustering, globales Clustering)
+    \item Wichtige Eigenschaften von beobachteten Netzwerken (\zB Dichte, Gradverteilung, Zusammenhang, Durchmesser, lokales Clustering, globales Clustering)
     \item Methoden, diese Eigenschaften nachzubilden und zu erklären
     \item Zufallsgraphen und ihre Eigenschaften
     \item Effiziente Algorithmen für und auf Zufallsgraphen
@@ -56,7 +56,7 @@ Lernziele dieser Veranstaltung beinhalten:
 \end{itemize}
 
 \section{Begrifflichkeiten}
-Ein \emph{Netzwerk} ist ein System, in dem Personen/Agenten/Objekte (etc.) miteinander in Relation stehen (z.\,B. durch eine Freundschaft, ein Gespräch usw.).
+Ein \emph{Netzwerk} ist ein System, in dem Personen/Agenten/Objekte (etc.) miteinander in Relation stehen (\zB durch eine Freundschaft, ein Gespräch usw.).
 \emph{Graphen} sind ein abstraktes Modell dieses Systems: Wir identifizieren die Akteure mit den Knoten und die Beziehungen mit den Kanten.
 Wenn wir ein Netzwerk aus der echten Welt in einen Graphen übersetzen, sprechen wir oft von einem \emph{beobachteten Netzwerk}.
 Diese Abbildung geht oft mit dem Verlust von Informationen einher (wir wollen für den Anwendungsfall Unwesentliches ausblenden) und ist oft nicht eindeutig.
@@ -78,7 +78,7 @@ Diese Abbildung geht oft mit dem Verlust von Informationen einher (wir wollen f�
 
         \item Wir können die Autoren \emph{und} Publikationen als Knoten auffassen und je eine Publikation mit allen Urhebern verbinden.
               Dieser Graph ist bipartit\footnote{Wir können jeden Hypergraph analog in einen bipartiten Graphen übersetzen.}, da weder Autoren noch Publikationen untereinander verbunden sind.
-              Kanten könnten jetzt sogar noch weitere Informationen tragen, z.\,B. den Hauptautor.\qedhere
+              Kanten könnten jetzt sogar noch weitere Informationen tragen, \zB den Hauptautor.\qedhere
     \end{itemize}
 \end{example}
 
