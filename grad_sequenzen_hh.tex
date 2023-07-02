@@ -1,5 +1,5 @@
 \section{Charakterisierungen graphischer Sequenzen}
-Wir können graphische Gradsequenzen anhand mehrere Eigenschaften charakterisieren, wobei das Erd\H{o}s-Gallai Theorem sowie das Havel-Hakimi Theorem wohl die bekanntesten Ansätze darstellen.
+Wir können graphische Gradsequenzen anhand mehrerer Eigenschaften charakterisieren, wobei das Erd\H{o}s-Gallai Theorem sowie das Havel-Hakimi Theorem wohl die bekanntesten Ansätze darstellen.
 Das Erd\H{o}s-Gallai Theorem ist nicht-konstruktiv und kommt daher in der Praxis besonders zum Testen auf graphische Sequenzen zum Einsatz.
 Aus dem Havel-Hakimi Theorem, hingegen, können wir einen Graphgenerator konstruieren.
 Die Intuition von beiden Ansätzen ist aber ähnlich.
@@ -27,7 +27,7 @@ Die Gegenrichtung (d.h. jede erfüllende Gradsequenz ist graphisch) ist deutlich
 
 Die Anforderung, dass die Gradsumme gerade sein muss, folgt trivial aus dem Handshaking Lemma:
 jede Kante hat zwei Endpunkte und erhöht somit die Gradsumme um zwei
---- eine Ausnahme wäre es lediglich, wenn wir Eigenschleifen nur als Grad~$1$ zählen würden; das ist aber egal, da einfache Graphen sowieso kein Schleifen besitzen.
+--- eine Ausnahme wäre es lediglich, wenn wir Eigenschleifen nur als Grad~$1$ zählen würden; das ist aber egal, da einfache Graphen sowieso keine Schleifen besitzen.
 
 Für die zweite Bedingung konzentrieren wir uns zunächst auf die Ungleichung für $k = n$.
 Diese lautet
@@ -64,7 +64,7 @@ Daher fordert das Erd\H{o}s-Gallai Theorem $\Delta \le \sum_{i=k+1}^n \min(k, d_
     Dann können wir einen neuen einfachen Graphen~$G$ erzeugen, in dem wir einen neuen Knoten~$u$ hinzufügen und ihn zu den Knoten mit Graden $t_1{-}1, \ldots, t_s{-}1$ verbinden.
     Der neue Knoten~$u$ hat offensichtlich Grad~$s$ und erhöht die Grade seiner Nachbarn auf $t_1, \ldots, t_s$.
     Daher erfüllt der erzeugte Graph~$G$ die Gradsequenz~$\degseq$.
-    Da jede neue Kanten zu Knoten~$u$ inzident ist, können sie nicht mit alten Kanten in $G'$ kollidieren.
+    Da jede neue Kante zu Knoten~$u$ inzident ist, können sie nicht mit alten Kanten in $G'$ kollidieren.
     Weiterhin sind die neuen Kanten zu paarweise verschiedenen existierenden Knoten inzident --- auch hier können sich weder Schleifen noch Mehrfachkanten bilden.
 
     Nun \aside{$\degseq \text{ ist graphisch} \Rightarrow \degseq' \text{ ist graphisch}$} zur Gegenrichtung \qq{$\degseq \text{ ist graphisch} \Rightarrow \degseq' \text{ ist graphisch}$}.
