@@ -8,7 +8,7 @@ Konkret möchten wir für eine gegebene Gradsequenz~$\degseq$ einen Graphen~$G$ 
 
 Im Folgenden werden wir eine Reihe von Ansätzen untersuchen.
 Dabei wird sich zeigen, dass es einfach ist, wenn wir nur zwei Eigenschaften (d.h. 1\&2, 2\&3, oder 1\&3) erfüllen müssen.
-Für eine allgemeine Gradsequenz~$\degseq$ ist es hingegen schwer allen drei Anforderungen gerechnet zu werden.
+Für eine allgemeine Gradsequenz~$\degseq$ ist es hingegen schwer allen drei Anforderungen gerecht zu werden.
 
 Bevor wir aber anfangen, sollten wir das \qq{Warum?} klären.
 Es gibt zwei zentrale Motivationen Graphen mit allgemeinen Gradsequenzen erzeugen zu wollen:
@@ -104,7 +104,7 @@ Der entsprechende Generator ist in \cref{alg:cm_einfach} skizziert.
 Tatsächlich kennen wir aber einen sehr ähnlichen Algorithmus bereits, der sogar noch besser funktioniert.
 Es handelt sich um den Fisher-Yates Shuffle: statt einer Urne und einer Kantenliste benötigen wir nur ein Array, das für jedes entnommene Element der Urne einen stub fixiert.
 Wir können also das Configuration Model implementieren, in dem wir die Urne in eine zufällige Permutation bringen und dann je zwei benachbarte Einträge als Kante interpretieren.
-Das hat den Vorteil, dass zufällige Permutation ein gut verstandenes Konzept sind und es auf diverse Plattformen effiziente Implementierungen gibt.
+Das hat den Vorteil, dass zufällige Permutationen ein gut verstandenes Konzept sind und es auf diverse Plattformen effiziente Implementierungen gibt.
 
 \begin{exercise}
     In der Praxis lässt sich dieser Ansatz sogar noch beschleunigen (besonders im parallelen Kontext).
@@ -118,7 +118,7 @@ Das hat den Vorteil, dass zufällige Permutation ein gut verstandenes Konzept si
 \subsection{Graphische Gradsequenzen}
 Wie wir im letzten Kapitel gesehen haben, kann das Configuration Model Mehrfachkanten und Eigenschleifen erzeugen.
 Tatsächlich gibt es sogar Eingaben, für die sich das gar nicht vermeiden lässt.
-Zum Beispiel: $\degseq = (2,)$, $\degseq = (2, 2)$, $\degseq = (3,3)$, oder $\degseq = (4, 1, 1)$.
+Zum Beispiel: $\degseq = (2)$, $\degseq = (2, 2)$, $\degseq = (3,3)$, oder $\degseq = (4, 1, 1)$.
 Wir treffen daher folgende Definitionen:
 
 \begin{definition}
@@ -138,7 +138,7 @@ Wir werden später zwei Charakterisierungen von \emph{graphischen} Gradsequenzen
 Angenommen $\degseq$ ist graphisch.
 Wie erhalten wir dann aus dem Configuration Model einen einfachen Graph?
 Leider ist dies nicht immer exakt und effizient möglich.
-Im Folgenden leiten wir aber her, dass die manchmal Situation gar nicht so schlimm ist.
+Im Folgenden leiten wir aber her, dass dies manchmal gar nicht so schlimm ist.
 
 Hierzu wechseln wir erneut von Gradsequenzen~\degseq{} zu Gradverteilungen.
 Sei $p_d = n_d / n$ die Wahrscheinlichkeit, dass ein zufälliger Knoten Grad $d$ hat, wobei $n_d$ die Anzahl der Knoten in $\degseq$ mit Grad~$d$ beschreibt.
@@ -147,7 +147,7 @@ Wir verdeutlichen dies mit der Notation $\CMnd$.
 In diesem Setting analysieren wir für große Knotenanzahl~$n$ die erwartete Anzahl von Mehrfachkanten $\expv{M_n}$ und Eigenschleifen~$\expv{S_n}$.
 
 \begin{lemma}\label{lem:cm_anzahl_nicht_einfach}
-    Sei $G \follows \CMnd$ ein von Configuration Model erzeugter Graph und $X$ ein zufälliger Grad mit $\prob{X = d} = p_d$.
+    Sei $G \follows \CMnd$ ein vom Configuration Model erzeugter Graph und $X$ ein zufälliger Grad mit $\prob{X = d} = p_d$.
     Wir bezeichnen mit $S_n$ die Anzahl der Eigenschleifen und mit $M_n$ die Anzahl der Mehrfachkanten.
     Dann gilt
     \begin{align}
@@ -159,7 +159,7 @@ In diesem Setting analysieren wir für große Knotenanzahl~$n$ die erwartete Anz
 \begin{exercise}
     Seien $G_1$ und $G_2$ zwei Graphen mit gleicher Knoten- und Kantenanzahl.
     Beschreibe (qualitativ) zwei Gradverteilungen, s.d. wir für $G_1$ möglichst wenig kritische Kanten erwarten, während $G_2$ möglichst viele haben soll.
-    Erkläre (qualitativ), weshalb $\expv{M_n} \propto \expv{S_n^2}$ plausible wirkt.
+    Erkläre (qualitativ), weshalb $\expv{M_n} \propto \expv{S_n^2}$ plausibel wirkt.
 \end{exercise}
 
 \begin{remark}
@@ -328,7 +328,7 @@ Es gilt
 \end{align}
 
 Per Definition kann es also keine Mehrfachkanten geben.
-In der Analyse des Chung-Lu Modells werden in der Regel Eigenschleife erlaubt, um Sonderfälle zu vermeiden.
+In der Analyse des Chung-Lu Modells werden in der Regel Eigenschleifen erlaubt, um Sonderfälle zu vermeiden.
 In praktischen Implementierung ist es aber trivial diese zu verbieten.
 
 Betrachten wir zunächst den erwarteten Grad~\expv{\deg{v_i}}:
@@ -484,7 +484,7 @@ Berechnen wir den Skalierungsfaktor~$s$:
 \end{align}
 
 \noindent
-Natürlich wählen wir den kleinstmöglichen Wert, es gilt also $s=4/3$. Dann können \cref{alg:rejection_sampling} spezialisieren:
+Natürlich wählen wir den kleinstmöglichen Wert, es gilt also $s=4/3$. Dann können wir \cref{alg:rejection_sampling} spezialisieren:
 \begin{enumerate}
     \item Wir werfen eine Münze und erhalten Seite~$x$.
     \item Falls $x = Z$ akzeptieren wir mit Wahrscheinlichkeit
@@ -538,14 +538,14 @@ Sei $j$ der Index den wir gezogen haben.
 Wenn $w_{i+1} = w_j$ gilt, hatten wir Glück, falls nicht haben wir $w_j$ überschätzt und müssen das korrigieren\ldots z.B. mit Rejection Sampling.
 
 Element~$j$ wurde mit Wahrscheinlichkeit $w_{i+1}$ vorgeschlagen, es soll aber nur mit Wahrscheinlichkeit $w_j$ ausgegeben werden.
-Wir akzeptieren also mit Wahrscheinlichkeit $w_{j} / (s \cdot w_{i+1})$; als Skalierung wählten1 wir also implizit $s=1$ (warum?).
+Wir akzeptieren also mit Wahrscheinlichkeit $w_{j} / (s \cdot w_{i+1})$; als Skalierung wählten wir also implizit $s=1$ (warum?).
 
 Interessant wird es aber, falls der Vorschlag~$j$ verworfen wird.
 Im klassischen Rejection Sampling generieren wir Vorschläge immer aus derselben Verteilung; falsch ist das auch hier nicht.
 Effizienter ist es aber, $j$ als neuen Startpunkt zu wählen und einen neuen Sprung mit Erfolgswahrscheinlichkeit $w_{j+1}$ zu ziehen.
 
 \begin{exercise}
-    Begründe, weshalb wir einen neuen Startwert nehmen können, ob wir diesen \emph{nicht} in $R$ aufnehmen.
+    Begründe, weshalb wir einen neuen Startwert nehmen können, obwohl wir diesen \emph{nicht} in $R$ aufnehmen.
 \end{exercise}
 
 Die Laufzeit dieses Ansatzes analysieren wir im Kontext von Chung-Lu Graphen später.
@@ -599,13 +599,13 @@ Mit einem Binärbaum hätten wir $\Oh{\log n}$ Zeit geschafft.
 
 Eine vergleichbar problematische Situation ist in \cref{fig:alias-tab-motivation} visualisiert.
 Dem gegenüber wäre eine besonders gute Eingabe ein $w_i = 1/n \pm \epsilon$ für alle $i$.
-In der Abbildung würde das der Situation entsprechen, dass alle Zeilen etwa auf der gestrichelten Linien enden würden --- es käme zu keiner Rejection.
+In der Abbildung würde das der Situation entsprechen, dass alle Zeilen etwa auf der gestrichelten Linie enden würden --- es käme zu keiner Rejection.
 
 Tatsächlich können wir durch einen kleinen Kniff eine beliebige Eingabe komplett ohne Verwerfung samplen.
 Hierzu beobachten wir, dass die Fläche der grünen Box von $w_1$ rechts des gestrichelten Durchschnitts genau der roten Fläche links des Durchschnitts entspricht.
 Dies folgt, da sonst die gestrichelte Linie sonst nicht der Durchschnitt wäre.
 
-Die Idee der Alias Methode besteht darin, die den Überschuss auf die rote Fläche aufzuteilen.
+Die Idee der Alias Methode besteht darin, den Überschuss auf die rote Fläche aufzuteilen.
 Hierbei wollen wir aber am \emph{entweder-oder} Schema der Verwurfsmethode festhalten;
 sprich pro Zeile soll es nur zwei Wahlen geben.
 Das ist problematisch, da es bis zu $n-1$ überlange Zeilen geben kann, die dann nicht alle in die eine unterlange Zeile verteilen dürfen.
@@ -652,17 +652,17 @@ Sei $w'_g = w_g - (1 - w_k)$ das verbleibende Gewicht von $g$.
 Wenn $w'_g < 1$ fügen wir $(g, w'_g)$ in $K$ ein, sonst in $D$.
 
 Per Konstruktion kann $K$ niemals vor $D$ leer werden; es kann aber durchaus vorkommen, dass $K$ leer ist, während $D$ noch Werte enthält.
-Dann haben aber alle Einträge in $G$ Gewicht genau $1$; wir können sie in der offensichtlichen Art in $G$ ein.
+Dann haben aber alle Einträge in $G$ Gewicht genau $1$; wir können sie in der offensichtlichen Art in $G$ einfügen.
 Praktische Implementierungen müssen aufgrund der wiederholten Subtraktionen mit Rundungsfehlern der Gewichte umgehen können;
 dann kann auch $D$ zuerst leer werden; die Elemente in $K$ haben dann aber Gewicht $1 - \epsilon$.
 
-Das Ziehen aus der Alias-Tabelle läuft analog zu Rejection-Sampling:
+Das Ziehen aus der Alias-Tabelle läuft analog zu Rejection Sampling:
 wir wählen eine Zeile $1 \le i \le n$ zufällig uniform und werden ein reelles $0 \le u \le 1$.
 Falls $u < G[i]$ geben wir $i$ zurück, sonst $A[i]$.
 Die gelingt in Zeit $\Oh{1}$.
 
 \subsection{Intermezzo: Schnelles Ziehen von uniformen Ganzzahlen}\label{subsec:uniforme_ganzzahlen}
-\emph{Dieses Kapitel basiert in auf \cite{DBLP:journals/tomacs/Lemire19}.}
+\emph{Dieses Kapitel basiert auf \cite{DBLP:journals/tomacs/Lemire19}.}
 Wir übernehmen auch die Notation $a \div b = \lfloor a / b \rfloor$.
 
 \bigskip
@@ -713,7 +713,7 @@ Allerdings ist für $s \ll 2^L$ die Verwerfungsrate exorbitant hoch;
 in Erwartung benötigen wir $2^L / s$ Versuche!
 
 Besser ist es natürlich ein möglichst großes $k \ge 1$ zu wählen, s.d. $k s \le 2^L$.
-Dann verwerfen wir nur $X \ge ks$ und liefern sonst $X / k$ zurückzuliefern.
+Dann verwerfen wir nur $X \ge ks$ und liefern sonst $X / k$ zurück.
 Die beste Wahl ist $k = 2^L \div s$.
 Dieses Verfahren hat eine Akzeptanzwahrscheinlichkeit von
 \begin{align}
@@ -739,7 +739,7 @@ Der OpenBSD Algorithmus ist einfach und korrekt, hat aber einen enormen Nachteil
 Pro Aufruf muss ein Modulo und eine Division (das ist idR dieselbe CPU-Instruktion!) berechnet werden.
 Eine \texttt{div} Instruktion gehört zu den teuersten skalaren Operationen\footnote{Sehr umfangreiche Benchmarks und Infos: \url{https://www.agner.org/optimize/instruction_tables.pdf}}, die CPUs unterstützen.
 Im Vergleich zu einfacher Arithmetik (z.B. Addition) ist eine Division oft um ein bis zwei Größenordnungen langsamer.
-Insb. erzeugen moderne nicht-kryptographischen Pseudozufallsgeneratoren eine Zufallszahl oft schneller als eine einzelne Division dauert!
+Insb. erzeugen moderne nicht-kryptographische Pseudozufallsgeneratoren eine Zufallszahl oft schneller als eine einzelne Division dauert!
 
 OpenJDK verwendet ein anderes Verfahren, das die Anzahl der Divisionen an die Anzahl der Runden des Rejection Samplings knüpft.
 
@@ -876,7 +876,7 @@ Das führt zu einer Situation analog zu \cref{fig:alias-tab-motivation}
 --- eine Zeile vereinnahmt den Großteil der Wahrscheinlichkeitsmasse, während alle anderen zu einer enorm hohen Verwerfungsrate führen.
 
 Wir lösen das Problem, indem wir nicht nur $g_\text{max}$, sondern auch $g_\text{min}$ speichern und aktualisieren (zeige, dass das auch trivial implizit geht!).
-Bei jeder Änderungen einer der beiden Größen prüfen wir, ob noch die Invariante
+Bei jeder Änderung einer der beiden Größen prüfen wir, ob noch die Invariante
 \begin{align}
     \alpha \frac n m < g_\text{min} \le g_\text{max} < \beta \frac n m
 \end{align}
@@ -990,7 +990,7 @@ Jetzt \aside{Sampling} können wir den Samplingalgorithmus beschreiben:
 \subsubsection{Erstellen und aktualisieren der Datenstruktur}
 Initial können wir die Datenstruktur in Zeit $\Oh{n}$ konstruieren.
 Dafür verarbeiten wir die $\Oh{n}$ Gewichte der Eingabe und fassen sie in Intervalle $\rng{1}{j}$ zusammen.
-Alle internen Intervall (d.h. solche mit mindestens zwei Elementen) sammeln wir zunächst in einer Queue.
+Alle internen Intervalle (d.h. solche mit mindestens zwei Elementen) sammeln wir zunächst in einer Queue.
 Diese verarbeiten wir rekursiv, nachdem das aktuelle Level fertiggestellt wurde.
 Die Verarbeitung eines Levels ist in Zeit linear in der Anzahl der Elemente des Levels möglich.
 Da die Datenstruktur insg. $\Theta(n)$ Knoten hat, folgt also eine Gesamtlaufzeit von $\Oh{n}$.
@@ -1000,7 +1000,7 @@ Hierzu soll der Anwender ein beliebiges Gewicht $w_i$ um einen beliebigen Betrag
 Wir beginnen in Level~$\ell=1$ und passen das entsprechende Gewicht an.
 Es gibt zwei Optionen:
 \begin{itemize}
-    \item Die Änderungen ist ausreichend klein, so dass das Gewicht in seinem ursprünglichen Intervall~$\rng{1}{j}$ verbleibt.
+    \item Die Änderungen sind ausreichend klein, so dass das Gewicht in seinem ursprünglichen Intervall~$\rng{1}{j}$ verbleibt.
           Dann müssen wir das entsprechende Intervall anpassen (d.h. sein Gesamtgewicht und die Änderungen auch rekursiv in $\ell +1$ oder $T_\ell$ widerspiegeln).
 
 
