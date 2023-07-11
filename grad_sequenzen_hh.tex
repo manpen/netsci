@@ -131,3 +131,31 @@ Daher fordert das Erd\H{o}s-Gallai Theorem $\Delta \le \sum_{i=k+1}^n \min(k, d_
     In beiden Fällen erhalten wir also einen Graphen in dem nun $S$ zu $T_i$ verbunden ist.
     Durch Mehrfachanwendung dieser Konstruktion erhalten wir schlussendlich einen Graphen, in  dem $S$ genau zu allen $T_j$ verbunden ist und können wie zuvor verfahren.
 \end{proof}
+
+Das Havel-Hakimi Theorem lässt sich direkt in einen Generator übersetzen.
+Wir verwalten Knoten mit ihren Graden als Gewicht in einer Max-Priority-Queue.
+Bis diese leer ist, führen wir die folgende Schritte aus:
+\begin{itemize}
+    \item Entnehme einen Knoten $S$ mit größtem Grad~$s$
+    \item Entnehme $s$ schwerste Knoten $T_i$ mit Grad~$t_i$ und speichere sie als $(T_i, t_i)$ in einen Puffer
+    \item Gebe für alle~$i$ die Kanten $\set{S, T_i}$ aus
+    \item Für alle $i$, falls $t_i > 1$ füge Knoten $T_i$ mit Gewicht~$t_1 - 1$ erneut ein
+\end{itemize}
+
+Mit klassischen PQs (z.B. Max-Heap) lässt sich hierdurch eine Laufzeit von $\Oh{(m + n) \log n}$ erzielen;
+unter der Annahme, dass die Eingabe Knoten von Grad~0 erhält vereinfacht sich der Term zu $\Oh{m \log n}$.
+
+Da die Schlüssel in der PQ jedoch ganzzahlig sind und aus dem Intervall $[1, n)$ stammen, können wir eine Bucket-Queue verwenden.
+So kann etwa $\degseq$ als doppeltverkettete Liste dargestellt werden.
+Wenn $\degseq$ sortiert ist, befinden sich alle Einträge mit gleichem Grad in einer zusammenhängenden Gruppe.
+Wir unterhalten dann eine zweite sortierte Liste, die jeweils auf das erste Element der Gruppe zeigt.
+Durch diese Konstruktion ist es möglich, alle benötigten Operationen in Zeit~$\Oh{1}$ auszuführen --- der Generator läuft also in optimaler Laufzeit~$\Oh{m}$.
+
+Leider sind Listen in praktischen Implementierungen aufgrund der zahlreichen Allokation und mangelnden Lokalität fast immer ein Performance-Bottleneck.
+Wenn $\degseq$ sortiert ist und die Anzahl der \emph{verschiedenen} Grade $N_\degseq \ll n$ deutlich kleiner als die Anzahl der Knoten ist, ergibt sich hier ein Optimierungspotential.
+Statt jeden Knoten einzeln zu speichern, verzichten wir auf die \qq{lange} lineare Liste und speichern stattdessen für jede Gradgruppe drei Informationen ab:
+den Grad, die kleinste Knoten-ID in der Gruppe, die Anzahl der Knoten in der Gruppe.
+
+Dann brauchen wir noch einen kleinen Trick: wenn wir Knoten~$T_i$ auswählen beginnen wir am Ende einer Gruppe.
+Das führt dazu, dass $\degseq$ auch nach Updates monoton bleibt; außerdem kann man zeigen, dass sich während der Ausführung des Algorithmus die Länge der Liste höchstens verdoppelt~\cite{DBLP:journals/jea/HamannMPTW18}.
+
