@@ -47,7 +47,7 @@ Ist das \Gn-Modell aber nun realistisch?
 Das hängt davon ab, was wir mit ihm bezwecken und was wir mit \emph{realistisch} meinen.
 Es ist aber sicherlich nicht geeignet, um gängige Netzwerke zu beschreiben.
 Dies liegt unter anderem daran, dass \Gn oft Graphen mit vielen Kanten erzeugt;
-intuitiv hat \glqq jeder zweite Graph\grqq{} mindestens die Hälfte aller möglichen Kanten.
+intuitiv hat \qq{jeder zweite Graph} mindestens die Hälfte aller möglichen Kanten.
 
 \begin{figure}[t]
     \begin{center}
@@ -151,7 +151,7 @@ Da gleichverteilt gewählt wird, gilt für die Wahrscheinlichkeitsverteilung~{$f
     Berechne $|\gGnm|$ für gerichtete und ungerichtete Graphen.
 \end{exercise}
 
-E.~Gilbert \aside{Gilbert-Graphen \Gnp} beschreibt ein ähnliches Modell, das \Gnp-Modell -- das oft fälschlicherweise \glqq Erd\H{o}s-R\'enyi-Modell\grqq{} genannt wird.
+E.~Gilbert \aside{Gilbert-Graphen \Gnp} beschreibt ein ähnliches Modell, das \Gnp-Modell -- das oft fälschlicherweise \qq{Erd\H{o}s-R\'enyi-Modell} genannt wird.
 Um das Modell zu beschreiben, weichen wir von der bisherigen expliziten Definition der Grundmenge und Verteilung ab.
 Stattdessen spezifizieren wir eine randomisierte Konstruktionsvorschrift:
 \begin{enumerate}
@@ -269,13 +269,13 @@ Dann können Zufallsgraphen unter anderem aus folgenden Gründen nützlich sein:
 \begin{itemize}
     \item Wenn die Generatorsoftware vorhanden ist, können wir synthetische Instanzen in quasi unbeschränkter Menge generieren.
     \item Parametrisierte Generatoren erlauben, den Einfluss gewisser Eigenschaften detailliert zu analysieren, z.\,B. Skalierungsexperimente.
-    \item Beobachtete Graphen haben oft \glqq Rauschen\grqq, d.\,h. nicht verstandene oder insignifikante Strukturen, die Messungen verfälschen können.
+    \item Beobachtete Graphen haben oft \qq{Rauschen}, d.\,h. nicht verstandene oder insignifikante Strukturen, die Messungen verfälschen können.
           Zufallsgraphen hingegen haben i.\,d.\,R. eine gut verstandene Struktur, die es uns oft ermöglicht, vor dem Testen Hypothesen aufzustellen.
     \item Einige Generatoren können anhand eines fixierten Startzustands (Random-Seed) dieselben Graphen wiederholt erzeugen.
           Wir müssen also die Eingaben nicht speichern/transferieren und können dennoch reproduzierbare Experimente durchführen.
 \end{itemize}
 
-\noindent Da in verschiedenen wissenschaftlichen Communities der Begriff \glqq Generator\grqq{} unterschiedlich benutzt wird, hier noch eine Definition:
+\noindent Da in verschiedenen wissenschaftlichen Communities der Begriff \qq{Generator} unterschiedlich benutzt wird, hier noch eine Definition:
 \begin{definition}
     Ein \aside{Graphgenerator} Graphgenerator ist ein Algorithmus, der einen Graphen aus einem Netzwerkmodell erzeugt.
     Dieser respektiert die Verteilung des zugrundeliegenden Modells.
@@ -327,7 +327,7 @@ Die Ausgabe hat Größe $\Theta(n^2)$ und somit benötigen wir $\Omega(n^2)$ Zei
 Außerdem hat ein Graph mit $p=\Omega(1)$ in Erwartung $\Theta(n^2)$ Kanten, was wiederum die Laufzeit von unten beschränkt.
 
 Diese Worst-Case-Schranken passen jedoch nicht zu unserer Beobachtung in \cref{sec:kanten-in-beobachteten-netzen}, dass Graphen in der freien Wildbahn meist dünn sind.
-Es wäre schön, wenn wir diese Graphen schneller erzeugen könnten, jedoch ist \cref{alg:naive-gnp} für alle $p$ gleich \glqq schnell\grqq.
+Es wäre schön, wenn wir diese Graphen schneller erzeugen könnten, jedoch ist \cref{alg:naive-gnp} für alle $p$ gleich \qq{schnell}.
 Hier \aside{ausgabesensitive Algorithmen} helfen \emph{ausgabesensitive Algorithmen} (output-sensitive algorithm), deren Laufzeit maßgeblich durch die Größe der Ausgabe bestimmt wird;
 die meisten Generatoren, die wir betrachten werden, fallen genau in diese Kategorie.
 
@@ -338,7 +338,7 @@ Wir werden im Folgenden fast immer eine Kantenliste annehmen, die nur $\Oh{1}$ S
 \subsection{Ziehen mit zufälligen Sprüngen}\label{subsec:gnp_zufaellige_spruenge}
 Wie können wir nun \cref{alg:naive-gnp} verändern, so dass er -- analog zu Kantenlisten -- keine Arbeit für Nichtkanten verrichtet?
 Idee: Wir müssen diese einfach überspringen!
-Aber woher wissen wir, wo \glqq Nullen\grqq{} gezogen werden, bzw. wie viele Nullen wir überspringen müssen?
+Aber woher wissen wir, wo \qq{Nullen} gezogen werden, bzw. wie viele Nullen wir überspringen müssen?
 Zählen können wir sie nicht, ohne wieder direkt quadratische Arbeit zu verrichten.
 
 Ganz \aside{effizientes Ziehen durchs Überspringen von Nullen} einfach: Wir fragen uns, wie viele Nullen~$\ell$ \cref{alg:naive-gnp} gesetzt hätte und überspringen diese.
@@ -413,7 +413,7 @@ Hierzu kommt meist die Inversionsmethode zum Einsatz.
 
     \caption{
         \textbf{Links}: Wahrscheinlichkeitsverteilung und kumulative Verteilungsfunktion einer geometrischen Verteilung mit Parameter $p = 0.2$.
-        \textbf{Rechts}: \glqq Umkehrfunktion\grqq{} $F^{-1}(p)$ der kumulativen Verteilungsfunktion $F(x)$.
+        \textbf{Rechts}: \qq{Umkehrfunktion} $F^{-1}(p)$ der kumulativen Verteilungsfunktion $F(x)$.
     }
     \label{fig:geometric-distr}
 \end{figure}
