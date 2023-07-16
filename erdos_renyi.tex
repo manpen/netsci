@@ -315,7 +315,7 @@ Das erlaubt es uns, uns auf die Eigenschaften der Graphgeneratoren zu konzentrie
 
 \begin{lemma}
     \label{lem:naive-gnp}
-    Der Algorithmus \ref{alg:naive-gnp} erzeugt einen \Gnp-Graphen in $\Theta(n^2)$ Zeit.
+    \Cref{alg:naive-gnp} erzeugt einen \Gnp-Graphen in $\Theta(n^2)$ Zeit.
 \end{lemma}
 
 \begin{exercise}
@@ -389,7 +389,7 @@ Es ergibt sich also der folgende einfache Algorithmus:
 
 \begin{lemma}
     \label{lem:linear-gnp}
-    Algorithmus \ref{alg:linear-gnp} erzeugt Graph $G = (V, E) \follows \Gnp$ in $\Theta(|E|)$ Zeit.
+    \Cref{alg:linear-gnp} erzeugt Graph $G = (V, E) \follows \Gnp$ in $\Theta(|E|)$ Zeit.
 \end{lemma}
 
 \begin{exercise}
@@ -473,9 +473,9 @@ Die Methode lässt sich aber auch auf andere $\Omega$ (inklusive kontinuierliche
     \noindent Daraus folgt dann direkt:
     \begin{eqnarray}
         \prob{X' \le x} &\stackrel{\text{Inv.-Methode}} = & \prob{F^{-1}(U) \le x} \\
-        &\stackrel{(\ref{eq:inverse-apply-inverse})}{=}& \prob{U \le F(x)} \\
+        &\stackrel{\labelcref{eq:inverse-apply-inverse}}{=}& \prob{U \le F(x)} \\
         &\stackrel{\prob{U < z} = z \forall z \in [0, 1]}=& F(x) \\
-        &\stackrel{\text{Def.} F(X)}=& \prob{X \le x} \hspace{5em}\hfill \qedhere
+        &\stackrel{\text{Def. } F(X)}=& \prob{X \le x} \hspace{5em}\hfill \qedhere
     \end{eqnarray}
 \end{proof}
 
@@ -750,7 +750,7 @@ In der Regel ist der Parameter aus dem Kontext klar und wird daher in der Litera
     Per Definition gilt
     \begin{equation}
         \prob{X > t}
-        \quad \stackrel{\textnormal{Gl. \ref{eq:xprimet_groesser_xt}}}{\le} \quad
+        \quad \stackrel{\textnormal{Gl. \labelcref{eq:xprimet_groesser_xt}}}{\le} \quad
         \prob{X' > t}
         \quad = \quad
         \prob{Y^{(t)} < k}
@@ -1057,7 +1057,7 @@ Für kleine Teilprobleme mit $N < 10\,000$ kommt  -- je nach Dichte $k/N$ -- ent
 
 \section{Phasenübergänge in \Gnp und \Gnm}
 Die ersten analytischen Ergebnisse von Zufallsgraphen betrafen das Verhalten von kombinatorischen Eigenschaften für verschiedene Dichten (d.h. $m/n$ bei \Gnm bzw $p$ bei \Gnp) im Grenzwert für $n \to \infty$.
-In \aside{Wir nutzen ungerichtete Graphen und setzen $N = \binom n 2$} diesem Kapitel werden wir uns auf ungerichtete Graphen konzentrieren.
+In \aside{Wir nutzen ungerichtete Graphen und setzen $N = \binom n 2$.} diesem Kapitel werden wir uns auf ungerichtete Graphen konzentrieren.
 
 Betrachten wir zunächst \Gnm-Graphen.
 Für diese zeigten Erd\H{o}s und R\'enyi bereits 1960 einige Schwellwerte, an denen sog. Phasenübergänge stattfinden.
@@ -1078,7 +1078,7 @@ Wir wollen uns an dieser Aussage ansehen, wie man die Wahrscheinlichkeit eines s
     Da keine zwei Kanten einen gemeinsamen Endpunkt haben sollen und Schleifen verboten sind, müssen wir also $2m$ \underline{verschiedene} Knoten ziehen!
     Es ist aber egal, in welcher Reihenfolge wir die $m$~Kanten ziehen und ob ein Endpunkt als $u_i$ oder $v_i$ gezogen wird.
     Die Anzahl ergibt sich also als
-    \begin{align}
+    \begin{equation}
         \frac{
             \overbrace{\binom{n}{2m}}^\text{$2m$ verschiedene Knoten aus $n$}
             \overbrace{(2m)!}^\text{Mögliche Permutation von $2m$ Elementen}
@@ -1086,22 +1086,22 @@ Wir wollen uns an dieser Aussage ansehen, wie man die Wahrscheinlichkeit eines s
             \underbrace{m!}_\text{Reihenfolge der Kanten egal\ \ \ }
             \underbrace{2^m}_\text{Reihenfolge in einer Kante egal}
         }.
-    \end{align}
+    \end{equation}
 
     \noindent
     Da wir jeden möglichen Graphen mit derselben Wahrscheinlichkeit ziehen, gilt
-    \begin{align}
+    \begin{equation}
         \bar p(n, m) = \frac{\binom{n}{2m} (2m)!}{m! 2^m \binom{\binom n 2}{m}}. \label{eq:wkeit_keine_zwei_kanten}
-    \end{align}
+    \end{equation}
 
     \noindent
     Wir werden im Folgenden eine \emph{untere} Schranke für $\bar p(n,m)$ zeigen.
     Dazu nutzen wir folgende Abschätzung von $\binom n k$
 
-    \begin{align}
+    \begin{equation}
         \binom n k \approx \frac{n^k \exp\left(-\frac{k^2}{2n} - \frac{k^3}{6n^2}\right)}{k!}
         \quad\quad \text{für } k = o(n^{3/4}).
-    \end{align}
+    \end{equation}
 
     Der Einfachhalt halber verzichten wir auf die Analyse des Fehlers dieser Abschätzung.
     Es folgt
@@ -1210,9 +1210,9 @@ Man schätzt also zunächst die Einzelwahrscheinlichkeiten~$\prob{X_i}$ ab (vere
 Hier sollten sich extrem kleine Erfolgswahrscheinlichkeiten $\prob{X_i} \le 1/n^2$ ergeben.
 Dann schätzt man die Wahrscheinlichkeit, dass mindestens eins eintritt, einfach als Summe der Einzelwahrscheinlichkeiten nach oben ab.
 Booles \aside{Booles Ungleichung} Ungleichung besagt:
-\begin{align}
+\begin{equation}
     \prob{\bigcup_{i=1}^n X_i} = \prob{\text{mindestens ein $X_i$ tritt ein}} \le \sum_{i=1}^n \prob{X_i}
-\end{align}
+\end{equation}
 
 \noindent
 Nun können wir eine wichtige Eigenschaft unserer Zufallsbits zeigen.
@@ -1235,10 +1235,10 @@ Wir befinden uns zunächst im subkritischen Bereich, sprich unsere Analyse betra
     Wir definieren $Y_i = \sum_{j=1}^{nk} X_{i+j-1}$ als die Anzahl an Einsen im Intervall, das mit $X_i$ beginnt.
     Aus Symmetrie können wir uns zunächst auf ein Intervall $Y_1$ beschränken.
     Mittels additiver Chernoff-Ungleichung kann man zeigen, dass
-    \begin{align}
+    \begin{equation}
         \prob{Y_1 \ge k} < \exp\left(-\frac{\epsilon^2(1-\epsilon)}{3} \cdot \frac{10}{\epsilon^2} \ln n \right)
         = \exp\left(-\! \underbrace{(1-\epsilon)}_{\to 1} \frac{10}{3} \ln n \right).
-    \end{align}
+    \end{equation}
 
     Da die Behauptung nicht nur über ein Intervall~$Y_1$ spricht, sondern über alle $Y_1, \ldots, Y_{N-nk}$, benötigen wir noch einen \emph{union bound}.
     Hierfür betrachten wir die Einzelereignisse $Y_i \ge k$ für alle $i$:
@@ -1309,18 +1309,18 @@ Da $p' = o(1/n)$, ist $p + p' = (1+\epsilon)/n + o(1/n)$ für $n \to \infty$ wei
 Zur einfacheren Illustration nehmen wir $p' = n^{-3/2} = o(1/n)$ an.
 Weiter betrachten wir die ersten und letzten $\ell = 2 n^x$ Knoten des Pfades mit hinreichend großem $x < 1$.
 Es bleibt ein Mittelteil von $M$ Knoten \qq{übrig}:
-\begin{align}
+\begin{equation}
     M = \alpha n - 2\ell =\alpha n - 4 n^x =  n(\alpha - \underbrace{4n^{x - 1}}_{\mathclap{=o(1)\text{, da } x < 1}} )
-\end{align}
+\end{equation}
 
 Im Grenzwert von $n\to\infty$ sind also Präfix und Suffix des Pfades relativ zum Mittelteil $2\ell / M = o(1)$ asymptotisch verschwindet klein.
 
 Es gibt aber $\binom{\ell}{2} \ge n^{2x}$ mögliche Kanten zwischen dem Präfix und dem Suffix.
 Aus $G'$ bekommen wir also erwartet mehr als $n^{2x} p'$ Kanten -- eine reicht, um einen Kreis, der länger als $M$ ist, zu schließen.
 In unserem Beispiel mit $p = n^{-3/2}$ gilt:
-\begin{align}
+\begin{equation}
     n^{2x} p' = n^{2x - 3/2}
-\end{align}
+\end{equation}
 
 Wenn wir also $x = 3/4$ wählen, erwarten wir mindestens eine Kante, die dann den versprochenen Kreis schließt.
 Für $x > 3/4$ existiert eine solche Kante mit hoher Wahrscheinlichkeit.
@@ -1334,17 +1334,17 @@ Zunächst analysieren wir, wie viele Cliquen der Größe $k$ wir erwarten könne
 Beachte, dass $C$ genau dann eine Clique ist, wenn der durch $C \subset V$ induzierte Teilgraph genau $\binom{k}{2}$ Kanten mit $k = |C|$ hat.
 Insbesondere darf der Teilgraph keine \emph{Nichtkanten} enthalten.
 Da jede Kante existieren muss, ist es besonders einfach, die Wahrscheinlichkeit $\prob{\text{$C$ ist Clique}}$ zu beschreiben:
-\begin{align}
+\begin{equation}
     \prob{\text{$C$ ist Clique}} = p^{\binom{|C|}{2}}
-\end{align}
+\end{equation}
 
 Wir müssen nur noch die Anzahl möglicher Cliquen finden.
 Es gibt genau $\binom{|V|}{k}$ verschiedene Knotenteilmengen der Größe~$k$.
 Analog zum Beweis von \cref{lemma:erwartete_kanten_in_gnp} können wir für jede eine Indikatorvariable~$I_C$ annehmen, wobei $\prob{I_C = 1} = \expv{I_C} = p^{\smash{\binom{|C|}{2}}}$.
 Durch die Linearität des Erwartungswertes folgt dann die erwartete Anzahl an Cliquen der Größe~$k$ als
-\begin{align}
+\begin{equation}
     \binom{|V|}{k} p^{k(k-1)/2}.
-\end{align}
+\end{equation}
 
 Wenn wir uns den Spezialfall von \Gn (d.h. \Gnp mit $p = 1/2$) ansehen, lässt sich zeigen, dass es eine Funktion $f(n) \approx 2\ln n$ gibt,
 sodass eine größte Clique in $G \sim \Gn$ mit hoher Wahrscheinlichkeit entweder $f(n)$ oder $f(n)+1$ Knoten hat.
