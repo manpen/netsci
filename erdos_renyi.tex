@@ -558,7 +558,7 @@ Vereinfachend können wir also annehmen, dass der Strom mindestens $k$ Elemente 
         $i \gets i + 1$\;
         $j \gets \text{ziehe uniform aus $[1, i]$}$\;
         \If{$j \le k$}{
-            Ersetze $R[j] \gets x$\;
+            $R[j] \gets x$\;
         }
     }
 
@@ -904,7 +904,7 @@ Wir messen die Güte eines Fork-Join-Algorithmus mit zwei Eigenschaften:
 \end{enumerate}
 
 Wenn wir ausreichend Prozessoren zur Verfügung haben, können wir also $n$ Zahlen in Zeit $\Oh{\log n}$ summieren.
-Zu ähnlichen Ergebnissen kommt man auch in anderen parallelen Maschinenmodellen (z.B. P-Rams).
+Zu ähnlichen Ergebnissen kommt man auch in anderen parallelen Maschinenmodellen (z.B. PRAMs).
 
 \subsection{Rekursives Ziehen}
 In \cref{algo:parallel_sum} haben wir bereits ein gutes Grundgerüst für parallele Algorithmen gesehen:
@@ -1047,7 +1047,7 @@ Dies folgt aus der relativ kleinen Varianz der hypergeometrischen Verteilung fü
 Nur für sehr kleines $k$ laufen wir Gefahr, dass eines der beiden Teilprobleme alle Samples enthält;
 das ist aber zum einen unkritisch (weil $|S|$ trotzdem halbiert wird und so die Dichte $k/N$ steigt) und zum anderen, wie wir gleich sehen werden, für praktische Implementierungen unerheblich.
 
-Wie in \cref{fig:benchmark_gnm_recursive_scale} gezeigt, zeigt eine (sequentielle) Implementierung von \cref{algo:parallel_k_aus_N} ein gutes Skalierungsverhalten.
+Wie in \cref{fig:benchmark_gnm_recursive_scale} zeigt, weist eine (sequentielle) Implementierung von \cref{algo:parallel_k_aus_N} ein gutes Skalierungsverhalten auf.
 Die Laufzeit hängt nur von $\Oh{k}$ ab und steigt nicht für großes $N$ -- sie ist jedoch allgemein recht hoch (das Ziehen einer hypergeometrischen Zufallsvariable ist recht langsam).
 Dies \aside{Rekursionsstopper} ist ein sehr gängiges Problem in komplexen Algorithmen mit einer einfachen Lösung.
 Wir verwenden den aufwendigeren Algorithmus nur so lange, wie es von Vorteil ist.
@@ -1056,7 +1056,7 @@ Der Hybridalgorithmus in \cref{fig:benchmark_gnm_recursive_scale} nutzt für gro
 Für kleine Teilprobleme mit $N < 10\,000$ kommt  -- je nach Dichte $k/N$ -- entweder BitSet oder HashSet zum Einsatz.
 
 \section{Phasenübergänge in \Gnp und \Gnm}
-Die ersten analytischen Ergebnisse von Zufallsgraphen betrafen das Verhalten von kombinatorischen Eigenschaften für verschiedene Dichten (d.h. $m/n$ bei \Gnm bzw $p$ bei \Gnp) im Grenzwert für $n \to \infty$.
+Die ersten analytischen Ergebnisse von Zufallsgraphen betrafen das Verhalten von kombinatorischen Eigenschaften für verschiedene Dichten (d.h. $m/n$ bei \Gnm bzw. $p$ bei \Gnp) im Grenzwert für $n \to \infty$.
 In \aside{Wir nutzen ungerichtete Graphen und setzen $N = \binom n 2$.} diesem Kapitel werden wir uns auf ungerichtete Graphen konzentrieren.
 
 Betrachten wir zunächst \Gnm-Graphen.
@@ -1118,7 +1118,7 @@ Wir wollen uns an dieser Aussage ansehen, wie man die Wahrscheinlichkeit eines s
          & \ge \exp\left(-4\frac{m^2}{n} \right) \quad \text{für hinreichend großes $n$}
     \end{align}
 
-    Damit gilt also $\lim_{n \to \infty} p(n, m(n)) = 1$, falls $m(n) = o(n)$.
+    Damit gilt also $\lim_{n \to \infty} p(n, m(n)) = 1$, falls $m(n) = o(\sqrt{n})$.
 \end{proof}
 
 Beobachte, dass \cref{eq:wkeit_keine_zwei_kanten} eine exakte Wahrscheinlichkeit ist, die wir erst im Nachgang von unten abschätzen.
@@ -1155,7 +1155,7 @@ Für $np > 1$ hingegen sehen wir ausreichend viele Einsen.
 
 \subsection{Tiefensuche auf \Gnp}
 Im Folgenden definieren wir eine klassische Tiefensuche (DFS) auf eine Weise, die für den folgenden Beweis hilfreich ist.
-Implementieren sollte man sie so besser nicht...
+Implementieren sollte man sie so besser nicht\dots
 Während einer DFS können wir die Knotenmenge~$V$ in drei Teilmengen $B$, $S$, $U$ partitionieren:
 \begin{itemize}
     \item \underline Bearbeitete Knoten~$B$ sind Knoten, die besucht wurden und keine Kinder in $U$ mehr haben.
@@ -1168,12 +1168,12 @@ Die Suche terminiert sobald $B = V$ und $S = U = \emptyset$.
 Solange dies noch nicht der Fall ist, wird einer der folgenden Schritte ausführt:
 
 \begin{enumerate}
-    \item Falls $S \ne \emptyset$, sei $v$ der Knoten, der als letztes eingefügt wurde ($S$ ist ein Stack)
+    \item Falls $S \ne \emptyset$, sei $v$ der Knoten, der als letztes eingefügt wurde ($S$ ist ein Stack).
           \begin{enumerate}
-              \item Falls $v$ einen Nachbarn $w \in U$ hat: Entferne $w$ aus $U$ und füge $w$ in $S$ ein
-              \item Falls nicht, ist $v$ vollständig bearbeitet: Entferne $v$ aus $S$ und füge $v$ in $B$ ein
+              \item Falls $v$ einen Nachbarn $w \in U$ hat: Entferne $w$ aus $U$ und füge $w$ in $S$ ein.
+              \item Falls nicht, ist $v$ vollständig bearbeitet: Entferne $v$ aus $S$ und füge $v$ in $B$ ein.
           \end{enumerate}
-    \item Falls $S = \emptyset$, entnehme den ersten Knoten $v \in U$ und füge ihn in $S$ ein
+    \item Falls $S = \emptyset$, entnehme den ersten Knoten $v \in U$ und füge ihn in $S$ ein.
 \end{enumerate}
 
 Um Uneindeutigkeiten zu vermeiden, fixieren wir die Knotenordnung.
@@ -1233,7 +1233,7 @@ Wir befinden uns zunächst im subkritischen Bereich, sprich unsere Analyse betra
 \begin{proof}
     %Beginnen wir mit der ersten Aussage.
     Wir definieren $Y_i = \sum_{j=1}^{nk} X_{i+j-1}$ als die Anzahl an Einsen im Intervall, das mit $X_i$ beginnt.
-    Aus Symmetrie können wir uns zunächst auf ein Intervall $Y_1$ beschränken.
+    Aus Symmetrie können wir uns zunächst auf die Anzahl $Y_1$ beschränken.
     Mittels additiver Chernoff-Ungleichung kann man zeigen, dass
     \begin{equation}
         \prob{Y_1 \ge k} < \exp\left(-\frac{\epsilon^2(1-\epsilon)}{3} \cdot \frac{10}{\epsilon^2} \ln n \right)
@@ -1317,7 +1317,7 @@ Im Grenzwert von $n\to\infty$ sind also Präfix und Suffix des Pfades relativ zu
 
 Es gibt aber $\binom{\ell}{2} \ge n^{2x}$ mögliche Kanten zwischen dem Präfix und dem Suffix.
 Aus $G'$ bekommen wir also erwartet mehr als $n^{2x} p'$ Kanten -- eine reicht, um einen Kreis, der länger als $M$ ist, zu schließen.
-In unserem Beispiel mit $p = n^{-3/2}$ gilt:
+In unserem Beispiel mit $p' = n^{-3/2}$ gilt:
 \begin{equation}
     n^{2x} p' = n^{2x - 3/2}
 \end{equation}
