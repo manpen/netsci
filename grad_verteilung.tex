@@ -420,10 +420,10 @@ Konkret fragen wir uns, wann ein Knoten eingefügt werden musste, s.d. er höchs
 
 Wir erwarten also, dass Knoten, die ab dem Zeitpunkt $t_i > (\nu / k)^{1/\beta} T$ eingefügt wurden, einen Grad von höchsten $k$ haben.
 Davon gibt es $T - (\nu / k)^{1/\beta} T$ viele!
-Sei $X$ nun ein zum Zeitpunkt~$T$ uniform gewählter Knoten und $P(k) = \prob{\deg_T(X) \le k}$ die kumulative Verteilungsfunktion.
+Sei $X$ nun der Grad eines zum Zeitpunkt~$T$ uniform gewählten Knotens und $P(k) = \prob{X \le k}$ die kumulative Verteilungsfunktion.
 Dann gilt:
 \begin{align}
-    P(k) & = \prob{\deg_T(X) \le k} = \frac{T - (\nu / k)^{1/\beta} T}{n_T} = \frac{T - (\nu / k)^{1/\beta} T}{n_0 + T} \\
+    P(k) & = \prob{X \le k} = \frac{T - (\nu / k)^{1/\beta} T}{n_T} = \frac{T - (\nu / k)^{1/\beta} T}{n_0 + T} \\
          & \stackrel{\mathclap{T \ggg n_0}}{\approx} \quad\! \frac{T - (\nu / k)^{1/\beta} T}{T} = 1 - (\nu / k)^{1/\beta}
 \end{align}
 
@@ -439,7 +439,7 @@ Hierbei sind $2 \nu^2$ konstante Vorfaktoren.
 Durch Parametervergleich ergibt sich also eine Power-Law-Verteilung mit Exponent $\gamma = 3$.
 
 \section{Generieren von BA-Graphen}
-BA-Graphen lassen sich mit einem überraschend einfachen Generator in Zeit linear in der Ausgabegröße erzeugen.
+BA-Graphen lassen sich mit einem überraschend einfachen Generator in in der Ausgabegröße linearer Zeit erzeugen.
 Das Grundgerüst des Algorithmus~\cite{batagelj2005efficient} folgt dem BA-Modell.
 Wir unterhalten eine Datenstruktur, die den wachsenden Graphen repräsentiert, und fügen dann iterativ Kanten hinzu.
 
@@ -459,7 +459,7 @@ Daher gehen wir im Folgenden davon aus, dass der Startgraph einfach ist (d.h., k
 	\KwOut{Kantenliste $E$}
 	\SetKwFunction{pushback}{pushBack}
 
-	Allokiere leeres Array $E$ mit Kapazität $2(|E_0| + \nu n_0)$\;
+	Allokiere leeres Array $E$ mit Kapazität $2(|E_0| + \nu N)$\;
 	\ForEach{$\set{u,v} \in E_0$}{
 		E.\pushback{$u$}\;
 		E.\pushback{$v$}\;
@@ -468,7 +468,7 @@ Daher gehen wir im Folgenden davon aus, dass der Startgraph einfach ist (d.h., k
 
 	\For{$1 \le i \le N$}{
 		\For{$1 \le j \le \nu$}{
-			$x \gets $ uniform zufällig aus $E[n_0 + \nu(i-1)]$\;
+			$x \gets $ uniform zufällig aus $E[1..2(|E_0| + \nu(i-1))]$\;
 			E.\pushback{$x$}\;
 			E.\pushback{$n_0 + i$}\;
 			Gebe Kante $\set{x,n_0+i}$ aus und fahre fort\;
@@ -540,12 +540,12 @@ In der Skizze korrespondiert dies zu der Situation, dass alle Kanten auf der rec
 Leider ist der einzige Wert, für den wir garantieren können, dass es zu keinerlei Abhängigkeiten kommt, $p=1$; nicht hilfreich.
 Daher erweitern wir unseren Algorithmus um einen Fallback.
 
-Bevor die $p$ Einträge berechnet werden, schreiben wir an die Stellen $E[\ell..\ell+p] \gets \bot$ einen besonderen Wert, der anzeigt, dass diese Zellen keine valide Kante enthält.
-Dann ziehen wir unabhängig zufällig für jeden der neuen Einträge $1, \ldots, p$ den Index~$s_i$, von dem gelesen werden soll.
+Bevor die $p$ Einträge berechnet werden, schreiben wir an die Stellen $E[\ell+1..\ell+p] \gets \bot$ einen besonderen Wert, der anzeigt, dass diese Zellen keine valide Kante enthält.
+Dann ziehen wir unabhängig zufällig für jeden der $p$ neuen Einträge den Index~$s_i$, von dem gelesen werden soll.
 Es gibt zwei Möglichkeiten:
 \begin{itemize}
     \item Falls $s_i \le \ell$, gibt es keine Abhängigkeiten.
-          Wir können $E[s_i]$ also sicher lesen, die neue Kante berechnen, und das Ergebnis in $E[\ell + i]$ schreiben.
+          Wir können $E[s_i]$ also sicher lesen, die neue Kante berechnen und das Ergebnis in $E[\ell + i]$ schreiben.
     \item Falls $s_i > \ell$, benötigen wir einen Wert, der gerade erst parallel berechnet wird.
           Wir lesen nun wiederholt von $E[s_i]$ bis wir einen Wert finden, der nicht $\bot$ ist.
           Dann berechnen wir unseren eigenen Eintrag und schreiben ihn nach $E[\ell +i]$.
@@ -554,7 +554,7 @@ Es gibt zwei Möglichkeiten:
 
 Um die Analyse einfach zu halten, nehmen wir an, dass die Prozessoren alle Standardoperation in konstanter Zeit ausführen können.
 Weiter können wir am Ende jeder Runde in konstanter Zeit feststellen, ob alle Prozessoren fertig sind.
-Für diese Annahmen ist das sog. CRCW-PRAM Modell ein geeignetes Maschinenmodell.
+Für diese Annahmen ist das sog. CRCW-PRAM-Modell ein geeignetes Maschinenmodell.
 
 Die schlechte Nachricht ist leider:
 Der Algorithmus hat ein furchtbares Verhalten im worst case.
@@ -592,10 +592,10 @@ In der ersten Epoche starten wir mit $e_1 = \ell$ Kanten und fügen $\sqrt{\ell}
 In der nächsten Epoche haben wir dann schon $e_2 = \ell + \sqrt{\ell}$ und können schon $\sqrt{\ell + \sqrt{\ell}}$ neue Ergebnisse erzielen.
 Es gilt also:
 \begin{equation}
-    e_i = \begin{cases}
-        \ell                     & \text{falls } i = 1 \\
-        e_{i-1} + \sqrt{e_{i-1}} & \text{sonst}
-    \end{cases}
+    e_i = \begin{cases*}
+        \ell                     & falls $i = 1$, \\
+        e_{i-1} + \sqrt{e_{i-1}} & sonst.
+    \end{cases*}
 \end{equation}
 
 Da jede Epoche in Erwartung eine Laufzeit von $\Oh{1}$ hat, hängt also die Laufzeit des Gesamtalgorithmus von der Anzahl notwendiger Epochen ab.
@@ -615,16 +615,16 @@ Da jede Epoche in Erwartung eine Laufzeit von $\Oh{1}$ hat, hängt also die Lauf
     Es folgt:
 
     \begin{align}
-        k & \le \sum_{i=0}^{\ld(m/e_1)} \sqrt{2^i e_1}      \\
-          & = \sqrt{e_1} \sum_{i=0}^{\ld e_1} 2^{i/2}       \\
-          & \le \sqrt{e_1} 2 \sum_{i=1}^{(1+\ld e_1)/2} 2^i \\
+        k & \le \smashoperator[r]{\sum_{i=0}^{\ld(m/e_1)}} \sqrt{2^i e_1}      \\
+          & = \sqrt{e_1} \smashoperator[r]{\sum_{i=0}^{\ld e_1}} 2^{i/2}       \\
+          & \le \sqrt{e_1} 2 \smashoperator[r]{\sum_{i=1}^{(1+\ld e_1)/2}} 2^i \\
           & = \sqrt{e_1} \Oh{2^{2 + (\ld e_1) / 2}}         \\
           & = \sqrt{e_1} \Oh{\sqrt{e_1}} = \Oh{e_1}
     \end{align}
 \end{proof}
 
 Wir können also mit einem sequentiellen Algorithmus starten und in Zeit $\Oh{\sqrt m}$ einen Graphen generieren, der hinreichend groß ist, um in den parallelen Betrieb zu wechseln.
-Ab dann ziehen wir die verbleibenden $m - \sqrt{m}$ Kanten in erwarteter $\Oh{\sqrt m}$ Zeit.
+Ab dann ziehen wir die verbleibenden $m - \sqrt{m}$ Kanten in erwarteter Zeit $\Oh{\sqrt m}$.
 
 \subsubsection{Abhängigkeiten beherrschen}\label{subsec:ba_sanders}
 Im vorherigen Kapitel haben wir eine allgemeine Technik gesehen, um sequentielle Algorithmen mit geeigneten zufälligen Zugriffsmustern zu parallelisieren.
