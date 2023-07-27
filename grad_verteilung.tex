@@ -48,11 +48,11 @@ Die Analyse für Grade läuft analog, allerdings nicht für $\binom n 2$ Einträ
 Der Grad~$\deg(u)$ eines Knotens~$u$ ist also ebenfalls binomialverteilt:
 \begin{equation}
     \prob{\deg(u) = k} =
-    \underbrace{\binom{n-1}{k}}_{\substack{\text{Anzahl an möglichen} \\ \text{Nachbarschaften}}}
-    \ \cdot \
-    \underbrace{p^k}_{\text{Existenz der $k$ Kanten}}
-    \ \cdot \
-    \underbrace{(1-p)^{n-1-k}}_{\substack{\text{Abwesenheit der} \\ \text{restlichen Kanten}}}
+    \underbrace{\binom{n-1}{k}}_{\mathclap{\substack{\text{Anzahl an} \\ \text{möglichen} \\ \text{Nachbarschaften}}}}
+    \ \cdot \ %
+    \underbrace{p^k\mathstrut}_{\mathclap{\substack{\text{Existenz} \\ \text{der $k$} \\ \text{Kanten}}}}
+    \ \cdot \ %
+    \underbrace{(1-p)^{n-1-k}}_{\mathclap{\substack{\text{Abwesenheit der} \\ \text{restlichen Kanten}}}}
     \label{eq:gradverteilung_gnp}
 \end{equation}
 Daher gilt also $\expv{\deg(u)} = (n-1)p$.
@@ -411,12 +411,12 @@ Die Intuition hierfür ist folgende:
 Wir wissen, dass wir zum Zeitpunkt~$T$ insgesamt~$T$ zufällige Knoten hinzugefügt haben, und können annehmen, dass wir das in einem regelmäßigen Takt getan haben.
 Dann müssen wir nur noch extrapolieren, welchen Grad wir für jeden dieser Knoten zu Zeitpunkt $T$ erwarten.
 Konkret fragen wir uns, wann ein Knoten eingefügt werden musste, s.d. er höchsten Grad $k$ hat:
-\begin{align}
-                    &  & d(T)                                   & < k         \\
-    \Leftrightarrow &  & \nu \left(\frac{T}{t_i}\right)^\beta   & < k         \\
-    \Leftrightarrow &  & \frac{\nu}{k} T^\beta                  & < t_i^\beta \\
-    \Leftrightarrow &  & \left(\frac{\nu}{k}\right)^{1/\beta} T & < t_i
-\end{align}
+\begin{alignat}{2}
+                     &  & d(T)                                   & < k         \\
+    \Leftrightarrow~ &  & \nu \left(\frac{T}{t_i}\right)^\beta   & < k         \\
+    \Leftrightarrow~ &  & \frac{\nu}{k} T^\beta                  & < t_i^\beta \\
+    \Leftrightarrow~ &  & \left(\frac{\nu}{k}\right)^{1/\beta} T & < t_i
+\end{alignat}
 
 Wir erwarten also, dass Knoten, die ab dem Zeitpunkt $t_i > (\nu / k)^{1/\beta} T$ eingefügt wurden, einen Grad von höchsten $k$ haben.
 Davon gibt es $T - (\nu / k)^{1/\beta} T$ viele!
@@ -719,10 +719,10 @@ Dabei ist unerheblich, wie groß das zugrunde liegende Objekt (hier: Knotenmenge
 Wir können also die Verteilung umskalieren, also z.B. die Knotenanzahl um einen Faktor $a$ vergrößern.
 Dann gilt für entsprechende Zufallsvariable $X$ und $X'$:
 
-\begin{align}
-    \prob{X = k}   &                                                                                           & \propto k^{-\gamma}  \label{eq:prop-scalefree-1} \\
-    \prob{X' = ak} & \propto (ak)^{-\gamma} = \underbrace{a^{-\gamma}}_{\text{unabhängig von $k$}} k^{-\gamma} & \propto k^{-\gamma}\label{eq:prop-scalefree-2}
-\end{align}
+\begin{alignat}{2}
+    \prob{X = k}   &                                                                                                                       && \propto k^{-\gamma}  \label{eq:prop-scalefree-1} \\
+    \prob{X' = ak} & \propto (ak)^{-\gamma} = \underbrace{a^{-\gamma}}_{\mathclap{\substack{\text{von $k$} \\ \text{unabhängig}}}} \cdot\ k^{-\gamma} && \propto k^{-\gamma}\label{eq:prop-scalefree-2}
+\end{alignat}
 
 Beobachte, dass die Proportionalität in den \cref{eq:prop-scalefree-1,eq:prop-scalefree-2} jeweils andere Normierungen verbirgt.
 
