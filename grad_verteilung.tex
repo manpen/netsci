@@ -532,8 +532,8 @@ In der Skizze korrespondiert dies zu der Situation, dass alle Kanten auf der rec
         \node[inner sep=0, minimum height=8mm, minimum width=120mm, draw, anchor=south west] at (0,0) {};
 
         \draw[thick, red] (99mm, -3mm) to ++(0, 14mm);
-        \draw[decorate, decoration = {brace, mirror}] (0, -5mm) to node[below] {Fertiggestellt} ++(98mm, 0);
-        \draw[decorate, decoration = {brace, mirror}] (100mm, -5mm) to node[below] {Parallel} ++(20mm, 0);
+        \draw[brace down] (0, -5mm) to node[below=1ex] {Fertiggestellt} ++(98mm, 0);
+        \draw[brace down] (100mm, -5mm) to node[below=1ex] {Parallel} ++(20mm, 0);
 
         \foreach \x/\l in {0/$1$, 96/$\ell$, 117/$\ell+p$} {
                 \path[draw, ->] (\x mm + 1.5mm, 12mm) to ++(0, -3mm);

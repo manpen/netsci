@@ -925,8 +925,8 @@ Tatsächlich liefert aber die erste Variante einfachere Algorithmen, die auch ke
     \begin{center}
         \begin{tikzpicture}
             \foreach \x in {-8, -4, -2, 3, 5, 7, 9} {
-                    \node[inner sep=0, minimum size=1em, fill=black!20, anchor=west] at (\x em, 0) {};
-                }
+                \node[inner sep=0, minimum size=1em, fill=black!20, anchor=west] at (\x em, 0) {};
+            }
 
             \node[draw, minimum height=1em, minimum width=20em] at (0,0) {};
             \node[anchor=north] at (-9.5em, -0.5em) {1};
@@ -938,15 +938,15 @@ Tatsächlich liefert aber die erste Variante einfachere Algorithmen, die auch ke
 
             \path[draw, thick, dashed] (0, 2em) to (0, -3.5em);
 
-            \draw[decorate, decoration = {brace}] (-9.75em,3em) to node[above] {$k$} ++(19.5em,0);
-            \draw[red,  decorate, decoration = {brace}] (-9.5em,1em) to node[above] {$k_1$} ++(9em,0);
-            \draw[blue, decorate, decoration = {brace}] ( 0.5em,1em) to node[above] {$k_2$} ++(9em,0);
+            \draw[brace] (-9.75em,3em) to node[above=1ex] {$k$} ++(19.5em,0);
+            \draw[brace, red] (-9.5em,1em) to node[above=1ex] {$k_1$} ++(9em,0);
+            \draw[brace, blue] ( 0.5em,1em) to node[above=1ex] {$k_2$} ++(9em,0);
 
             \node[anchor=east] at (-12em, 1.8em) {zufällig:};
 
-            \draw[decorate, decoration = {brace, mirror}] (-9.75em,-4em) to node[below] {$N$} ++(19.5em,0);
-            \draw[red,  decorate, decoration = {brace, mirror}] (-9.5em,-2em) to node[below] {$N / 2$} ++(9em,0);
-            \draw[blue, decorate, decoration = {brace, mirror}] ( 0.5em,-2em) to node[below] {$N / 2$} ++(9em,0);
+            \draw[brace down] (-9.75em,-4em) to node[below=1ex] {$N$} ++(19.5em,0);
+            \draw[brace down, red] (-9.5em,-2em) to node[below=1ex] {$N / 2$} ++(9em,0);
+            \draw[brace down, blue] ( 0.5em,-2em) to node[below=1ex] {$N / 2$} ++(9em,0);
 
             \node[anchor=east] at (-12em, -2.8em) {deterministisch:};
 
