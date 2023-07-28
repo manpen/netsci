@@ -1,5 +1,5 @@
 Mit dem Havel-Hakimi-Generator können wir nun für jede graphische Sequenz einen Graphen als Zeugen für diese Sequenz erzeugen.
-Die generierten Graphen sind aber zum einen deterministisch, d.h., für eine fixierte Sequenz~$\degseq$ wird immer derselbe Graph erzeugt, und zum anderen pathologisch (extrem viele Dreiecke, extrem hohe Grad Assortativität \ldots).
+Die generierten Graphen sind aber zum einen deterministisch, d.h., für eine fixierte Sequenz~$\degseq$ wird immer derselbe Graph erzeugt, und zum anderen pathologisch (extrem viele Dreiecke, extrem hohe Grad-Assortativität \ldots).
 Das Fixed-Degree-Sequence-Model (FDSM)\aside{ Fixed-Degree-Sequence-Model (FDSM)} schlägt daher vor, dass wir erst den Havel-Hakimi-Algorithmus ausführen und dann den Graphen durch viele zufällige kleine Änderungen lokal perturbieren.
 Es besteht die begründete Hoffnung, dass wenn der hierdurch implizierte Irrweg lang genug ist, wir dann schlussendlich einen (fast) uniformen Graph aus $\Gd$ produzieren.
 
@@ -15,11 +15,11 @@ Das ist sicherlich auch dem geschuldet, dass er sehr einfach zu implementieren i
 Anders als bei den meisten Modellen gibt es signifikante funktionale Unterschiede zwischen gerichteten und ungerichteten Graphen.
 Edge-Switching funktioniert aber mit noch ausgefalleneren Graphklassen (siehe z.B. \cite{carstens_2017}), z.B.
 \begin{itemize}
-    \item ungerichtete einfache Graphen mit fester Gradsequenz
-    \item ungerichtete einfache zusammenhängende Graphen  mit fester Gradsequenz \cite{DBLP:journals/compnet/VigerL16}
+    \item ungerichtete, einfache Graphen mit fester Gradsequenz
+    \item ungerichtete ,einfache zusammenhängende Graphen  mit fester Gradsequenz \cite{DBLP:journals/compnet/VigerL16}
     \item gerichtete Graphen  mit fester Gradsequenz
-    \item gerichtete einfache Graphen (mit einfacher Modifikation)  mit fester Gradsequenz
-    \item Graphen mit fester joint-degree sequence~\cite{DBLP:conf/alenex/StantonP11} (d.h., die Anzahl der Kanten zwischen Knoten mit Graden~$d_1$ bzw.~$d_2$ wird für alle Paare $(d_1, d_2)$ definiert)
+    \item gerichtete, einfache Graphen (mit einfacher Modifikation)  mit fester Gradsequenz
+    \item Graphen mit fester Joint-Degree-Sequence~\cite{DBLP:conf/alenex/StantonP11} (d.h., die Anzahl der Kanten zwischen Knoten mit Graden~$d_1$ bzw.~$d_2$ wird für alle Paare $(d_1, d_2)$ definiert)
     \item bipartite Graphen
     \item weitere Klassen bei Modifikation möglich
 \end{itemize}
@@ -50,7 +50,7 @@ zu ersetzen versuchen.
 \section{Edge-Switching auf unbeschränkten Matrizen}\label{sec:edge_switching_irreduzibel}
 Bevor wir analysieren, ob Edge-Switching eine uniforme Verteilung erzeugt, sollten wir uns eine viel grundlegendere Frage stellen:
 Können wir von einem beliebigen Startpunkt aus überhaupt jeden anderen Graphen erzeugen?
-Formal fragen wir also, ob der Übergangsgraph stark zusammenhängend ist (analog: Ist die Markov-Kette irreduzible?).
+Formal fragen wir also, ob der Übergangsgraph stark zusammenhängend ist (analog: Ist die Markov-Kette irreduzibel?).
 Die Antwort wird ein klares und unmissverständliches \qq{It depends \dots} sein.
 
 \bigskip
@@ -152,7 +152,7 @@ Da wir in der Praxis jedoch immer nur endlich lange Irrwege ausführen können, 
 
 Zunächst wiederholen wir ein paar Definition aus den Anfangstagen des Informatikstudiums.
 Hierfür stellen wir eine Markov-Kette~$\mathcal M$ oft als Tupel $(G, P)$ mit gerichteten Graph $G = (V, E)$ dar, wobei $P$ eine stochastische $|V| \times |V|$-Matrix ist (d.h., jede Zeilensumme ist $1$) und $(i, j) \in E \Leftrightarrow P_{ij} > 0$.
-Gegeben eine Startverteilung $\pi \in [0, 1]^n$ (Zeilenvektor) entspricht das Vektormatrixprodukt $\pi P$ der Verteilung nach einem Schritt und $\pi P^k$ der Verteilung nach $k$ Schritten.
+Gegeben einer Startverteilung $\pi \in [0, 1]^n$ (Zeilenvektor) entspricht das Vektormatrixprodukt $\pi P$ der Verteilung nach einem Schritt und $\pi P^k$ der Verteilung nach $k$ Schritten.
 
 \begin{definition}
     Sei $\mathcal M = (G, P)$ eine Markov-Kette.
@@ -162,8 +162,8 @@ Gegeben eine Startverteilung $\pi \in [0, 1]^n$ (Zeilenvektor) entspricht das Ve
     \end{equation}
 \end{definition}
 
-Wenn eine Markov-Kette eine Grenzverteilung hat, ist es egal wo wir starten:
-Irgendwann \qq{vergessen} wir die Startverteilung\dots
+Wenn eine Markov-Kette eine Grenzverteilung hat, ist es egal, wo wir starten:
+Irgendwann \qq{vergessen} wir die Startverteilung\dots{}
 Jetzt wäre noch wichtig, dass wir überall \qq{raus} kommen können.
 Solche Markov-Ketten nennen wir ergodisch:
 
@@ -175,7 +175,7 @@ Es kann nun gezeigt werden, dass eine Markov-Kette genau dann ergodisch ist, wen
 Ein Kette heißt \emph{aperiodisch}, wenn für jeden Knoten $v$ der größte gemeinsame Teiler der Längen aller Pfade von $v$ nach $v$ den Wert~$1$ hat.
 
 \begin{theorem}
-    Edge-Switching impliziert für u.\,A. (i) einfache, ungerichtete und (ii) gerichtete Graphen mit möglichen Eigenschleifen eine ergodische Markov-Kette.
+    Edge-Switching impliziert für u.\,a. (i) einfache, ungerichtete und (ii) gerichtete Graphen mit möglichen Eigenschleifen eine ergodische Markov-Kette.
 \end{theorem}
 
 \begin{proof}
