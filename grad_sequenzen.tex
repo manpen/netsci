@@ -1048,10 +1048,11 @@ Auf dieser Basis können wir nun die Anzahl der Kinder von höheren internen Int
     \end{equation}
 \end{proof}
 
-Mit Hilfe dieser beiden Lemmata folgt, dass für ein $\ell \ge k \ge 3$ die Anzahl der Nachfahren auf Level $\ell -k$ eines internen Intervalls $\rng{\ell}{j}$ größer als
+Aus diesen beiden Lemmata folgt, dass für ein $\ell \ge k \ge 3$ die Anzahl der Nachfahren auf Level $\ell -k$ eines internen Intervalls $\rng{\ell}{j}$ größer als
 \def\rddots#1{\cdot^{\cdot^{\cdot^{#1}}}}
 \begin{equation}
-    \left. 2^{2^{\rddots{2^m}}} \right\} \text{$k$ mal}
+    2^{2^{\cdot^{\cdot^{\cdot^{2^m}}}}}
+    \raisebox{\depth}{$\Bigr\}k$-mal}
 \end{equation}
 ist, d.h. $2^{2^m}$ für $k=3$ und $2^{2^{2^m}}$ für $k=4$.
 Diese untere Schranke an die Anzahl der Nachfahren übersetzt sich dann wiederum in eine obere Schranke $\Oh{\lgs(n)}$ der Tiefe.

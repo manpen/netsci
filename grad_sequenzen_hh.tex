@@ -1,6 +1,6 @@
 \section{Charakterisierungen graphischer Sequenzen}
 Wir können graphische Gradsequenzen anhand mehrerer Eigenschaften charakterisieren, wobei das Erd\H{o}s-Gallai-Theorem sowie das Havel-Hakimi-Theorem wohl die bekanntesten Ansätze darstellen.
-Das Erd\H{o}s-Gallai-Theorem ist nicht-konstruktiv und kommt daher in der Praxis besonders zum Testen auf graphische Sequenzen zum Einsatz.
+Das Erd\H{o}s-Gallai-Theorem ist nicht konstruktiv und kommt daher in der Praxis besonders zum Testen auf graphische Sequenzen zum Einsatz.
 Aus dem Havel-Hakimi-Theorem hingegen können wir einen Graphengenerator konstruieren.
 Die Intuition beider Ansätze ist aber ähnlich.
 
@@ -12,8 +12,8 @@ Die Intuition beider Ansätze ist aber ähnlich.
     \end{equation}
     Dann ist~$\degseq$ genau dann graphisch, wenn folgende beiden Bedingungen erfüllt sind:
     \begin{enumerate}
-        \item Die Summe der Grade $\sum_{i=1}^n d_i$ ist gerade (durch 2 teilbar)
-        \item Für alle $1 \le k \le n$ gilt $\sum_{i=1}^k d_i \le k(k-1) + \sum_{i=k+1}^n \min(k, d_i)$\qedhere
+        \item Die Summe der Grade $\sum_{i=1}^n d_i$ ist gerade (durch 2 teilbar).
+        \item Für alle $1 \le k \le n$ gilt $\sum_{i=1}^k d_i \le k(k-1) + \sum_{i=k+1}^n \min(k, d_i)$. \qedhere
     \end{enumerate}
 \end{theorem}
 
@@ -22,7 +22,7 @@ Die Intuition beider Ansätze ist aber ähnlich.
     Analysiere dessen Laufzeit.
 \end{exercise}
 
-Im Folgenden diskutieren wir kurz, weshalb das Erd\H{o}s-Gallai-Theorem eine notwendige Bedingung formuliert (d.h. jede graphisch Sequenz erfüllt das Theorem).
+Im Folgenden diskutieren wir kurz, weshalb das Erd\H{o}s-Gallai-Theorem eine notwendige Bedingung formuliert (d.h., jede graphisch Sequenz erfüllt das Theorem).
 Die Gegenrichtung (d.h., jede erfüllende Gradsequenz ist graphisch) ist deutlich komplexer und wird hier nicht behandelt.
 
 Die Anforderung, dass die Gradsumme gerade sein muss, folgt trivial aus dem Handshaking-Lemma:
