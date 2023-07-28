@@ -243,7 +243,7 @@ z.B. ein ungeordnetes Array~$A$, in dem jede Kante genau einmal gespeichert wird
 Bei der Implementierungen müssen wir uns aber bei Updates minimal geschickt anstellen.
 Für ein Update der Kante $(u,v)$ benötigen wir den entsprechenden Index~$i$ in $A$ mit $A[i] = (u,v)$;
 diesen müssen wir glücklicherweise nicht suchen, da wir ausnutzen können, dass wir nur Kanten ersetzen, die wir vorher gezogen haben.
-Wir merken uns den Index einfach \dots
+Wir merken uns den Index einfach \dots{}
 Mit diesen wenigen Tricks können wir jeden Edge-Switch in konstanter Zeit ausführen.
 %Für große $n$ und dünne Graphen kann allerdings der Speicherverbrauch von $\Theta(n^2)$ Bits ein echtes Problem werden.
 
@@ -267,7 +267,7 @@ In diesem Setting können wir einen Edge-Switch mit einer erwartet konstanten La
 \subsection{Mit Hashsets}
 Wie wir bereits gesehen haben, sind Adjazenzmatrizen für Edge-Switching auf dichten Graphen eine gute Wahl (in diesem Fall können wir sogar auf die Kantenliste verzichten! Warum?)
 Für dünne Graphen kann aber der Speicherverbrauch von $\Theta(n^2)$ Bits problematisch werden.
-Wir können daher ein HashSet nutzen, das alle Kanten abspeichert (für ungerichtete Graphen in kanonischer gerichteter Form).
+Wir können daher ein Hashset nutzen, das alle Kanten abspeichert (für ungerichtete Graphen in kanonischer gerichteter Form).
 
 Im Vergleich zu unserer Diskussion von \emph{Adjazenzmatrizen} können wir sogar gänzlich darauf verzichten, die Kantenliste zu samplen, wenn wir ein Hashset mit offener Adressierung nutzen.
 Da sich die Anzahl der Kanten während Edge-Switching nicht ändert, ist es einfach, einen konstanten Load-Factor des Hashsets zu garantieren.
