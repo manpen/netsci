@@ -76,7 +76,7 @@ erst kommen alle Elemente, für die Prozessor~0 im Ergebnis zuständig ist, dann
 Hierzu führt Prozessor~$\ell$ das folgende Programm aus:
 
 \begin{enumerate}
-    \item Sende jedes lokale Element der Eingabe~$x_i$ zu einem Prozessor, der unabhängig und uniform zufällig gewählt wurde.
+    \item Sende jedes lokale Element~$x_i$ der Eingabe zu einem Prozessor, der unabhängig und uniform zufällig gewählt wurde.
     \item Empfange alle Elemente $T = [t_0, \ldots, t_{k_\ell-1}]$.
           \iffalse\item Berechne die Präfixsumme $\Delta_\ell = \sum_{i=0}^{\ell - 1} k_i$.
           Der Wert $\Delta_\ell$ entspricht dann der Position des ersten Elements von Prozessor~$\ell$ in der Ausgabe.\fi
@@ -147,7 +147,7 @@ Die Korrektheit des Algorithmus folgt aus dem folgendem Theorem.
 
 Am längsten benötigt der Algorithmus für das zufällige Versenden der Elemente und das lokale Permutieren der empfangen Elemente.
 Die Laufzeit des ersten Schrittes ist linear in der größten Partition, die nach Voraussetzung auf $\Theta(n / P)$ beschränkt ist.
-Das lokale Permutieren benötigt dann Zeit $\max_\ell k_i$, d.h. linear in der Größe der größten empfangenen Partition.
+Das lokale Permutieren benötigt dann Zeit $\max_\ell k_\ell$, d.h. linear in der Größe der größten empfangenen Partition.
 
 Da die Prozessoren unabhängig uniform gewählt werden, handelt es sich also um ein klassisches Gedankenexperiment, bei dem $n$~Bälle auf $P$~Eimer verteilt werden sollen.
 Man kann daher mit einem Chernoff-Argument zeigen, dass für $\beta > 0$ gilt:
