@@ -679,8 +679,8 @@ Insgesamt benötigen wir $i-1$ Verweise von gerade auf gerade, gefolgt von einem
 
 Die erwartete Anzahl der Runden der letzten Kante ist also geometrisch mit Erfolgswahrscheinlichkeit $1/2$ verteilt.
 In Erwartung sind wir für diese Kante nach $2$ Runden fertig.
-Mittels Chernoff-Ungleichung können wir die Wahrscheinlichkeit, mehr als $\beta \log n$ Runden zu benötigen, für geeignetes~$\beta$ auf $n^{-2}$ beschränken.
-Durch union-bound folgt dann, dass der Algorithmus mit hoher Wahrscheinlichkeit eine Laufzeit von $\Oh{\log n}$ hat.
+Mittels Chernoff-Ungleichung können wir die Wahrscheinlichkeit, mehr als $\beta \log \nu N$ Runden zu benötigen, für geeignetes~$\beta$ auf $(\nu N)^{-2}$ beschränken.
+Durch Union-Bound folgt dann, dass der Algorithmus mit hoher Wahrscheinlichkeit eine Laufzeit von $\Oh{\log \nu N}$ hat.
 
 \subsubsection{Abhängigkeiten ausschließen}
 Der eben vorgestellte Algorithmus kann auch so abgeändert werden, dass es zu keinerlei expliziten Abhängigkeiten kommt.
@@ -737,13 +737,20 @@ Das $k$-te Moment einer kontinuierlichen (Grad-)Verteilung $p(d)$ ist definiert 
 wobei $X \follows p$ eine nach $p$-verteilte Zufallsvariable ist.
 
 Für $k=1$ erhalten wir also den Erwartungswert, $\langle d^2 \rangle$ ist essentiell in der Berechnung der Varianz $\langle d^2 \rangle - \langle d \rangle^2$, $\langle d^3 \rangle$ beeinflusst die Schiefe (skewness) et cetera.
-Bezogen auf Power-Law-Verteilungen ergibt sich:
+Bezogen auf Power-Law-Verteilungen ergibt sich für $\gamma \neq k + 1$
 \begin{align}
     \langle d^k \rangle
-     & = \int_\dmin^\dmax d^k C d^{-\gamma} \intd d
-    = C \left[ \frac{1}{k + 1 - \gamma} d^{k + 1 -\gamma}\right]_\dmin^\dmax    \\
-     & = C \frac{\dmax^{k + 1 -\gamma} - \dmin^{k + 1 -\gamma}}{k + 1 - \gamma}
+    & = \int_\dmin^\dmax d^k C d^{-\gamma} \intd d
+    = C \left[ \frac{1}{k + 1 - \gamma} \cdot d^{k + 1 -\gamma}\right]_\dmin^\dmax    \\
+    & = C \cdot \frac{\dmax^{k + 1 -\gamma} - \dmin^{k + 1 -\gamma}}{k + 1 - \gamma}
 \end{align}
+und für $\gamma = k + 1$
+\begin{equation}
+	\langle d^k \rangle
+	= \int_\dmin^\dmax d^k C d^{-\gamma} \intd d
+	= \int_\dmin^\dmax \frac{C}{d} \intd d
+	= C ( \ln \dmax - \ln \dmin ).
+\end{equation}
 
 Das Verhalten des $k$-ten Moments für $n \to \infty$ (und dadurch $\dmax \to \infty$) wird also maßgeblich durch $k + 1 - \gamma$ beschrieben:
 \begin{itemize}
