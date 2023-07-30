@@ -303,7 +303,7 @@ Als Extrembeispiel betrachten wir für großes $k \ggg 0$ die folgende Gradseque
     \right)
 \end{equation}
 
-Hierbei handelt es sich um eine sog. Threshold-Sequenz -- eine Gradsequenz, bei der alle einfache Graph isomorph sind (d.h. wenn wir die Knotenindizes löschen, sind alle Graphen identisch).
+Hierbei handelt es sich um eine sog. Threshold-Sequenz -- eine Gradsequenz, bei der alle einfache Graph isomorph sind (d.h., wenn wir die Knotenindizes löschen, sind alle Graphen identisch).
 Die hier beschriebene Sequenz erzeugt einen Graph mit einer Clique aus $k$ Knoten, wobei einer der Knoten~$u$ noch zu Knoten~$v$ verbunden ist.
 
 Das Problem besteht nun darin, dass das Blatt~$v$ genau zu Knoten~$u$ verbunden sein muss.
@@ -666,6 +666,7 @@ Wir übernehmen auch die Notation $a \div b = \lfloor a / b \rfloor$.
 
 \bigskip
 
+\noindent
 Auf praktischen Computern erhalten wir (Pseudo-)Zufallszahlen in der Regel in der Größe eines Maschinenwortes, oft mit $L = 32$ oder $64$ Bit.
 Wir können dies entweder als $L$~unabhängige Zufallsbits interpretieren, oder z.B. als eine vorzeichenlose Ganzzahl~$X$, die uniform auf $[0, 2^L)$ verteilt ist.
 In Anwendungen benötigen wir jedoch häufig Zahlen aus einem Intervall $[a, b)$ und müssen daher $X$ transformieren.
@@ -674,7 +675,7 @@ Den kleinsten Wert anzupassen ist einfach: Wir ziehen aus $Y' \in [0, b-a)$ und 
 Daher reduzieren wir im Folgenden die Diskussion auf Intervalle $[0, s)$, wobei wir $1 \le s \le 2^L$ annehmen (die obere Schranke lässt sich durch Konkatenation mehrerer $L$-Bit-Wörter umgehen).
 
 In der Praxis wird eine Zahl $X \in [0, 2^L)$ oft auf $[0, s)$ reduziert, indem $Y = X~\bmod~s$ berechnet wird
--- allein auf GitHub findet sich das Pattern \qq{\texttt{rand() \%}} fast eine halbe Millionen mal.
+-- allein auf GitHub findet sich das Pattern \qq{\texttt{rand() \%}} fast eine halbe Million mal.
 Der einzige Grund: Es ist schnell zu schreiben und garantiert $Y \in [0, s)$.
 Es ist aber zum einen recht langsam und zum anderen auch nur dann uniform, wenn $2^L \bmod s = 0$ gilt.
 Dies lässt sich an einem Bild leicht erkennen.
@@ -701,7 +702,7 @@ Wir formalisieren dies in folgendem Lemma:
 \begin{proof}[Beweis durch Bild]
 \end{proof}
 
-Für $s \ll 2^L$ kann der Unterschied zwischen $\lfloor 2^L /s \rfloor$ und $\lceil 2^L / s \rceil$ verschmerzbar klein sein, für $s > 2^L / 2$ gibt es aber einige Elemente die mit doppelter Wahrscheinlichkeit von anderen zurück geliefert werden.
+Für $s \ll 2^L$ kann der Unterschied zwischen $\lfloor 2^L /s \rfloor$ und $\lceil 2^L / s \rceil$ verschmerzbar klein sein, für $s > 2^L / 2$ gibt es aber einige Elemente, die mit doppelter Wahrscheinlichkeit von anderen zurück geliefert werden.
 
 \subsubsection{Rejection-Sampling to the help}
 Es sollte nicht überraschen, dass Rejection-Sampling hier helfen kann.
@@ -752,7 +753,7 @@ OpenJDK verwendet ein anderes Verfahren, das die Anzahl der Divisionen an die An
     \caption{Java-Algorithmus zum Ziehen uniformer Ganzzahlen}
 \end{algorithm}
 
-Wir müssen genau dann verwerfen, wenn $ks \le x \le (k+1)s$ mit $(k+1)s > 2^L$, d.h. wenn $x$ aus einem \qq{$s$-Intervall} stammt, das nicht vollständig in $[0, 2^L)$ enthalten ist.
+Wir müssen genau dann verwerfen, wenn $ks \le x < (k+1)s$ mit $(k+1)s > 2^L$, d.h., wenn $x$ aus einem \qq{$s$-Intervall} stammt, das nicht vollständig in $[0, 2^L)$ enthalten ist.
 Beobachte, dass $x - r = x - (x \bmod s) = (x \div s)s$ dem größten Vielfachen von~$s$ entspricht, das $x$ nicht übersteigt;
 es ist also die linke Intervallgrenze.
 Die rechte Intervallgrenze ergibt sich dann als $x- r +s$.
@@ -770,7 +771,7 @@ Konkret nutzen wir, dass
 \end{equation}
 
 Dabei implementieren wir $(x \cdot s) \div 2^L$ als $\texttt{shift-right}(x \cdot s, L)$;
-der Ausdruck ist also im Wesentlichen eine Multiplikation von zwei $L$-Bit-Zahlen zu einer Zahl mit $2L$ Bits gefolgt von einem Shift um $L$ Bits.
+der Ausdruck ist also im Wesentlichen eine Multiplikation von zwei $L$-Bit-Zahlen zu einer $2L$-Bit-Zahl gefolgt von einem Shift um $L$ Bits.
 Analog können wir die unteren $L$ Bits mittels Verundung der unteren $L$ Bits extrahieren.
 Warum ist das nützlich?
 
@@ -783,13 +784,13 @@ Das führt zu folgendem Algorithmus:
 
 \begin{algorithm}[H]
     $x \gets \text{zufällige Ganzzahl aus $[0, 2^L)$}$\;
-    $m \gets x \times s$\;
+    $m \gets x \cdot s$\;
     $\ell \gets m \bmod 2^L$\;
     \If(\tcc*[f]{Abkürzung, falls wir akzeptieren können}){$\ell < s$}{
         $t \gets (2^L -s) \bmod s$\tcc*{$2^L \bmod s = (2^L -s) \bmod s$}
         \While{$\ell < t$}{
             $x \gets \text{zufällige Ganzzahl aus $[0, 2^L)$}$\;
-            $m \gets x \times s$\;
+            $m \gets x \cdot s$\;
             $\ell \gets m \bmod 2^L$\;
         }
     }
@@ -908,8 +909,9 @@ Alle Ergebnisse werden von folgendem Theorem zusammengefasst:
 \bigskip
 \def\lgs{\ensuremath{\log^*}}
 
+\noindent
 Im vorherigen Abschnitt diskutierten wir eine Modifikation der Alias-Tabelle, die dann effizient ist, wenn die ganzzahlige Gewichtssumme~$W$ deutlich größer als die Anzahl der Zeilen~$n$ ist (wir nehmen $W > n^2$ an).
-Im Folgenden betrachten wir eine Datenstruktur, die $n$ beliebige positive Gewichte unterstützt.
+Im Folgenden betrachten wir eine Datenstruktur, die $n$ beliebige, positive Gewichte unterstützt.
 Um die Beschreibung einfach zu halten, stellen wir eine Vereinfachung vor, die Ziehen in erwarteter Zeit $\Oh{\lgs(n)}$ und Änderungen eines Wertes in Zeit $\Oh{2^{\lgs(n)}}$ unterstützt.
 Mit ein paar Tricks können beide Schranken auf $\Oh{1}$ (worst-case) gedrückt werden.
 
@@ -946,7 +948,7 @@ Wir bezeichnen die Summe aller Gewichte in Intervall $\rng{\ell}{j}$ als $\wrng{
 Je \aside{rekursive Struktur} nachdem, wie viele Elemente~$m$ in ein Intervall~$\rng{\ell}{j}$ fallen, wählen wir für das Intervall einen von drei Fällen:
 \begin{itemize}
     \item Kein Element ($m=0$): Das Intervall wird ignoriert und insb. nicht gespeichert.
-    \item Genau ein Element ($m=1$): Wir bezeichnen $\rng{\ell}{j}$ als Wurzel und speichern sie in der sog. Leveltabelle~$T_\ell$ ab (mehr dazu später!).
+    \item Genau ein Element ($m=1$): Wir bezeichnen $\rng{\ell}{j}$ als Wurzel und speichern sie in der sog. Level-Tabelle~$T_\ell$ ab (mehr dazu später!).
     \item Mindestens zwei Elemente ($m \ge 2$): Wir bezeichnen $\rng{\ell}{j}$ als internes Intervall.
           Es entspricht einem einzelnen Element mit Gewicht $\wrng{\ell}{j}$ auf der nächsthöheren Ebene~$\ell + 1$.
 \end{itemize}
@@ -956,9 +958,9 @@ Ein Baum entsteht also dadurch, dass wir die Gewichte, interne Intervalle und Wu
 Beachte, dass jeder Knoten --~mit Ausnahme der Wurzel und der Blätter~-- mindestens zwei Nachfahren hat.
 Die Datenstruktur hat daher $\Theta(n)$ Knoten.
 
-Da \aside{Leveltabellen} es im Allgemeinen mehrere Wurzeln gibt, ist die Datenstruktur ein Wald, wobei jeder Baum über die Leveltabelle~$T_\ell$ seiner Wurzel~$\rng{\ell}{j}$ adressierbar ist.
-Jede Leveltabelle~$T_\ell$ entspricht einer Hashtabelle, welche die Wurzeln $\rng{\ell}{j}$ mit Schlüssel $j$ speichert (wir können auch alle Leveltabellen in einer Hashtabelle zusammenfassen, wenn wir die Schlüssel auf $(\ell, j)$ erweitern).
-Pro Leveltabelle speichern wir noch das Gesamtgewicht $\wght(T_j) = \sum_{j \in T_\ell} \wrng{\ell}{j}$ des Levels.
+Da \aside{Level-Tabellen} es im Allgemeinen mehrere Wurzeln gibt, ist die Datenstruktur ein Wald, wobei jeder Baum über die Level-Tabelle~$T_\ell$ seiner Wurzel~$\rng{\ell}{j}$ adressierbar ist.
+Jede Level-Tabelle~$T_\ell$ entspricht einer Hashtabelle, welche die Wurzeln $\rng{\ell}{j}$ mit Schlüssel $j$ speichert (wir können auch alle Level-Tabellen in einer Hashtabelle zusammenfassen, wenn wir die Schlüssel auf $(\ell, j)$ erweitern).
+Pro Level-Tabelle speichern wir noch das Gesamtgewicht $\wght(T_j) = \sum_{j \in T_\ell} \wrng{\ell}{j}$ des Levels.
 
 Wir verwalten zudem ein Bitset, um die Wurzel in Level~$\ell$ zu markieren.
 Etwas \qq{hacky} speichern wir dies als eine Binärzahl $X_\ell = \sum_{j \in T_\ell} 2^j$ in Festkommadarstellung, in der das $j$-te Bit genau dann gesetzt ist, wenn $j \in T_\ell$.
@@ -966,7 +968,7 @@ Aufgrund unserer Annahmen bzgl. des Maschinenmodells können wir $X_\ell$ in ein
 
 \subsubsection{Ziehen aus der Datenstruktur}
 Schließlich sei $L$ das größte Level in der Datenstruktur; wir werden zeigen, dass $L = \Oh{\lgs (n)}$ gilt.
-Jetzt \aside{Sampling} können wir den Samplingalgorithmus beschreiben:
+Jetzt \aside{Sampling} können wir den Sampling-Algorithmus beschreiben:
 
 \begin{enumerate}
     \item Ziehe ein $1 \le \ell \le L$ zufällig gewichtet nach $\wght(T_\ell)$.
@@ -981,16 +983,16 @@ Jetzt \aside{Sampling} können wir den Samplingalgorithmus beschreiben:
 
     \item Innerhalb von $\rng{\ell}{j}$ wählen wir nun ein Element gewichtet nach dessen Gewicht mittels Verwerfungsmethode.
           Da alle Gewichte in $\rng{\ell}{j}$ aus dem Intervall $[2^{j-1}, 2^j)$ stammen, ergibt sich eine Akzeptanzwahrscheinlichkeit von mindestens $1/2$.
-          Falls $\ell = 1$, geben wir das entsprechende Element aus, anderenfalls steigen wir rekursiv in das gewählte interne Intervall ab und springen zu 2.).
+          Falls $\ell = 1$, geben wir das entsprechende Element aus, anderenfalls steigen wir rekursiv in das gewählte interne Intervall ab und springen zu 3.).
           Da $L = \Oh{\lgs(n)}$, ergeben sich höchstens $\Oh{\lgs(n)}$ Rekursionsschritte.
 \end{enumerate}
 
-\subsubsection{Erstellen und aktualisieren der Datenstruktur}
+\subsubsection{Erstellen und Aktualisieren der Datenstruktur}
 Initial können wir die Datenstruktur in Zeit $\Oh{n}$ konstruieren.
 Dafür verarbeiten wir die $\Oh{n}$ Gewichte der Eingabe und fassen sie in Intervalle $\rng{1}{j}$ zusammen.
 Alle internen Intervalle (d.h. solche, mit mindestens zwei Elementen) sammeln wir zunächst in einer Queue.
 Diese verarbeiten wir rekursiv, nachdem das aktuelle Level fertiggestellt wurde.
-Die Verarbeitung eines Levels ist in Zeit linear in der Anzahl der Elemente des Levels möglich.
+Die Verarbeitungszeit eines Levels ist linear in der Anzahl der Elemente des Levels möglich.
 Da die Datenstruktur insg. $\Theta(n)$ Knoten hat, folgt also eine Gesamtlaufzeit von $\Oh{n}$.
 
 Interessanter sind dynamische Updates.
@@ -998,18 +1000,18 @@ Hierzu soll der Anwender ein beliebiges Gewicht $w_i$ um einen beliebigen Betrag
 Wir beginnen in Level~$\ell=1$ und passen das entsprechende Gewicht an.
 Es gibt zwei Optionen:
 \begin{itemize}
-    \item Die Änderungen sind ausreichend klein, so dass das Gewicht in seinem ursprünglichen Intervall~$\rng{1}{j}$ verbleibt.
-          Dann müssen wir das entsprechende Intervall anpassen (d.h. sein Gesamtgewicht und die Änderungen auch rekursiv in $\ell +1$ oder $T_\ell$ widerspiegeln).
+    \item Die Änderungen sind ausreichend klein, s.d. das Gewicht in seinem ursprünglichen Intervall~$\rng{1}{j}$ verbleibt.
+          Dann müssen wir das entsprechende Intervall anpassen (d.h. sein Gesamtgewicht und die Änderungen auch rekursiv in Tabelle $T_\ell$ und Level $\ell +1$ widerspiegeln).
 
 
     \item Wenn das Element von $\rng{1}{j}$ in ein neues Intervall $\rng{1}{j'}$ wechselt, müssen wir die Änderungen für beide Intervalle propagieren.
 \end{itemize}
 
 Pro Level kann sich also die Anzahl der betroffenen Intervalle im Worst-Case verdoppeln.
-Da es $L = \Oh{\lgs(n)}$ Level gibt, folgt eine worst-case Updatezeit von amortisiert $\Oh{2^{\lgs(n)}}$.
-Die Amortisierung findet dabei über die Hilfsdatenstrukturen (z.B. Hashtabellen) statt.
+Da es $L = \Oh{\lgs(n)}$ Level gibt, folgt schlimmstenfalls eine Update-Zeit von amortisiert $\Oh{2^{\lgs(n)}}$.
+Die Amortisierung findet dabei über die Hilfsdatenstrukturen (z.B. Hash-Tabellen) statt.
 
-\subsubsection{Tiefe des Walds}
+\subsubsection{Tiefe des Waldes}
 Im Folgenden skizzieren wir die Beweisidee, um die Tiefe des Waldes zu beschränken.
 Die vollständige Analyse der Datenstruktur findet sich in~\cite{DBLP:journals/mst/MatiasVN03}, ist aber recht technisch und wird daher hier nur zusammengefasst.
 
@@ -1021,12 +1023,13 @@ Die vollständige Analyse der Datenstruktur findet sich in~\cite{DBLP:journals/m
     Jedes Kind in $\rng{\ell}{j}$ hat ein Gewicht in $[2^{j-1}, 2^j)$.
     Daher folgt für das Gesamtgewicht $\wrng{\ell}{j} \in [m2^{j-1}, m2^j)$.
     Wir weisen das Intervall als Kind dem Intervall $\rng{\ell+1}{k}$ zu:
-    \begin{align}
-                               & 2^{k-1}      && \le \wrng{\ell}{j} < m2^j \\
-        \Leftrightarrow \qquad & \ld(2^{k-1}) && < \ld(m2^{j})             \\
-        \Leftrightarrow \qquad & k - 1        && < \ld(m) + j              \\
-        \Leftrightarrow \qquad & k - j        && < \ld(m) + 1
-    \end{align}
+    \vspace{-2ex}
+    \begin{alignat}{2}
+                               && 2^{k-1}      & \le \wrng{\ell}{j} < m2^j \\
+        \Leftrightarrow \qquad && \ld(2^{k-1}) & < \ld(m2^{j})             \\
+        \Leftrightarrow \qquad && k - 1        & < \ld(m) + j              \\
+        \Leftrightarrow \qquad && k - j        & < \ld(m) + 1
+    \end{alignat}
 
     \noindent
     Analog folgt aus $m2^{j-1} \le \wrng{\ell}{j} < 2^k$ die Schranke $\ld(m) - 1 < k - j$.
@@ -1044,7 +1047,7 @@ Auf dieser Basis können wir nun die Anzahl der Kinder von höheren internen Int
     Für $i = m$ ergibt sich also also der erste Teil der Behauptung.
     Die Anzahl der Enkelkinder lässt sich als Summe der Kinder von unten beschränken
     \begin{equation}
-        \sum_{i=1}^m (2^{i-1} + 1) = m + \sum_{i=0}^{m-1} 2^i \le m + 2^m - 1.
+        \sum_{i=1}^m (2^{i-1} + 1) = m + \smashoperator{\sum_{i=0}^{m-1}} 2^i = m + 2^m - 1.
     \end{equation}
 \end{proof}
 
@@ -1055,4 +1058,4 @@ Aus diesen beiden Lemmata folgt, dass für ein $\ell \ge k \ge 3$ die Anzahl der
     \raisebox{\depth}{$\Bigr\}k$-mal}
 \end{equation}
 ist, d.h. $2^{2^m}$ für $k=3$ und $2^{2^{2^m}}$ für $k=4$.
-Diese untere Schranke an die Anzahl der Nachfahren übersetzt sich dann wiederum in eine obere Schranke $\Oh{\lgs(n)}$ der Tiefe.
+Diese untere Schranke für die Anzahl der Nachfahren übersetzt sich dann wiederum in eine obere Schranke $\Oh{\lgs(n)}$ der Tiefe.
