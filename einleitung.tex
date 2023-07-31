@@ -11,17 +11,17 @@ In sozialen Netzen bilden sich \zB lokal stark vernetzte Gruppen (Communities), 
 Network Science versucht, diese Eigenschaften zu finden und zu verstehen.
 Hierzu vereinigt es Methoden aus Mathematik, Informatik, und Physik.
 
-\vspace{-2em}
-\floatmarginfigure{
+\begin{marginfigure}
     \scalebox{0.9}{
         \begin{tikzpicture}[
-            box/.style={draw, minimum width=8em, minimum height=2.5em, inner sep=0.2em, align=center},
-            arr/.style={draw, >={LaTeX[width=1em,length=1em]}, thick, ->, labelcolor}
-            ]
-            \node[box] (s0) at (0,  0.0em) {Algorithmen-\\[-0.4em]entwurf};
-            \node[box] (s1) at (0, -4.5em) {Theoretische \\[-0.4em] Analyse};
+            box/.style={draw, minimum width=10em, minimum height=2.5em, inner sep=0.2em, align=center},
+            arr/.style={draw, >={LaTeX[width=1em,length=1em]}, thick, ->, labelcolor},
+            every node/.style={font=\marginfont},
+        ]
+            \node[box] (s0) at (0,  0.0em) {Algorithmenentwurf};
+            \node[box] (s1) at (0, -4.5em) {Theoretische Analyse};
             \node[box] (s2) at (0, -9.0em) {Implementierung};
-            \node[box] (s3) at (0,-13.5em) {Experimentelle \\[-0.4em] Analyse};
+            \node[box] (s3) at (0,-13.5em) {Experimentelle Analyse};
 
             \path[arr] (s0) to (s1);
             \path[arr] (s1) to (s2);
@@ -29,9 +29,12 @@ Hierzu vereinigt es Methoden aus Mathematik, Informatik, und Physik.
 
             \path[arr] (s3.east) to ++(1.5em,0) |- (s0);
             \path[arr] (s3.east) to ++(1.5em,0) |- (s2);
-        \end{tikzpicture}}
-    \caption{Algorithm Engineering Zyklus}
-    \label{fig:intro/algorithm-engineering}}
+        \end{tikzpicture}
+    }
+    \caption{Zyklus im Algorithm Engineering}
+    \label{fig:intro/algorithm-engineering}
+\end{marginfigure}
+
 Ziel des \emph{Algorithm Engineering} ist es, die Spaltung zwischen Theorie und Praxis im Algorithmenentwurf zu überbrücken.
 Es geht also darum, theoretisch effiziente als auch praktisch schnelle und implementierbare Algorithmen zu entwickeln.
 Hierbei kommt oft die in \cref{fig:intro/algorithm-engineering} dargestellte zyklische Entwurfsmethode zum Einsatz:

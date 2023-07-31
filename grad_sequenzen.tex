@@ -367,21 +367,6 @@ Bevor wir uns effiziente Generatoren für das Chung-Lu Modell ansehen, diskutier
 \subsection{Rejection Sampling}
 Im Folgenden verallgemeinern wird die sog. Verwerfungsmethode (rejection sampling), die wir bereits in einer sehr einfachen Ausprägung beim Ziehen ohne Zurücklegen und Generieren einfacher Graphen genutzt haben.
 Damals war die Kernidee jedes Mal etwa:
-\floatmarginfigure{
-    \begin{tikzpicture}
-        \node[draw, minimum width=4cm, minimum height=4cm] {};
-
-        \foreach \x in {-18, -16, ..., 18} {
-                \foreach \y in {-18, -16, ..., 18} {
-                        \node[circle, inner sep=0, minimum width=0.5mm, fill] at (\x mm, \y mm) {};
-                    }
-            }
-        \node[fill=blue, opacity=0.2, cloud, minimum width=3.8cm, minimum height=2.5cm] (c) at (0,0) {};
-        \node[draw, cloud, minimum width=3.8cm, minimum height=2.5cm] (c) at (0,0) {Ziel};
-    \end{tikzpicture}
-    \caption{Rejection Sampling für Uniforme Verteilung}
-    \label{fig:rejection-uniform}
-}
 Wir nutzen einen stochastischen Prozess, der uns Vorschläge unterbreitet (proposal distribution).
 Dieser Prozess hatte bereits die gewünschte Verteilung, lieferte aber u.\,U. Vorschläge, die wir kategorisch ablehnen mussten;
 beim $\Gnm$-Modell mussten wir bereits gezogene Kanten zurückweisen.
@@ -392,6 +377,24 @@ Nach dem Ablehnen unerwünschter Element erhielten wir dann die Zielverteilung (
 Die proposal distribution entspricht der uniformen Verteilung in der Box (visualisiert durch das reguläre Gitter).
 Die Zielverteilung ist ebenfalls uniform -- allerdings über einer eingeschränkten Grundgesamtheit.
 Das Gitter ist auch auf dieser uniform verteilt.
+
+\begin{marginfigure}
+    \begin{tikzpicture}[
+		every node/.style={font=\marginfont},
+    ]
+        \node[draw, minimum width=4cm, minimum height=4cm] {};
+
+        \foreach \x in {-18, -16, ..., 18} {
+            \foreach \y in {-18, -16, ..., 18} {
+                \node[circle, inner sep=0, minimum width=0.5mm, fill] at (\x mm, \y mm) {};
+            }
+        }
+        \node[fill=blue, opacity=0.2, cloud, minimum width=3.8cm, minimum height=2.5cm] (c) at (0,0) {};
+        \node[draw, cloud, minimum width=3.8cm, minimum height=2.5cm] (c) at (0,0) {Ziel};
+    \end{tikzpicture}
+    \caption{Rejection Sampling für uniforme Verteilung}
+    \label{fig:rejection-uniform}
+\end{marginfigure}
 
 Ein weiteres Beispiel ist ein normaler Spielwürfel mit sechs gleich wahrscheinlichen Seiten, die von $1$ bis $6$ beschriftet sind.
 Wir können mit diesem Würfel uniform aus \set{1,2,3,4,5} ziehen:
