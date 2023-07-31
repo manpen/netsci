@@ -1,5 +1,5 @@
 Mit dem Havel-Hakimi Generator können wir nun für jede graphische Sequenz einen Graphen als Zeugen für diese Sequenz erzeugen.
-Die generierten Graphen sind aber zum einen deterministisch, \dh für eine fixierte Sequenz~$\degseq$ wird immer derselbe Graph erzeugt, und zum anderen pathologisch (extrem viele Dreiecke, extrem hohe Grad Assortitivät, \ldots).
+Die generierten Graphen sind aber zum einen deterministisch, \dh für eine fixierte Sequenz~$\degseq$ wird immer derselbe Graph erzeugt, und zum anderen pathologisch (extrem viele Dreiecke, extrem hohe Grad Assortativität, \ldots).
 Das Fixed-Degree-Sequence-Model (FDSM)\aside{ Fixed-Degree-Sequence-Model (FDSM)} schlägt daher vor, dass wir erst den Havel-Hakimi Algorithmus ausführen, und dann den Graphen durch viele zufällige kleine Änderungen lokal perturbieren.
 Es besteht die begründete Hoffnung, dass wenn der hierdurch implizierte Irrweg lang genug ist, dass wir dann schlussendlich einen (fast) uniformen Graph aus $\Gd$ produzieren.
 
@@ -251,7 +251,7 @@ Mit diesen wenigen Tricks können wir jeden Edge Switch in konstanter Zeit ausf�
 \subsection{Auf Adjazenzlisten}
 Adjazenzlisten sind in vielerlei Hinsicht eine Herausforderung für Edge Switching.
 Allerdings verwalten viele existierenden Softwarebibliotheken Graphen in Adjazenzlisten; daher kann es lohnenswert sein, direkt auf der nativen Graphrepräsentation zu arbeiten.
-Dies gilt vor allem dann, wenn wir während jedes Switch zusätzliche Eigenschaften prüfen wollen und \zB eine Breitensuchen ausführen möchten, um den Zusammenhang des Graphs zu prüfen.
+Dies gilt vor allem dann, wenn wir während jedes Switch zusätzliche Eigenschaften prüfen wollen und \zB eine Breitensuche ausführen möchten, um den Zusammenhang des Graphs zu prüfen.
 
 Um in einer Adjazenzlist eine Kante uniform zufällig zu ziehen, bietet sich ein zweistufiges Experiment an.
 Zunächst wählen wir einen Knoten~$u$ mit Wahrscheinlichkeit $\deg(u) / (2m)$ und dann einen von $u$ Nachbarn uniform zufällig.
@@ -266,14 +266,14 @@ Es gibt aber noch einen weiteren Ansatz: so nutzt die Implementierung von~\cite{
 In diesem Setting können wir einen Edge Switch mit einer erwartet konstanten Laufzeit ausführen.
 
 \subsection{Mit HashSets}
-Wie wir bereits gesehen haben, sind Adjazenzmatrizen für Edge Switching auf dichten Graphen eine gute Wahl (in diesem Fall können wir sogar auf die Kantenliste verzichen! Warum?)
+Wie wir bereits gesehen haben, sind Adjazenzmatrizen für Edge Switching auf dichten Graphen eine gute Wahl (in diesem Fall können wir sogar auf die Kantenliste verzichten! Warum?)
 Für dünne Graphen kann aber der Speicherverbrauch von $\Theta(n^2)$ Bits problematisch werden.
 Wir können daher ein HashSet nutzen, das alle Kanten abspeichert (für ungerichtete Graphen in kanonischer gerichteter Form).
 
 Im Vergleich zu unserer Diskussion von \emph{Adjazenzmatrizen} können wir sogar gänzlich auf die Kantenliste zu samplen verzichtet, wenn wir ein HashSet mit offener Adressierung nutzen.
 Da sich die Anzahl der Kanten während Edge Switching nicht ändert, ist es einfach einen konstanten Load-Factor des HashSets zu garantieren.
 Dieser sollte so gewählt werden, dass nur ein konstanter Anteil der Zellen im HashSet leer sind;
-dann ziehen wir solange uniform Zellen aus dem HashSet, bis wir eine Kante gefunden haben und geben diese dann zurück.
+dann ziehen wir so lange uniform Zellen aus dem HashSet, bis wir eine Kante gefunden haben und geben diese dann zurück.
 Durch den beschränkten Load-Factor ergibt sich eine konstante Akzeptanzwahrscheinlichkeit.
 
 Gerade im Kontext von parallelen Algorithmen ist es hilfreich auf dedizierte Kantenliste zu verzichten, da wir sonst Sicherstellen müssen, dass die Updates in beiden Datenstrukturen von verschiedenen nebenläufigen Prozessen nicht zu Inkonsistenzen führen.
