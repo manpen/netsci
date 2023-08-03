@@ -5,7 +5,7 @@ Es besteht die begründete Hoffnung, dass wenn der hierdurch implizierte Irrweg 
 
 Formal beschreiben wir die Perturbation als einen Markov-Chain-Monte-Carlo-Prozess.
 Der Zustandsraum der Markov-Kette ist $\gd$.
-Für jeden Graphen $G \in \gd$ bestimmt der gewählte Prozess, welche anderen Graphen $\mathbb G' \subseteq \gd$ (mit welcher Wahrscheinlichkeit) innerhalb von einem Schritt erreicht werden können.
+Für jeden Graphen $G \in \gd$ bestimmt der gewählte Prozess, welche anderen Graphen $G' \subseteq \gd$ (mit welcher Wahrscheinlichkeit) innerhalb von einem Schritt erreicht werden können.
 Es entsteht also ein \aside{Übergangsgraph} Übergangsgraph (den wir auch Markov-Kette nennen), dessen gerichtete und gewichtete Kanten mögliche Schritte zusammenfassen.
 
 \section{Edge-Switching}
@@ -16,7 +16,7 @@ Anders als bei den meisten Modellen gibt es signifikante funktionale Unterschied
 Edge-Switching funktioniert aber mit noch ausgefalleneren Graphklassen (siehe z.B. \cite{carstens_2017}), z.B.
 \begin{itemize}
     \item ungerichtete, einfache Graphen mit fester Gradsequenz
-    \item ungerichtete ,einfache zusammenhängende Graphen  mit fester Gradsequenz \cite{DBLP:journals/compnet/VigerL16}
+    \item ungerichtete, einfache zusammenhängende Graphen  mit fester Gradsequenz \cite{DBLP:journals/compnet/VigerL16}
     \item gerichtete Graphen  mit fester Gradsequenz
     \item gerichtete, einfache Graphen (mit einfacher Modifikation)  mit fester Gradsequenz
     \item Graphen mit fester Joint-Degree-Sequence~\cite{DBLP:conf/alenex/StantonP11} (d.h., die Anzahl der Kanten zwischen Knoten mit Graden~$d_1$ bzw.~$d_2$ wird für alle Paare $(d_1, d_2)$ definiert)
@@ -65,8 +65,7 @@ Seien $Z=(z_1, \ldots, z_n)$ und $S=(s_1, \ldots, s_m)$ Zeilen- und Spaltensumme
 Dann \aside{\msz: Binärmatrizen mit fixierten Zeilen- und Spaltensummen} sei \msz die Menge aller $\set{0, 1}^{n \times m}$ Matrizen, die diese Beschränkungen erfüllen.
 Konkrete Graphklassen stellen i.d.R. weitere Anforderungen; so müssen ungerichtete einfache Graphen noch erfüllen:
 \begin{itemize}
-    \item $Z = S$
-    \item symmetrische Matrizen
+    \item symmetrische Matrizen und damit $Z = S$
     \item nur $0$-Einträge auf der Hauptdiagonalen (wir sprechen von \emph{strukturellen Nullen}\aside{strukturelle Nullen: verbotene Kanten})
 \end{itemize}
 Für den Moment betrachten wir aber solche Einschränkungen nicht.
@@ -85,7 +84,7 @@ jeweils gegenüberliegende Ecken haben also die gleichen Werte in $M$ und deren 
     Dann können wir $A$ in $B$ mittels einer Folge von höchstens $t$ alternierenden Rechteck-Switches überführen.
 \end{theorem}
 
-\begin{theorem}
+\begin{proof}
     OBdA sei $(a_{ij})_{ij} = A \ne B = (b_{ij})_{ij}$ (da wir sonst fertig sind).
     Dann sei $d$ die Hamming-Distanz zwischen $A$ und $B$, d.h. die Anzahl der Einträge, in denen sich beide unterscheiden.
     Beobachte, dass $d$ eine gerade positive Zahl sein muss (weshalb?).
@@ -104,10 +103,10 @@ jeweils gegenüberliegende Ecken haben also die gleichen Werte in $M$ und deren 
     \begin{itemize}
         \item Wenn $a_{i_1j_2} = 0$, bilden $i_1j_1$, $i_2j_1$, $i_2j_2$ und $i_1j_2$ ein alternierendes Rechteck.
         \item Wenn $b_{i_1j_2} = 1$, können wir denselben Switch in $B$ ausführen.
-        \item Der Fall $a_{i_1j_2} = 1$ und $b_{i_1j_2} = 0$ ist ein Widerspruch dazu, dass der betrachtete Kreis minimale Länge hat, da wir die ersten drei Einträge des alternierenden Pfades entfernen können.
+        \item Der Fall $a_{i_1j_2} = 1$ und $b_{i_1j_2} = 0$ ist ein Widerspruch dazu, dass der betrachtete Kreis minimale Länge hat, da wir die ersten drei Einträge entfernen können.
     \end{itemize}
 
-    In jedem Fall können wir also entweder in $A$ oder $B$ einen Switch ausführen, der die Hammingdistanz zwischen den beiden Matrizen um mindestens zwei reduziert.
+    In jedem Fall können wir also in $A$ oder $B$ einen Switch ausführen, der die Hamming-Distanz zwischen den beiden Matrizen um mindestens zwei reduziert.
     Da jeder Switch reversibel ist, folgt der starke Zusammenhang der Übergangsmatrix direkt.
 
     Weiter wissen sogar, dass $A$ und $B$ mittels höchstens $d/2$ Switches ineinander überführt werden können.
@@ -122,7 +121,7 @@ jeweils gegenüberliegende Ecken haben also die gleichen Werte in $M$ und deren 
          & \card{\set{ (i, j) \mid i, j \text{, s.d. } a_{ij} = 1}},       \\
          & \card{\set{ (i, j) \mid i, j \text{, s.d. } a_{ij} = 0}}  \Big).
     \end{align}
-\end{theorem}
+\end{proof}
 
 Wir können also Matrizen in \msz ineinander überführen.
 Das impliziert auch, dass der Übergangsgraph von gerichteten Graphen ohne Mehrfachkanten (aber ggf. mit Eigenschleifen) stark zusammenhängend ist.
@@ -139,10 +138,10 @@ Glücklicherweise sind Dreiecke das einzige Problem von Edge-Switching auf einfa
 Es gibt zwei einfache Lösungsansätze:
 \begin{itemize}
     \item Führe neue Switchings, die die Orientierung eines gerichteten 3-Kreises ändern, ein.
-    \item Bevor der MCMC Prozess startet, führen wir einen Vorverarbeitungsschritt aus, der alle gerichteten 3-Kreise sucht und zufällig orientiert.
+    \item Bevor der MCMC-Prozess startet, führen wir einen Vorverarbeitungsschritt aus, der alle gerichteten 3-Kreise sucht und zufällig orientiert.
 \end{itemize}
 
-Für einfache \emph{un}gerichtete Graphen ist dies alles nicht notwendig -- die entsprechende Markov-Kette ist stark-zusammenhängend.
+Für einfache \emph{un}gerichtete Graphen ist dies alles nicht notwendig -- die entsprechende Markov-Kette ist stark zusammenhängend.
 
 \section{Grenzverteilung von Edge-Switching}
 Wir wissen nun, dass Edge-Switching auf wichtigen Graphklassen potentiell alle Graphen erzeugen kann.
