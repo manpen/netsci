@@ -39,7 +39,7 @@ Dabei entspricht $H[i]$ dem Index, mit dem $A[i]$ getauscht werden soll; es übe
 Das Vorberechnen der Indizes erlaubt es uns, schon Abhängigkeiten zu erkennen, bevor Swaps durchgeführt werden.
 Weiter können wir die Swaps nebenläufig und out-of-order ausführen, wenn hierbei die erkannten Abhängigkeiten beachtet werden.
 Hierzu nutzen die Autoren ihr \emph{Reserve-and-Commit}-Framework:
-Wir suchen für jeden Index~$j$ in $A$ den ersten Swap, der dieses Element in der sequentiellen Ausführung verändern würde (d.h. das größte $i$ mit $H[i] = j$).
+Wir suchen für jeden Index~$j$ in $A$ den ersten Swap, der dieses Element in der sequentiellen Ausführung verändern würde (\dh das größte $i$ mit $H[i] = j$).
 Diesen Swap können wir ausführen und aus dem Spiel nehmen.
 
 Sollte es weitere Swaps geben, die ebenfalls dieses Element verarbeiten möchten, werden diese verzögert.
@@ -69,7 +69,7 @@ jeder Prozessor interagiert mit seiner Umwelt durch explizites Senden von Nachri
 %Auch wenn auf echten Maschinen hierdurch natürlich erhebliche Kosten entstehen, ignorieren wir in diesem Abschnitt die benötigte Kommunikation.
 Der Algorithmus eignet sich mit geringen Modifikationen auch für parallele Maschinen mit gemeinsam genutztem Speicher und funktioniert auch im External-Memory-Modell.
 
-Als Eingabe erhalten wir Elemente $X=[x_0, \ldots, x_{n-1}]$, die arbiträr auf $P$ Prozessoren partitioniert sind, s.d. jeder Prozessor $\Theta(n/P)$ Elemente erhält.
+Als Eingabe erhalten wir Elemente $X=[x_0, \ldots, x_{n-1}]$, die arbiträr auf $P$ Prozessoren partitioniert sind, \sd jeder Prozessor $\Theta(n/P)$ Elemente erhält.
 Diese sollen in eine uniform zufällige Permutation überführt werden.
 Die Ausgabereihenfolge ergibt sich dadurch, dass wir die lokalen Sequenzen der Prozessoren in aufsteigender Reihenfolge konkatenieren --
 erst kommen alle Elemente, für die Prozessor~0 im Ergebnis zuständig ist, dann jene von Prozessor~1 usw. usf.
@@ -80,7 +80,7 @@ Hierzu führt Prozessor~$\ell$ das folgende Programm aus:
     \item Empfange alle Elemente $T = [t_0, \ldots, t_{k_\ell-1}]$.
           \iffalse\item Berechne die Präfixsumme $\Delta_\ell = \sum_{i=0}^{\ell - 1} k_i$.
           Der Wert $\Delta_\ell$ entspricht dann der Position des ersten Elements von Prozessor~$\ell$ in der Ausgabe.\fi
-    \item Permutiere $T$ lokal z.B. mit Fisher-Yates.
+    \item Permutiere $T$ lokal \zB mit Fisher-Yates.
     \item Speichere $T$ als $\ell$-ten Teil der Ausgabe.
 \end{enumerate}
 
@@ -117,7 +117,7 @@ Die Korrektheit des Algorithmus folgt aus dem folgendem Theorem.
             \quad = \quad \prod_{i=0}^{n-1}\frac{1}{n-i}.
         \end{equation}
 
-        Sei $K = [k_0, \ldots, k_{P-1}]$ die Anzahl der Elemente, die den Prozessoren geschickt wurden, und $K'$ eine beliebige valide Anzahl (d.h. insbesonder, dass $\sum_i k_i = n$ und $k_i > 0$ für alle $i$).
+        Sei $K = [k_0, \ldots, k_{P-1}]$ die Anzahl der Elemente, die den Prozessoren geschickt wurden, und $K'$ eine beliebige valide Anzahl (\dh insbesonder, dass $\sum_i k_i = n$ und $k_i > 0$ für alle $i$).
         Wir zeigen nun, dass
         \begin{align}
             P_i & := \prod_{i=0}^{n-1} \prob{\pi(i) = \pi'(i) \quad\middle|\quad K = K' \land \bigwedge\limits_{j=0}^{i-1} \pi(j) = \pi'(j) } \\
@@ -147,7 +147,7 @@ Die Korrektheit des Algorithmus folgt aus dem folgendem Theorem.
 
 Am längsten benötigt der Algorithmus für das zufällige Versenden der Elemente und das lokale Permutieren der empfangen Elemente.
 Die Laufzeit des ersten Schrittes ist linear in der größten Partition, die nach Voraussetzung auf $\Theta(n / P)$ beschränkt ist.
-Das lokale Permutieren benötigt dann Zeit $\max_\ell k_\ell$, d.h. linear in der Größe der größten empfangenen Partition.
+Das lokale Permutieren benötigt dann Zeit $\max_\ell k_\ell$, \dh linear in der Größe der größten empfangenen Partition.
 
 Da die Prozessoren unabhängig uniform gewählt werden, handelt es sich also um ein klassisches Gedankenexperiment, bei dem $n$~Bälle auf $P$~Eimer verteilt werden sollen.
 Man kann daher mit einem Chernoff-Argument zeigen, dass für $\beta > 0$ gilt:
