@@ -6,7 +6,7 @@ Die Intuition beider Ansätze ist aber ähnlich.
 
 \subsection{Erd\H{o}s-Gallai-Theorem}
 \begin{theorem}
-    Sei $\degseq = (d_1, \ldots, d_n)$ eine nicht wachsende Gradsequenz, d.h.
+    Sei $\degseq = (d_1, \ldots, d_n)$ eine nicht wachsende Gradsequenz, \dh
     \begin{equation}
         n > d_1 \ge d_2 \ge \ldots \ge d_n \ge 1.
     \end{equation}
@@ -22,7 +22,7 @@ Die Intuition beider Ansätze ist aber ähnlich.
     Analysiere dessen Laufzeit.
 \end{exercise}
 
-Im Folgenden diskutieren wir kurz, weshalb das Erd\H{o}s-Gallai-Theorem eine notwendige Bedingung formuliert (d.h., jede graphisch Sequenz erfüllt das Theorem).
+Im Folgenden diskutieren wir kurz, weshalb das Erd\H{o}s-Gallai-Theorem eine notwendige Bedingung formuliert (\dh, jede graphisch Sequenz erfüllt das Theorem).
 Die Gegenrichtung (d.h., jede erfüllende Gradsequenz ist graphisch) ist deutlich komplexer und wird hier nicht behandelt.
 
 Die Anforderung, dass die Gradsumme gerade sein muss, folgt trivial aus dem Handshaking-Lemma:
@@ -47,7 +47,7 @@ Daher fordert das Erd\H{o}s-Gallai-Theorem $\Delta \le \sum_{i=k+1}^n \min(k, d_
 
 \subsection{Havel-Hakimi-Theorem}
 \begin{theorem}
-    Sei $\degseq = (s, t_1, \ldots, t_s, d_{s+1}, \ldots, d_n)$ eine nicht wachsende Gradsequenz auf $n$ Knoten, d.h.
+    Sei $\degseq = (s, t_1, \ldots, t_s, d_{s+1}, \ldots, d_n)$ eine nicht wachsende Gradsequenz auf $n$ Knoten, \dh
     \begin{equation}
         n > s \ge t_1 \ge \ldots t_s \ge d_{s+1} \ge \ldots \ge d_n \ge 1.
     \end{equation}
@@ -71,10 +71,10 @@ Daher fordert das Erd\H{o}s-Gallai-Theorem $\Delta \le \sum_{i=k+1}^n \min(k, d_
     Angenommen $\degseq = (s, t_1, \ldots, t_s, d_{s+1}, \ldots, d_n)$ ist graphisch, dann existiert ein einfacher Graph~$G$, dessen Knoten wir $S, T_1, \ldots, T_s, D_{s+1}, \ldots, D_n$ (anhand des offensichtlichen Mappings) nennen.
     Wenn $S$ zu $T_1, \ldots, T_s$ verbunden ist, sind wir fast fertig: Wir entfernen $S$ und alle inzidenten Kanten und erhalten den Graphen $G'$, der $\degseq'$ erfüllt.
 
-    Im Allgemeinen ist dies aber nicht richtig, d.h., es existiert ein $T_i$, das \emph{nicht} adjazent zu $S$ ist.
+    Im Allgemeinen ist dies aber nicht richtig, \dh, es existiert ein $T_i$, das \emph{nicht} adjazent zu $S$ ist.
     Wir konstruieren nun aus $G$ einen einfachen Graphen $G_i$, in dem die Kante $\set{S, T_i}$ existiert, ohne zuvor ggf. existierende Kanten $\set{S, T_j}$ zu verändern.
 
-    Fixiere also ein $i$, s.d. die Kante $\set{S, T_i}$ nicht existiert, und ein $j$, s.d. die Kante $\set{S, D_j}$ existiert.
+    Fixiere also ein $i$, \sd die Kante $\set{S, T_i}$ nicht existiert, und ein $j$, \sd die Kante $\set{S, D_j}$ existiert.
     Aufgrund der Sortierung von~$\degseq$ gilt $t_i \ge d_j$:
     \begin{figure}
         \begin{center}
@@ -142,7 +142,7 @@ Bis diese leer ist, führen wir die folgende Schritte aus:
     \item Füge für alle $i$, falls $t_i > 1$, Knoten $T_i$ mit Gewicht~$t_1 - 1$ erneut ein.
 \end{itemize}
 
-Mit klassischen Priority-Queues (z.B. Max-Heap) lässt sich hierdurch eine Laufzeit von $\Oh{(m + n) \log n}$ erzielen;
+Mit klassischen Priority-Queues (\zB Max-Heap) lässt sich hierdurch eine Laufzeit von $\Oh{(m + n) \log n}$ erzielen;
 unter der Annahme, dass die Eingabe keine Knoten von Grad~0 erhält, vereinfacht sich der Term zu $\Oh{m \log n}$.
 
 Da die Schlüssel in der PQ jedoch ganzzahlig sind und aus dem Intervall $[1, n)$ stammen, können wir eine Bucket-Queue verwenden.
@@ -158,4 +158,3 @@ den Grad, die kleinste Knoten-ID in der Gruppe, die Anzahl der Knoten in der Gru
 
 Dann brauchen wir noch einen kleinen Trick: Wenn wir Knoten~$T_i$ auswählen, beginnen wir am Ende einer Gruppe.
 Das führt dazu, dass $\degseq$ auch nach Updates monoton bleibt; außerdem kann man zeigen, dass sich während der Ausführung des Algorithmus die Länge der Liste höchstens verdoppelt~\cite{DBLP:journals/jea/HamannMPTW18}.
-

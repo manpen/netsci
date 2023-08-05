@@ -4,7 +4,7 @@ Der Zufallsgraph beschreibt also ein Ensemble von Graphen, das so entworfen sein
 Solche maßgeschneiderte Zufallsgraphen werden oft als \emph{Netzwerkmodell} bezeichnet.
 
 Das Forschungsfeld der Zufallsgraphen nahm mit den Arbeiten von Gilbert~\cite{gilbert_1959}, sowie Erd\H{o}s und R\'enyi~\cite{erdos_renyi_1960} Anfang der 1960er Jahre an Fahrt auf.
-Die beiden Arbeiten definieren Zufallsgraphen, die zunächst für abstrakte Untersuchungen (z.\,B. die probabilistische Methode) verwendet wurden.
+Die beiden Arbeiten definieren Zufallsgraphen, die zunächst für abstrakte Untersuchungen (\zB die probabilistische Methode) verwendet wurden.
 Der Fokus auf die Modellierung von beobachteten Netzwerken kam erst später hinzu.
 Dennoch spielen die Modelle in der Netzwerkforschung bis heute eine wichtige Rolle.
 Wir werden sie daher bald genauer betrachten, fangen jedoch mit einem noch einfacheren Modell an.
@@ -37,9 +37,9 @@ Analog sieht es für die $\binom n 2$ möglichen Kanten in einem ungerichteten G
 
 Beachte aber auch, dass formal \cref{eq:gerichtet_gn} und \cref{eq:gleichverteilt_gerichtet_gn} widersprüchlich scheinen.
 In \cref{eq:gerichtet_gn} fordern wir nur, dass die Knotenmenge~$V$ die Kardinalität $|V| = n$ hat.
-Offensichtlich gibt es unbeschränkt viele dieser Wahlen; für $n=3$ z.\,B. $\set{1,2,3}$, $\set{2,3,4}$, \ldots, $\set{k, k+1, k+2}$ für alle $k \in \mathbb N$.
+Offensichtlich gibt es unbeschränkt viele dieser Wahlen; für $n=3$ \zB $\set{1,2,3}$, $\set{2,3,4}$, \ldots, $\set{k, k+1, k+2}$ für alle $k \in \mathbb N$.
 Die Wahl der Knotenbezeichner hat jedoch keinen Einfluss auf die Netzwerkeigenschaften.
-Daher werden wir in dieser Veranstaltung grundsätzlich annehmen, dass die Knotenmengen in irgendeiner Form fixiert sind, z.\,B. als $V = \set{1, \ldots, n} = [n]$ oder $V = \set{v_1, \ldots, v_n}$.
+Daher werden wir in dieser Veranstaltung grundsätzlich annehmen, dass die Knotenmengen in irgendeiner Form fixiert sind, \zB als $V = \set{1, \ldots, n} = [n]$ oder $V = \set{v_1, \ldots, v_n}$.
 
 \bigskip
 
@@ -70,7 +70,7 @@ intuitiv hat \glqq jeder zweite Graph\grqq{} mindestens die Hälfte aller mögli
 \begin{proof}
     Im Folgenden betrachten wir nur gerichtete Graphen; der Beweis läuft analog für ungerichtete Graphen.
     Stellen wir uns einen beliebigen Graphen~$G = (V, E)$ vor.
-    Dann sei $\bar G = (V, \bar E)$ sein Komplement, d.\,h. für alle möglichen Kanten gilt:
+    Dann sei $\bar G = (V, \bar E)$ sein Komplement, \dh für alle möglichen Kanten gilt:
     \begin{equation}
         \forall e \in V\times V\colon \quad\quad e \in \bar E \Leftrightarrow e \notin E
     \end{equation}
@@ -115,7 +115,7 @@ Dies ist offensichtlich deutlich mehr als in planaren Graphen möglich wäre.
 Ganz ähnlich sieht es mit anderen sozialen Netzen aus: Ein durchschnittlicher Erwachsener kennt deutlich mehr als sechs andere Menschen persönlich (oft werden Zahlen zwischen 100 und 300 genannt).
 
 \subsection{Die meisten Netzwerke sind dünn}
-In \cref{fig:kantenanzahl} hat nur ein verschwindend geringer Anteil der Netzwerke mindestens die Hälfte aller Kanten (d.\,h. ist oberhalb der roten Linie).
+In \cref{fig:kantenanzahl} hat nur ein verschwindend geringer Anteil der Netzwerke mindestens die Hälfte aller Kanten (\dh ist oberhalb der roten Linie).
 Wie erklärt sich das?
 In der Regel verursacht eine Kante Kosten:
 Eine Straße muss gebaut werden, eine Freundschaft muss aufrecht erhalten werden (Zeitinvestment), eine Nachricht muss geschrieben werden etc.
@@ -138,7 +138,7 @@ Wir benötigen also Prozesse, die weniger dichte Graphen erzeugen können --
 am besten parametrisiert, damit wir unterschiedlichen Netzwerktypen Rechnung tragen können.
 Im Folgenden betrachten wir zwei solcher Modelle.
 
-Das \Gnm-Modell \aside{Erd\H{o}s-R\'enyi Graphen \Gnm} von P.~Erd\H{o}s und A.~R\'enyi beschreibt die Gleichverteilung über allgemeinen Graphen mit $n$ Knoten und $m$ Kanten, d.\,h. wir betrachten die Grundmenge
+Das \Gnm-Modell \aside{Erd\H{o}s-R\'enyi Graphen \Gnm} von P.~Erd\H{o}s und A.~R\'enyi beschreibt die Gleichverteilung über allgemeinen Graphen mit $n$ Knoten und $m$ Kanten, \dh wir betrachten die Grundmenge
 \begin{equation}
     \gGnm = \twoset{G}{G=(V,E) \in \mathbb G(n) \textnormal{ und } |E| = m}.
 \end{equation}
@@ -259,7 +259,7 @@ Da uns die Binomialverteilung regelmäßig begegnen wird, wollen wir uns diese k
 
 Die Standardabweichung $\sigma = \sqrt{\varv{B_{N,p}}} \le \sqrt{\expv{B_{N,p}}}$ ist also relativ klein.
 Wir können daher davon ausgehen, dass für hinreichend großes $N$ die Binomialverteilung recht stark um ihren Erwartungswert $Np$ konzentriert ist.
-Daher sagen wir, dass \Gnm und \Gnp mit $p=m/n^2$ asymptotisch (d.\,h. für $n \to \infty$) äquivalent sind.
+Daher sagen wir, dass \Gnm und \Gnp mit $p=m/n^2$ asymptotisch (\dh für $n \to \infty$) äquivalent sind.
 Häufig ist es jedoch einfacher \Gnp-Graphen zu analysieren, da -- im Gegensatz zu \Gnm-Graphen -- alle Kanten unabhängig gezogen werden.
 
 \section{Effizientes Ziehen von \Gnp-Graphen}
@@ -268,9 +268,9 @@ Nehmen wir etwa an, dass wir einen Algorithmus implementiert haben und dessen Ge
 Dann können Zufallsgraphen unter anderem aus folgenden Gründen nützlich sein:
 \begin{itemize}
     \item Wenn die Generatorsoftware vorhanden ist, können wir synthetische Instanzen in quasi unbeschränkter Menge generieren.
-    \item Parametrisierte Generatoren erlauben, den Einfluss gewisser Eigenschaften detailliert zu analysieren, z.\,B. Skalierungsexperimente.
-    \item Beobachtete Graphen haben oft \glqq Rauschen\grqq, d.\,h. nicht verstandene oder insignifikante Strukturen, die Messungen verfälschen können.
-          Zufallsgraphen hingegen haben i.\,d.\,R. eine gut verstandene Struktur, die es uns oft ermöglicht, vor dem Testen Hypothesen aufzustellen.
+    \item Parametrisierte Generatoren erlauben, den Einfluss gewisser Eigenschaften detailliert zu analysieren, \zB Skalierungsexperimente.
+    \item Beobachtete Graphen haben oft \glqq Rauschen\grqq, \dh nicht verstandene oder insignifikante Strukturen, die Messungen verfälschen können.
+          Zufallsgraphen hingegen haben \idR eine gut verstandene Struktur, die es uns oft ermöglicht, vor dem Testen Hypothesen aufzustellen.
     \item Einige Generatoren können anhand eines fixierten Startzustands (Random-Seed) dieselben Graphen wiederholt erzeugen.
           Wir müssen also die Eingaben nicht speichern/transferieren und können dennoch reproduzierbare Experimente durchführen.
 \end{itemize}
@@ -434,10 +434,10 @@ Betrachten wir konkret die ersten drei Werte der Funktionen:
 \end{center}
 \vspace{1em}
 
-Ein Generator sollte also z.\,B. den Wert $0$ mit Wahrscheinlichkeit 20\,\% ausgeben.
+Ein Generator sollte also \zB den Wert $0$ mit Wahrscheinlichkeit 20\,\% ausgeben.
 Da wir einen deterministischen Algorithmus konstruieren möchten, brauchen wir eine Quelle für den Zufall:
 Wir erwarten eine uniforme Zufallsvariable $U \in [0, 1)$ als Eingabe.
-Wir können also z.B. prüfen:
+Wir können also \zB prüfen:
 \begin{itemize}
     \item Wenn $U < 0.2$ ist, dann gebe den Wert $0$ zurück.
           Da $U$ uniform verteilt ist, ist die Wahrscheinlichkeit für $U < 0.2$ genau $0.2$.
@@ -491,7 +491,7 @@ Die Methode lässt sich aber auch auf andere $\Omega$ (inklusive kontinuierliche
 \end{figure}
 
 Zurück \aside{Inversionsmethode für geometrische Verteilungen} zur geometrischen Verteilung mit $f(\ell) = (1-p)^\ell p$.
-O.\,b.\,d.\,A. sei $0 < p < 1$, da $X$ sonst eine Konstante ist.
+\OBdA sei $0 < p < 1$, da $X$ sonst eine Konstante ist.
 Die kumulative Verteilungsfunktion lautet
 \begin{equation}
     F(\ell)
@@ -535,8 +535,8 @@ Ziehe uniform ohne Zurücklegen $k$ Elemente aus einer Menge $S = \set{s_1, \ldo
 \subsection{Reservoir Sampling}
 Reservoir Sampling ist eine allgemeine Technik, die es uns erlaubt $k$ Elemente aus einem Datenstrom zu ziehen.
 Hierbei müssen wir anfangs \emph{nicht} wissen, wie viele Elemente insgesamt im Strom sind.\footnote{
-    Ein praktischer Anwendungsfall sind z.B. Iteratoren oder Generatoren, die in vielen Programmiersprachen genutzt werden.
-    In Rust ist z.B. \texttt{rand::IteratorRandom::choose\_multiple} mittels Reservoir Sampling implementiert.
+    Ein praktischer Anwendungsfall sind \zB Iteratoren oder Generatoren, die in vielen Programmiersprachen genutzt werden.
+    In Rust ist \zB \texttt{rand::IteratorRandom::choose\_multiple} mittels Reservoir Sampling implementiert.
 }
 Im konkreten Fall besteht der Datenstrom also aus allen $s_i$ in beliebiger Reihenfolge.
 Vereinfachend können wir also annehmen, dass der Strom mindestens $k$ Elemente enthält.
@@ -580,7 +580,7 @@ In \cref{thm:reservoir-sampling} zeigen wir die Korrektheit von \cref{algo:reser
 \begin{proof}
     Sei $N$ die Länge des Stroms (ist dem Algorithmus nicht bekannt).
     Seien zudem $s_1, \ldots, s_N$ die Elemente in der Reihenfolge, in der sie aus dem Strom gelesen werden;
-    oBdA gelte $s_i = s_j \ \Leftrightarrow\ i = j$ (d.h. alle Elemente sind unterschiedlich; falls nicht, können wir die Tupel $(s_i, i)$ betrachten).
+    \oBdA gelte $s_i = s_j \ \Leftrightarrow\ i = j$ (\dh alle Elemente sind unterschiedlich; falls nicht, können wir die Tupel $(s_i, i)$ betrachten).
 
     Sei $R$ die Zufallsvariable, welche die Ausgabe des Algorithmus modelliert.
     Dann ist zu zeigen, dass $\prob{R = s_i} = 1 / N$ für alle $1 \le i \le N$.
@@ -636,7 +636,7 @@ Wir messen die Geschwindigkeit des Algorithmus zunächst nur indirekt, indem wir
 \begin{proof}
     Der Algorithmus baut $R$ inkrementell auf: wir beginnen mit $|R| = 0$ und fügen dann schrittweise je ein Element hinzu.
     Sei $X$ eine Zufallsvariable, die beschriebt, wie viele Iterationen der Algorithmus benötigt um $R$ zu erzeugen.
-    Ferner seien $X_1, \ldots, X_k$ Zufallsvariablen, wobei $X_i$ beschriebt, wie viele Versuche benötigt werden um das $i$-te Elemente zu finden (d.h. um $R$ von $|R| = i - 1$ auf  $|R| = i$ zu heben).
+    Ferner seien $X_1, \ldots, X_k$ Zufallsvariablen, wobei $X_i$ beschriebt, wie viele Versuche benötigt werden um das $i$-te Elemente zu finden (\dh um $R$ von $|R| = i - 1$ auf  $|R| = i$ zu heben).
     Per Konstruktion gilt $X = \sum_{i=1}^k X_i$ und aufgrund der Linearität des Erwartungswertes folgt
 
     \begin{equation}
@@ -644,7 +644,7 @@ Wir messen die Geschwindigkeit des Algorithmus zunächst nur indirekt, indem wir
     \end{equation}
 
     Wir können also zunächst die Erwartungswerte $\expv{X_i}$ isoliert betrachten.
-    Unmittelbar bevor wir das $i$-te Element ziehen, haben wir $i-1$ Elemente bereits bestimmt, d.h. $|R| = i - 1$.
+    Unmittelbar bevor wir das $i$-te Element ziehen, haben wir $i-1$ Elemente bereits bestimmt, \dh $|R| = i - 1$.
     Mit Wahrscheinlichkeit $q_i = (i-1) / N$ erwischen wir also ein bereits gezogenes Element und versuchen es erneut.
     Mit Wahrscheinlichkeit $p_i = 1 - q_i = (N - (i - 1)) / N$ ziehen wir aber ein Element, dass noch nicht Teil von $R$ ist.
     Es gilt also
@@ -731,7 +731,7 @@ In der Regel ist der Parameter aus dem Kontext klar und wird daher in der Litera
     Wir verwenden dieselbe Modellierung wie im Beweis von \cref{lemma:basis-ziehen-ohne-zuruecklegen-versuche}:
     Sei $X = \sum_{i=1}^k X_i$ die Gesamtanzahl an Iterationen und $X_i - 1$ geometrisch verteilt mit Erfolgswahrscheinlichkeit~$p_i$.
 
-    Da $k \le N/2$, ziehen wir zu jedem Zeitpunkt mindestens mit Wahrscheinlichkeit $1/2$ ein neues Element, d.h. $p_i \ge 1/2$ für alle $i \ge 1$.
+    Da $k \le N/2$, ziehen wir zu jedem Zeitpunkt mindestens mit Wahrscheinlichkeit $1/2$ ein neues Element, \dh $p_i \ge 1/2$ für alle $i \ge 1$.
     Um die harmonische Reihe zu vermeiden, nutzen wir eine schlechtere Abschätzung, bei der wir alle $p_i = 1/2$ auf den minimalen Erfolgswert setzen.
     Sei $X' = \sum_{i=1}^k X'_i$ diese Verteilung und $X'_i - 1$ geometrisch mit Erfolgswahrscheinlichkeit $1/2$.
 
@@ -779,7 +779,7 @@ In der Regel ist der Parameter aus dem Kontext klar und wird daher in der Litera
 Welche Datenstruktur benötigen wir für $R$? Sie sollte Existenzanfragen ($x \in R$?) und Einfügen ($R \gets R \cup \set{x}$) effizient durchführen können.
 Ein Hashset unterstützt beide Operationen in erwartet konstanter Zeit, wodurch sich eine erwartete Laufzeit von $\Oh{k}$ ergibt; dies ist optimal in Erwartung.
 
-Für praktische Implementierungen kann es sich jedoch auch lohnen, das Hashset durch ein Bitset (d.h. ein Array in dem jeder Eintrag genau ein Bit groß ist) zu ersetzen.
+Für praktische Implementierungen kann es sich jedoch auch lohnen, das Hashset durch ein Bitset (\dh ein Array in dem jeder Eintrag genau ein Bit groß ist) zu ersetzen.
 Auf dem Papier benötigt ein Bitset $\Theta(N)$ viele Bits und ist somit in der Initialisierung teuer.
 In der Praxis benötigt aber jeder Eintrag in einem Hashset mindestens 64 Bit, sodass ein Bitset bereits für $N / k > 64$ weniger Platz benötigt (das trifft etwa auf 30\,\% der Netzwerke in \cref{fig:kantenanzahl} zu).
 Zusätzlich sind Existenzanfragen und Einfügeoperationen extrem schnell, wodurch ein Bitset oft einen lohnenswerten Kompromiss zwischen mehr Speicher für schnellere Ausführung darstellen kann.
@@ -814,7 +814,7 @@ Unsere Analysen sagen jedoch eine konstante Laufzeit pro gezogenem Element für 
 
 Wir sind also im Algorithm-Engineering-Zyklus auf eine Diskrepanz zwischen Theorie und Praxis gestoßen!
 Ist unsere Analyse falsch? Jaein.
-In der Bestimmung der Laufzeit nutzen wir eine Unit-Cost Random-Access-Machine (d.h. wir gingen davon aus, dass jede Operation gleich viel Zeit benötigt).
+In der Bestimmung der Laufzeit nutzen wir eine Unit-Cost Random-Access-Machine (\dh wir gingen davon aus, dass jede Operation gleich viel Zeit benötigt).
 Moderne Computer verfügen jedoch über ausgeklügelte Techniken, die gewisse Aspekte besonders beschleunigen.
 
 Hierzu gehören die sog. Speicherhierarchien: Ein Prozessor kann nur auf Daten operieren, die sich auf dem physischen Chip befinden, genauer in den Registern.
@@ -865,7 +865,7 @@ Betrachten wir das parallele Summieren $\sum_{i=1}^n x_n$ von Zahlen $X = (x_1, 
 
 In \cref{algo:parallel_sum} teilen wir die Eingabe rekursiv in zwei gleich große Teile (modulo Rundung) und berechnen die Teilsummen für beide rekursiv.
 Sobald die Teilergebnisse vorliegen, summieren wir diese in $\Oh{1}$ Zeit und geben es als Gesamtergebnis zurück.
-Dieses Schema funktioniert analog für alle assoziativen Operationen (z.B. Produkt, Min, Max).
+Dieses Schema funktioniert analog für alle assoziativen Operationen (\zB Produkt, Min, Max).
 
 In der Praxis findet man einige Software-Bibliotheken, die Fork-Join-Parallelismus zur Verfügung stellen;
 für C++ etwa \texttt{Cilk} oder Intels \texttt{oneTBB}, für Rust \texttt{rayon}.
@@ -895,7 +895,7 @@ Wir messen die Güte eines Fork-Join-Algorithmus mit zwei Eigenschaften:
           Der \aside{arbeits-optimal} Algorithmus leistet also asymptotisch nicht mehr Arbeit als die Laufzeit der besten sequentiellen Lösung; wir sagen er ist \emph{arbeits-optimal}.
 
     \item
-          Der \aside{Span / Parallel Depth} Span (engl. span oder parallel depth) misst die Anzahl der Instruktionen auf einem kritischen Pfad (d.h. eine längste Folge abhängiger Schritte).
+          Der \aside{Span / Parallel Depth} Span (engl. span oder parallel depth) misst die Anzahl der Instruktionen auf einem kritischen Pfad (\dh eine längste Folge abhängiger Schritte).
           Dies entspricht der Laufzeit, wenn wir unbeschränkt viele Prozessoren zur Verfügung haben.
           In \cref{algo:parallel_sum} müssen wir also analysieren, wie viele Instruktionen vor und nach dem Fork/Join Paar erforderlich sind und wie tief die Rekursion läuft:
           \begin{equation}
@@ -904,7 +904,7 @@ Wir messen die Güte eines Fork-Join-Algorithmus mit zwei Eigenschaften:
 \end{enumerate}
 
 Wenn wir ausreichend Prozessoren zur Verfügung haben, können wir also $n$ Zahlen in Zeit $\Oh{\log n}$ summieren.
-Zu ähnlichen Ergebnissen kommt man auch in anderen parallelen Maschinenmodellen (z.B. P-Rams).
+Zu ähnlichen Ergebnissen kommt man auch in anderen parallelen Maschinenmodellen (\zB P-Rams).
 
 \subsection{Rekursives Ziehen}
 In \cref{algo:parallel_sum} haben wir bereits ein gutes Grundgerüst für parallele Algorithmen gesehen:
@@ -914,7 +914,7 @@ Bezogen auf unser Problem, $k$~Stichproben aus $N$~Elementen zu ziehen, haben wi
     \item Teile $S$ deterministisch in $S_1$ und $S_2$: Wir können das Universum~$S$ mit $|S| = N$ in zwei Hälften $S_1$ und $S_2$ partitionieren mit $|S_1| = \lfloor N / 2 \rfloor$.
           Dann stellt sich die Frage: was ist die Anzahl~$k_1$ der Samples aus $S_1$, bzw. $k_2$ aus $S_2$. Klar ist nur $k_1 + k_2 = k$.
 
-    \item Teile $k$ deterministisch in $k_1$ und $k_2$: Wir können die Stichproben teilen, d.h. $k_1 = \lfloor k/n \rfloor$ wählen; dann müssen wir jedoch eine unbekannte Partitionierung von $S$ finden.
+    \item Teile $k$ deterministisch in $k_1$ und $k_2$: Wir können die Stichproben teilen, \dh $k_1 = \lfloor k/n \rfloor$ wählen; dann müssen wir jedoch eine unbekannte Partitionierung von $S$ finden.
 \end{enumerate}
 
 Auf den ersten Blick wirkt die zweite Variante zielführender.
@@ -925,8 +925,8 @@ Tatsächlich liefert aber die erste Variante einfachere Algorithmen, die auch ke
     \begin{center}
         \begin{tikzpicture}
             \foreach \x in {-8, -4, -2, 3, 5, 7, 9} {
-                    \node[inner sep=0, minimum size=1em, fill=black!20, anchor=west] at (\x em, 0) {};
-                }
+                \node[inner sep=0, minimum size=1em, fill=black!20, anchor=west] at (\x em, 0) {};
+            }
 
             \node[draw, minimum height=1em, minimum width=20em] at (0,0) {};
             \node[anchor=north] at (-9.5em, -0.5em) {1};
@@ -938,15 +938,15 @@ Tatsächlich liefert aber die erste Variante einfachere Algorithmen, die auch ke
 
             \path[draw, thick, dashed] (0, 2em) to (0, -3.5em);
 
-            \draw[decorate, decoration = {brace}] (-9.75em,3em) to node[above] {$k$} ++(19.5em,0);
-            \draw[red,  decorate, decoration = {brace}] (-9.5em,1em) to node[above] {$k_1$} ++(9em,0);
-            \draw[blue, decorate, decoration = {brace}] ( 0.5em,1em) to node[above] {$k_2$} ++(9em,0);
+            \draw[brace] (-9.75em,3em) to node[above=1ex] {$k$} ++(19.5em,0);
+            \draw[brace, red] (-9.5em,1em) to node[above=1ex] {$k_1$} ++(9em,0);
+            \draw[brace, blue] ( 0.5em,1em) to node[above=1ex] {$k_2$} ++(9em,0);
 
             \node[anchor=east] at (-12em, 1.8em) {zufällig:};
 
-            \draw[decorate, decoration = {brace, mirror}] (-9.75em,-4em) to node[below] {$N$} ++(19.5em,0);
-            \draw[red,  decorate, decoration = {brace, mirror}] (-9.5em,-2em) to node[below] {$N / 2$} ++(9em,0);
-            \draw[blue, decorate, decoration = {brace, mirror}] ( 0.5em,-2em) to node[below] {$N / 2$} ++(9em,0);
+            \draw[brace down] (-9.75em,-4em) to node[below=1ex] {$N$} ++(19.5em,0);
+            \draw[brace down, red] (-9.5em,-2em) to node[below=1ex] {$N / 2$} ++(9em,0);
+            \draw[brace down, blue] ( 0.5em,-2em) to node[below=1ex] {$N / 2$} ++(9em,0);
 
             \node[anchor=east] at (-12em, -2.8em) {deterministisch:};
 
@@ -964,7 +964,7 @@ Tatsächlich liefert aber die erste Variante einfachere Algorithmen, die auch ke
 Wie in \cref{fig:rekursive_k_aus_N}, teilen wir also das Universum~$S$ in zwei gleich große Hälften $S_1$ und $S_2$.
 Angenommen, wir täten dies nicht, wie viele Stichproben $k_1$ würde ein anderer Algorithmus aus $S_1$ ziehen?
 Wir wissen es nicht genau, da $k_1$ eine Zufallsvariable ist --- sie ist Hypergeometrisch verteilt:
-aus einer Gesamtpopulation von $N$ mit $k$~Treffern (d.h. die Elemente, die ein anderer Algorithmus gezogen hätte), ziehen wir $N_1$ Stichproben und erhalten $k_1$~Treffer.
+aus einer Gesamtpopulation von $N$ mit $k$~Treffern (\dh die Elemente, die ein anderer Algorithmus gezogen hätte), ziehen wir $N_1$ Stichproben und erhalten $k_1$~Treffer.
 In Erwartung sind es also $\expv{k_1} = k |S_1| / |S|$.
 
 Analog zu den zufälligen Sprüngen in \cref{subsec:gnp_zufaellige_spruenge}, ziehen wir $k_1$ aus einer Hypergeometrisch Verteilung.
@@ -1014,7 +1014,7 @@ Um die Performance von \cref{algo:parallel_k_aus_N} zu analysieren, treffen wir 
 
     \item Die Operationen $R_1 \cup R_2$ läuft in konstanter Zeit.
           Das ist realistisch: da die Elemente in der Menge $S$ paarweise verschieden sind, wissen wir, dass $|R_1 \cup R_2| = |R_1| + |R_2| = k$.
-          Es ist also kein Test auf Duplikate o.Ä. notwendig und es reicht aus $R_1$ und $R_2$ zu konkatenieren.
+          Es ist also kein Test auf Duplikate \oA notwendig und es reicht aus $R_1$ und $R_2$ zu konkatenieren.
           Das ist mit verketten Listen (inkl. Endpointer) in $\Oh{1}$ Zeit möglich.
 \end{enumerate}
 
@@ -1056,7 +1056,7 @@ Der Hybridalgorithmus in \cref{fig:benchmark_gnm_recursive_scale} nutzt, für gr
 Für kleine Teilprobleme mit $N < 10\,000$ kommt  ---je nach Dichte $k/N$--- entweder BitSet oder HashSet zum Einsatz.
 
 \section{Phasenübergänge in \Gnp und \Gnm}
-Die ersten analytischen Ergebnisse von Zufallsgraphen betrafen das Verhalten von kombinatorischen Eigenschaften für verschiedene Dichten (d.h. $m/n$ bei $\Gnm$, bzw $p$ bei $\Gnp$) im Grenzwert für $n \to \infty$.
+Die ersten analytischen Ergebnisse von Zufallsgraphen betrafen das Verhalten von kombinatorischen Eigenschaften für verschiedene Dichten (\dh $m/n$ bei $\Gnm$, bzw $p$ bei $\Gnp$) im Grenzwert für $n \to \infty$.
 In \aside{Wir nutzen ungerichtete Graphen und setzen $N = \binom n 2$} diesem Kapitel werden wir uns auf ungerichtete Graphen konzentrieren.
 
 Betrachten wir zunächst \Gnm Graphen.
@@ -1070,7 +1070,7 @@ Wir wollen uns an dieser Aussage ansehen, wie man die Wahrscheinlichkeit eines s
 
 \begin{proof}
     Sei $p(n,m)$ die Wahrscheinlichkeit, dass keine zwei Kanten einen gemeinsamen Endpunkt haben.
-    Wir vergleichen nun die Anzahl der möglichen Graphen mit der Anzahl der günstigen Graphen (d.h. ohne zwei Pfade).
+    Wir vergleichen nun die Anzahl der möglichen Graphen mit der Anzahl der günstigen Graphen (\dh ohne zwei Pfade).
     Zunächst beobachten wir, dass es $|\mathbb G(n,m)| = \binom N m = \binom{\binom n 2}{m}$ verschiedene $\Gnm$ Graphen gibt.
     Wie viele von diesen haben keine Knoten mit mindestens Kanten?
 
@@ -1122,7 +1122,7 @@ Wir wollen uns an dieser Aussage ansehen, wie man die Wahrscheinlichkeit eines s
 \end{proof}
 
 Beobachte, dass \cref{eq:wkeit_keine_zwei_kanten} eine exakte Wahrscheinlichkeit ist, die wir erst im Nachgang von unten abschätzen.
-Durch eine geeignete obere Schranke lässt sich zeigen, dass für $m \ge c \sqrt n$ für ein konstantes $c > 0$ (d.h. nicht von $n$ abhängig) die Wahrscheinlichkeit mindestens eines Knotens mit mindestens zwei Nachbarn gegen $1$ geht.
+Durch eine geeignete obere Schranke lässt sich zeigen, dass für $m \ge c \sqrt n$ für ein konstantes $c > 0$ (\dh nicht von $n$ abhängig) die Wahrscheinlichkeit mindestens eines Knotens mit mindestens zwei Nachbarn gegen $1$ geht.
 Wir sagen daher, dass \Gnm Graphen einen Phasenübergang mit Schwellwertfunktion $m(n) = \sqrt n$ haben.
 
 
@@ -1177,9 +1177,9 @@ Solange dies noch nicht der Fall ist, wird einer der folgenden Schritte ausführ
 \end{enumerate}
 
 Um Uneindeutigkeiten zu vermeiden, fixieren wir die Knotenordnung.
-Hierzu nehmen wir oBdA an, dass $V = \set{1, \ldots, n}$ natürliche Zahlen sind.
+Hierzu nehmen wir \oBdA an, dass $V = \set{1, \ldots, n}$ natürliche Zahlen sind.
 Die Mengen $V$ und $U$ seien aufsteigend geordnet, insbesondere werden immer die kleinsten passenden Elemente entnommen (in Schritten 1a und 2).
-Weiter, sei $S$ ein Stack, d.h. das Element, das als letztes eingefügt wurde, wird als erstes entfernt.
+Weiter, sei $S$ ein Stack, \dh das Element, das als letztes eingefügt wurde, wird als erstes entfernt.
 
 Das Besondere an unser DFS ist, dass wir keine Kantenliste als Eingabe bekommen, sondern uns vorstellen, einen Strom von unabhängig zufälligen Bits $X_1, \ldots, X_N$ zu erhalten, wobei $\prob{X_i = 1} = p$.
 Wenn wir nun in Schritt 1a einen Nachbar von $v$ suchen, iterieren wir gleichzeitig über $U$ und $X$.
@@ -1223,7 +1223,7 @@ Wir befinden uns zunächst im subkritischen Bereich, sprich unsere Analyse betra
     %\begin{enumerate}
     %\item
     Sei $p = (1 - \epsilon) / n$ und $k = (10 / \epsilon^2) \ln n$.
-    Dann gibt es mit hoher Wahrscheinlichkeit keine zusammenhängende Teilfolge (Intervall) mit Länge $nk$ (d.h. $X_i, \ldots, X_{i+nk}$) in dem mindestens $k$ Zufallsvariablen den Wert 1 haben.
+    Dann gibt es mit hoher Wahrscheinlichkeit keine zusammenhängende Teilfolge (Intervall) mit Länge $nk$ (\dh $X_i, \ldots, X_{i+nk}$) in dem mindestens $k$ Zufallsvariablen den Wert 1 haben.
 
     %\item Sei $p = (1 + \epsilon) /n$ und $N_0 = \epsilon n^2/2$.
     %      Dann gilt mit hoher Wahrscheinlichkeit $|\sum_{i=1}^{N_0} X_i - \epsilon(1+\epsilon)/2| \le n^{2/3}$.
@@ -1348,7 +1348,7 @@ Durch die Linearität des Erwartungswertes folgt dann die erwartete Anzahl an Cl
     \binom{|V|}{k} p^{k(k-1)/2}.
 \end{align}
 
-Wenn wir uns den Spezialfall von $\Gn$ (d.h. $\Gnp$ mit $p = 1/2$) ansehen, lässt sich zeigen, dass es eine Funktion $f(n) \approx 2\ln n$ gibt,
+Wenn wir uns den Spezialfall von $\Gn$ (\dh $\Gnp$ mit $p = 1/2$) ansehen, lässt sich zeigen, dass es eine Funktion $f(n) \approx 2\ln n$ gibt,
 sodass eine größte Clique in $G \sim \Gn$ mit hoher Wahrscheinlichkeit entweder $f(n)$ oder $f(n)+1$ Knoten hat.
 Diese können wir aufgrund der kleinen Größe relativ einfach finden!
 Wenn wir alle möglichen Cliquen explizit enumerieren und prüfen, ergibt sich \qq{nur} eine quasipolynomielle Laufzeit von $2^{\Theta(\log^2 n)}$.
