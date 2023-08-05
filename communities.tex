@@ -2,7 +2,7 @@ Bereits sehr früh in der Vorlesung stellten wir fest, dass beobachtete Netze in
 Auf ein Netzwerk mit menschlichen Teilnehmern bezogen könnte man dies so interpretieren, dass nicht jede Person mit jeder anderen sprechen kann (würde man mit jedem Menschen weltweit genau eine Sekunde lang sprechen, wäre man damit mehr als 250 Jahre beschäftigt).
 Menschen neigen aber dazu, sich in Gruppen bzw. Gemeinschaften (engl. communities) zu organisieren;
 Beispiele sind die Familie, Freunde, Arbeitskollegen, Sportclubs, Lern- und Forschungsgruppen.
-Wir finden aber Communities auch in anderen Netzwerken (z.B. im WWW oder biochemischen Netzwerken).
+Wir finden aber Communities auch in anderen Netzwerken (\zB im WWW oder biochemischen Netzwerken).
 
 Hierbei handelt es sich in der Regel um verhältnismäßig kleine Gruppen, die jedoch eng interagieren.
 Wir sehen aber bereits an den Beispielen, dass ein Mensch zu mehreren Gruppen gehören kann.
@@ -27,7 +27,7 @@ Um sie dennoch mit Werkzeugen der Network Science greifen zu können, treffen wi
 \end{enumerate}
 
 Beginnen wir mit einem Extrem von Annahme \ref{enum:high_internal_degree}:
-Eine Clique hat immer den maximalen internen Grad, daher liegt es nahe, jede maximale (d.h. nicht erweiterbare) Clique als eine Community aufzufassen.
+Eine Clique hat immer den maximalen internen Grad, daher liegt es nahe, jede maximale (\dh nicht erweiterbare) Clique als eine Community aufzufassen.
 Im Kleinen funktioniert das gut: In sozialen Netzen etwa gibt es viele Dreiecke.
 Wenn Person $A$ zwei Freunde $B$ und $C$ hat, dann ist es nicht unwahrscheinlich, dass auch $B$ und $C$ in Kontakt stehen.
 Das entstehende Dreieck ist eine 3-Clique.
@@ -49,12 +49,12 @@ Es gilt also
 \end{equation}
 
 \begin{itemize}
-    \item Wir nennen $C$ eine \emph{starke Community}, falls jeder Knoten in $C$ strikt mehr interne als externe Nachbarn hat, d.h.
+    \item Wir nennen $C$ eine \emph{starke Community}, falls jeder Knoten in $C$ strikt mehr interne als externe Nachbarn hat, \dh
           \begin{equation}
               \intdeg(v) > \extdeg(v) \qquad \forall v \in C.
           \end{equation}
 
-    \item Wir nennen $C$ eine \emph{schwache Community}, falls der gesamte interne Grad die Anzahl der externen Nachbarn übersteigt, d.h.
+    \item Wir nennen $C$ eine \emph{schwache Community}, falls der gesamte interne Grad die Anzahl der externen Nachbarn übersteigt, \dh
           \begin{equation}
               \sum_{v\in C}\intdeg(v) > \sum_{v\in C} \extdeg(v).
           \end{equation}
@@ -66,9 +66,9 @@ Community-Detection-Algorithmen und Graph-Partitioning-Algorithmen.
 Beide Typen haben gemein, dass sie einen Graphen in möglichst zusammengehörige Untergruppen teilen sollen.
 
 Der Unterschied ist in der Anwendung und Eingabe.
-Ein Partitionierungsalgorithmus wird z.B. verwendet, wenn ein großer Graph auf mehrere Prozessoren verteilt werden soll.
-Wir wissen, dass wir $P$ Teile brauchen, und die Aufgabe ist es z.B., die Anzahl der Kanten zwischen den Partitionsklassen zu minieren;
-ggf. werden weitere Einschränkungen gesetzt, z.B. dass die Teile ungefähr gleich groß sind (z.B. minimal balanced edge cuts).
+Ein Partitionierungsalgorithmus wird \zB verwendet, wenn ein großer Graph auf mehrere Prozessoren verteilt werden soll.
+Wir wissen, dass wir $P$ Teile brauchen, und die Aufgabe ist es \zB, die Anzahl der Kanten zwischen den Partitionsklassen zu minieren;
+ggf. werden weitere Einschränkungen gesetzt, \zB dass die Teile ungefähr gleich groß sind (\zB minimal balanced edge cuts).
 Oft handelt es sich also um Unterroutinen, um eine Berechnung zu \qq{vereinfachen}, und ist damit besonders im Algorithmen-Design zu finden.
 
 Community-Detection-Algorithmen hingegen müssen selbst \qq{herausfinden}, wie viele Communities vorhanden sind~--
@@ -98,17 +98,17 @@ Wir nehmen an, dass eine gute Partitionierung des Graphen einen hohen Modularity
 \end{exercise}
 
 Versuchen wir zunächst, die Aussage von~$Q$ intuitiv zu verstehen.
-Der erste Term, d.h. $\sum_{i,j} a_{ij} \delta(c_i, c_j)$, zählt die Kanten innerhalb und kann nur über das Kronecker-Delta beeinflusst werden.
+Der erste Term, \dh $\sum_{i,j} a_{ij} \delta(c_i, c_j)$, zählt die Kanten innerhalb und kann nur über das Kronecker-Delta beeinflusst werden.
 Er wird maximal, falls alle Knoten in einer Community sind~-- das ist nicht sonderlich nützlich.
 
-Der Beitrag des zweiten Terms, d.h. $-\sum_{i,j} \deg(i)\deg(j) \delta(c_i, c_j)/2m$, ist nichtpositiv.
+Der Beitrag des zweiten Terms, \dh $-\sum_{i,j} \deg(i)\deg(j) \delta(c_i, c_j)/2m$, ist nichtpositiv.
 Wir maximieren ihn, indem wir ihn möglichst nahe an $0$ bringen.
 Das geschieht, indem wir viele Communities erzeugen, die alle einen möglichst geringen internen Gesamtgrad haben.
 Das Optimieren der Modularity ist also immer ein Kompromiss dieser beiden Größen.
 
 \subsection{Ein Greedy-Algorithmus}
 Das Finden von Community-Strukturen mit optimaler Modularity ist --~natürlich~-- \NP-schwer (und trivialerweise in \NP).~\cite{DBLP:journals/tkde/BrandesDGGHNW08}
-Daher müssen wir für praktische Netzwerke eine Approximation nutzen, z.B. folgenden Greedy-Algorithmus:
+Daher müssen wir für praktische Netzwerke eine Approximation nutzen, \zB folgenden Greedy-Algorithmus:
 
 \begin{enumerate}
     \item Weise jedem Knoten seine eigene Community zu.
@@ -123,4 +123,4 @@ Die Modularity steigt daher zwangsweise durch deren Vernetzung.
 Eine Konsequenz hieraus ist, dass der Greedy-Algorithmus Communities mit einem internen Grad von weniger als $\sqrt{2m}$ verschmilzt, sobald sie mit einer Kante verbunden sind.
 
 In vielen beobachteten Netzwerken gibt es jedoch deutlich kleinere Gruppen, die nicht auf diese Weise gefunden werden können.
-Das Problem kann z.B. mit dem Louvain-Algorithmus relativiert werden.
+Das Problem kann \zB mit dem Louvain-Algorithmus relativiert werden.
