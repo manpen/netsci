@@ -2,13 +2,13 @@ Während wir im vorherigen Kapitel Gradsequenzen als Stichproben einer Gradverte
 Konkret möchten wir für eine gegebene Gradsequenz~$\degseq$ einen Graphen~$G$ erzeugen, der folgende Eigenschaften erfüllt:
 \begin{enumerate}
     \item Graph~$G$ soll die Gradsequenz~$\degseq$ haben.
-    \item Graph~$G$ soll einfach sein (d.h., keine Mehrfachkanten oder Schleifen haben).
+    \item Graph~$G$ soll einfach sein (\dh, keine Mehrfachkanten oder Schleifen haben).
     \item Graph~$G$ soll eine uniforme Stichprobe aus allen passenden Graphen sein.
 \end{enumerate}
 
 Im Folgenden werden wir eine Reihe von Ansätzen untersuchen.
-Dabei wird sich zeigen, dass es einfach ist, wenn wir nur zwei Eigenschaften (d.h. 1\&2, 2\&3, oder 1\&3) erfüllen müssen.
-Für eine allgemeine Gradsequenz~$\degseq$ ist es hingegen schwer allen drei Anforderungen gerechnet zu werden.
+Dabei wird sich zeigen, dass es einfach ist, wenn wir nur zwei Eigenschaften (\dh 1\&2, 2\&3, oder 1\&3) erfüllen müssen.
+Für eine allgemeine Gradsequenz~$\degseq$ ist es hingegen schwer allen drei Anforderungen gerecht zu werden.
 
 Bevor wir aber anfangen, sollten wir das \qq{Warum?} klären.
 Es gibt zwei zentrale Motivationen Graphen mit allgemeinen Gradsequenzen erzeugen zu wollen:
@@ -28,7 +28,7 @@ Es gibt zwei zentrale Motivationen Graphen mit allgemeinen Gradsequenzen erzeuge
           wir beobachteten Hub-Knoten, deren Grad wir nicht mit $\Gnp$ Graphen erklären konnten.
           Daraufhin schlugen wir das BA Modell vor.
 
-          Wenig überraschend haben das $\Gnp$ und das BA Modell deutliche Unterschiede (z.B. sind selbst sehr dünne BA Graphen zusammenhängend).
+          Wenig überraschend haben das $\Gnp$ und das BA Modell deutliche Unterschiede (\zB sind selbst sehr dünne BA Graphen zusammenhängend).
           Egal welches Modell wir wählen, es führt immer zu einer Verzerrung in der Bewertung unserer Beobachtungen.
 
           Daher kommen nicht selten uniform zufällige und einfache Graphen, die dieselbe Gradsequenz wie das beobachtete Netz ausweisen, zum Einsatz.
@@ -51,7 +51,7 @@ Prüfen wir kurz unser Lastenheft:
     \item \emph{Graph~$G$ soll die Gradsequenz~$\degseq$ haben}.
           Das stimmt: per Konstruktion ist jede Knoten~$i$ genau $d_i$ mal vertreten.
 
-    \item \emph{Graph~$G$ soll einfach sein (d.h., keine Mehrfachkanten oder Schleifen haben).}
+    \item \emph{Graph~$G$ soll einfach sein (\dh, keine Mehrfachkanten oder Schleifen haben).}
           Das können wir nicht versprechen: niemand stoppt uns ein Paar $i = j$ zu ziehen, wenn $d_i > 1$.
           Analog kann es auch passieren, dass wir dasselbe Paar mehrfach ziehen.
 
@@ -104,7 +104,7 @@ Der entsprechende Generator ist in \cref{alg:cm_einfach} skizziert.
 Tatsächlich kennen wir aber einen sehr ähnlichen Algorithmus bereits, der sogar noch besser funktioniert.
 Es handelt sich um den Fisher-Yates Shuffle: statt einer Urne und einer Kantenliste benötigen wir nur ein Array, das für jedes entnommene Element der Urne einen stub fixiert.
 Wir können also das Configuration Model implementieren, in dem wir die Urne in eine zufällige Permutation bringen und dann je zwei benachbarte Einträge als Kante interpretieren.
-Das hat den Vorteil, dass zufällige Permutation ein gut verstandenes Konzept sind und es auf diverse Plattformen effiziente Implementierungen gibt.
+Das hat den Vorteil, dass zufällige Permutationen ein gut verstandenes Konzept sind und es auf diverse Plattformen effiziente Implementierungen gibt.
 
 \begin{exercise}
     In der Praxis lässt sich dieser Ansatz sogar noch beschleunigen (besonders im parallelen Kontext).
@@ -118,7 +118,7 @@ Das hat den Vorteil, dass zufällige Permutation ein gut verstandenes Konzept si
 \subsection{Graphische Gradsequenzen}
 Wie wir im letzten Kapitel gesehen haben, kann das Configuration Model Mehrfachkanten und Eigenschleifen erzeugen.
 Tatsächlich gibt es sogar Eingaben, für die sich das gar nicht vermeiden lässt.
-Zum Beispiel: $\degseq = (2,)$, $\degseq = (2, 2)$, $\degseq = (3,3)$, oder $\degseq = (4, 1, 1)$.
+Zum Beispiel: $\degseq = (2)$, $\degseq = (2, 2)$, $\degseq = (3,3)$, oder $\degseq = (4, 1, 1)$.
 Wir treffen daher folgende Definitionen:
 
 \begin{definition}
@@ -128,7 +128,7 @@ Wir treffen daher folgende Definitionen:
 
 \begin{definition}
     Sei $\degseq$ eine Gradsequenz.
-    Wir nennen $\degseq$ genau dann \emph{graphisch}, wenn $\gd \neq \emptyset$ (d.h., wenn es mindestens einen einfachen Graphen gibt, der $\degseq$ erfüllt).
+    Wir nennen $\degseq$ genau dann \emph{graphisch}, wenn $\gd \neq \emptyset$ (\dh, wenn es mindestens einen einfachen Graphen gibt, der $\degseq$ erfüllt).
 \end{definition}
 
 \noindent
@@ -138,7 +138,7 @@ Wir werden später zwei Charakterisierungen von \emph{graphischen} Gradsequenzen
 Angenommen $\degseq$ ist graphisch.
 Wie erhalten wir dann aus dem Configuration Model einen einfachen Graph?
 Leider ist dies nicht immer exakt und effizient möglich.
-Im Folgenden leiten wir aber her, dass die manchmal Situation gar nicht so schlimm ist.
+Im Folgenden leiten wir aber her, dass dies manchmal gar nicht so schlimm ist.
 
 Hierzu wechseln wir erneut von Gradsequenzen~\degseq{} zu Gradverteilungen.
 Sei $p_d = n_d / n$ die Wahrscheinlichkeit, dass ein zufälliger Knoten Grad $d$ hat, wobei $n_d$ die Anzahl der Knoten in $\degseq$ mit Grad~$d$ beschreibt.
@@ -147,7 +147,7 @@ Wir verdeutlichen dies mit der Notation $\CMnd$.
 In diesem Setting analysieren wir für große Knotenanzahl~$n$ die erwartete Anzahl von Mehrfachkanten $\expv{M_n}$ und Eigenschleifen~$\expv{S_n}$.
 
 \begin{lemma}\label{lem:cm_anzahl_nicht_einfach}
-    Sei $G \follows \CMnd$ ein von Configuration Model erzeugter Graph und $X$ ein zufälliger Grad mit $\prob{X = d} = p_d$.
+    Sei $G \follows \CMnd$ ein vom Configuration Model erzeugter Graph und $X$ ein zufälliger Grad mit $\prob{X = d} = p_d$.
     Wir bezeichnen mit $S_n$ die Anzahl der Eigenschleifen und mit $M_n$ die Anzahl der Mehrfachkanten.
     Dann gilt
     \begin{align}
@@ -158,8 +158,8 @@ In diesem Setting analysieren wir für große Knotenanzahl~$n$ die erwartete Anz
 
 \begin{exercise}
     Seien $G_1$ und $G_2$ zwei Graphen mit gleicher Knoten- und Kantenanzahl.
-    Beschreibe (qualitativ) zwei Gradverteilungen, s.d. wir für $G_1$ möglichst wenig kritische Kanten erwarten, während $G_2$ möglichst viele haben soll.
-    Erkläre (qualitativ), weshalb $\expv{M_n} \propto \expv{S_n^2}$ plausible wirkt.
+    Beschreibe (qualitativ) zwei Gradverteilungen, \sd wir für $G_1$ möglichst wenig kritische Kanten erwarten, während $G_2$ möglichst viele haben soll.
+    Erkläre (qualitativ), weshalb $\expv{M_n} \propto \expv{S_n^2}$ plausibel wirkt.
 \end{exercise}
 
 \begin{remark}
@@ -248,7 +248,7 @@ Während für Gradverteilungen mit $c_n = \Oh{1}$ das \emph{Erased Configuration
 Insbesondere skalenfrei Powerlaw Verteilungen sind notorisch schwierig.
 Dies liegt unter anderem daran, dass illegale Kanten häufiger auftreten und sich zudem um Hubs herum konzentrieren.
 Das \emph{Erased Configuration Model} hat daher einen Bias den Grad von Knoten mit vielen Nachbarn besonders stark abzusenken;
-dies wiederum hat signifikante Auswirkungen auf die Graphstruktur (siehe z.B. \cite{DBLP:journals/snam/SchlauchHZ15}).
+dies wiederum hat signifikante Auswirkungen auf die Graphstruktur (siehe \zB \cite{DBLP:journals/snam/SchlauchHZ15}).
 Wir werden später Techniken diskutieren, die illegale Kanten entfernen können, ohne dabei die Gradsequenz zu verändern.
 
 \subsection{Ans Gute glauben und das Schlechte ablehnen}
@@ -304,7 +304,7 @@ Als Extrembeispiel betrachten wir für großes $k \ggg 0$ die folgende Gradseque
     \right)
 \end{align}
 
-Hierbei handelt es sich um eine sog. Threshold Sequenz --- eine Gradsequenz bei denen alle einfache Graph isomorph sind (d.h. wenn wir die Knotenindizes löschen sind alle Graphen identisch).
+Hierbei handelt es sich um eine sog. Threshold Sequenz --- eine Gradsequenz bei denen alle einfache Graph isomorph sind (\dh wenn wir die Knotenindizes löschen sind alle Graphen identisch).
 Die hier beschriebene Sequenz erzeugt einen Graph mit einer Clique aus $k$ Knoten, wobei einer der Knoten~$u$ noch zu Knoten~$v$ verbunden ist.
 
 Das Problem besteht nun darin, dass das Blatt~$v$ genau zu Knoten~$u$ verbunden sein muss.
@@ -328,7 +328,7 @@ Es gilt
 \end{align}
 
 Per Definition kann es also keine Mehrfachkanten geben.
-In der Analyse des Chung-Lu Modells werden in der Regel Eigenschleife erlaubt, um Sonderfälle zu vermeiden.
+In der Analyse des Chung-Lu Modells werden in der Regel Eigenschleifen erlaubt, um Sonderfälle zu vermeiden.
 In praktischen Implementierung ist es aber trivial diese zu verbieten.
 
 Betrachten wir zunächst den erwarteten Grad~\expv{\deg{v_i}}:
@@ -484,7 +484,7 @@ Berechnen wir den Skalierungsfaktor~$s$:
 \end{align}
 
 \noindent
-Natürlich wählen wir den kleinstmöglichen Wert, es gilt also $s=4/3$. Dann können \cref{alg:rejection_sampling} spezialisieren:
+Natürlich wählen wir den kleinstmöglichen Wert, es gilt also $s=4/3$. Dann können wir \cref{alg:rejection_sampling} spezialisieren:
 \begin{enumerate}
     \item Wir werfen eine Münze und erhalten Seite~$x$.
     \item Falls $x = Z$ akzeptieren wir mit Wahrscheinlichkeit
@@ -514,8 +514,8 @@ Wir können uns den Algorithmus wie folgt bildlich vorstellen, wobei die grauen 
 \subsubsection{Gewichtetes Ziehen ohne Zurücklegen: Rejection Sampling}
 Wir betrachten eine Verallgemeinerung des $\Gnp$ Samplings aus \cref{subsec:gnp_zufaellige_spruenge}.
 Anstelle eines gemeinsamen Akzeptanzparameters~$p$ wie bei Gilbert-Graphen, sei $w = (w_1, \ldots, w_n) \in [0, 1]^n$ ein Vektor, der jedem Element eine individuelle Wahrscheinlichkeit zuweist.
-Wir gehen weiter davon aus, dass $w$ absteigend sortiert ist, d.h. $w_i \ge w_{i+1}$ für alle $1 \le i < n$.
-Unser Ziel ist es eine Ausgabemenge $R \subseteq [n]$ zu generieren, s.d. $\prob{i \in R} = w_i$.
+Wir gehen weiter davon aus, dass $w$ absteigend sortiert ist, \dh $w_i \ge w_{i+1}$ für alle $1 \le i < n$.
+Unser Ziel ist es eine Ausgabemenge $R \subseteq [n]$ zu generieren, \sd $\prob{i \in R} = w_i$.
 Das Problem ist also \emph{gewichtetes Ziehen ohne Zurücklegen}.
 
 Ein naiver Ansatz iteriert einfach über alle $n$ Element und akzeptiert jedes Element mit Wahrscheinlichkeit $w_i$.
@@ -535,17 +535,17 @@ Konservativ müssen wir eine Wahrscheinlichkeit wählen, die mindestens so groß
 Hier trifft es sich gut, dass $w$ absteigend sortiert ist.
 Angenommen wir haben gerade Element~$i$ gewählt, dann führen wir einen geometrischen Sprung mit Erfolgswahrscheinlichkeit $w_{i+1}$ aus.
 Sei $j$ der Index den wir gezogen haben.
-Wenn $w_{i+1} = w_j$ gilt, hatten wir Glück, falls nicht haben wir $w_j$ überschätzt und müssen das korrigieren\ldots z.B. mit Rejection Sampling.
+Wenn $w_{i+1} = w_j$ gilt, hatten wir Glück, falls nicht haben wir $w_j$ überschätzt und müssen das korrigieren\ldots \zB mit Rejection Sampling.
 
 Element~$j$ wurde mit Wahrscheinlichkeit $w_{i+1}$ vorgeschlagen, es soll aber nur mit Wahrscheinlichkeit $w_j$ ausgegeben werden.
-Wir akzeptieren also mit Wahrscheinlichkeit $w_{j} / (s \cdot w_{i+1})$; als Skalierung wählten1 wir also implizit $s=1$ (warum?).
+Wir akzeptieren also mit Wahrscheinlichkeit $w_{j} / (s \cdot w_{i+1})$; als Skalierung wählten wir also implizit $s=1$ (warum?).
 
 Interessant wird es aber, falls der Vorschlag~$j$ verworfen wird.
 Im klassischen Rejection Sampling generieren wir Vorschläge immer aus derselben Verteilung; falsch ist das auch hier nicht.
 Effizienter ist es aber, $j$ als neuen Startpunkt zu wählen und einen neuen Sprung mit Erfolgswahrscheinlichkeit $w_{j+1}$ zu ziehen.
 
 \begin{exercise}
-    Begründe, weshalb wir einen neuen Startwert nehmen können, ob wir diesen \emph{nicht} in $R$ aufnehmen.
+    Begründe, weshalb wir einen neuen Startwert nehmen können, obwohl wir diesen \emph{nicht} in $R$ aufnehmen.
 \end{exercise}
 
 Die Laufzeit dieses Ansatzes analysieren wir im Kontext von Chung-Lu Graphen später.
@@ -599,13 +599,13 @@ Mit einem Binärbaum hätten wir $\Oh{\log n}$ Zeit geschafft.
 
 Eine vergleichbar problematische Situation ist in \cref{fig:alias-tab-motivation} visualisiert.
 Dem gegenüber wäre eine besonders gute Eingabe ein $w_i = 1/n \pm \epsilon$ für alle $i$.
-In der Abbildung würde das der Situation entsprechen, dass alle Zeilen etwa auf der gestrichelten Linien enden würden --- es käme zu keiner Rejection.
+In der Abbildung würde das der Situation entsprechen, dass alle Zeilen etwa auf der gestrichelten Linie enden würden --- es käme zu keiner Rejection.
 
 Tatsächlich können wir durch einen kleinen Kniff eine beliebige Eingabe komplett ohne Verwerfung samplen.
 Hierzu beobachten wir, dass die Fläche der grünen Box von $w_1$ rechts des gestrichelten Durchschnitts genau der roten Fläche links des Durchschnitts entspricht.
 Dies folgt, da sonst die gestrichelte Linie sonst nicht der Durchschnitt wäre.
 
-Die Idee der Alias Methode besteht darin, die den Überschuss auf die rote Fläche aufzuteilen.
+Die Idee der Alias Methode besteht darin, den Überschuss auf die rote Fläche aufzuteilen.
 Hierbei wollen wir aber am \emph{entweder-oder} Schema der Verwurfsmethode festhalten;
 sprich pro Zeile soll es nur zwei Wahlen geben.
 Das ist problematisch, da es bis zu $n-1$ überlange Zeilen geben kann, die dann nicht alle in die eine unterlange Zeile verteilen dürfen.
@@ -652,23 +652,23 @@ Sei $w'_g = w_g - (1 - w_k)$ das verbleibende Gewicht von $g$.
 Wenn $w'_g < 1$ fügen wir $(g, w'_g)$ in $K$ ein, sonst in $D$.
 
 Per Konstruktion kann $K$ niemals vor $D$ leer werden; es kann aber durchaus vorkommen, dass $K$ leer ist, während $D$ noch Werte enthält.
-Dann haben aber alle Einträge in $G$ Gewicht genau $1$; wir können sie in der offensichtlichen Art in $G$ ein.
+Dann haben aber alle Einträge in $G$ Gewicht genau $1$; wir können sie in der offensichtlichen Art in $G$ einfügen.
 Praktische Implementierungen müssen aufgrund der wiederholten Subtraktionen mit Rundungsfehlern der Gewichte umgehen können;
 dann kann auch $D$ zuerst leer werden; die Elemente in $K$ haben dann aber Gewicht $1 - \epsilon$.
 
-Das Ziehen aus der Alias-Tabelle läuft analog zu Rejection-Sampling:
+Das Ziehen aus der Alias-Tabelle läuft analog zu Rejection Sampling:
 wir wählen eine Zeile $1 \le i \le n$ zufällig uniform und werden ein reelles $0 \le u \le 1$.
 Falls $u < G[i]$ geben wir $i$ zurück, sonst $A[i]$.
 Die gelingt in Zeit $\Oh{1}$.
 
 \subsection{Intermezzo: Schnelles Ziehen von uniformen Ganzzahlen}\label{subsec:uniforme_ganzzahlen}
-\emph{Dieses Kapitel basiert in auf \cite{DBLP:journals/tomacs/Lemire19}.}
+\emph{Dieses Kapitel basiert auf \cite{DBLP:journals/tomacs/Lemire19}.}
 Wir übernehmen auch die Notation $a \div b = \lfloor a / b \rfloor$.
 
 \bigskip
 
 Auf praktischen Computern erhalten wir (Pseudo)Zufallszahlen in der Regel in der Größe eines Maschinenwortes, oft mit $L = 32$ oder $64$ Bit.
-Wir können dies entweder als $L$~unabhängige Zufallsbits interpretieren, oder z.B. als eine vorzeichenlose Ganzzahl~$X$, die uniform auf $[0, 2^L)$ verteilt ist.
+Wir können dies entweder als $L$~unabhängige Zufallsbits interpretieren, oder \zB als eine vorzeichenlose Ganzzahl~$X$, die uniform auf $[0, 2^L)$ verteilt ist.
 In Anwendungen benötigen wir jedoch häufig Zahlen aus einem Intervall $[a, b)$ und müssen daher $X$ transformieren.
 
 Den kleinsten Wert anzupassen ist einfach: wir ziehen aus $Y' \in [0, b-a)$ und geben $Y = a + Y'$ zurück.
@@ -712,8 +712,8 @@ Wenn $X$ uniform ist, ist es die Ausgabe dann auch.
 Allerdings ist für $s \ll 2^L$ die Verwerfungsrate exorbitant hoch;
 in Erwartung benötigen wir $2^L / s$ Versuche!
 
-Besser ist es natürlich ein möglichst großes $k \ge 1$ zu wählen, s.d. $k s \le 2^L$.
-Dann verwerfen wir nur $X \ge ks$ und liefern sonst $X / k$ zurückzuliefern.
+Besser ist es natürlich ein möglichst großes $k \ge 1$ zu wählen, \sd $k s \le 2^L$.
+Dann verwerfen wir nur $X \ge ks$ und liefern sonst $X / k$ zurück.
 Die beste Wahl ist $k = 2^L \div s$.
 Dieses Verfahren hat eine Akzeptanzwahrscheinlichkeit von
 \begin{align}
@@ -738,8 +738,8 @@ Das führt zu folgendem Schema, das auch als OpenBSD Algorithmus bekannt ist:
 Der OpenBSD Algorithmus ist einfach und korrekt, hat aber einen enormen Nachteil in der Praxis:
 Pro Aufruf muss ein Modulo und eine Division (das ist idR dieselbe CPU-Instruktion!) berechnet werden.
 Eine \texttt{div} Instruktion gehört zu den teuersten skalaren Operationen\footnote{Sehr umfangreiche Benchmarks und Infos: \url{https://www.agner.org/optimize/instruction_tables.pdf}}, die CPUs unterstützen.
-Im Vergleich zu einfacher Arithmetik (z.B. Addition) ist eine Division oft um ein bis zwei Größenordnungen langsamer.
-Insb. erzeugen moderne nicht-kryptographischen Pseudozufallsgeneratoren eine Zufallszahl oft schneller als eine einzelne Division dauert!
+Im Vergleich zu einfacher Arithmetik (\zB Addition) ist eine Division oft um ein bis zwei Größenordnungen langsamer.
+Insb. erzeugen moderne nicht-kryptographische Pseudozufallsgeneratoren eine Zufallszahl oft schneller als eine einzelne Division dauert!
 
 OpenJDK verwendet ein anderes Verfahren, das die Anzahl der Divisionen an die Anzahl der Runden des Rejection Samplings knüpft.
 
@@ -754,7 +754,7 @@ OpenJDK verwendet ein anderes Verfahren, das die Anzahl der Divisionen an die An
     \caption{Java Algorithmus zum Ziehen uniformer Ganzzahlen.}
 \end{algorithm}
 
-Wir müssen genau dann verwerfen, wenn $ks \le x \le (k+1)s$ mit $(k+1)s > 2^L$, d.h. wenn $x$ aus einem \qq{$s$-Intervall} stammt, das nicht vollständig in $[0, 2^L)$ enthalten ist.
+Wir müssen genau dann verwerfen, wenn $ks \le x \le (k+1)s$ mit $(k+1)s > 2^L$, \dh wenn $x$ aus einem \qq{$s$-Intervall} stammt, das nicht vollständig in $[0, 2^L)$ enthalten ist.
 Beobachte, dass $x - r = x - (x \bmod s) = (x \div s)s$ dem größten Vielfachen von $s$ entspricht, das $x$ nicht übersteigt;
 es ist also die linke Intervallgrenze.
 Die rechte Intervallgrenze ergibt sich dann als $x- r +s$.
@@ -845,7 +845,7 @@ Um die Datenstruktur speicher-effizient zu gestalten, konstruieren wir eine Tabe
 Statt die Verteilung auf $1$ oder $k$ zu normieren, verwenden wir direkt die Anzahl an Kugeln pro Farbe.
 Das hat zum Einen den Vorteil, dass wir mit reiner Ganzzahlarithmetik arbeiten können, zum Anderen aber auch nicht renormieren müssen, wenn Kugeln hinzugefügt oder entnommen werden.
 
-Aus unserer Diskussion des letzten Kapitels wissen wir aber bereits, dass es im Allgemeinen nicht möglich sein kann, $n$ Kugeln auf $k$ Zeilen zu verteilen, s.d. alle Zeilen identisches Gewicht haben.
+Aus unserer Diskussion des letzten Kapitels wissen wir aber bereits, dass es im Allgemeinen nicht möglich sein kann, $n$ Kugeln auf $k$ Zeilen zu verteilen, \sd alle Zeilen identisches Gewicht haben.
 Sei $T[i]$ das Gewicht der $i$-ten Zeile.
 Falls $n \bmod k \ne 0$, gibt es mindestens zwei Zeilen $i$ und $j$ mit  $T[i] = \lfloor n / k \rfloor\ \ne\ \rfloor n / k = T[j]$.
 mit Rejection-Sampling können wir aber die leichte Verzerrung einfach korrigieren.
@@ -876,7 +876,7 @@ Das führt zu einer Situation analog zu \cref{fig:alias-tab-motivation}
 --- eine Zeile vereinnahmt den Großteil der Wahrscheinlichkeitsmasse, während alle anderen zu einer enorm hohen Verwerfungsrate führen.
 
 Wir lösen das Problem, indem wir nicht nur $g_\text{max}$, sondern auch $g_\text{min}$ speichern und aktualisieren (zeige, dass das auch trivial implizit geht!).
-Bei jeder Änderungen einer der beiden Größen prüfen wir, ob noch die Invariante
+Bei jeder Änderung einer der beiden Größen prüfen wir, ob noch die Invariante
 \begin{align}
     \alpha \frac n m < g_\text{min} \le g_\text{max} < \beta \frac n m
 \end{align}
@@ -916,7 +916,7 @@ Um die Beschreibung einfach zu halten, stellen wir eine Vereinfachung vor, die Z
 Mit ein paar Tricks können beide Schranken auf $\Oh{1}$ (worst-case) gedrückt werden.
 
 Hierbei \aside{iterierte Logarithmus $\underbrace{\log_2(\ldots \log_2}_\text{$k$ mal}(x)) \le 1$} ist $\lgs(n)$ der sog. \emph{iterierte Logarithmus}.
-Dieser ist definiert als das kleinste ganzzahlige $k$, s.d. $\log^{(k)}(n) \le 1$, wobei $\log^{(k)}(n)$ die $k$-fache Anwendung des Logarithmus ($\log_2(\log_2(\ldots \log_2(x)))$) beschreibt.
+Dieser ist definiert als das kleinste ganzzahlige $k$, \sd $\log^{(k)}(n) \le 1$, wobei $\log^{(k)}(n)$ die $k$-fache Anwendung des Logarithmus ($\log_2(\log_2(\ldots \log_2(x)))$) beschreibt.
 Es ist eine extrem langsam-wachsende Funktion $\lgs(10^{80}) = 4$, wobei $10^{80}$ etwa der Anzahl an Atome im Universum entspricht;
 $\lgs({2^{65536}})=5$, wobei $2^{65536}$ mehr als $20\,000$ Ziffern in Dezimalschreibweise hat.
 Für alle praktischen Anwendungen, in denen $n$ linear zu einer Ressource (etwa Speicher oder Laufzeit) korrespondiert, können wir $\lgs(n)$ daher als Konstante von höchstens $4$ annehmen.
@@ -964,7 +964,7 @@ Pro Leveltabelle speichern wir noch das Gesamtgewicht des Levels $\wght(T_j) = \
 
 Wir verwalten zudem ein Bitset, um die Wurzel in Level~$\ell$ zu markieren.
 Etwas \qq{hacky}, speichern wir dies als eine Binärzahl $X_\ell = \sum_{j \in T_\ell} 2^j$ in Festkommadarstellung, in der das $j$-te Bit genau dann gesetzt ist, wenn $j \in T_\ell$.
-Aufgrund unserer Annahmen bzgl. des Maschinenmodells können wir $X_\ell$ in einem Wort darstellen und in Konstantzeit z.B. das höchstwertige Bit finden.
+Aufgrund unserer Annahmen bzgl. des Maschinenmodells können wir $X_\ell$ in einem Wort darstellen und in Konstantzeit \zB das höchstwertige Bit finden.
 
 \subsubsection{Ziehen aus der Datenstruktur}
 Schließlich sei $L$ das größte Level in der Datenstruktur; wir werden zeigen, dass $L = \Oh{\lgs (n)}$ gilt.
@@ -973,12 +973,12 @@ Jetzt \aside{Sampling} können wir den Samplingalgorithmus beschreiben:
 \begin{enumerate}
     \item Ziehe ein $1 \le \ell \le L$ zufällig gewichtet nach $\wght(T_\ell)$.
           Da $L = \Oh{\lgs(n)}$, können wir das mittels linearer Suche implementieren:
-          Wir ziehen~$U$ uniform aus $[0, W)$ und suchen das kleinste $\ell$, s.d. $U < \sum_{1\le k \le \ell} \wght(T_k)$.
+          Wir ziehen~$U$ uniform aus $[0, W)$ und suchen das kleinste $\ell$, \sd $U < \sum_{1\le k \le \ell} \wght(T_k)$.
 
     \item Ziehe ein $j \in T_\ell$ zufällig gewichtet nach $\wrng{\ell}{j}$.
           Auch hier können wir eine lineare Suche anwenden:
-          Ziehe $U$ uniform aus $[0, \wght(T_j))$ und suche das kleinste $j$, s.d. $U \le \sum_{k \le j} \wrng{\ell}{k}$.
-          Zwar haben wir keine nützliche obere Schranke für die Anzahl der Wurzeln pro Level, jedoch können wir bei der schwersten Wurzel (d.h. dem höchstwertigsten gesetzten Bit in $X_\ell$) starten und dann $j$ iterativ dekrementieren.
+          Ziehe $U$ uniform aus $[0, \wght(T_j))$ und suche das kleinste $j$, \sd $U \le \sum_{k \le j} \wrng{\ell}{k}$.
+          Zwar haben wir keine nützliche obere Schranke für die Anzahl der Wurzeln pro Level, jedoch können wir bei der schwersten Wurzel (\dh dem höchstwertigsten gesetzten Bit in $X_\ell$) starten und dann $j$ iterativ dekrementieren.
           Da sich das größtmögliche verbleibende Gewicht jedes Mal grob halbiert, ergibt sich eine erwartet konstante Laufzeit (vgl. geometrisch Verteilung).
 
     \item Innerhalb von $\rng{\ell}{j}$ wählen wir nun ein Element gewichtet nach dessen Gewicht mittels Verwerfungsmethode.
@@ -990,7 +990,7 @@ Jetzt \aside{Sampling} können wir den Samplingalgorithmus beschreiben:
 \subsubsection{Erstellen und aktualisieren der Datenstruktur}
 Initial können wir die Datenstruktur in Zeit $\Oh{n}$ konstruieren.
 Dafür verarbeiten wir die $\Oh{n}$ Gewichte der Eingabe und fassen sie in Intervalle $\rng{1}{j}$ zusammen.
-Alle internen Intervall (d.h. solche mit mindestens zwei Elementen) sammeln wir zunächst in einer Queue.
+Alle internen Intervalle (\dh solche mit mindestens zwei Elementen) sammeln wir zunächst in einer Queue.
 Diese verarbeiten wir rekursiv, nachdem das aktuelle Level fertiggestellt wurde.
 Die Verarbeitung eines Levels ist in Zeit linear in der Anzahl der Elemente des Levels möglich.
 Da die Datenstruktur insg. $\Theta(n)$ Knoten hat, folgt also eine Gesamtlaufzeit von $\Oh{n}$.
@@ -1000,16 +1000,15 @@ Hierzu soll der Anwender ein beliebiges Gewicht $w_i$ um einen beliebigen Betrag
 Wir beginnen in Level~$\ell=1$ und passen das entsprechende Gewicht an.
 Es gibt zwei Optionen:
 \begin{itemize}
-    \item Die Änderungen ist ausreichend klein, so dass das Gewicht in seinem ursprünglichen Intervall~$\rng{1}{j}$ verbleibt.
-          Dann müssen wir das entsprechende Intervall anpassen (d.h. sein Gesamtgewicht und die Änderungen auch rekursiv in $\ell +1$ oder $T_\ell$ widerspiegeln).
-
+    \item Die Änderungen sind ausreichend klein, so dass das Gewicht in seinem ursprünglichen Intervall~$\rng{1}{j}$ verbleibt.
+          Dann müssen wir das entsprechende Intervall anpassen (\dh sein Gesamtgewicht und die Änderungen auch rekursiv in $\ell +1$ oder $T_\ell$ widerspiegeln).
 
     \item Wenn das Element von $\rng{1}{j}$ in ein neues Intervall $\rng{1}{j'}$ wechselt, müssen wir die Änderungen für beide Intervalle propagieren.
 \end{itemize}
 
 Pro Level kann sich also die Anzahl der betroffenen Intervalle im Worst-Case verdoppeln.
 Da es $L = \Oh{\lgs(n)}$ Level gibt, folgt eine worst-case Updatezeit von amortisiert $\Oh{2^{\lgs(n)}}$.
-Die Amortisierung findet dabei über die Hilfsdatenstrukturen (z.B. Hashtabellen) statt.
+Die Amortisierung findet dabei über die Hilfsdatenstrukturen (\zB Hashtabellen) statt.
 
 \subsubsection{Tiefe des Walds}
 Im Folgenden skizzieren wir die Beweisidee, um die Tiefe des Waldes zu beschränken.
@@ -1055,5 +1054,5 @@ Mit Hilfe dieser beiden Lemmata folgt, dass für ein $\ell \ge k \ge 3$ die Anza
 \begin{align}
     \left. 2^{2^{\rddots{2^m}}} \right\} \text{$k$ mal}
 \end{align}
-ist, d.h. $2^{2^m}$ für $k=3$ und $2^{2^{2^m}}$ für $k=4$.
+ist, \dh $2^{2^m}$ für $k=3$ und $2^{2^{2^m}}$ für $k=4$.
 Diese untere Schranke an die Anzahl der Nachfahren übersetzt sich dann wiederum in eine obere Schranke $\Oh{\lgs(n)}$ der Tiefe.

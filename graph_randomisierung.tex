@@ -1,5 +1,5 @@
 Mit dem Havel-Hakimi Generator können wir nun für jede graphische Sequenz einen Graphen als Zeugen für diese Sequenz erzeugen.
-Die generierten Graphen sind aber zum einen deterministisch, d.h. für eine fixierte Sequenz~$\degseq$ wird immer derselbe Graph erzeugt, und zum anderen pathologisch (extrem viele Dreiecke, extrem hohe Grad Assortitivät, \ldots).
+Die generierten Graphen sind aber zum einen deterministisch, \dh für eine fixierte Sequenz~$\degseq$ wird immer derselbe Graph erzeugt, und zum anderen pathologisch (extrem viele Dreiecke, extrem hohe Grad Assortativität, \ldots).
 Das Fixed-Degree-Sequence-Model (FDSM)\aside{ Fixed-Degree-Sequence-Model (FDSM)} schlägt daher vor, dass wir erst den Havel-Hakimi Algorithmus ausführen, und dann den Graphen durch viele zufällige kleine Änderungen lokal perturbieren.
 Es besteht die begründete Hoffnung, dass wenn der hierdurch implizierte Irrweg lang genug ist, dass wir dann schlussendlich einen (fast) uniformen Graph aus $\Gd$ produzieren.
 
@@ -13,13 +13,13 @@ Edge Switching ist wohl der meist genutzte Prozess zum Perturbieren von Graphen.
 Das ist sicherlich auch dem geschuldet, dass er sehr einfach zu implementieren ist und in der Praxis relativ gut funktioniert (mehr dazu später).
 
 Anders als bei den meisten Modellen, gibt es signifikante funktionale Unterschiede zwischen gerichteten und ungerichteten Graphen.
-Edge Switching funktioniert aber mit noch ausgefalleneren Graphklassen (siehe z.B. \cite{carstens_2017}), z.B.
+Edge Switching funktioniert aber mit noch ausgefalleneren Graphklassen (siehe \zB \cite{carstens_2017}), \zB
 \begin{itemize}
     \item Ungerichtete einfache Graphen mit fester Gradsequenz
     \item Ungerichtete einfache zusammenhängende Graphen  mit fester Gradsequenz \cite{DBLP:journals/compnet/VigerL16}
     \item Gerichtete Graphen  mit fester Gradsequenz
     \item Gerichtete einfache Graphen (mit einfacher Modifikation)  mit fester Gradsequenz
-    \item Graphen mit fester joint-degree sequence~\cite{DBLP:conf/alenex/StantonP11} (d.h. die Anzahl der Kanten zwischen Knoten mit Graden~$d_1$ bzw.~$d_2$ wird für alle Paare $(d_1, d_2)$ definiert)
+    \item Graphen mit fester joint-degree sequence~\cite{DBLP:conf/alenex/StantonP11} (\dh die Anzahl der Kanten zwischen Knoten mit Graden~$d_1$ bzw.~$d_2$ wird für alle Paare $(d_1, d_2)$ definiert)
     \item Bipartite Graphen
     \item Mit weiteren Modifikationen sind auch weitere Klassen möglich
 \end{itemize}
@@ -63,7 +63,7 @@ Dies motiviert folgende Abstraktion:
 
 Seien $Z=(z_1, \ldots, z_n)$ und $S=(s_1, \ldots, s_m)$ Zeilen- und Spaltensummen.
 Dann \aside{\msz: Binärmatrizen mit fixierten Zeilen- und Spaltensummen} sei \msz die Menge aller $\set{0, 1}^{n \times m}$ Matrizen, die diese Beschränkungen erfüllen.
-Konkrete Graphklassen stellen i.d.R. weitere Anforderungen; so müssen ungerichtete einfache Graphen noch erfüllen:
+Konkrete Graphklassen stellen \idR weitere Anforderungen; so müssen ungerichtete einfache Graphen noch erfüllen:
 \begin{itemize}
     \item $Z = S$
     \item Matrizen sind symmetrisch
@@ -87,12 +87,12 @@ jeweils gegenüberliegende Ecken haben also dieselben Werte in der $M$ und deren
 
 \begin{theorem}
     OBdA sei $(a_{ij})_{ij} = A \ne B = (b_{ij})_{ij}$ (da wir sonst fertig sind).
-    Dann sei $d$ die Hamming-Distanz zwischen $A$ und $B$, d.h. die Anzahl der Einträge, in denen sich beide unterscheiden.
+    Dann sei $d$ die Hamming-Distanz zwischen $A$ und $B$, \dh die Anzahl der Einträge, in denen sich beide unterscheiden.
     Beobachte, dass $d$ eine gerade positive Zahl sein muss (weshalb?).
 
     Dann existiert ein Index $(i_1, j_1)$ mit $a_{i_1j_1} \ne b_{i_1j_1}$ und sei oBdA $a_{i_1j_1} = 1$.
-    Da die Summe der $j_1$-ten Spalte fixiert ist, muss es in dieser eine Zeile $i_2$ geben, s.d. $a_{i_2j_1} = 0$ und $b_{i_2j_1} = 1$.
-    Da wiederum die Summe der $i_2$-ten Zeile fixiert ist, muss es ein $j_2$ geben, s.d. $a_{i_2j_2} = 1$ und $b_{i_2j_2} = 0$.
+    Da die Summe der $j_1$-ten Spalte fixiert ist, muss es in dieser eine Zeile $i_2$ geben, \sd $a_{i_2j_1} = 0$ und $b_{i_2j_1} = 1$.
+    Da wiederum die Summe der $i_2$-ten Zeile fixiert ist, muss es ein $j_2$ geben, \sd $a_{i_2j_2} = 1$ und $b_{i_2j_2} = 0$.
     Wir haben also drei Ecken gefunden.
 
     Könnten wir $a_{i_1j_2} = 0$ garantieren, hätten wir ein alternierendes Rechteck und wären fertig;
@@ -113,14 +113,14 @@ jeweils gegenüberliegende Ecken haben also dieselben Werte in der $M$ und deren
     Weiter wissen sogar, dass $A$ und $B$ mittels höchstens $d/2$ Switches in einander überführt werden können.
     Aufgrund der Symmetrie,
     \begin{align}
-        d/2 & = \card{\set{ (i, j) \middle| i, j \text{, s.d. } a_{ij} = 1 \land b_{ij} = 0}}  \\
-            & = \card{\set{ (i, j) \middle| i, j \text{, s.d. } a_{ij} = 0 \land b_{ij} = 1}},
+        d/2 & = \card{\set{ (i, j) \middle| i, j \text{, \sd\,} a_{ij} = 1 \land b_{ij} = 0}}  \\
+            & = \card{\set{ (i, j) \middle| i, j \text{, \sd\,} a_{ij} = 0 \land b_{ij} = 1}},
     \end{align}
     folgt direkt
     \begin{align}
         d/2 \le t =  \min\Big(
-         & \card{\set{ (i, j) \middle| i, j \text{, s.d. } a_{ij} = 1}},       \\
-         & \card{\set{ (i, j) \middle| i, j \text{, s.d. } a_{ij} = 0}}  \Big)
+         & \card{\set{ (i, j) \middle| i, j \text{, \sd\,} a_{ij} = 1}},       \\
+         & \card{\set{ (i, j) \middle| i, j \text{, \sd\,} a_{ij} = 0}}  \Big)
     \end{align}
 \end{theorem}
 
@@ -151,7 +151,7 @@ der Prozess hat also eine uniforme Grenzverteilung.
 Da wir in der Praxis jedoch immer nur endlich lange Irrwege ausführen können, wird der Edge Switching MCMC Algorithmus oft als \emph{approximativ uniform} bezeichnet.
 
 Zunächst wiederholen wir ein paar Definition aus den Anfangstagen des Informatikstudiums.
-Hierfür stellen wir eine Markov-Kette~$\mathcal M$ oft als Tupel $(G, P)$ mit gerichteten Graph $G = (V, E)$ dar, wobei $P$ ein stochastische $|V| \times |V|$-Matrix ist (d.h. jede Zeile summiert auf $1$) und $(i, j) \in E \Leftrightarrow P_{ij} > 0$.
+Hierfür stellen wir eine Markov-Kette~$\mathcal M$ oft als Tupel $(G, P)$ mit gerichteten Graph $G = (V, E)$ dar, wobei $P$ ein stochastische $|V| \times |V|$-Matrix ist (\dh jede Zeile summiert auf $1$) und $(i, j) \in E \Leftrightarrow P_{ij} > 0$.
 Gegeben eine Startverteilung $\pi \in [0, 1]^n$ (Zeilenvektor) entspricht das Vektormatrixprodukt $\pi P$ der Verteilung nach einem Schritt und $\pi P^k$ der Verteilung nach $k$ Schritten.
 
 \begin{definition}
@@ -224,7 +224,7 @@ Analoges gilt auch für ungerichtete Switches.
 \section{Implementieren von Edge Switching}
 Die sequentielle Implementierungen von Edge Switching für gerichtete und ungerichtete Graphen ist relativ ähnlich.
 Daher nehmen wir im Folgenden gerichtete Graphen an --- für einen ungerichteten Graphen müssen wir nur beachten, dass $\set{u, v} = \set{v, u}$ ist und beide Kanten\qq{richtungen} diesselbe Kante repräsentieren.
-Üblicherweise repräsentieren wir beide Richtung durch eine kanonische Repräsentation $(u, v)$, wobei wir z.B. durch $u \le v$ Uneindeutigkeiten verhindern.
+Üblicherweise repräsentieren wir beide Richtung durch eine kanonische Repräsentation $(u, v)$, wobei wir \zB durch $u \le v$ Uneindeutigkeiten verhindern.
 Vor jedem Zugriff auf die im Folgenden beschriebenen Datenstrukturen würden also prüfen, ob die Invariante gilt, und anderenfalls die Kantenrichtung flippen.
 
 Ein zufälliger Edge Switch benötigt die folgenden Operationen:
@@ -240,7 +240,7 @@ Die beiden letzten Operationen können auch in eine zusammengefasst werden.
 \subsection{Auf Adjazenzmatrizen}
 Adjazenzmatrizen können alle Operationen außer das Ziehen einer zufälligen Kante in konstanter Zeit ausführen.
 Das Ziehen von zufälligen Kanten können wir aber mit einer dedizierten Datenstruktur lösen ---
-z.B. ein ungeordnetes Array~$A$ in dem jede Kante genau einmal gespeichert wird.
+\zB ein ungeordnetes Array~$A$ in dem jede Kante genau einmal gespeichert wird.
 Bei der Implementierungen müssen wir uns aber bei Updates minimal geschickt anstellen.
 Für ein Update der Kante $(u,v)$ benötigen wir den entsprechenden Index~$i$ in $A$ mit $A[i] = (u,v)$;
 diesen müssen wir glücklicherweise nicht suchen, da wir ausnutzen können, dass wir nur Kanten ersetzen, die wir vorher gezogen haben.
@@ -251,7 +251,7 @@ Mit diesen wenigen Tricks können wir jeden Edge Switch in konstanter Zeit ausf�
 \subsection{Auf Adjazenzlisten}
 Adjazenzlisten sind in vielerlei Hinsicht eine Herausforderung für Edge Switching.
 Allerdings verwalten viele existierenden Softwarebibliotheken Graphen in Adjazenzlisten; daher kann es lohnenswert sein, direkt auf der nativen Graphrepräsentation zu arbeiten.
-Dies gilt vor allem dann, wenn wir während jedes Switch zusätzliche Eigenschaften prüfen wollen und z.B. eine Breitensuche ausführen möchten, um den Zusammenhang des Graphs zu prüfen.
+Dies gilt vor allem dann, wenn wir während jedes Switch zusätzliche Eigenschaften prüfen wollen und \zB eine Breitensuche ausführen möchten, um den Zusammenhang des Graphs zu prüfen.
 
 Um in einer Adjazenzlist eine Kante uniform zufällig zu ziehen, bietet sich ein zweistufiges Experiment an.
 Zunächst wählen wir einen Knoten~$u$ mit Wahrscheinlichkeit $\deg(u) / (2m)$ und dann einen von $u$ Nachbarn uniform zufällig.
@@ -260,7 +260,7 @@ Da Edge Switching den Grad von Knoten nicht verändert, ist es sinnvoll vorab in
 Um schnelle Updates zu unterstützen, ist es in der Regel hilfreich eine unsortierte Adjazenzlist vorzuhalten.
 Dann kosten aber Existenzanfragen für die Kante $\set{u,v}$ Laufzeit $\Oh{\min(\deg(u), \deg(v))}$.
 Alternativ könnten wir die Nachbarschaften sortiert halten, dann dauern aber Updates $\Oh{\deg(u) + \deg(v)}$ Zeit.
-Gerade bei verzerrten Gradverteiltungen (z.B. Power-Law) bietet sich daher die erste Variante an.
+Gerade bei verzerrten Gradverteiltungen (\zB Power-Law) bietet sich daher die erste Variante an.
 
 Es gibt aber noch einen weiteren Ansatz: so nutzt die Implementierung von~\cite{DBLP:journals/compnet/VigerL16} eine Adjazenzliste, bei denen hinreichend große Nachbarschaften als HashSets ausgelegt sind.
 In diesem Setting können wir einen Edge Switch mit einer erwartet konstanten Laufzeit ausführen.
