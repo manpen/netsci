@@ -2,6 +2,7 @@
 \emph{Die nichtalgorithmischen Aspekte dieses Kapitels orientiert sich stark an \cite{barabasi2014network}.}
 \bigskip
 
+\noindent
 Eine elementare Aufgabe in Network Science ist es, die Wichtigkeit von Knoten zu bewerten -- man spricht auch \aside{Zentralität: Wichtigkeit eines Knotens} von der \emph{Zentralität} der Knoten.
 Die Anzahl der Nachbarn (Grad, engl. degree) ist eine sehr einfache Metrik mit direkter Intuition:
 Wenn ein Knoten überdurchschnittlich viele Nachbarn hat, dann steht die Vermutung im Raum, dass diesem Knoten auch eine überdurchschnittlich wichtige Bedeutung im Netzwerk zukommt.
@@ -749,7 +750,7 @@ und für $\gamma = k + 1$
 	\langle d^k \rangle
 	= \int_\dmin^\dmax d^k C d^{-\gamma} \intd d
 	= \int_\dmin^\dmax \frac{C}{d} \intd d
-	= C ( \ln \dmax - \ln \dmin ).
+	= C \left( \ln \frac{\dmax}{\dmin} \right).
 \end{equation}
 
 Das Verhalten des $k$-ten Moments für $n \to \infty$ (und dadurch $\dmax \to \infty$) wird also maßgeblich durch $k + 1 - \gamma$ beschrieben:
