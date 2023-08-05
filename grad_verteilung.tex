@@ -10,7 +10,7 @@ Daher wollen wir die Verteilung von Graden in Graphen in diesem Kapitel genauer 
 Zur Wiederholung:
 In einem ungerichteten Graphen~$G=(V,E)$ beschreibt
 \begin{align}
-    \deg(u) = \card{\twoset{e}{e \in E\text{, s.d. } u \in e}}
+    \deg(u) = \card{\twoset{e}{e \in E\text{, \sd\,} u \in e}}
 \end{align}
 die Anzahl der Nachbarn von Knoten~$u$.
 Die \aside{Grad\underline{sequenz}} Gradsequenz~$\degseq_G$ (falls $G$ klar ist auch nur $\degseq$) von $G=(V,E)$ mit $V=\set{v_1, \ldots, v_n}$ ist dann einfach die Auflistung aller Grade im Graphen
@@ -58,7 +58,7 @@ Der Grad~$\deg(u)$ eines Knotens~$u$ ist also ebenfalls binomial verteilt:
 Daher gilt also $\expv{\deg(u)} = (n-1)p$.
 
 Wie in \cref{fig:histogram_grade_gnp} dargestellt, approximiert eine konkrete Gradsequenz~$\degseq_G$ die Gradverteilung schon sehr gut.
-Der Erwartungswert sollte daher gegen den Durchschnittsgrad $\bar d = 2m / n$ konvergieren, d.h. $\expv{\deg(u)} \approx \bar d$.
+Der Erwartungswert sollte daher gegen den Durchschnittsgrad $\bar d = 2m / n$ konvergieren, \dh $\expv{\deg(u)} \approx \bar d$.
 Dann gilt also:
 \begin{align}
     \bar d \approx \expv{\deg(u)} & = (n-1)p \\
@@ -293,13 +293,13 @@ Es muss also gelten, dass $\prob{\deg(u) \ge \dnc} = 1 / n$ ist:
 
 Für $\gamma  < 2$ sagt diese Gleichung einen Knoten voraus, der mehr Nachbarn hat, als es Knoten im Graphen gibt.
 Dies ist nur eines von vielen Indizien, die zu unserer Annahme $\gamma > 2$ führen.
-Für $\gamma \searrow 2$ (d.h. rechts-seitiger Grenzwert für $\gamma \to 2$) skaliert der maximale Grad als $\Theta(n)$.
+Für $\gamma \searrow 2$ (\dh rechts-seitiger Grenzwert für $\gamma \to 2$) skaliert der maximale Grad als $\Theta(n)$.
 Für $\gamma = 3$ ist er noch $\Theta(\sqrt{n})$ et cetera.
 
 \section{Wie entstehen eine Power Law Gradverteilungen?}
 Das Entstehen von Power Law Verteilungen in  unterschiedlichsten Netzwerken gibt Anlass zu der Frage, wie solche Verteilungen denn eigentlich entstehen.
 Barab{\'{a}}si und Albert~\cite{barabasi1999emergence} geben eine sehr populäre Erklärung, die besonders durch ihre Simplizität besticht.
-Ähnliche Techniken wurden jedoch bereits früher verfolgt (z.B.~\cite{10.2307/1716232}).
+Ähnliche Techniken wurden jedoch bereits früher verfolgt (\zB~\cite{10.2307/1716232}).
 
 Die beiden Autoren schlagen neues Modell vor, das wir im Folgenden BA-Modell nennen.
 Es stellt zwei implizite Annahmen von \Gnp und \Gnm Graphen infrage:
@@ -311,7 +311,7 @@ Es stellt zwei implizite Annahmen von \Gnp und \Gnm Graphen infrage:
 
     \item
           Wenn wir einen Knoten im \Gnp Graphen als Spieler interpretieren, nimmt das Modell an, dass die Nachbarn rein zufällig ausgesucht werden.
-          Tatsächlich unterliegen aber viele Handlungen im echten Leben einem sog. Bias (d.h. einer verzerrten Wahrscheinlichkeitsverteilung).
+          Tatsächlich unterliegen aber viele Handlungen im echten Leben einem sog. Bias (\dh einer verzerrten Wahrscheinlichkeitsverteilung).
 
           Dies ist besonders auffällig, wenn es zu einer Form von Selektion kommt.
           So kann kein Mensch alle Webseiten kennen (und dann darauf verlinken); von Facebook, Twitter, und Google haben die Meisten aber gehört.
@@ -348,7 +348,7 @@ Der beschriebene Bias wird \emph{Preferential Attachment} bezeichnet.
 Es bildet sich eine positive Rückkopplung:
 ein Knoten mit hohem Grad wird wahrscheinlicher als andere Knoten gezogen.
 Ein gut vernetzter Knoten akkumuliert also schneller neue Nachbarn, und wird dadurch noch berühmter.
-Der Prozess liegt daher einigen Sprichworten zugrunde, z.B. \qq{the rich get richer} (dt. \qq{Der Teufel ... auf den größten Haufen}).
+Der Prozess liegt daher einigen Sprichworten zugrunde, \zB \qq{the rich get richer} (dt. \qq{Der Teufel ... auf den größten Haufen}).
 Es gibt diverse Methoden zur formalen Analyse des Prozess --- eine der einfachsten ist der kontinuierliche Formalismus, in der wir Knotengrade und die Zeit durch reelle Zahlen approximieren.
 Der Einfachheit halber, verwenden wir dennoch weiterhin den Begriff Zeitschritt, womit wir ein Zeitintervall von Einheitslänge meinen.
 
@@ -412,7 +412,7 @@ Wir müssen dieses Ergebnis noch in eine Gradverteilung zum Zeitpunkt $T \ggg 1$
 Die Intuition hierfür ist folgende:
 Wir wissen, dass wir zum Zeitpunkt~$T$ insgesamt $T$ zufällige Knoten hinzugefügt haben und können annehmen, dass wir das in einem regelmäßigen Takt getan haben.
 Dann müssen wir nur noch extrapolieren, welchen Grad wir für jeden diesen Knoten zu Zeitpunkt $T$ erwarten.
-Konkret fragen wir uns, wann ein Knoten eingefügt werden musste, s.d. er höchsten Grad $k$ hat:
+Konkret fragen wir uns, wann ein Knoten eingefügt werden musste, \sd er höchsten Grad $k$ hat:
 \begin{align}
                     &  & d(T)                                   & < k         \\
     \Leftrightarrow &  & \nu \left(\frac{T}{t_i}\right)^\beta   & < k         \\
@@ -481,7 +481,7 @@ Der vollständige Generator ist in \cref{alg:bb_ba} zusammengefasst.
 Der Generator \cref{alg:bb_ba} hat jedoch eine praktische Schwäche:
 die $\nu$ Nachbarn eines Knotens werden unabhängig gezogen --- es kann also zu Mehrfachkanten kommen.
 Dies ist in viele Anwendungen unerwünscht.
-Daher gehen wir im Folgenden davon aus, dass der Startgraph einfach ist (d.h., keine Mehrfachkanten enthält).
+Daher gehen wir im Folgenden davon aus, dass der Startgraph einfach ist (\dh, keine Mehrfachkanten enthält).
 
 Dann können wir Mehrfachkanten recht einfach erkennen:
 wir müssen nur die $\nu$ anfänglichen Nachbarn eines jeden neuen Knoten auf Duplikate prüfen.
@@ -515,7 +515,7 @@ Vereinfachend betrachten wir nur $\nu = 1$; die Ideen lassen sich aber auch auf 
 
 \subsubsection{Abhängigkeiten vermeiden}
 Das Generieren von BA Graphen wurde bis vor wenigen Jahren noch als \emph{inhärent sequentielles} Problem bezeichnet.
-Jeder gezogene Knoten verändert die Gradverteilung, s.d. sich zwischen den neu eingefügten Kanten Abhängigkeiten ergeben.
+Jeder gezogene Knoten verändert die Gradverteilung, \sd sich zwischen den neu eingefügten Kanten Abhängigkeiten ergeben.
 Allerdings gibt uns \cref{alg:bb_ba} bereits ein mentales Bild an die Hand, mit dem wir diese Abhängigkeiten in den Griff bekommen können.
 Um die Beschreibung zu vereinfachen, gehen wir davon aus, dass jeder Eintrag im Array einer Kante entspricht (statt eigentlich zwei Einträgen pro Kante).
 Dies ist eine asymptotisch nicht relevante Abschätzung zu unseren Ungunsten (siehe auch \cref{subsec:ba_sanders}).
@@ -532,8 +532,8 @@ In der Skizze korrespondiert dies zu der Situation, dass alle Kanten auf der rec
         \node[inner sep=0, minimum height=8mm, minimum width=120mm, draw, anchor=south west] at (0,0) {};
 
         \draw[thick, red] (99mm, -3mm) to ++(0, 14mm);
-        \draw[decorate, decoration = {brace, mirror}] (0, -5mm) to node[below] {Fertiggestellt} ++(98mm, 0);
-        \draw[decorate, decoration = {brace, mirror}] (100mm, -5mm) to node[below] {Parallel} ++(20mm, 0);
+        \draw[brace down] (0, -5mm) to node[below=1ex] {Fertiggestellt} ++(98mm, 0);
+        \draw[brace down] (100mm, -5mm) to node[below=1ex] {Parallel} ++(20mm, 0);
 
         \foreach \x/\l in {0/$1$, 96/$\ell$, 117/$\ell+p$} {
                 \path[draw, ->] (\x mm + 1.5mm, 12mm) to ++(0, -3mm);
@@ -616,7 +616,7 @@ Da jede Epoche in Erwartung eine Laufzeit von $\Oh{1}$ hat, hängt also die Lauf
 
     Dieses Vorgehen wiederholen wir logarithmisch oft.
     Vorsicht ist aber geboten, da wir um von $2e_1 \to 2(2e_1)$ zu kommen $\sqrt{2 e_1}$ (statt wie vorher nur $\sqrt{e_1}$) Epochen benötigen.
-    Sei $k$ die Anzahl an notwendigen Epochen, d.h. $e_k \ge m$.
+    Sei $k$ die Anzahl an notwendigen Epochen, \dh $e_k \ge m$.
     Es folgt:
 
     \begin{align}
@@ -717,7 +717,7 @@ Damit wird auf die Selbstähnlichkeit der Power-Law Verteilung hingewiesen:
 eine perfekte Power Law Verteilung ist in einem Log-Log-Plot immer eine Grade mit Steigung $-\gamma$.
 Dabei ist unerheblich wie groß der zugrunde liegende Objekt (hier Knotenmenge) ist.
 
-Wir können also die Verteilung umskalieren, z.B. die Knotenanzahl um einen Faktor $a$ vergrößern.
+Wir können also die Verteilung umskalieren, \zB die Knotenanzahl um einen Faktor $a$ vergrößern.
 Dann gilt für die entsprechende Zufallsvariablen $X$ und $X'$:
 
 \begin{align}
