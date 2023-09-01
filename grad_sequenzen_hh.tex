@@ -1,12 +1,12 @@
 \section{Charakterisierungen graphischer Sequenzen}
-Wir können graphische Gradsequenzen anhand mehrere Eigenschaften charakterisieren, wobei das Erd\H{o}s-Gallai Theorem sowie das Havel-Hakimi Theorem wohl die bekanntesten Ansätze darstellen.
+Wir können graphische Gradsequenzen anhand mehrerer Eigenschaften charakterisieren, wobei das Erd\H{o}s-Gallai Theorem sowie das Havel-Hakimi Theorem wohl die bekanntesten Ansätze darstellen.
 Das Erd\H{o}s-Gallai Theorem ist nicht-konstruktiv und kommt daher in der Praxis besonders zum Testen auf graphische Sequenzen zum Einsatz.
 Aus dem Havel-Hakimi Theorem, hingegen, können wir einen Graphgenerator konstruieren.
 Die Intuition von beiden Ansätzen ist aber ähnlich.
 
 \subsection{Erd\H{o}s-Gallai Theorem}
 \begin{theorem}
-    Sei $\degseq = (d_1, \ldots, d_n)$ eine nicht-wachsende Gradsequenz, d.h.
+    Sei $\degseq = (d_1, \ldots, d_n)$ eine nicht-wachsende Gradsequenz, \dh
     \begin{align}
         n > d_1 \ge d_2 \ge \ldots \ge d_n \ge 1.
     \end{align}
@@ -22,12 +22,12 @@ Die Intuition von beiden Ansätzen ist aber ähnlich.
     Analysiere dessen Laufzeit.
 \end{exercise}
 
-Im Folgenden diskutieren wir kurz, weshalb das Erd\H{o}s-Gallai Theorem eine notwendige Bedingung formuliert (d.h. jede graphisch Sequenz erfüllt das Theorem).
-Die Gegenrichtung (d.h. jede erfüllende Gradsequenz ist graphisch) ist deutlich komplexer und wird hier nicht behandelt.
+Im Folgenden diskutieren wir kurz, weshalb das Erd\H{o}s-Gallai Theorem eine notwendige Bedingung formuliert (\dh jede graphisch Sequenz erfüllt das Theorem).
+Die Gegenrichtung (\dh jede erfüllende Gradsequenz ist graphisch) ist deutlich komplexer und wird hier nicht behandelt.
 
 Die Anforderung, dass die Gradsumme gerade sein muss, folgt trivial aus dem Handshaking Lemma:
 jede Kante hat zwei Endpunkte und erhöht somit die Gradsumme um zwei
---- eine Ausnahme wäre es lediglich, wenn wir Eigenschleifen nur als Grad~$1$ zählen würden; das ist aber egal, da einfache Graphen sowieso kein Schleifen besitzen.
+--- eine Ausnahme wäre es lediglich, wenn wir Eigenschleifen nur als Grad~$1$ zählen würden; das ist aber egal, da einfache Graphen sowieso keine Schleifen besitzen.
 
 Für die zweite Bedingung konzentrieren wir uns zunächst auf die Ungleichung für $k = n$.
 Diese lautet
@@ -47,7 +47,7 @@ Daher fordert das Erd\H{o}s-Gallai Theorem $\Delta \le \sum_{i=k+1}^n \min(k, d_
 
 \subsection{Havel-Hakimi Theorem}
 \begin{theorem}
-    Sei $\degseq = (s, t_1, \ldots, t_s, d_{s+1}, \ldots, d_n)$ eine nicht-wachsende Gradsequenz auf $n$ Knoten, d.h.
+    Sei $\degseq = (s, t_1, \ldots, t_s, d_{s+1}, \ldots, d_n)$ eine nicht-wachsende Gradsequenz auf $n$ Knoten, \dh
     \begin{align}
         n > s \ge t_1 \ge \ldots t_s \ge d_{s+1} \ge \ldots \ge d_n \ge 1.
     \end{align}
@@ -64,17 +64,17 @@ Daher fordert das Erd\H{o}s-Gallai Theorem $\Delta \le \sum_{i=k+1}^n \min(k, d_
     Dann können wir einen neuen einfachen Graphen~$G$ erzeugen, in dem wir einen neuen Knoten~$u$ hinzufügen und ihn zu den Knoten mit Graden $t_1{-}1, \ldots, t_s{-}1$ verbinden.
     Der neue Knoten~$u$ hat offensichtlich Grad~$s$ und erhöht die Grade seiner Nachbarn auf $t_1, \ldots, t_s$.
     Daher erfüllt der erzeugte Graph~$G$ die Gradsequenz~$\degseq$.
-    Da jede neue Kanten zu Knoten~$u$ inzident ist, können sie nicht mit alten Kanten in $G'$ kollidieren.
+    Da jede neue Kante zu Knoten~$u$ inzident ist, können sie nicht mit alten Kanten in $G'$ kollidieren.
     Weiterhin sind die neuen Kanten zu paarweise verschiedenen existierenden Knoten inzident --- auch hier können sich weder Schleifen noch Mehrfachkanten bilden.
 
     Nun \aside{$\degseq \text{ ist graphisch} \Rightarrow \degseq' \text{ ist graphisch}$} zur Gegenrichtung \qq{$\degseq \text{ ist graphisch} \Rightarrow \degseq' \text{ ist graphisch}$}.
     Angenommen $\degseq = (s, t_1, \ldots, t_s, d_{s+1}, \ldots, d_n)$ ist graphisch, dann existiert ein einfacher Graph~$G$, dessen Knoten wir $S, T_1, \ldots, T_s, D_{s+1}, \ldots, D_n$ (anhand des offensichtlichen Mappings) nennen.
     Wenn $S$ zu $T_1, \ldots T_s$ verbunden ist, sind wir fast fertig: wir entfernen $S$ und alle inzidenten Kanten und erhalten den Graphen $G'$, der $\degseq'$ erfüllt.
 
-    Im Allgemeinen ist dies aber nicht richtig, d.h. es existiert ein $T_i$ das \emph{nicht} adjazent zu $S$ ist.
+    Im Allgemeinen ist dies aber nicht richtig, \dh es existiert ein $T_i$ das \emph{nicht} adjazent zu $S$ ist.
     Wir konstruieren nun aus $G$ einen einfachen Graphen $G_i$, in dem die Kante $\set{S, T_i}$ existiert ohne zuvor ggf. existierenden Kanten $\set{S, T_j}$ zu verändern.
 
-    Fixiere also ein $i$, s.d. die Kante $(S, T_i)$ nicht existiert, und ein $j$, s.d. die Kante $\set{S, D_j}$ existiert.
+    Fixiere also ein $i$, \sd die Kante $(S, T_i)$ nicht existiert, und ein $j$, \sd die Kante $\set{S, D_j}$ existiert.
     Aufgrund der Sortierung von~$\degseq$ gilt $t_i \ge d_j$:
     \begin{figure}
         \begin{center}
@@ -131,3 +131,31 @@ Daher fordert das Erd\H{o}s-Gallai Theorem $\Delta \le \sum_{i=k+1}^n \min(k, d_
     In beiden Fällen erhalten wir also einen Graphen in dem nun $S$ zu $T_i$ verbunden ist.
     Durch Mehrfachanwendung dieser Konstruktion erhalten wir schlussendlich einen Graphen, in  dem $S$ genau zu allen $T_j$ verbunden ist und können wie zuvor verfahren.
 \end{proof}
+
+Das Havel-Hakimi Theorem lässt sich direkt in einen Generator übersetzen.
+Wir verwalten Knoten mit ihren Graden als Gewicht in einer Max-Priority-Queue.
+Bis diese leer ist, führen wir die folgende Schritte aus:
+\begin{itemize}
+    \item Entnehme einen Knoten $S$ mit größtem Grad~$s$
+    \item Entnehme $s$ schwerste Knoten $T_i$ mit Grad~$t_i$ und speichere sie als $(T_i, t_i)$ in einen Puffer
+    \item Gebe für alle~$i$ die Kanten $\set{S, T_i}$ aus
+    \item Für alle $i$, falls $t_i > 1$ füge Knoten $T_i$ mit Gewicht~$t_1 - 1$ erneut ein
+\end{itemize}
+
+Mit klassischen PQs (\zB Max-Heap) lässt sich hierdurch eine Laufzeit von $\Oh{(m + n) \log n}$ erzielen;
+unter der Annahme, dass die Eingabe Knoten von Grad~0 erhält vereinfacht sich der Term zu $\Oh{m \log n}$.
+
+Da die Schlüssel in der PQ jedoch ganzzahlig sind und aus dem Intervall $[1, n)$ stammen, können wir eine Bucket-Queue verwenden.
+So kann etwa $\degseq$ als doppeltverkettete Liste dargestellt werden.
+Wenn $\degseq$ sortiert ist, befinden sich alle Einträge mit gleichem Grad in einer zusammenhängenden Gruppe.
+Wir unterhalten dann eine zweite sortierte Liste, die jeweils auf das erste Element der Gruppe zeigt.
+Durch diese Konstruktion ist es möglich, alle benötigten Operationen in Zeit~$\Oh{1}$ auszuführen --- der Generator läuft also in optimaler Laufzeit~$\Oh{m}$.
+
+Leider sind Listen in praktischen Implementierungen aufgrund der zahlreichen Allokation und mangelnden Lokalität fast immer ein Performance-Bottleneck.
+Wenn $\degseq$ sortiert ist und die Anzahl der \emph{verschiedenen} Grade $N_\degseq \ll n$ deutlich kleiner als die Anzahl der Knoten ist, ergibt sich hier ein Optimierungspotential.
+Statt jeden Knoten einzeln zu speichern, verzichten wir auf die \qq{lange} lineare Liste und speichern stattdessen für jede Gradgruppe drei Informationen ab:
+den Grad, die kleinste Knoten-ID in der Gruppe, die Anzahl der Knoten in der Gruppe.
+
+Dann brauchen wir noch einen kleinen Trick: wenn wir Knoten~$T_i$ auswählen beginnen wir am Ende einer Gruppe.
+Das führt dazu, dass $\degseq$ auch nach Updates monoton bleibt; außerdem kann man zeigen, dass sich während der Ausführung des Algorithmus die Länge der Liste höchstens verdoppelt~\cite{DBLP:journals/jea/HamannMPTW18}.
+

@@ -41,11 +41,11 @@
 %\setotherlanguage{german}
 
 % Do not change the order of usepackages in the following block; YOU HAVE BEEN WARNED!
-\makeatletter  
-	\let\saved@bibitem\@bibitem  
-\makeatother  
-\usepackage{bibentry}  
-\usepackage[hidelinks]{hyperref}  
+\makeatletter
+	\let\saved@bibitem\@bibitem
+\makeatother
+\usepackage{bibentry}
+\usepackage[hidelinks]{hyperref}
 \usepackage[ngerman]{cleveref}
 \Crefname{algocf}{Algorithmus}{Algorithmen}
 \crefname{algocf}{Alg.}{Algs.}
@@ -74,6 +74,8 @@
 \tikzstyle{inode}=[fill=white,draw,circle,minimum size=18pt,inner sep=0pt]
 \tikzstyle{leaf}=[fill=white,draw,inner sep=1mm]
 \tikzstyle{bigleaf}=[fill=white,draw,inner sep=1mm,minimum size=16pt]
+\tikzstyle{brace} = [decorate, decoration={calligraphic brace, amplitude=5.5pt}, line width=1.1pt]
+\tikzstyle{brace down} = [brace, decoration={mirror}]
 \usepackage{tikzscale}
 
 \makeatletter
@@ -110,6 +112,25 @@
 \begin{document}
 \maketitle
 
+\
+
+\vfill
+\vfill
+\vfill
+
+\noindent
+\textsl{
+	Einen ganz herzlichen Dank an alle, die durch ihr Feedback, Anregungen und Korrekturen zu diesem Dokument betrugen.
+	Spezieller Dank geht an (in alphabetischer Reihenfolge):
+	Daniel Allendorf,
+	Lukas Geis,
+	Ulrich Meyer,
+	Hung Tran,
+	Zeno Weil.
+}
+
+\vfill
+
 \clearpage
 
 \tableofcontents
@@ -126,6 +147,15 @@
 \chapter{Gradsequenzen}
 \input{grad_sequenzen}
 \input{grad_sequenzen_hh}
+
+\chapter{Graphrandomisierung}
+\input{graph_randomisierung}
+
+\chapter{Zufällige Permutationen}
+\input{permutationen}
+
+\chapter{Communities}
+\input{communities}
 
 \cleardoublepage
 \fancyhead[LE]{Bibliographie}
