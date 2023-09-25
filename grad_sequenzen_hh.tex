@@ -1,56 +1,56 @@
 \section{Charakterisierungen graphischer Sequenzen}
-Wir können graphische Gradsequenzen anhand mehrerer Eigenschaften charakterisieren, wobei das Erd\H{o}s-Gallai Theorem sowie das Havel-Hakimi Theorem wohl die bekanntesten Ansätze darstellen.
-Das Erd\H{o}s-Gallai Theorem ist nicht-konstruktiv und kommt daher in der Praxis besonders zum Testen auf graphische Sequenzen zum Einsatz.
-Aus dem Havel-Hakimi Theorem, hingegen, können wir einen Graphgenerator konstruieren.
-Die Intuition von beiden Ansätzen ist aber ähnlich.
+Wir können graphische Gradsequenzen anhand mehrerer Eigenschaften charakterisieren, wobei das Erd\H{o}s-Gallai-Theorem sowie das Havel-Hakimi-Theorem wohl die bekanntesten Ansätze darstellen.
+Das Erd\H{o}s-Gallai-Theorem ist nicht konstruktiv und kommt daher in der Praxis besonders zum Testen auf graphische Sequenzen zum Einsatz.
+Aus dem Havel-Hakimi-Theorem hingegen können wir einen Graphengenerator konstruieren.
+Die Intuition beider Ansätze ist aber ähnlich.
 
-\subsection{Erd\H{o}s-Gallai Theorem}
+\subsection{Erd\H{o}s-Gallai-Theorem}
 \begin{theorem}
-    Sei $\degseq = (d_1, \ldots, d_n)$ eine nicht-wachsende Gradsequenz, \dh
-    \begin{align}
+    Sei $\degseq = (d_1, \ldots, d_n)$ eine nicht wachsende Gradsequenz, \dh
+    \begin{equation}
         n > d_1 \ge d_2 \ge \ldots \ge d_n \ge 1.
-    \end{align}
-    Dann ist~$\degseq$ genau dann graphisch, wenn folgende beide Bedingungen erfüllt sind:
+    \end{equation}
+    Dann ist~$\degseq$ genau dann graphisch, wenn folgende beiden Bedingungen erfüllt sind:
     \begin{enumerate}
-        \item Die Summe der Grade $\sum_{i=1}^n d_i$ ist gerade (durch 2 teilbar)
-        \item Für alle $1 \le k \le n$ gilt $\sum_{i=1}^k d_i \le k(k-1) + \sum_{i=k+1}^n \min(k, d_i)$\hfill\qedhere
+        \item Die Summe der Grade $\sum_{i=1}^n d_i$ ist gerade (durch 2 teilbar).
+        \item Für alle $1 \le k \le n$ gilt $\sum_{i=1}^k d_i \le k(k-1) + \sum_{i=k+1}^n \min(k, d_i)$. \qedhere
     \end{enumerate}
 \end{theorem}
 
 \begin{exercise}
-    Beschreibe einen möglichst effizienten Algorithmus, der das Erd\H{o}s-Gallai Theorem nutzt, um zu entscheiden, ob eine Gradsequenz~$\degseq$ graphisch ist.
+    Beschreibe einen möglichst effizienten Algorithmus, der das Erd\H{o}s-Gallai-Theorem nutzt, um zu entscheiden, ob eine Gradsequenz~$\degseq$ graphisch ist.
     Analysiere dessen Laufzeit.
 \end{exercise}
 
-Im Folgenden diskutieren wir kurz, weshalb das Erd\H{o}s-Gallai Theorem eine notwendige Bedingung formuliert (\dh jede graphisch Sequenz erfüllt das Theorem).
-Die Gegenrichtung (\dh jede erfüllende Gradsequenz ist graphisch) ist deutlich komplexer und wird hier nicht behandelt.
+Im Folgenden diskutieren wir kurz, weshalb das Erd\H{o}s-Gallai-Theorem eine notwendige Bedingung formuliert (\dh, jede graphisch Sequenz erfüllt das Theorem).
+Die Gegenrichtung (d.h., jede erfüllende Gradsequenz ist graphisch) ist deutlich komplexer und wird hier nicht behandelt.
 
-Die Anforderung, dass die Gradsumme gerade sein muss, folgt trivial aus dem Handshaking Lemma:
+Die Anforderung, dass die Gradsumme gerade sein muss, folgt trivial aus dem Handshaking-Lemma:
 jede Kante hat zwei Endpunkte und erhöht somit die Gradsumme um zwei
---- eine Ausnahme wäre es lediglich, wenn wir Eigenschleifen nur als Grad~$1$ zählen würden; das ist aber egal, da einfache Graphen sowieso keine Schleifen besitzen.
+--~eine Ausnahme wäre es lediglich, wenn wir Eigenschleifen nur als Grad~$1$ zählten; das ist aber egal, da einfache Graphen sowieso keine Schleifen besitzen.
 
 Für die zweite Bedingung konzentrieren wir uns zunächst auf die Ungleichung für $k = n$.
 Diese lautet
-\begin{align}
+\begin{equation}
     \sum_{i=1}^n d_i \le n(n-1) + 0
-\end{align}
+\end{equation}
 
 Dies ist trivial richtig, da nur der vollständige Graph $K_n$ mit $\degseq = (n{-}1, \ldots, n{-}1)$ die Ungleichung mit Gleichheit erfüllt.
 Für jeden anderen Graphen ist die linke Seite der Ungleichung echt kleiner.
 
-Für $k < n$, beschreibt also der $k(k-1)$ Term der rechten Seite die Grade, die durch Kanten innerhalb der ersten $k$ Knoten erklärt werden können.
-Falls ein $k$ existiert mit $\sum_{i=1}^k (d_i) - k(k-1) = \Delta > 0$, müssen $\Delta$ Kanten die ersten $k$ Knoten mit den verbleibenden $n - k$ verbinden.
+Für $k < n$ beschreibt also der Term $k(k-1)$ auf der rechten Seite die Grade, die durch Kanten innerhalb der ersten $k$ Knoten erklärt werden können.
+Existiert ein $k$ mit $(\sum_{i=1}^k d_i) - k(k-1) = \Delta > 0$, müssen $\Delta$ Kanten die ersten $k$ Knoten mit den verbleibenden $n - k$ verbinden.
 Es muss also $\sum_{i=k+1}^k d_i \ge \Delta$ gelten; tatsächlich muss die Grenze aber noch schärfer gewählt werden.
 Da wir keine Mehrfachkanten erlauben, darf jeder der $n-k$ verbleibenden Knoten zu jedem der $k$ ersten Knoten höchstens einmal verbunden werden.
-Falls $d_i > k$ für ein $i > k$, können wir diesen Grad nicht vollständig nutzen --- sondern nur $k$ \qq{Endpunkte} zählen.
-Daher fordert das Erd\H{o}s-Gallai Theorem $\Delta \le \sum_{i=k+1}^n \min(k, d_i)$.
+Falls $d_i > k$ für ein $i > k$, können wir diesen Grad nicht vollständig nutzen -- sondern nur $k$ \qq{Endpunkte} zählen.
+Daher fordert das Erd\H{o}s-Gallai-Theorem $\Delta \le \sum_{i=k+1}^n \min(k, d_i)$.
 
-\subsection{Havel-Hakimi Theorem}
+\subsection{Havel-Hakimi-Theorem}
 \begin{theorem}
-    Sei $\degseq = (s, t_1, \ldots, t_s, d_{s+1}, \ldots, d_n)$ eine nicht-wachsende Gradsequenz auf $n$ Knoten, \dh
-    \begin{align}
+    Sei $\degseq = (s, t_1, \ldots, t_s, d_{s+1}, \ldots, d_n)$ eine nicht wachsende Gradsequenz auf $n$ Knoten, \dh
+    \begin{equation}
         n > s \ge t_1 \ge \ldots t_s \ge d_{s+1} \ge \ldots \ge d_n \ge 1.
-    \end{align}
+    \end{equation}
 
     \noindent
     Dann definiere $\degseq' = \text{sort}((t_1 - 1, \ldots, t_s - 1, d_{s+1}, \ldots, d_n))$ als die sortierte Gradsequenz auf $n-1$ Knoten,
@@ -59,22 +59,22 @@ Daher fordert das Erd\H{o}s-Gallai Theorem $\Delta \le \sum_{i=k+1}^n \min(k, d_
 \end{theorem}
 
 \begin{proof}
-    Wir \aside{$\degseq' \text{ ist graphisch} \Rightarrow \degseq \text{ ist graphisch}$} zeigen zunächst die Implikation \qq{$\degseq' \text{ ist graphisch} \Rightarrow \degseq \text{ ist graphisch}$}.
+    Wir \aside{$\degseq' \text{ ist graphisch.} \Rightarrow \degseq \text{ ist graphisch.}$} zeigen zunächst die Implikation \qq{$\degseq' \text{ ist graphisch.} \Rightarrow \degseq \text{ ist graphisch.}$}
     Angenommen, $\degseq'$ ist graphisch, dann existiert ein einfacher Graph~$G'$, der $\degseq'$ erfüllt.
-    Dann können wir einen neuen einfachen Graphen~$G$ erzeugen, in dem wir einen neuen Knoten~$u$ hinzufügen und ihn zu den Knoten mit Graden $t_1{-}1, \ldots, t_s{-}1$ verbinden.
+    Dann können wir einen neuen einfachen Graphen~$G$ erzeugen, in dem wir einen neuen Knoten~$u$ hinzufügen und ihn mit den Knoten mit Graden $t_1{-}1, \ldots, t_s{-}1$ verbinden.
     Der neue Knoten~$u$ hat offensichtlich Grad~$s$ und erhöht die Grade seiner Nachbarn auf $t_1, \ldots, t_s$.
     Daher erfüllt der erzeugte Graph~$G$ die Gradsequenz~$\degseq$.
     Da jede neue Kante zu Knoten~$u$ inzident ist, können sie nicht mit alten Kanten in $G'$ kollidieren.
-    Weiterhin sind die neuen Kanten zu paarweise verschiedenen existierenden Knoten inzident --- auch hier können sich weder Schleifen noch Mehrfachkanten bilden.
+    Weiterhin sind die neuen Kanten zu paarweise verschiedenen existierenden Knoten inzident -- auch hier können sich weder Schleifen noch Mehrfachkanten bilden.
 
-    Nun \aside{$\degseq \text{ ist graphisch} \Rightarrow \degseq' \text{ ist graphisch}$} zur Gegenrichtung \qq{$\degseq \text{ ist graphisch} \Rightarrow \degseq' \text{ ist graphisch}$}.
+    Nun \aside{$\degseq \text{ ist graphisch.} \Rightarrow \degseq' \text{ ist graphisch.}$} zur Gegenrichtung \qq{$\degseq \text{ ist graphisch.} \Rightarrow \degseq' \text{ ist graphisch.}$}
     Angenommen $\degseq = (s, t_1, \ldots, t_s, d_{s+1}, \ldots, d_n)$ ist graphisch, dann existiert ein einfacher Graph~$G$, dessen Knoten wir $S, T_1, \ldots, T_s, D_{s+1}, \ldots, D_n$ (anhand des offensichtlichen Mappings) nennen.
-    Wenn $S$ zu $T_1, \ldots T_s$ verbunden ist, sind wir fast fertig: wir entfernen $S$ und alle inzidenten Kanten und erhalten den Graphen $G'$, der $\degseq'$ erfüllt.
+    Wenn $S$ zu $T_1, \ldots, T_s$ verbunden ist, sind wir fast fertig: Wir entfernen $S$ und alle inzidenten Kanten und erhalten den Graphen $G'$, der $\degseq'$ erfüllt.
 
-    Im Allgemeinen ist dies aber nicht richtig, \dh es existiert ein $T_i$ das \emph{nicht} adjazent zu $S$ ist.
-    Wir konstruieren nun aus $G$ einen einfachen Graphen $G_i$, in dem die Kante $\set{S, T_i}$ existiert ohne zuvor ggf. existierenden Kanten $\set{S, T_j}$ zu verändern.
+    Im Allgemeinen ist dies aber nicht richtig, \dh, es existiert ein $T_i$, das \emph{nicht} adjazent zu $S$ ist.
+    Wir konstruieren nun aus $G$ einen einfachen Graphen $G_i$, in dem die Kante $\set{S, T_i}$ existiert, ohne zuvor ggf. existierende Kanten $\set{S, T_j}$ zu verändern.
 
-    Fixiere also ein $i$, \sd die Kante $(S, T_i)$ nicht existiert, und ein $j$, \sd die Kante $\set{S, D_j}$ existiert.
+    Fixiere also ein $i$, \sd die Kante $\set{S, T_i}$ nicht existiert, und ein $j$, \sd die Kante $\set{S, D_j}$ existiert.
     Aufgrund der Sortierung von~$\degseq$ gilt $t_i \ge d_j$:
     \begin{figure}
         \begin{center}
@@ -121,41 +121,40 @@ Daher fordert das Erd\H{o}s-Gallai Theorem $\Delta \le \sum_{i=k+1}^n \min(k, d_
 
     \begin{itemize}
         \item
-              Falls $t_i = d_j$ können wir einfach die Knoten $T_i$ und $D_j$ tauschen und sind fertig.
+              Falls $t_i = d_j$, können wir einfach die Knoten $T_i$ und $D_j$ tauschen und sind fertig.
         \item
-              Falls $t_i > d_j$ hat $T_i$ echt mehr Nachbarn als $D_j$; daher existiert ein Nachbar $X$ der mit $T_i$ aber nicht $D_j$ verbunden ist.
+              Falls $t_i > d_j$, hat $T_i$ echt mehr Nachbarn als $D_j$; daher existiert ein Nachbar $X$, der mit $T_i$, aber nicht mit $D_j$ verbunden ist.
               Wie in \cref{fig:hh_edge_switch} gezeigt, führen wir einen sog. Edge Switch aus und ersetzen die Kanten $\set{S, D_j}$ und $\set{T_i, X}$ durch $\set{S, T_i}$ und $\set{D_j, X}$.
               Hierdurch findet keine Gradveränderung statt.
     \end{itemize}
 
-    In beiden Fällen erhalten wir also einen Graphen in dem nun $S$ zu $T_i$ verbunden ist.
-    Durch Mehrfachanwendung dieser Konstruktion erhalten wir schlussendlich einen Graphen, in  dem $S$ genau zu allen $T_j$ verbunden ist und können wie zuvor verfahren.
+    In beiden Fällen erhalten wir also einen Graphen, in dem nun $S$ mit $T_i$ verbunden ist.
+    Durch Mehrfachanwendung dieser Konstruktion erhalten wir schlussendlich einen Graphen, in dem $S$ mit allen $T_j$ verbunden ist, und können wie zuvor verfahren.
 \end{proof}
 
-Das Havel-Hakimi Theorem lässt sich direkt in einen Generator übersetzen.
+Das Havel-Hakimi-Theorem lässt sich direkt in einen Generator übersetzen.
 Wir verwalten Knoten mit ihren Graden als Gewicht in einer Max-Priority-Queue.
 Bis diese leer ist, führen wir die folgende Schritte aus:
 \begin{itemize}
-    \item Entnehme einen Knoten $S$ mit größtem Grad~$s$
-    \item Entnehme $s$ schwerste Knoten $T_i$ mit Grad~$t_i$ und speichere sie als $(T_i, t_i)$ in einen Puffer
-    \item Gebe für alle~$i$ die Kanten $\set{S, T_i}$ aus
-    \item Für alle $i$, falls $t_i > 1$ füge Knoten $T_i$ mit Gewicht~$t_1 - 1$ erneut ein
+    \item Entnehme einen Knoten $S$ mit größtem Grad~$s$.
+    \item Entnehme $s$ schwerste Knoten $T_i$ mit Grad~$t_i$ und speichere sie als $(T_i, t_i)$ in einem Puffer.
+    \item Gebe für alle~$i$ die Kanten $\set{S, T_i}$ aus.
+    \item Füge für alle $i$, falls $t_i > 1$, Knoten $T_i$ mit Gewicht~$t_1 - 1$ erneut ein.
 \end{itemize}
 
-Mit klassischen PQs (\zB Max-Heap) lässt sich hierdurch eine Laufzeit von $\Oh{(m + n) \log n}$ erzielen;
-unter der Annahme, dass die Eingabe Knoten von Grad~0 erhält vereinfacht sich der Term zu $\Oh{m \log n}$.
+Mit klassischen Priority-Queues (\zB Max-Heap) lässt sich hierdurch eine Laufzeit von $\Oh{(m + n) \log n}$ erzielen;
+unter der Annahme, dass die Eingabe keine Knoten von Grad~0 erhält, vereinfacht sich der Term zu $\Oh{m \log n}$.
 
 Da die Schlüssel in der PQ jedoch ganzzahlig sind und aus dem Intervall $[1, n)$ stammen, können wir eine Bucket-Queue verwenden.
-So kann etwa $\degseq$ als doppeltverkettete Liste dargestellt werden.
+So kann etwa $\degseq$ als doppelt verkettete Liste dargestellt werden.
 Wenn $\degseq$ sortiert ist, befinden sich alle Einträge mit gleichem Grad in einer zusammenhängenden Gruppe.
 Wir unterhalten dann eine zweite sortierte Liste, die jeweils auf das erste Element der Gruppe zeigt.
-Durch diese Konstruktion ist es möglich, alle benötigten Operationen in Zeit~$\Oh{1}$ auszuführen --- der Generator läuft also in optimaler Laufzeit~$\Oh{m}$.
+Durch diese Konstruktion ist es möglich, alle benötigten Operationen in Zeit~$\Oh{1}$ auszuführen -- der Generator läuft also in optimaler Laufzeit~$\Oh{m}$.
 
-Leider sind Listen in praktischen Implementierungen aufgrund der zahlreichen Allokation und mangelnden Lokalität fast immer ein Performance-Bottleneck.
+Leider sind Listen in praktischen Implementierungen aufgrund der zahlreichen Allokationen und mangelnden Lokalität fast immer ein Performance-Bottleneck.
 Wenn $\degseq$ sortiert ist und die Anzahl der \emph{verschiedenen} Grade $N_\degseq \ll n$ deutlich kleiner als die Anzahl der Knoten ist, ergibt sich hier ein Optimierungspotential.
 Statt jeden Knoten einzeln zu speichern, verzichten wir auf die \qq{lange} lineare Liste und speichern stattdessen für jede Gradgruppe drei Informationen ab:
 den Grad, die kleinste Knoten-ID in der Gruppe, die Anzahl der Knoten in der Gruppe.
 
-Dann brauchen wir noch einen kleinen Trick: wenn wir Knoten~$T_i$ auswählen beginnen wir am Ende einer Gruppe.
+Dann brauchen wir noch einen kleinen Trick: Wenn wir Knoten~$T_i$ auswählen, beginnen wir am Ende einer Gruppe.
 Das führt dazu, dass $\degseq$ auch nach Updates monoton bleibt; außerdem kann man zeigen, dass sich während der Ausführung des Algorithmus die Länge der Liste höchstens verdoppelt~\cite{DBLP:journals/jea/HamannMPTW18}.
-
