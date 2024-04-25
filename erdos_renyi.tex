@@ -693,7 +693,7 @@ Wir messen die Geschwindigkeit des Algorithmus zunächst nur indirekt, indem wir
 Beobachte, dass die Analyse im Beweis von \cref{lemma:basis-ziehen-ohne-zuruecklegen-versuche} sehr eng ist.
 Wie wir in \cref{fig:ziehen-ohne-zuruecklegen-iterationen} sehen, gilt für relativ kleine $N$ schon $\expv{X} \approx N \ln \frac{N}{N - k + 1}$.
 
-\begin{theorem}
+\begin{theorem}\label{thm:ziehen-ohne-zuruecklegen-k}
     Für $1 \le k \le N/2$ verwendet \cref{algo:basis-ziehen-ohne-zuruecklegen} in Erwartung $\Oh{k}$ Versuche (Iterationen der \texttt{while}-Schleife), um aus $S$ mit $|S| = N$ exakt $1 \le k < N$ Elemente zu ziehen.
 \end{theorem}
 
@@ -722,16 +722,22 @@ Wie wir in \cref{fig:ziehen-ohne-zuruecklegen-iterationen} sehen, gilt für rela
     Hiermit können wir nun $T$ abschätzen:
     \begin{align}
         T & = N \ln \frac{N}{N - k + 1}                                                                \\
-          & \stackrel{\ref{eq:ln_kleiner_x_minus_eins}}{\le} N \left( \frac{N}{N - k + 1}  - 1 \right) \\
+          & \stackrel{(\ref{eq:ln_kleiner_x_minus_eins}}{\le} N \left( \frac{N}{N - k + 1}  - 1 \right) \\
           & \le N \frac{N - (N - k + 1)}{N - k + 1}                                                    \\
-          & \le N \frac{k}{N-k+1}                                                                      \\
-          & \le N \frac{k}{N} = \Oh{k}. \hfill \qedhere
+& \le \frac{Nk}{N-k+1}
+\le \frac{Nk}{N-k}                                                                             \\
+& \le \frac{k}{1-k/N}
+\stackrel{k/N \le 1/2}\le 2k = \Oh{k}. \hfill \qedhere
     \end{align}
 \end{proof}
 
+\begin{exercise}
+    Zeige einen alternativen Beweis von \cref{thm:ziehen-ohne-zuruecklegen-k}, der die Identität $\exp(x) = \lim_{n \to \infty} (1 + x/n)^n$ nutzt.
+\end{exercise}
+
 \bigskip
 
-\Cref{lemma:basis-ziehen-ohne-zuruecklegen-versuche} besagt, dass \cref{algo:basis-ziehen-ohne-zuruecklegen} für $k \le N / 2$ erwartet $\Oh{k}$ Iterationen ausführt und somit (in Erwartung) optimal ist.
+\Cref{thm:ziehen-ohne-zuruecklegen-k} besagt, dass \cref{algo:basis-ziehen-ohne-zuruecklegen} für $k \le N / 2$ erwartet $\Oh{k}$ Iterationen ausführt und somit (in Erwartung) optimal ist.
 Nur für $k \to N$ wird der $\log$-Faktor asymptotisch relevant, und wir bekommen eine suboptimale Laufzeit von $\Omega(N \log N)$.
 
 Auf \aside{Komplementbildung stellt sicher: $k \ge N /2$} der einen Seite sollte das für \emph{übliche} Graphen kein Problem sein (sie sind dünn und daher $k \ll N$); dennoch lässt sich das Problem einfach vermeiden.
