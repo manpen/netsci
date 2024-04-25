@@ -670,8 +670,8 @@ Wir messen die Geschwindigkeit des Algorithmus zunächst nur indirekt, indem wir
     Es folgt also:
     \begin{align}
         \expv{X} & = N \left[ H_N - H_{N-k} \right]                      \\
-                 & \le N \left[ \ln N - \ln (N - k + 1) \right] + \Oh{1} \\
-                 & = N \ln \frac{N}{N - k + 1} + \Oh{1}
+& \le N \left[ \ln N - \ln (N - k + 1) + \Oh{N^{-2}} \right]  \\
+& = N \ln \frac{N}{N - k + 1} + \oh{1}
     \end{align}
 \end{proof}
 
@@ -693,9 +693,41 @@ Wir messen die Geschwindigkeit des Algorithmus zunächst nur indirekt, indem wir
 Beobachte, dass die Analyse im Beweis von \cref{lemma:basis-ziehen-ohne-zuruecklegen-versuche} sehr eng ist.
 Wie wir in \cref{fig:ziehen-ohne-zuruecklegen-iterationen} sehen, gilt für relativ kleine $N$ schon $\expv{X} \approx N \ln \frac{N}{N - k + 1}$.
 
-\begin{exercise}
-    Zeige, dass $N \ln \frac{N}{N - k + 1} = \Oh{k}$ für $k \le N / 2$.
-\end{exercise}
+\begin{theorem}
+    Für $1 \le k \le N/2$ verwendet \cref{algo:basis-ziehen-ohne-zuruecklegen} in Erwartung $\Oh{k}$ Versuche (Iterationen der \texttt{while}-Schleife), um aus $S$ mit $|S| = N$ exakt $1 \le k < N$ Elemente zu ziehen.
+\end{theorem}
+
+\begin{proof}
+    Wir wissen aus \cref{lemma:basis-ziehen-ohne-zuruecklegen-versuche}, dass der Algorithmus in Erwartung $T + \oh{1}$ Iterationen ausführt, wobei
+    \begin{align}
+        T & = N \ln \frac{N}{N - k + 1}.
+    \end{align}
+
+    \noindent
+    Wir müssen also nur zeigen, dass $T = \Oh{k}$ für $1 \le k \le N/2$.
+    Beobachte, dass unter diesen Annahmen das Argument des Logarithmus im Intervall $N/(N - k + 1) \in [1, 2]$ liegt.
+    Wir nutzen daher die Taylorreihe von $\ln(x)$ am Punkt $x=1$:
+    \begin{align}
+        \ln(x) & = \sum_{i=1}^\infty (-1)^{i+1} \frac{1}{i} (x - 1)^i = (x-1) - \frac 1 2 (x-1)^2 + \frac 1 3 (x - 1)^3 + \ldots
+    \end{align}
+
+    \noindent
+    Da $x \in [1,2]$ liegt, gilt $(x-1) \in [0, 1]$ und daher gilt $(x-1)^i \ge (x-1)^{i+1}$.
+    Daher können wir uns auf den ersten Term der Entwicklung beschränken und finden
+    \begin{align}\label{eq:ln_kleiner_x_minus_eins}
+        \ln(x) & \le x - 1.
+    \end{align}
+
+    \noindent
+    Hiermit können wir nun $T$ abschätzen:
+    \begin{align}
+        T & = N \ln \frac{N}{N - k + 1}                                                                \\
+          & \stackrel{\ref{eq:ln_kleiner_x_minus_eins}}{\le} N \left( \frac{N}{N - k + 1}  - 1 \right) \\
+          & \le N \frac{N - (N - k + 1)}{N - k + 1}                                                    \\
+          & \le N \frac{k}{N-k+1}                                                                      \\
+          & \le N \frac{k}{N} = \Oh{k}. \hfill \qedhere
+    \end{align}
+\end{proof}
 
 \bigskip
 
