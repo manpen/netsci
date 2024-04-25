@@ -443,7 +443,7 @@ Wir können also \zB prüfen:
           Da $U$ uniform verteilt ist, ist die Wahrscheinlichkeit für $U < 0.2$ genau $0.2$.
 
     \item Falls nicht, prüfen wir, ob $U < 0.36 = f(0) + f(1) = F(1)$ ist. Falls ja, geben wir den Wert $1$ zurück.
-          Da $U$ uniform verteilt ist und wir wissen, dass $U$ nicht kleiner als $0.2$ ist, ist die Wahrscheinlichkeit $\prob{U < 0.36 \mid U > 0.2} = 0.16 = f(1)$.
+Da $U$ uniform verteilt ist die Wahrscheinlichkeit $\prob{0.2 \le U < 0.36} = 0.16 = f(1)$.
 
     \item Diesen Prozess setzen wir fort, bis wir das passende Intervall gefunden haben.
 \end{itemize}
@@ -495,7 +495,7 @@ Zurück \aside{Inversionsmethode für geometrische Verteilungen} zur geometrisch
 Die kumulative Verteilungsfunktion lautet
 \begin{equation}
     F(\ell)
-    \ =\ p \sum_{i=0}^\ell (1-p)^\ell
+\ =\ p \sum_{i=0}^\ell (1-p)^i
     \ \stackrel{(*)}{=} \ p \frac{1 - (1-p)^{\ell+1}}{\underbrace{1 - (1-p)}_{=p}}
     \ = \ 1 - (1-p)^{\ell+1},
 \end{equation}
@@ -630,7 +630,7 @@ Dieser nutzt das Grundgerüst in~\cref{algo:basis-ziehen-ohne-zuruecklegen}, das
 Wir messen die Geschwindigkeit des Algorithmus zunächst nur indirekt, indem wir die Anzahl der Iterationen der \texttt{while}-Schleife zählen:
 
 \begin{lemma}\label{lemma:basis-ziehen-ohne-zuruecklegen-versuche}
-    \Cref{algo:basis-ziehen-ohne-zuruecklegen} verwendet in Erwartung $N \log(N/(N-k+1)) + \Oh{1}$ Versuche (Iterationen der \texttt{while}-Schleife), um aus $S$ mit $|S| = N$ exakt $1 \le k < N$ Elemente zu ziehen.
+\Cref{algo:basis-ziehen-ohne-zuruecklegen} verwendet in Erwartung $N \log(N/(N-k+1)) + \oh{1}$ Versuche (Iterationen der \texttt{while}-Schleife), um aus $S$ mit $|S| = N$ exakt $1 \le k < N$ Elemente zu ziehen.
 \end{lemma}
 
 \begin{proof}
