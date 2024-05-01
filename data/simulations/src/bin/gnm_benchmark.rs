@@ -1,9 +1,9 @@
 use ez_bitset::bitset::BitSet;
-use rand::{seq::IteratorRandom, Rng};
-use rand_distr::{Distribution, Hypergeometric};
+use rand::{prelude::*};
+use rand_distr::{Binomial, Distribution, Hypergeometric};
 use rayon::prelude::*;
 use serde::Serialize;
-use std::{collections::HashSet, hint::black_box, time::Instant};
+use std::{collections::HashSet, hint::black_box, ops::Range, time::Instant};
 
 #[derive(Serialize)]
 struct Measure {
@@ -101,46 +101,79 @@ fn gnm_bitset(rng: &mut impl Rng, size: usize, num_samples: usize) -> BitSet {
     samples
 }
 
-fn gnm_epochs(rng: &mut impl Rng, size: usize, mut num_samples: usize) -> Vec<usize> {
-    assert!(num_samples < size);
+fn recurse(
+    rng: &mut impl Rng,
+    interval: Range<usize>,
+    results: &mut [usize],
+    bit_set_thresh: usize,
+) {
+    let size = interval.len();
+    let num_samples = results.len();
 
-    let block_size = 1024.max(size >> 15);
-    let mut buffer = vec![0u16; block_size];
-
-    let mut result = Vec::with_capacity(num_samples);
-
-    let mut block_begin = 0;
-    let mut epoch = 1;
-    while block_begin < size && num_samples != 0 {
-        let block_end = (block_begin + block_size).min(size);
-        let block_size = block_end - block_begin;
-
-        let population = size - block_begin;
-
-        let mut block_samples = if population == num_samples {
-            num_samples
-        } else {
-            Hypergeometric::new(population as u64, num_samples as u64, block_size as u64)
-                .unwrap_or_else(|e| panic!("{e} {population} {num_samples} {block_size}"))
-                .sample(rng) as usize
-        };
-        num_samples -= block_samples;
-
-        while block_samples != 0 {
-            let idx = rng.gen_range(0..block_size);
-
-            if buffer[idx] != epoch {
-                buffer[idx] = epoch;
-                result.push(block_begin + idx);
-                block_samples -= 1;
-            }
+    if size <= bit_set_thresh {
+        let samples = gnm_bitset(rng, size, num_samples);
+        for (r, x) in results.iter_mut().zip(samples.iter()) {
+            *r = x;
         }
 
-        epoch += 1;
-        block_begin = block_end;
+        return;
     }
 
-    result
+    if num_samples * 100 < bit_set_thresh {
+        let samples = gnm_hashset(rng, size, num_samples);
+        for (r, x) in results.iter_mut().zip(samples.iter()) {
+            *r = *x;
+        }
+        return;
+    }
+
+    if num_samples == 0 {
+        return;
+    }
+
+    if num_samples == 1 {
+        results[0] = rng.gen_range(interval);
+        return;
+    }
+
+    let size_left = size / 2;
+    let mid = interval.start + size_left;
+    let samples_left = if size / num_samples > 10 {
+        Binomial::new(size_left as u64, num_samples as f64 / size as f64)
+            .unwrap()
+            .sample(rng) as usize
+    } else {
+        Hypergeometric::new(size as u64, num_samples as u64, size_left as u64)
+            .unwrap()
+            .sample(rng) as usize
+    }
+    .min(num_samples);
+
+    //    println!("{num_samples:>5} {samples_left:>5}");
+
+    let (results_left, results_right) = results.split_at_mut(samples_left);
+    recurse(rng, interval.start..mid, results_left, bit_set_thresh);
+    recurse(rng, mid..interval.end, results_right, bit_set_thresh);
+}
+
+fn gnm_recursive_impl(
+    rng: &mut impl Rng,
+    size: usize,
+    num_samples: usize,
+    bit_set_thresh: usize,
+) -> Vec<usize> {
+    let mut results = vec![0; num_samples];
+    recurse(rng, 0..size, &mut results, bit_set_thresh);
+    //panic!();
+    results
+}
+
+fn gnm_recursive(rng: &mut impl Rng, size: usize, num_samples: usize) -> Vec<usize> {
+    gnm_recursive_impl(rng, size, num_samples, 0)
+}
+
+fn gnm_recursive_hybrid(rng: &mut impl Rng, size: usize, num_samples: usize) -> Vec<usize> {
+    gnm_recursive_impl(rng, size, num_samples, 10_000)
 }
 
 #[derive(Clone, Copy)]
@@ -148,7 +181,8 @@ enum Algos {
     HashSet,
     Reservoir,
     BitSet,
-    Epochs,
+    Recursive,
+    RecursiveHybrid,
 }
 
 impl Algos {
@@ -159,7 +193,17 @@ impl Algos {
                 Measure::bench(rng, gnm_reserviour, "Reservoir", series, size, samples)
             }
             Algos::BitSet => Measure::bench(rng, gnm_bitset, "Bitset", series, size, samples),
-            Algos::Epochs => Measure::bench(rng, gnm_epochs, "Epochs", series, size, samples),
+            Algos::Recursive => {
+                Measure::bench(rng, gnm_recursive, "Recursive", series, size, samples)
+            }
+            Algos::RecursiveHybrid => Measure::bench(
+                rng,
+                gnm_recursive_hybrid,
+                "Recursive Hybrid",
+                series,
+                size,
+                samples,
+            ),
         }
     }
 }
@@ -182,15 +226,16 @@ fn main() {
             .collect()
     } else */
     {
-        (0..5)
+        let mut tasks : Vec<_> = (0..30)
             .into_par_iter()
-            .flat_map(|_| (8..32).into_par_iter().map(|x| 1usize << x))
+            .flat_map(|_| (8..31).into_par_iter().map(|x| 1usize << x))
             .flat_map(|size| {
                 [
                     Algos::HashSet,
                     Algos::Reservoir,
                     Algos::BitSet,
-                    Algos::Epochs,
+                    Algos::Recursive,
+                    Algos::RecursiveHybrid,
                 ]
                 .into_par_iter()
                 .map(move |a| (size, a))
@@ -202,7 +247,11 @@ fn main() {
                     (algo, "k=N/4", size, size / 4),
                 ]
                 .into_par_iter()
-            })
+            }).collect();
+
+            tasks.shuffle(&mut rand::thread_rng());
+
+            tasks.into_par_iter()
             .for_each(|(algo, series, size, samples)| {
                 let mut rng = rand::thread_rng();
                 println!(
