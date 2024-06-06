@@ -634,28 +634,44 @@ Die Alias-Tabelle baut auf folgender Einsicht auf:
     Per Induktionsannahme können wir für diese eine entsprechende Tabelle konstruieren.
 \end{proof}
 
-Konkret besteht unsere Tabelle aus zwei Arrays $G[1\ldots n]$ und $A[1\ldots n]$.
+Die~\aside{Repräsentation Alias-Tabelle} Tabelle wird durch zwei Arrays $G[1\ldots n]$ und $A[1\ldots n]$ repräsentiert.
 In der $i$-ten Zeile speichern wir als ersten Eintrag Element~$i$ mit einem anteiligen Gewicht von $G[i] \le w_i$ ab.
-Der Rest der Zeile wird vom sog. Alias $A[i]$ eingenommen, der per Konstruktion ein Gewicht $1 - G[i]$ hat und daher nicht explizit gespeichert werden muss.
+Der Rest der Zeile wird vom sog. Alias $A[i]$ eingenommen, der per Konstruktion ein Gewicht $1 - G[i]$ hat und daher nicht explizit gespeichert wird.
 
-Für jede endliche Verteilung $w_1, \ldots, w_n$ können wir eine solche Tabelle in Zeit $\Oh{n}$ konstruieren -- i.\,A. ist die Tabelle aber nicht eindeutig.
+Für~\aside{Konstruktion} jede endliche Verteilung $w_1, \ldots, w_n$ können wir eine solche Tabelle in Zeit $\Oh{n}$ konstruieren -- i.\,A. ist die Tabelle aber nicht eindeutig.
 Eine mögliche Belegung kann mittels zweier Listen $K$ (klaaner) und $D$ (driwwer) erzeugt werden.
 \begin{itemize}
     \item Falls $w_i < 1$, fügen wir $(i, w_i)$ in $K$ ein.
     \item Falls $w_i \ge 1$, fügen wir $(i, w_j)$ in $D$ ein.
 \end{itemize}
 
-Solange $K$ und $D$ nicht leer sind, entnehmen wir ein Element $(k, w_k)$ aus $K$ und ein Element $(g, w_g)$ aus $D$.
-Wir schreiben $G[i] = w_k$ und $A[i] = g$.
+Solange $K$ und $D$ nicht leer sind, entnehmen wir ein leichtes Element $(k, w_k)$ aus $K$ und ein schweres Element $(g, w_g)$ aus $D$.
+Wir schreiben $G[k] = w_k$ und $A[k] = g$.
 Sei $w'_g = w_g - (1 - w_k)$ das verbleibende Gewicht von $g$.
 Wenn $w'_g < 1$ fügen wir $(g, w'_g)$ in $K$ ein, sonst in $D$.
+Wiederhole.
 
-Per Konstruktion kann $K$ niemals vor $D$ leer werden; es kann aber durchaus vorkommen, dass $K$ leer ist, während $D$ noch Werte enthält.
-Dann haben aber alle Einträge in~$G$ Gewicht genau $1$; wir können sie in der offensichtlichen Art in $G$ einfügen.
+Eingangs haben wir also $n$~Elemente mit Gesamtgewicht~$n$.
+In jedem Schritt entfernen wir dann genau ein Element (aus $K$) und reduzieren das Gesamtgewicht um~$1$.
+Der Algorithmus erhält daher die Invariante aufrecht, dass $i$ Elemente immer ein Gesamtgewicht von~$i$ haben.
+
+Somit kann $D$ niemals vor $K$ leer werden.
+Um einen Widerspruch herbeizuführen, nehmen wir das Gegenteil an: $D$ sei leer und $K$ habe noch $n'$ Elemente.
+Per Konstruktion haben alle Elemente in $K$ ein Gewicht echt kleiner~$1$.
+Deren Summe kann somit nicht $n'$ ergeben.
+
+Es kann aber durchaus vorkommen, dass $D$ leer ist und $K$ noch Elemente hat.
+Mit ähnlicher Argumentation folgt dann, dass alle Einträge in~$G$ Gewicht genau $1$ haben müssen.
+
+Wir können sie in der offensichtlichen Art in $G$ einfügen.
 Praktische Implementierungen müssen aufgrund der wiederholten Subtraktionen mit Rundungsfehlern der Gewichte umgehen können;
 dann kann auch $D$ zuerst leer werden; die Elemente in $K$ haben dann aber Gewicht $1 - \epsilon$.
 
-Das Ziehen aus der Alias-Tabelle läuft analog zu Rejection-Sampling:
+\begin{exercise}
+    Zeige, dass diese Konstruktion jede Zeile der Tabelle genau einmal füllt.
+\end{exercise}
+
+Das~\aside{Ziehen aus der Alias-Tabelle} Ziehen aus der Alias-Tabelle läuft analog zu Rejection-Sampling:
 Wir wählen eine Zeile $1 \le i \le n$ und ein reelles $0 \le u \le 1$ jeweils rein zufällig aus.
 Falls $u < G[i]$, geben wir $i$ zurück, sonst $A[i]$.
 Dies gelingt in Zeit $\Oh{1}$.
