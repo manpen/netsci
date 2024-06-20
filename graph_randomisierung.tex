@@ -149,29 +149,115 @@ In diesem Kapitel werden wir zeigen, dass für sehr lange Irrwege die Wahrschein
 der Prozess hat also eine uniforme Grenzverteilung.
 Da wir in der Praxis jedoch immer nur endlich lange Irrwege ausführen können, wird der Edge-Switching-MCMC-Algorithmus oft als \emph{approximativ uniform} bezeichnet.
 
-Zunächst wiederholen wir ein paar Definition aus den Anfangstagen des Informatikstudiums.
-Hierfür stellen wir eine Markov-Kette~$\mathcal M$ oft als Tupel $(G, P)$ mit gerichteten Graph $G = (V, E)$ dar, wobei $P$ eine stochastische $|V| \times |V|$-Matrix ist (\dh, jede Zeilensumme ist $1$) und $(i, j) \in E \Leftrightarrow P_{ij} > 0$.
+Zunächst wiederholen wir ein paar Definitionen aus den Anfangstagen des Informatikstudiums.
+Hierfür stellen wir eine Markov-Kette~$\mathcal M$ i.d.R. als Tupel $(G, P)$ mit gerichteten Graph $G = (V, E)$ dar, wobei $P$ eine stochastische $|V| \times |V|$-Matrix ist (\dh, jede Zeilensumme ist $1$) und die Existenz einer Kante in~$E$ einem positiven Eintrag in $P$ entspricht, genauer $(i, j) \in E \Leftrightarrow P_{ij} > 0$.
 Gegeben einer Startverteilung $\pi \in [0, 1]^n$ (Zeilenvektor) entspricht das Vektormatrixprodukt $\pi P$ der Verteilung nach einem Schritt und $\pi P^k$ der Verteilung nach $k$ Schritten.
 
-\begin{definition}
-    Sei $\mathcal M = (G, P)$ eine Markov-Kette.
-    Dann heißt die Verteilung $\mathcal G(\mathcal M)$ Grenzverteilung der Kette~$\mathcal M$, wenn für alle Startverteilungen~$\pi$ gilt:
+\begin{definition}\label{def:stationaere-verteilung}
+    Sei \aside{stationäre Verteilung}$\mathcal M = (G, P)$ eine Markov-Kette und $\pi \in [0, 1]^n$ eine Wahrscheinlichkeitsverteilung über den Zuständen.
+    Wir nennen $\pi$ genau dann eine \emph{stationäre Verteilung}, wenn gilt
     \begin{equation}
+        \pi P = \pi. \qedhere
+    \end{equation}
+\end{definition}
+
+Wie der Name bereits suggeriert, handelt es sich bei einer stationären Verteilung um einen Fixpunkt\footnote{Wir können eine stationäre Verteilung als Eigenvektor mit Eigenwert~$1$ auffassen.};
+wir können beliebig viele Schritte der Markov-Kette ausführen ohne die Verteilung zu verändern.
+
+\begin{example}
+    Betrachten wir z.B. eine Kette, die aus drei Zuständen und folgende Übergangswahrscheinlichkeiten hat:
+
+    \begin{equation}
+        \begin{pmatrix}
+            0 & 1/2 & 1/2 \\
+            0 & 1   & 0   \\
+            0 & 0   & 1
+        \end{pmatrix}
+    \end{equation}
+
+    Aus Zustand $1$ gelangen mittels fairem Münzwurf entweder in Zustand 2 oder 3.
+    Diese beiden Zustände sind dann absorbierend (haben nur eine Eigenschleife).
+    Dann sind z.B. $(0, 1, 0)$ und $(0, 0, 1)$ stationäre Verteilungen (gibt es weitere?).
+    Die Verteilung $(1, 0, 0)$ ist nicht stationär, da wir im nächsten Schritt auf $(0, 1/2, 1/2)$ übergehen.
+\end{example}
+
+Das Beispiel hat also mehrere stationäre Verteilungen.
+Es \aside{Grenzverteilung}gibt jedoch Markov-Ketten mit einem besonderen Verhalten:
+unabhängig vom Startpunkt, konvergiert der Prozess nach ausreichend langer Ausführung gegen eine eindeutige stationäre Verteilung.
+\emph{Wenn} eine solche Verteilung existiert nennen wir diese \emph{Grenzverteilung}:
+
+\def\grenz{\ensuremath{\mathcal G(\mathcal M)}\xspace}
+
+\begin{definition}\label{def:grenzverteilung}
+    Sei $\mathcal M = (G, P)$ eine Markov-Kette.
+Dann heißt die Verteilung \grenz{} Grenzverteilung der Kette~$\mathcal M$, wenn für alle Startverteilungen~$\pi$ gilt:
+\begin{equation}\label{eq:grenzverteilung}
         \smashoperator{\lim_{k \to \infty}} \pi P^k = \mathcal G(\mathcal M)
     \end{equation}
 \end{definition}
 
-Wenn eine Markov-Kette eine Grenzverteilung hat, ist es egal, wo wir starten:
+\noindent
+Beobachte, dass wir den Startzustand~$\pi$ in \cref{eq:grenzverteilung} auch nach vorn ziehen können
+\begin{equation}
+    \smashoperator{\lim_{k \to \infty}} \pi P^k = \pi \underbrace{\lim_{k \to \infty} P^k}_{:= P^{(\infty)}}
+\end{equation}
+
+Da eine etwaige Grenzverteilung unabhängig von der Startverteilung ist und vollständig durch $P^{(\infty)}$ beschrieben wird, ist die Grenzverteilung eindeutig.
+Wir können sogar noch einen Schritt weitergehen:
+
+\begin{lemma}\label{lem:grenzverteilung_ist_eindeutige_stationaere_verteilung}
+    Sei $\mathcal M = (G, P)$ eine Markov-Kette, so dass die Grenzverteilung~\grenz existiert.
+    Dann ist \grenz die einzige stationäre Verteilung.
+\end{lemma}
+
+\begin{proof}
+    Die Aussage, dass \grenz eine stationäre Verteilung ist, überlassen wir für \cref{ex:grenzverteilung_ist_stationaer}.
+    Wir zeigen daher nur, dass es keine andere stationäre Verteilung gibt.
+
+    Sei $\sigma$ eine beliebige stationäre Verteilung von $M$.
+    Dann gilt $\sigma P = \sigma$ gemäß \cref{def:stationaere-verteilung}.
+    Dies können wir offensichtlich iterieren:
+    \begin{equation}
+        \sigma P^k = \underbrace{(\sigma P)}_{=\sigma} P^{k-1} = \sigma P^{k-1} = \ldots = \sigma
+    \end{equation}
+
+    \noindent
+    Per \cref{def:grenzverteilung} muss, haben wir auch $\smashoperator{\lim_{k \to \infty}} \sigma P^k = \grenz$.
+    Daraus folgt $\sigma = \grenz$.
+\end{proof}
+
+\begin{exercise}\label{ex:jede_zeile_grenzverteilung}
+    Sei $\mathcal M = (G, P)$ eine Markov-Kette, für die der Grenzwert~$\mathcal G(\mathcal M)$ existiert.
+    Zeige, dass jede Zeile von $P^{(\infty)}$ genau $\mathcal G(\mathcal M)$ entspricht.
+\end{exercise}
+
+\begin{exercise}\label{ex:grenzverteilung_ist_stationaer}
+    Sei $\mathcal M = (G, P)$ eine Markov-Kette, für die der Grenzwert~$\mathcal G(\mathcal M)$ existiert.
+    Zeige, dass $\mathcal G(\mathcal M)$ eine stationäre Verteilung ist.
+\end{exercise}
+
+Wenn eine Markov-Kette eine Grenzverteilung besitzt, ist es also egal, wo wir starten:
 Irgendwann \qq{vergessen} wir die Startverteilung\dots{}
 Jetzt wäre noch wichtig, dass wir überall \qq{raus} kommen können.
-Solche Markov-Ketten nennen wir ergodisch:
+Solche \aside{ergodisch}Markov-Ketten nennen wir \emph{ergodisch}:
 
 \begin{definition}
-    Sei $\mathcal M = (G, P)$. Die Markov-Kette $\mathcal M$ heißt \emph{ergodisch}, wenn $\mathcal G(\mathcal M)$ existiert und die Grenzwahrscheinlichkeit $(\lim_{k \to \infty} P^k)_j > 0$ für alle $j$.
+Sei $\mathcal M = (G, P)$.
+Die Markov-Kette $\mathcal M$ heißt \emph{ergodisch}, wenn $\mathcal G(\mathcal M)$ existiert und für eine beliebige Verteilung~$\pi$ die Grenzwahrscheinlichkeit jedes Zustands~$j$:
+\begin{equation*}
+    \forall j\colon \qquad (\pi \lim_{k \to \infty} P^k)_{j} > 0 \hfill \qedhere
+\end{equation*}
 \end{definition}
 
+Beachte, dass wir aus \cref{ex:jede_zeile_grenzverteilung}, wissen, dass jede Zeile in $P^{(\infty)} = (\lim_{k \to \infty} P^k)$ identisch ist; somit können wir die Definition sogar ohne~$\pi$ schreiben:
+\begin{equation}
+    \forall j, \text{Verteilung}~\pi\colon\qquad (\pi \lim_{k \to \infty} P^k)_{j} = (\lim_{k \to \infty} P^k)_{1,j}
+\end{equation}
+
+\bigskip
+
 Es kann nun gezeigt werden, dass eine Markov-Kette genau dann ergodisch ist, wenn sie (i) irreduzibel und (ii) aperiodisch ist.
-Ein Kette heißt \emph{aperiodisch}, wenn für jeden Knoten $v$ der größte gemeinsame Teiler der Längen aller Pfade von $v$ nach $v$ den Wert~$1$ hat.
+Ein \aside{aperiodisch}Kette heißt \emph{aperiodisch}, wenn für jeden Knoten $v$ der größte gemeinsame Teiler der Längen aller Pfade von $v$ nach $v$ den Wert~$1$ hat.
 
 \begin{theorem}
     Edge-Switching impliziert für u.\,a. (i) einfache, ungerichtete und (ii) gerichtete Graphen mit möglichen Eigenschleifen eine ergodische Markov-Kette.
@@ -179,7 +265,7 @@ Ein Kette heißt \emph{aperiodisch}, wenn für jeden Knoten $v$ der größte gem
 
 \begin{proof}
     Wir zeigen den Beweis für gerichtete Graphen; er folgt analog für ungerichtete Graphen.
-    Aus \cref{sec:edge_switching_irreduzibel} wissen wir bereits, dass der Übegangsgraph von Edge-Switching stark zusammenhängend ist.
+Aus \cref{sec:edge_switching_irreduzibel} wissen wir bereits, dass der Übergangsgraph von Edge-Switching stark zusammenhängend ist.
     Die Markov-Kette ist also irreduzibel.
 
     Wir müssen also nur noch zeigen, dass sie auch aperiodisch ist.
@@ -187,7 +273,7 @@ Ein Kette heißt \emph{aperiodisch}, wenn für jeden Knoten $v$ der größte gem
     Im Edge-Switching-Framework nutzen wir Rejection-Sampling und verwerfen illegale Switches ersatzlos.
     Die Behauptung ist nun, dass für jeden Zustand der Kette mindestens ein illegaler Switch existiert (es würde sogar reichen, wenn es eine einzige Eigenschleife gibt!):
 
-    Da wir ohne Zurücklegen ziehen, kann es passieren, dass $e_1 = e_2$; wir verwerfen also mindestens mit Wahrscheinlichkeit $1 / m$.
+Da wir mit Zurücklegen ziehen, kann es passieren, dass $e_1 = e_2$; wir verwerfen also mindestens mit Wahrscheinlichkeit $1 / m$.
     Dies entspricht einer Eigenschleife im Übergangsgraph.
     Angenommen, es existiert ein Pfad $v$ nach $v$ der Länge~$k$ (muss existieren, da die Kette irreduzible ist).
     Dann können wir durch Umwege über Eigenschleifen einen Pfad beliebiger Länge $k' > k$ erzeugen.
@@ -199,18 +285,20 @@ Ein Kette heißt \emph{aperiodisch}, wenn für jeden Knoten $v$ der größte gem
 Das ist aufgrund des folgenden Lemmas hilfreich:
 \begin{lemma}
     Sei $\mathcal M = (G, P)$ eine Markov-Kette mit symmetrischer Übergangsmatrix $P_{ij} = P_{ji}$ für alle $i, j$.
-    Falls die Grenzverteilung~$\sigma$ existiert, ist $\sigma$ die Gleichverteilung.
+Falls die Grenzverteilung~\grenz existiert, ist \grenz die Gleichverteilung.
 \end{lemma}
 
 \begin{proof}
-    Angenommen, es existiert eine stationäre Verteilung.
-    Dann gilt für $\sigma = \bigl(\frac{1}{n}, \ldots, \allowbreak \frac{1}{n}\bigr)$ und jeden Zustand~$j$:
+Wir zeigen zunächst, dass die Gleichverteilung $\sigma = \bigl(\frac{1}{n}, \ldots, \allowbreak \frac{1}{n}\bigr)$ eine stationäre Verteilung ist.
+Für einen beliebigen Zustand~$j$ gilt:
     \begin{align}
         (\sigma P) _ j & \stackrel{\text{Vek.-Mat.-Mul.}}{=} \sum_{i=1}^n \sigma_i P_{ij}
         = \frac 1 n \sum_{i=1}^n P_{ij}                                                   \\
                        & \stackrel{P\text{ symmetrisch}}{=} \frac 1 n \sum_{i=1}^n P_{ji} \\
                        & \stackrel{P\text{ stochastisch}}{=} 1 / n = \sigma_j
     \end{align}
+
+Nach \cref{lem:grenzverteilung_ist_eindeutige_stationaere_verteilung}, impliziert die Existenz der Grenzverteilung~\grenz, dass $\grenz = \sigma$ die einzige stationäre Verteilung ist.
 \end{proof}
 
 Auch hier wird wieder der Bug des Rejection-Samplings zum Feature.
